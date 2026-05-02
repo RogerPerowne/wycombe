@@ -896,36 +896,58 @@ footer {
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/db/client.js"></script>
 <script>
-var USERS = { "economics": "wycombe2025", "student": "alevel2025" };
-
-function doLogin() {
+async function doLogin() {
   var uname = document.getElementById('uname').value.trim();
   var pwd   = document.getElementById('pwd').value;
   var errEl = document.getElementById('loginErr');
   var uEl   = document.getElementById('uname');
   var pEl   = document.getElementById('pwd');
+  var btn   = document.querySelector('.login-btn');
+
   uEl.classList.remove('err'); pEl.classList.remove('err');
   errEl.classList.remove('show');
+
   if (!uname || !pwd) {
     uEl.classList.add('err'); pEl.classList.add('err');
     errEl.textContent = 'Please enter both a username and password.';
     errEl.classList.add('show'); return;
   }
-  if (USERS[uname] && USERS[uname] === pwd) {
-    sessionStorage.setItem('wa_user', uname); showApp(uname);
-  } else {
+
+  var sb = getSupabase();
+  if (!sb) {
+    errEl.textContent = 'Database not configured.';
+    errEl.classList.add('show'); return;
+  }
+
+  btn.textContent = '...'; btn.disabled = true;
+
+  var { data, error } = await sb.rpc('wa_login', {
+    p_username:   uname,
+    p_credential: pwd
+  });
+
+  btn.textContent = 'Enter →'; btn.disabled = false;
+
+  if (error || !data) {
     uEl.classList.add('err'); pEl.classList.add('err');
     errEl.textContent = 'Incorrect username or password.';
     errEl.classList.add('show'); pEl.value = '';
     setTimeout(function(){ uEl.classList.remove('err'); pEl.classList.remove('err'); }, 400);
+    return;
   }
+
+  sessionStorage.setItem('wa_user', JSON.stringify(data));
+  showApp(data.display_name);
 }
 
-function showApp(username) {
+function showApp(displayName) {
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  document.getElementById('hdrUser').textContent = 'Signed in as: ' + username;
+  document.getElementById('hdrUser').textContent = 'Signed in as: ' + displayName;
 }
 
 function doLogout() {
@@ -938,7 +960,12 @@ function doLogout() {
 }
 
 var saved = sessionStorage.getItem('wa_user');
-if (saved) { showApp(saved); }
+if (saved) {
+  try {
+    var u = JSON.parse(saved);
+    showApp(u.display_name || saved);
+  } catch(e) { showApp(saved); }
+}
 </script>
 </body>
 </html>
