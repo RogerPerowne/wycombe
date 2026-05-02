@@ -3,13 +3,13 @@
 // ═══════════════════════════════════════════════════════════════
 //  Requires: client.js loaded before this file.
 //
-//  RPC functions used (matching supabase-setup.sql exactly):
-//    teacher_login(p_password)
-//    get_teacher_data(p_password)
-//    create_student(p_password, p_username, p_pin, p_display_name, p_class_set)
-//    delete_student(p_password, p_profile_id)
-//    reset_pin(p_password, p_profile_id, p_new_pin)
-//    change_teacher_password(p_old_password, p_new_password)
+//  RPC functions used:
+//    login(p_username, p_credential)
+//    get_dashboard_data(p_username, p_credential)
+//    create_student(p_username, p_credential, p_new_username, p_new_pin, p_display_name, p_class_set)
+//    delete_student(p_username, p_credential, p_student_id)
+//    reset_student_pin(p_username, p_credential, p_student_id, p_new_pin)
+//    change_my_credential(p_username, p_old_cred, p_new_cred)
 // ═══════════════════════════════════════════════════════════════
 
 // ── Username / PIN generators ────────────────────────────────────
@@ -35,38 +35,48 @@ function generatePin() {
   return String(Math.floor(Math.random() * 9000) + 1000); // 1000–9999
 }
 
-// ── Teacher auth ─────────────────────────────────────────────────
+// ── Teacher/admin auth ───────────────────────────────────────────
 
-async function teacherLogin(password) {
+async function teacherLogin(username, credential) {
   var sb = getSupabase();
   if (!sb) return { ok: false, error: 'Database not configured' };
 
-  var { data, error } = await sb.rpc('teacher_login', { p_password: password });
+  var { data, error } = await sb.rpc('login', {
+    p_username:   username.trim(),
+    p_credential: credential.trim()
+  });
   if (error) return { ok: false, error: error.message };
-  if (!data)  return { ok: false, error: 'Invalid password' };
-  return { ok: true };
+  if (!data) return { ok: false, error: 'Invalid username or password' };
+  if (data.role !== 'teacher' && data.role !== 'admin') {
+    return { ok: false, error: 'Access denied: teacher or admin account required' };
+  }
+  return { ok: true, role: data.role };
 }
 
-async function getTeacherData(password) {
+async function getTeacherData(username, credential) {
   var sb = getSupabase();
   if (!sb) return { ok: false, error: 'Database not configured' };
 
-  var { data, error } = await sb.rpc('get_teacher_data', { p_password: password });
+  var { data, error } = await sb.rpc('get_dashboard_data', {
+    p_username:   username.trim(),
+    p_credential: credential.trim()
+  });
   if (error) return { ok: false, error: error.message };
-  if (!data)  return { ok: false, error: 'Invalid password or no data' };
+  if (!data) return { ok: false, error: 'Invalid credentials or no data' };
   return { ok: true, data: data };
 }
 
 // ── Student CRUD ─────────────────────────────────────────────────
 
-async function createStudent(password, username, pin, displayName, classSet) {
+async function createStudent(username, credential, newUsername, pin, displayName, classSet) {
   var sb = getSupabase();
   if (!sb) return { ok: false, error: 'Database not configured' };
 
   var { data, error } = await sb.rpc('create_student', {
-    p_password:     password,
-    p_username:     username,
-    p_pin:          pin,
+    p_username:     username.trim(),
+    p_credential:   credential.trim(),
+    p_new_username: newUsername,
+    p_new_pin:      pin,
     p_display_name: displayName,
     p_class_set:    classSet
   });
@@ -75,41 +85,44 @@ async function createStudent(password, username, pin, displayName, classSet) {
   return { ok: true, data: data };
 }
 
-async function deleteStudent(password, profileId) {
+async function deleteStudent(username, credential, profileId) {
   var sb = getSupabase();
   if (!sb) return { ok: false, error: 'Database not configured' };
 
   var { data, error } = await sb.rpc('delete_student', {
-    p_password:   password,
-    p_profile_id: profileId
+    p_username:   username.trim(),
+    p_credential: credential.trim(),
+    p_student_id: profileId
   });
   if (error) return { ok: false, error: error.message };
   return { ok: true };
 }
 
-async function resetStudentPin(password, profileId, newPin) {
+async function resetStudentPin(username, credential, profileId, newPin) {
   var sb = getSupabase();
   if (!sb) return { ok: false, error: 'Database not configured' };
 
-  var { data, error } = await sb.rpc('reset_pin', {
-    p_password:   password,
-    p_profile_id: profileId,
+  var { data, error } = await sb.rpc('reset_student_pin', {
+    p_username:   username.trim(),
+    p_credential: credential.trim(),
+    p_student_id: profileId,
     p_new_pin:    newPin
   });
   if (error) return { ok: false, error: error.message };
   return { ok: true };
 }
 
-async function changeTeacherPassword(oldPassword, newPassword) {
+async function changeTeacherPassword(username, oldCred, newCred) {
   var sb = getSupabase();
   if (!sb) return { ok: false, error: 'Database not configured' };
 
-  var { data, error } = await sb.rpc('change_teacher_password', {
-    p_old_password: oldPassword,
-    p_new_password: newPassword
+  var { data, error } = await sb.rpc('change_my_credential', {
+    p_username: username.trim(),
+    p_old_cred: oldCred,
+    p_new_cred: newCred
   });
-  if (error)   return { ok: false, error: error.message };
-  if (!data)   return { ok: false, error: 'Old password incorrect' };
+  if (error) return { ok: false, error: error.message };
+  if (!data) return { ok: false, error: 'Current password incorrect' };
   return { ok: true };
 }
 

@@ -29,7 +29,8 @@
   <!-- Login form -->
   <div id="admin-login" class="t-login">
     <h2>Admin Access</h2>
-    <div class="sub">Enter the admin (teacher) password</div>
+    <div class="sub">Enter your username and password</div>
+    <input id="a-user" type="text" class="t-input" placeholder="Username" autocomplete="off" autocapitalize="off" aria-label="Username">
     <input id="a-pass" type="password" class="t-input" placeholder="Password" autofocus aria-label="Admin password">
     <div id="a-err" class="t-err" role="alert"></div>
     <button class="btn b-blue" id="a-login-btn" style="width:100%">Enter</button>
@@ -98,6 +99,7 @@
 <script src="../assets/js/db/admin.js"></script>
 <script>
 // ── State ────────────────────────────────────────────────────────
+var ADMIN_USER = '';
 var ADMIN_PASS = '';
 var DATA = { students: [] };
 
@@ -113,10 +115,14 @@ var DATA = { students: [] };
     return;
   }
 
+  var userInput = document.getElementById('a-user');
   var passInput = document.getElementById('a-pass');
   var loginBtn  = document.getElementById('a-login-btn');
 
   loginBtn.onclick = doAdminLogin;
+  userInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doAdminLogin();
+  });
   passInput.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') doAdminLogin();
   });
@@ -124,24 +130,26 @@ var DATA = { students: [] };
 
 // ── Admin login ───────────────────────────────────────────────────
 async function doAdminLogin() {
+  var user   = document.getElementById('a-user').value;
   var pw     = document.getElementById('a-pass').value;
   var errDiv = document.getElementById('a-err');
   var btn    = document.getElementById('a-login-btn');
 
-  if (!pw) { errDiv.textContent = 'Please enter a password'; return; }
+  if (!user || !pw) { errDiv.textContent = 'Please enter username and password'; return; }
 
   btn.textContent = '...';
   btn.disabled    = true;
   errDiv.textContent = '';
 
-  var result = await teacherLogin(pw);
+  var result = await teacherLogin(user, pw);
   if (!result.ok) {
-    errDiv.textContent = result.error || 'Invalid password';
+    errDiv.textContent = result.error || 'Invalid credentials';
     btn.textContent    = 'Enter';
     btn.disabled       = false;
     return;
   }
 
+  ADMIN_USER = user;
   ADMIN_PASS = pw;
   document.getElementById('admin-login').style.display = 'none';
   document.getElementById('admin-dash').style.display  = 'block';
@@ -149,7 +157,7 @@ async function doAdminLogin() {
 }
 
 async function loadData() {
-  var result = await getTeacherData(ADMIN_PASS);
+  var result = await getTeacherData(ADMIN_USER, ADMIN_PASS);
   if (result.ok) {
     DATA = result.data;
     populateClassFilters();
@@ -238,7 +246,7 @@ async function addStudent() {
   var username = generateUsername();
   var pin      = generatePin();
 
-  var result = await createStudent(ADMIN_PASS, username, pin, name, classSet);
+  var result = await createStudent(ADMIN_USER, ADMIN_PASS, username, pin, name, classSet);
   if (!result.ok) { alert(result.error); return; }
 
   var resultDiv = document.getElementById('new-result');
@@ -256,7 +264,7 @@ async function addStudent() {
 
 async function doDeleteStudent(id, name) {
   if (!confirm('Remove ' + name + '? This will delete all their quiz attempts too.')) return;
-  var result = await deleteStudent(ADMIN_PASS, id);
+  var result = await deleteStudent(ADMIN_USER, ADMIN_PASS, id);
   if (!result.ok) { alert(result.error); return; }
   await loadData();
 }
@@ -264,7 +272,7 @@ async function doDeleteStudent(id, name) {
 async function doResetPin(id, name) {
   var newPin = generatePin();
   if (!confirm('Reset PIN for ' + name + '?\n\nNew PIN will be: ' + newPin)) return;
-  var result = await resetStudentPin(ADMIN_PASS, id, newPin);
+  var result = await resetStudentPin(ADMIN_USER, ADMIN_PASS, id, newPin);
   if (!result.ok) { alert(result.error); return; }
   alert('PIN for ' + name + ' reset to: ' + newPin);
 }
@@ -289,13 +297,13 @@ async function doChangePassword() {
     msg.className = 'pw-msg err'; msg.textContent = 'New password must be at least 8 characters'; return;
   }
 
-  var result = await changeTeacherPassword(oldPw, newPw);
+  var result = await changeTeacherPassword(ADMIN_USER, oldPw, newPw);
   if (!result.ok) {
     msg.className = 'pw-msg err'; msg.textContent = result.error || 'Failed to change password';
     return;
   }
 
-  // Update stored pass so admin can continue using the dashboard
+  // Update stored credential so admin can continue using the dashboard
   ADMIN_PASS = newPw;
   document.getElementById('pw-old').value = '';
   document.getElementById('pw-new').value = '';

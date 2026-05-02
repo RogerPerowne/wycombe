@@ -29,7 +29,8 @@
   <!-- Login form (shown initially) -->
   <div id="teacher-login" class="t-login">
     <h2>Teacher Access</h2>
-    <div class="sub">Enter your teaching password</div>
+    <div class="sub">Enter your username and password</div>
+    <input id="t-user" type="text" class="t-input" placeholder="Username" autocomplete="off" autocapitalize="off" aria-label="Username">
     <input id="t-pass" type="password" class="t-input" placeholder="Password" autofocus aria-label="Teacher password">
     <div id="t-err" class="t-err" role="alert"></div>
     <button class="btn b-blue" id="t-login-btn" style="width:100%">Enter</button>
@@ -91,6 +92,7 @@
 <script src="../assets/js/db/admin.js"></script>
 <script>
 // ── State ────────────────────────────────────────────────────────
+var TEACHER_USER = '';
 var TEACHER_PASS = '';
 var DATA = { students: [], attempts: [] };
 
@@ -106,10 +108,14 @@ var DATA = { students: [], attempts: [] };
     return;
   }
 
+  var userInput = document.getElementById('t-user');
   var passInput = document.getElementById('t-pass');
   var loginBtn  = document.getElementById('t-login-btn');
 
   loginBtn.onclick = doTeacherLogin;
+  userInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doTeacherLogin();
+  });
   passInput.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') doTeacherLogin();
   });
@@ -117,24 +123,26 @@ var DATA = { students: [], attempts: [] };
 
 // ── Teacher login ─────────────────────────────────────────────────
 async function doTeacherLogin() {
+  var user   = document.getElementById('t-user').value;
   var pw     = document.getElementById('t-pass').value;
   var errDiv = document.getElementById('t-err');
   var btn    = document.getElementById('t-login-btn');
 
-  if (!pw) { errDiv.textContent = 'Please enter a password'; return; }
+  if (!user || !pw) { errDiv.textContent = 'Please enter username and password'; return; }
 
   btn.textContent = '...';
   btn.disabled    = true;
   errDiv.textContent = '';
 
-  var result = await teacherLogin(pw);
+  var result = await teacherLogin(user, pw);
   if (!result.ok) {
-    errDiv.textContent = result.error || 'Invalid password';
+    errDiv.textContent = result.error || 'Invalid credentials';
     btn.textContent    = 'Enter';
     btn.disabled       = false;
     return;
   }
 
+  TEACHER_USER = user;
   TEACHER_PASS = pw;
   document.getElementById('teacher-login').style.display = 'none';
   document.getElementById('teacher-dash').style.display  = 'block';
@@ -142,7 +150,7 @@ async function doTeacherLogin() {
 }
 
 async function loadData() {
-  var result = await getTeacherData(TEACHER_PASS);
+  var result = await getTeacherData(TEACHER_USER, TEACHER_PASS);
   if (result.ok) {
     DATA = result.data;
     populateClassFilters();
@@ -293,7 +301,7 @@ async function addStudent() {
   var username = generateUsername();
   var pin      = generatePin();
 
-  var result = await createStudent(TEACHER_PASS, username, pin, name, classSet);
+  var result = await createStudent(TEACHER_USER, TEACHER_PASS, username, pin, name, classSet);
   if (!result.ok) { alert(result.error); return; }
 
   var resultDiv = document.getElementById('new-result');
@@ -311,7 +319,7 @@ async function addStudent() {
 
 async function doDeleteStudent(id, name) {
   if (!confirm('Remove ' + name + '? This will delete all their quiz attempts too.')) return;
-  var result = await deleteStudent(TEACHER_PASS, id);
+  var result = await deleteStudent(TEACHER_USER, TEACHER_PASS, id);
   if (!result.ok) { alert(result.error); return; }
   await loadData();
 }
@@ -319,7 +327,7 @@ async function doDeleteStudent(id, name) {
 async function doResetPin(id, name) {
   var newPin = generatePin();
   if (!confirm('Reset PIN for ' + name + '?\n\nNew PIN will be: ' + newPin)) return;
-  var result = await resetStudentPin(TEACHER_PASS, id, newPin);
+  var result = await resetStudentPin(TEACHER_USER, TEACHER_PASS, id, newPin);
   if (!result.ok) { alert(result.error); return; }
   alert('PIN for ' + name + ' reset to: ' + newPin);
 }
