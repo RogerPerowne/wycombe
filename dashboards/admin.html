@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Wycombe Abbey Economics</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+
+<header>
+  <div class="hl">
+    <img class="hlogo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display='none'">
+    <div>
+      <div class="htit">Admin</div>
+      <div class="hsub">Wycombe Abbey &middot; Economics Quiz</div>
+    </div>
+  </div>
+  <div class="hnav">
+    <a href="../micro-quiz.html" class="hbtn">Paper 1</a>
+    <a href="../macro-quiz.html" class="hbtn">Paper 2</a>
+    <span id="admin-user" style="font-family:'IBM Plex Mono',monospace;font-size:.55rem;color:var(--goldl);margin-left:.4rem"></span>
+    <button class="hbtn" id="logout-btn" style="display:none" onclick="adminLogout()">Log out</button>
+  </div>
+</header>
+
+<div class="app" id="root">
+  <!-- Login -->
+  <div id="admin-login" class="login-box">
+    <h2>Admin Access</h2>
+    <div class="sub">Username and password required</div>
+    <input id="a-user" type="text" class="form-input" placeholder="Username" autocomplete="off" autocapitalize="off">
+    <input id="a-pass" type="password" class="form-input" placeholder="Password">
+    <div id="a-err" class="form-err"></div>
+    <button class="btn b-blue" onclick="doAdminLogin()" style="width:100%">Enter</button>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="admin-dash" style="display:none">
+    <div class="tabs">
+      <div class="tab active" data-tab="students" onclick="switchTab('students')">Students</div>
+      <div class="tab" data-tab="teachers" onclick="switchTab('teachers')">Teachers</div>
+      <div class="tab" data-tab="scores" onclick="switchTab('scores')">Scores</div>
+    </div>
+
+    <!-- STUDENTS TAB -->
+    <div id="panel-students" class="panel active">
+      <div class="admin-section">
+        <h3>Add Student</h3>
+        <div class="add-form">
+          <div><label>First name</label><input id="s-fname" type="text" placeholder="Amelia"></div>
+          <div><label>Last name</label><input id="s-lname" type="text" placeholder="Clarke"></div>
+          <div><label>Class</label>
+            <select id="s-class">
+              <option value="U6-B">U6-B</option>
+              <option value="L6-B">L6-B</option>
+              <option value="__other">+ New class...</option>
+            </select>
+          </div>
+          <div><label>Email (optional)</label><input id="s-email" type="email" placeholder="a.clarke@school.ac.uk"></div>
+          <button class="btn b-blue" onclick="addStudent()" style="align-self:flex-end">Add &amp; Generate</button>
+        </div>
+        <div id="s-result" class="result-notice"></div>
+      </div>
+      <div class="admin-section">
+        <div class="scores-controls">
+          <select id="s-class-filter" onchange="renderStudents()">
+            <option value="all">All classes</option>
+          </select>
+          <input id="s-search" type="text" placeholder="Search name..." oninput="renderStudents()" style="min-width:160px">
+        </div>
+        <div id="student-list" class="student-list"></div>
+      </div>
+    </div>
+
+    <!-- TEACHERS TAB -->
+    <div id="panel-teachers" class="panel">
+      <div class="admin-section">
+        <h3>Add Teacher</h3>
+        <div class="add-form">
+          <div><label>First name</label><input id="t-fname" type="text" placeholder="Jane"></div>
+          <div><label>Last name</label><input id="t-lname" type="text" placeholder="Smith"></div>
+          <div><label>Username</label><input id="t-uname" type="text" placeholder="jsmith"></div>
+          <div><label>Password</label><input id="t-pass" type="text" placeholder="Choose a password"></div>
+          <div><label>Classes (comma-separated)</label><input id="t-classes" type="text" placeholder="U6-B,L6-B or blank for all"></div>
+          <button class="btn b-blue" onclick="addTeacher()" style="align-self:flex-end">Add Teacher</button>
+        </div>
+        <div id="t-result" class="result-notice"></div>
+      </div>
+      <div id="teacher-list" class="student-list"></div>
+    </div>
+
+    <!-- SCORES TAB -->
+    <div id="panel-scores" class="panel">
+      <div class="scores-controls">
+        <select id="sc-class" onchange="renderScores()">
+          <option value="all">All classes</option>
+        </select>
+        <select id="sc-paper" onchange="renderScores()">
+          <option value="all">All papers</option>
+          <option value="micro">Paper 1 (Micro)</option>
+          <option value="macro">Paper 2 (Macro)</option>
+        </select>
+      </div>
+      <div id="scores-table" class="scores-wrap"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../assets/data/quiz-data.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/db/client.js"></script>
+<script src="../assets/js/db/admin.js"></script>
+<script>
+
+var ADMIN_USER = '', ADMIN_PASS = '';
+var DATA = { students: [], teachers: [], attempts: [] };
+
+// ── LOGIN ───────────────────────────────────────────────────
+['a-user','a-pass'].forEach(function(id){
+  document.getElementById(id).addEventListener('keydown', function(e){ if (e.key === 'Enter') doAdminLogin(); });
+});
+
+async function doAdminLogin() {
+  var user = document.getElementById('a-user').value;
+  var pass = document.getElementById('a-pass').value;
+  var err  = document.getElementById('a-err');
+  if (!user || !pass) { err.textContent = 'Enter username and password'; return; }
+
+  var result = await adminLogin(user, pass);
+  if (result.error) { err.textContent = result.error; return; }
+
+  ADMIN_USER = user; ADMIN_PASS = pass;
+  document.getElementById('admin-login').style.display = 'none';
+  document.getElementById('admin-dash').style.display  = 'block';
+  document.getElementById('admin-user').textContent    = user;
+  document.getElementById('logout-btn').style.display  = 'inline-block';
+  await loadData();
+}
+
+function adminLogout() {
+  ADMIN_USER = ''; ADMIN_PASS = '';
+  location.reload();
+}
+
+// ── TABS ─────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.tab === name); });
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id === 'panel-' + name); });
+}
+
+// ── DATA ─────────────────────────────────────────────────────
+async function loadData() {
+  var d = await getAdminData(ADMIN_USER, ADMIN_PASS);
+  if (!d) return;
+  DATA = d;
+  populateFilters();
+  renderStudents();
+  renderTeachers();
+  renderScores();
+}
+
+function populateFilters() {
+  var classes = [];
+  DATA.students.forEach(function(s){ if (classes.indexOf(s.class_set) === -1) classes.push(s.class_set); });
+  classes.sort();
+
+  ['s-class-filter','sc-class'].forEach(function(id){
+    var sel = document.getElementById(id);
+    while (sel.options.length > 1) sel.remove(1);
+    classes.forEach(function(c){ var o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
+  });
+
+  // Also update add dropdowns
+  var sCls = document.getElementById('s-class');
+  sCls.innerHTML = '';
+  classes.forEach(function(c){ var o = document.createElement('option'); o.value = c; o.textContent = c; sCls.appendChild(o); });
+  var other = document.createElement('option'); other.value = '__other'; other.textContent = '+ New class...'; sCls.appendChild(other);
+}
+
+// ── STUDENTS ─────────────────────────────────────────────────
+function renderStudents() {
+  var cls = document.getElementById('s-class-filter').value;
+  var q   = (document.getElementById('s-search').value || '').toLowerCase();
+  var list = DATA.students.filter(function(s){
+    return (cls === 'all' || s.class_set === cls)
+      && (!q || (s.first_name + ' ' + s.last_name).toLowerCase().indexOf(q) !== -1);
+  });
+
+  if (!list.length) { document.getElementById('student-list').innerHTML = '<div style="color:var(--mut);opacity:.5;padding:1rem">No students found.</div>'; return; }
+
+  document.getElementById('student-list').innerHTML = list.map(function(s){
+    return '<div class="scard">'
+      + '<div class="scard-info">'
+      + '<div class="scard-name">' + s.first_name + ' ' + s.last_name + '</div>'
+      + '<div class="scard-user">' + s.username + '</div>'
+      + '<div class="scard-class">' + s.class_set + (s.email ? ' &middot; ' + s.email : '') + '</div>'
+      + '</div>'
+      + '<div class="scard-actions">'
+      + '<button class="scard-btn" onclick="resetPin(' + s.id + ',\'' + s.first_name + '\')">Reset PIN</button>'
+      + '<button class="scard-btn del" onclick="removeStudent(' + s.id + ',\'' + s.first_name + '\')">Remove</button>'
+      + '</div></div>';
+  }).join('');
+}
+
+async function addStudent() {
+  var fname = document.getElementById('s-fname').value.trim();
+  var lname = document.getElementById('s-lname').value.trim();
+  var cls   = document.getElementById('s-class').value;
+  var email = document.getElementById('s-email').value.trim();
+
+  if (cls === '__other') { cls = prompt('Enter new class name (e.g. U6-A):'); if (!cls) return; }
+  if (!fname || !lname) { alert('First and last name required'); return; }
+
+  var r = await createStudent(ADMIN_USER, ADMIN_PASS, fname, lname, cls, email || null);
+  var div = document.getElementById('s-result');
+  div.style.display = 'block';
+
+  if (r.error) {
+    div.className = 'result-notice err';
+    div.textContent = r.error;
+  } else {
+    div.className = 'result-notice ok';
+    div.innerHTML = '<strong>' + fname + ' ' + lname + '</strong> added &middot; '
+      + 'Username: <code>' + r.username + '</code> &middot; PIN: <code>' + r.pin + '</code>'
+      + '<br><small style="opacity:.55">Note this PIN - it cannot be viewed again.</small>';
+    document.getElementById('s-fname').value = '';
+    document.getElementById('s-lname').value = '';
+    document.getElementById('s-email').value = '';
+    await loadData();
+  }
+}
+
+async function resetPin(id, name) {
+  var r = await resetStudentPin(ADMIN_USER, ADMIN_PASS, id);
+  if (r.pin) alert('New PIN for ' + name + ': ' + r.pin);
+  else alert('Failed to reset PIN');
+}
+
+async function removeStudent(id, name) {
+  if (!confirm('Remove ' + name + '? All their quiz attempts will also be deleted.')) return;
+  await deleteStudent(ADMIN_USER, ADMIN_PASS, id);
+  await loadData();
+}
+
+// ── TEACHERS ─────────────────────────────────────────────────
+function renderTeachers() {
+  if (!DATA.teachers || !DATA.teachers.length) {
+    document.getElementById('teacher-list').innerHTML = '<div style="color:var(--mut);opacity:.5;padding:1rem">No teachers yet.</div>';
+    return;
+  }
+  document.getElementById('teacher-list').innerHTML = DATA.teachers.map(function(t){
+    return '<div class="scard">'
+      + '<div class="scard-info">'
+      + '<div class="scard-name">' + t.first_name + ' ' + t.last_name + '</div>'
+      + '<div class="scard-user">' + t.username + '</div>'
+      + '<div class="scard-class">' + (t.class_sets && t.class_sets.length ? t.class_sets.join(', ') : 'All classes') + '</div>'
+      + '</div></div>';
+  }).join('');
+}
+
+async function addTeacher() {
+  var fname   = document.getElementById('t-fname').value.trim();
+  var lname   = document.getElementById('t-lname').value.trim();
+  var uname   = document.getElementById('t-uname').value.trim();
+  var pass    = document.getElementById('t-pass').value.trim();
+  var classes = document.getElementById('t-classes').value.trim();
+
+  if (!fname || !lname || !uname || !pass) { alert('All fields except classes are required'); return; }
+
+  var classSets = classes ? classes.split(',').map(function(c){ return c.trim(); }).filter(Boolean) : [];
+  var r = await createTeacher(ADMIN_USER, ADMIN_PASS, fname, lname, classSets, uname, pass);
+  var div = document.getElementById('t-result');
+  div.style.display = 'block';
+
+  if (r.error) {
+    div.className = 'result-notice err';
+    div.textContent = r.error;
+  } else {
+    div.className = 'result-notice ok';
+    div.innerHTML = '<strong>' + fname + ' ' + lname + '</strong> added as teacher.';
+    ['t-fname','t-lname','t-uname','t-pass','t-classes'].forEach(function(id){ document.getElementById(id).value = ''; });
+    await loadData();
+  }
+}
+
+// ── SCORES ────────────────────────────────────────────────────
+function renderScores() {
+  var cls   = document.getElementById('sc-class').value;
+  var paper = document.getElementById('sc-paper').value;
+
+  var students = DATA.students.filter(function(s){ return cls === 'all' || s.class_set === cls; });
+  var quizIds  = Object.keys(QUIZZES).filter(function(qid){ return paper === 'all' || QUIZZES[qid].paper === paper; });
+
+  var bestMap = {};
+  (DATA.attempts || []).forEach(function(a){
+    if (!bestMap[a.profile_id]) bestMap[a.profile_id] = {};
+    var pct = Math.round(a.score / a.max_score * 100);
+    if (!bestMap[a.profile_id][a.quiz_id] || pct > bestMap[a.profile_id][a.quiz_id]) bestMap[a.profile_id][a.quiz_id] = pct;
+  });
+
+  var html = '<table class="scores"><thead><tr><th>Student</th>';
+  quizIds.forEach(function(qid){
+    var title = QUIZZES[qid].title; if (title.length > 16) title = title.substring(0,14) + '...';
+    html += '<th title="' + QUIZZES[qid].title + '">' + title + '</th>';
+  });
+  html += '<th>Avg</th></tr></thead><tbody>';
+
+  students.forEach(function(s){
+    html += '<tr><td>' + s.first_name + ' ' + s.last_name + '<span class="student-class">' + s.class_set + '</span></td>';
+    var sum = 0, cnt = 0;
+    quizIds.forEach(function(qid){
+      var b = bestMap[s.id] && bestMap[s.id][qid];
+      if (typeof b === 'number') {
+        html += '<td class="' + (b >= 70 ? 'cell-g' : b >= 40 ? 'cell-a' : 'cell-r') + '">' + b + '</td>';
+        sum += b; cnt++;
+      } else { html += '<td class="cell-e">&middot;</td>'; }
+    });
+    var avg = cnt > 0 ? Math.round(sum/cnt) : '';
+    html += '<td class="' + (avg >= 70 ? 'cell-g' : avg >= 40 ? 'cell-a' : avg ? 'cell-r' : 'cell-e') + '" style="border-left:1px solid var(--bdr);font-weight:700">' + (avg || '&middot;') + '</td></tr>';
+  });
+
+  if (!students.length) html += '<tr><td colspan="' + (quizIds.length + 2) + '" style="text-align:center;padding:2rem;opacity:.4">No students found.</td></tr>';
+  html += '</tbody></table>';
+  document.getElementById('scores-table').innerHTML = html;
+}
+</script>
+</body>
+</html>

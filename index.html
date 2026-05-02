@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wycombe Abbey — Economics Interactive</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@300;400;500&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #0f1729;
+  --navy2:  #1a2744;
+  --navy3:  #0c1220;
+  --gold:   #c9a84c;
+  --goldl:  #e2c47a;
+  --goldd:  #a07830;
+  --txt:    #ffffff;
+  --mut:    #c8d4ee;
+  --bdr:    #2e3f60;
+  --green:  #4caf80;
+  --red:    #e05060;
+  --p1:     #9775b5;
+  --p1l:    #b89fd4;
+  --p1d:    #6a4f8a;
+  --p2:     #2a9d8f;
+  --p2l:    #52c9bc;
+  --p2d:    #1a7060;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  background: var(--navy3);
+  color: var(--txt);
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  font-size: 16px;
+}
+
+/* ── LOGIN ── */
+#loginScreen {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200; padding: 1.5rem;
+  background: radial-gradient(ellipse at 50% 40%, #1a2744 0%, #0c1220 70%);
+}
+.login-box {
+  background: rgba(20,32,58,0.95);
+  border: 1px solid var(--bdr);
+  border-radius: 16px;
+  padding: 3rem 2.6rem 2.6rem;
+  width: 100%; max-width: 420px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.08);
+  animation: fadeUp 0.5s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.login-logo {
+  width: 64px; height: 64px; object-fit: contain;
+  display: block; margin: 0 auto 1.3rem;
+  filter: drop-shadow(0 4px 16px rgba(201,168,76,0.25));
+}
+.login-school {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold); text-align: center; margin-bottom: 0.4rem; opacity: 0.9;
+}
+.login-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem; font-weight: 700; text-align: center;
+  line-height: 1.15; margin-bottom: 0.2rem; color: var(--txt);
+}
+.login-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; font-style: italic; text-align: center;
+  color: var(--goldl); margin-bottom: 2.2rem; opacity: 0.75;
+}
+.field { margin-bottom: 1.1rem; }
+.field label {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.11em;
+  color: var(--mut); margin-bottom: 0.45rem; opacity: 0.7;
+}
+.field input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--bdr); border-radius: 8px;
+  color: var(--txt);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.95rem; padding: 0.75rem 1rem;
+  outline: none; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.field input:focus {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.05);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+}
+.field input.err { border-color: var(--red); animation: shake 0.35s ease; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.login-btn {
+  width: 100%; margin-top: 0.6rem;
+  padding: 0.9rem 1rem;
+  background: linear-gradient(135deg, var(--goldd), var(--gold));
+  border: none; border-radius: 8px;
+  color: var(--navy);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+}
+.login-btn:hover {
+  background: linear-gradient(135deg, var(--gold), var(--goldl));
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(201,168,76,0.4);
+}
+.login-err { font-size: 0.76rem; color: var(--red); text-align: center; margin-top: 0.8rem; display: none; }
+.login-err.show { display: block; }
+.login-divider { height: 1px; background: var(--bdr); margin: 1.8rem 0 1.2rem; opacity: 0.5; }
+.login-note { font-size: 0.69rem; color: var(--mut); text-align: center; opacity: 0.4; line-height: 1.65; }
+
+/* ── APP ── */
+#app { display: none; min-height: 100vh; }
+
+/* ── HEADER ── */
+header {
+  background: linear-gradient(135deg, var(--navy3) 0%, var(--navy2) 60%, #1e3060 100%);
+  border-bottom: 1px solid rgba(201,168,76,0.3);
+  padding: 0 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px; position: sticky; top: 0; z-index: 50;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+.hdr-left { display: flex; align-items: center; gap: 1rem; }
+.hdr-logo { height: 46px; width: 46px; object-fit: contain; border-radius: 4px; }
+.hdr-school { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; font-weight: 600; color: var(--goldl); line-height: 1.2; }
+.hdr-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 700; color: var(--txt); }
+.hdr-sub { font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.13em; text-transform: uppercase; color: var(--mut); opacity: 0.5; }
+.hdr-right { display: flex; align-items: center; gap: 0.9rem; }
+.hdr-user { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; color: var(--mut); opacity: 0.5; }
+.logout-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.56rem; letter-spacing: 0.08em; text-transform: uppercase;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--bdr);
+  color: var(--mut); padding: 0.28rem 0.72rem; border-radius: 4px;
+  cursor: pointer; transition: all 0.2s;
+}
+.logout-btn:hover { background: rgba(255,255,255,0.1); color: var(--txt); }
+
+/* ── HERO ── */
+.hero-wrap {
+  background: linear-gradient(160deg, var(--navy3) 0%, #111f3a 55%, #0d1c35 100%);
+  border-bottom: 1px solid var(--bdr);
+  padding: 5rem 2.5rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hero-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+}
+.hero-wrap::after {
+  content: '';
+  position: absolute;
+  width: 700px; height: 500px;
+  top: -150px; right: -120px;
+  background: radial-gradient(ellipse, rgba(201,168,76,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 1080px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1.1rem; opacity: 0.85;
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block; width: 30px; height: 1px;
+  background: var(--gold); opacity: 0.55; flex-shrink: 0;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem; font-weight: 300; line-height: 1.05;
+  margin-bottom: 1.4rem; color: var(--txt);
+  letter-spacing: -0.01em;
+}
+.hero-title strong {
+  font-weight: 700; color: var(--goldl);
+  font-style: italic; display: block;
+}
+.hero-desc {
+  font-size: 1rem; color: var(--mut); line-height: 1.9;
+  max-width: 580px; margin-bottom: 2.6rem; opacity: 0.78;
+}
+.hero-pills { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.hpill {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.56rem; letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 0.38rem 0.95rem; border-radius: 20px;
+  border: 1px solid; display: flex; align-items: center; gap: 0.45rem;
+}
+.hpill-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: 0.7; flex-shrink: 0; }
+.hpill-gold { color: var(--goldl); border-color: rgba(226,196,122,0.28); background: rgba(226,196,122,0.06); }
+.hpill-p1   { color: var(--p1l);  border-color: rgba(151,117,181,0.3);  background: rgba(151,117,181,0.07); }
+.hpill-p2   { color: var(--p2l);  border-color: rgba(42,157,143,0.3);   background: rgba(42,157,143,0.07); }
+
+/* ── STATS ── */
+.stats-strip {
+  max-width: 1080px; margin: 0 auto;
+  padding: 2.2rem 2.5rem;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+}
+.stat-box {
+  background: rgba(26,39,68,0.4);
+  border: 1px solid var(--bdr);
+  border-radius: 10px; padding: 1.25rem 1.4rem;
+  text-align: center; position: relative; overflow: hidden;
+}
+.stat-box::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px; background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+  opacity: 0.35;
+}
+.stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem; font-weight: 700; color: var(--goldl);
+  line-height: 1; margin-bottom: 0.22rem;
+}
+.stat-lbl {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.52rem; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--mut); opacity: 0.5;
+}
+
+/* ── SECTION LAYOUT ── */
+.grid-section { max-width: 1080px; margin: 0 auto; padding: 0 2.5rem 4rem; }
+
+.sec-head {
+  display: flex; align-items: flex-start; gap: 1.3rem;
+  margin-bottom: 1.8rem; padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--bdr);
+  position: relative;
+}
+.sec-head::after {
+  content: ''; position: absolute;
+  bottom: -1px; left: 0; width: 88px; height: 2px;
+}
+.sec-head.p1::after { background: var(--p1); }
+.sec-head.p2::after { background: var(--p2); }
+
+.sec-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.57rem; letter-spacing: 0.14em; text-transform: uppercase;
+  font-weight: 700; padding: 0.38rem 0.88rem; border-radius: 5px;
+  flex-shrink: 0; margin-top: 0.5rem; white-space: nowrap;
+}
+.sec-badge.p1 { background: rgba(151,117,181,0.15); border: 1px solid rgba(151,117,181,0.4); color: var(--p1l); }
+.sec-badge.p2 { background: rgba(42,157,143,0.12);  border: 1px solid rgba(42,157,143,0.38); color: var(--p2l); }
+
+.sec-info { flex: 1; }
+.sec-type {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.54rem; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--mut); opacity: 0.42; margin-bottom: 0.32rem;
+}
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.9rem; font-weight: 700; color: var(--txt);
+  line-height: 1.1; margin-bottom: 0.38rem;
+}
+.sec-sub {
+  font-size: 0.84rem; color: var(--mut); opacity: 0.6;
+  font-style: italic; line-height: 1.6; max-width: 640px;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.1rem;
+}
+
+/* ── CARDS ── */
+.game-card {
+  background: rgba(22,35,62,0.8);
+  border: 1px solid var(--bdr);
+  border-radius: 12px; overflow: hidden;
+  position: relative; cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  text-decoration: none; color: var(--txt);
+  display: flex; flex-direction: column;
+}
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+  border-color: rgba(201,168,76,0.28);
+}
+.game-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+.card-top-bar { height: 3px; width: 100%; flex-shrink: 0; }
+.card-header {
+  padding: 1.35rem 1.3rem 0.8rem;
+  display: flex; align-items: flex-start; gap: 0.9rem;
+}
+.card-icon {
+  width: 48px; height: 48px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; flex-shrink: 0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.card-meta { flex: 1; min-width: 0; }
+.card-paper {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.78; margin-bottom: 0.3rem;
+}
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; font-weight: 700; line-height: 1.25; color: var(--txt);
+}
+.card-arrow {
+  font-size: 1rem; color: var(--goldl);
+  opacity: 0; transform: translateX(-5px);
+  transition: all 0.2s; align-self: center; flex-shrink: 0;
+}
+.card-desc {
+  padding: 0 1.3rem 1.1rem; font-size: 0.82rem; line-height: 1.74;
+  color: var(--mut); opacity: 0.7; flex: 1;
+}
+.card-footer {
+  padding: 0.8rem 1.3rem;
+  border-top: 1px solid rgba(46,63,96,0.6);
+  display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+}
+.card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.ctag {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.49rem; letter-spacing: 0.04em;
+  background: rgba(74,127,181,0.08); border: 1px solid rgba(74,127,181,0.22);
+  color: #7aafdc; padding: 0.1rem 0.38rem; border-radius: 3px;
+}
+.card-status {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.52rem;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.16rem 0.55rem; border-radius: 3px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.status-live { background: rgba(76,175,128,0.12); border: 1px solid rgba(76,175,128,0.32); color: #4caf80; }
+.status-soon { background: rgba(46,63,96,0.4); border: 1px solid var(--bdr); color: var(--mut); opacity: 0.35; }
+.game-card.soon { opacity: 0.45; cursor: default; pointer-events: none; }
+
+/* ── DIVIDERS ── */
+.paper-divider {
+  max-width: 1080px; margin: 0 auto 3.5rem;
+  padding: 0 2.5rem;
+}
+.paper-divider-inner {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--bdr) 25%, var(--bdr) 75%, transparent);
+  position: relative;
+}
+.paper-divider-label {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: var(--navy3);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.49rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--mut); opacity: 0.28; padding: 0 1.1rem;
+  white-space: nowrap;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--bdr);
+  padding: 1.5rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 1080px; margin: 0 auto; opacity: 0.3;
+}
+.footer-txt { font-family: 'IBM Plex Mono', monospace; font-size: 0.54rem; letter-spacing: 0.07em; color: var(--mut); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  .hero-wrap { padding: 3rem 1.3rem 2.5rem; }
+  .hero-title { font-size: 2.6rem; }
+  .grid-section, .stats-strip, .paper-divider { padding-left: 1.3rem; padding-right: 1.3rem; }
+  .stats-strip { grid-template-columns: 1fr 1fr; }
+  .sec-title { font-size: 1.55rem; }
+  .sec-head { gap: 0.9rem; }
+  header { padding: 0 1.2rem; height: 64px; }
+  .hdr-user { display: none; }
+  footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <img class="login-logo"
+         src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg"
+         alt="Wycombe Abbey" onerror="this.style.display='none'">
+    <div class="login-school">Wycombe Abbey &middot; Economics</div>
+    <div class="login-title">Interactive Learning</div>
+    <div class="login-subtitle">A-Level Edexcel &mdash; Papers 1 &amp; 2</div>
+    <div class="field">
+      <label for="uname">Username</label>
+      <input type="text" id="uname" placeholder="Enter username"
+             autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="field">
+      <label for="pwd">Password</label>
+      <input type="password" id="pwd" placeholder="Enter password"
+             autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Enter &rarr;</button>
+    <div class="login-err" id="loginErr"></div>
+    <div class="login-divider"></div>
+    <div class="login-note">Access restricted to Wycombe Abbey students and staff.<br>Contact your Economics teacher for credentials.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <header>
+    <div class="hdr-left">
+      <img class="hdr-logo"
+           src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg"
+           alt="WA" onerror="this.style.display='none'">
+      <div>
+        <div class="hdr-school">Wycombe Abbey</div>
+        <div class="hdr-title">Economics Interactive</div>
+        <div class="hdr-sub">A-Level &middot; Edexcel &middot; Papers 1 &amp; 2</div>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <span class="hdr-user" id="hdrUser"></span>
+      <button class="logout-btn" onclick="doLogout()">Sign Out</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero-wrap">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">A-Level Economics &mdash; Interactive Resources</div>
+      <h1 class="hero-title">
+        Economics is not
+        <strong>a spectator sport.</strong>
+      </h1>
+      <p class="hero-desc">Step into the role of a central banker, a trade negotiator, a cartel member, a market regulator. Then sharpen your exam technique with targeted quizzes and high-intensity skill drills — all built around the Edexcel specification.</p>
+      <div class="hero-pills">
+        <span class="hpill hpill-gold"><span class="hpill-dot"></span>11 tools &amp; resources</span>
+        <span class="hpill hpill-p1"><span class="hpill-dot"></span>Paper 1 &middot; Microeconomics</span>
+        <span class="hpill hpill-p2"><span class="hpill-dot"></span>Paper 2 &middot; Macroeconomics</span>
+        <span class="hpill hpill-gold"><span class="hpill-dot"></span>Personalised feedback on every tool</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-box">
+      <div class="stat-num">7</div>
+      <div class="stat-lbl">Simulations</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">4</div>
+      <div class="stat-lbl">Quiz &amp; Skill Tools</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">1&thinsp;&amp;&thinsp;2</div>
+      <div class="stat-lbl">Edexcel Papers</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">&infin;</div>
+      <div class="stat-lbl">Question Variations</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAPER 1 — SIMULATIONS
+  ══════════════════════════════════════════ -->
+  <div class="grid-section">
+    <div class="sec-head p1">
+      <span class="sec-badge p1">Paper 1</span>
+      <div class="sec-info">
+        <div class="sec-type">Simulations &mdash; Microeconomics &middot; Themes 1 &amp; 3</div>
+        <div class="sec-title">Step into the market.</div>
+        <div class="sec-sub">You are the decision-maker. Run a firm, rig the market, enforce the law — then explain what happened in the language of economics.</div>
+      </div>
+    </div>
+    <div class="games-grid">
+
+      <a class="game-card" href="marcos-pizzeria.html">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #c0392b, #e05060)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#127829;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 1 &middot; Costs, Revenue &amp; Profit</div>
+            <div class="card-title">Marco's Pizzeria</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">You inherit a struggling pizzeria. Set prices, hire staff, choose your market position — and watch your cost and revenue curves respond in real time. Master the relationship between output, costs and profit before the bank calls in the loan.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">Costs &amp; Revenue</span>
+            <span class="ctag">Profit Max</span>
+            <span class="ctag">Market Structure</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+      <a class="game-card" href="cartel-room.html">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #7a5fa0, #9775b5)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#129309;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 1 &middot; Oligopoly &amp; Game Theory</div>
+            <div class="card-title">The Cartel Room</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">Behind closed doors, the world's largest oil producers are setting output. You hold a seat at the table. Cooperate and share the monopoly profit — or defect and undercut the cartel. Experience the prisoner's dilemma from the inside.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">Oligopoly</span>
+            <span class="ctag">Game Theory</span>
+            <span class="ctag">Nash Equilibrium</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+      <a class="game-card" href="cma-casefile.html">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #2d6a8f, #4a9fc0)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#9878;&#65039;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 1 &middot; Competition Policy</div>
+            <div class="card-title">CMA Case File</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">You are a lead investigator at the Competition and Markets Authority. A major merger has landed on your desk. Analyse market concentration, weigh consumer welfare against efficiency gains, and deliver a ruling that stands up to scrutiny.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">CMA</span>
+            <span class="ctag">Mergers</span>
+            <span class="ctag">Regulation</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAPER 2 — SIMULATIONS
+  ══════════════════════════════════════════ -->
+  <div class="paper-divider">
+    <div class="paper-divider-inner">
+      <span class="paper-divider-label">Paper 2 &mdash; Macroeconomics &amp; Global Economy</span>
+    </div>
+  </div>
+
+  <div class="grid-section">
+    <div class="sec-head p2">
+      <span class="sec-badge p2">Paper 2</span>
+      <div class="sec-info">
+        <div class="sec-type">Simulations &mdash; Macroeconomics &amp; Global Economy &middot; Themes 2 &amp; 4</div>
+        <div class="sec-title">Run the economy.</div>
+        <div class="sec-sub">Set interest rates, govern a developing nation, negotiate trade agreements. See macroeconomic theory play out in the decisions that shape it.</div>
+      </div>
+    </div>
+    <div class="games-grid">
+
+      <a class="game-card" href="monetary-policy-simulator.html">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #4a7fb5, #6fa8d8)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#127981;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 2 &middot; Monetary Policy</div>
+            <div class="card-title">Monetary Policy Simulator</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">You are a member of the Bank of England's Monetary Policy Committee. Set the Bank Rate across six real UK scenarios from 2003 to 2023 — the financial crisis, Brexit, the pandemic, post-COVID inflation, and more.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">Monetary Policy</span>
+            <span class="ctag">Bank Rate</span>
+            <span class="ctag">Inflation</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+      <a class="game-card" href="savana-development-simulator.html">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #2e7d52, #4caf80)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#127757;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 2 &middot; Development Economics</div>
+            <div class="card-title">Savana Development Simulator</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">You are the newly elected president of Savana, a landlocked sub-Saharan nation. Govern across ten years — allocate budgets, respond to crises, negotiate with the IMF, and track your HDI, GDP and debt-to-GDP ratio.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">Development</span>
+            <span class="ctag">Harrod-Domar</span>
+            <span class="ctag">HDI</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+      <a class="game-card" href="trade-room-wycombe.html">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #c9a84c, #e2c47a)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#9992;&#65039;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 2 &middot; International Trade</div>
+            <div class="card-title">The Trade Room</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">You are a UN trade negotiator working through comparative advantage from first principles. Calculate opportunity costs, analyse PPF diagrams, navigate trading blocs — then argue both sides in the Limitations Courtroom.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">Comp. Advantage</span>
+            <span class="ctag">Trade Policy</span>
+            <span class="ctag">Ricardo</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+      <a class="game-card" href="fx-trading-floor.html">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #c8553a, #e08050)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#128177;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 2 &middot; Exchange Rates</div>
+            <div class="card-title">The FX Trading Floor</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">You are chief economic adviser at the Bank of Albion. A sequence of shocks hits the pound — a Fed rate hike, an oil shock, a speculative attack. Master hot money flows, the Marshall-Lerner condition and the J-curve as you steer through the crisis. Ends with a 25-mark essay planner.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">Exchange Rates</span>
+            <span class="ctag">Marshall-Lerner</span>
+            <span class="ctag">J-Curve</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAPER 1 — REVISION
+  ══════════════════════════════════════════ -->
+  <div class="paper-divider">
+    <div class="paper-divider-inner">
+      <span class="paper-divider-label">Revision Tools &mdash; Paper 1 &middot; Microeconomics</span>
+    </div>
+  </div>
+
+  <div class="grid-section">
+    <div class="sec-head p1">
+      <span class="sec-badge p1">Paper 1</span>
+      <div class="sec-info">
+        <div class="sec-type">Revision &mdash; Microeconomics &middot; Themes 1 &amp; 3</div>
+        <div class="sec-title">Test it. Drill it. Own it.</div>
+        <div class="sec-sub">Questions that change every attempt, plus three targeted skill machines — analytical chains, timed diagram practice, and evaluation training — that directly address what Paper 1 rewards.</div>
+      </div>
+    </div>
+    <div class="games-grid">
+
+      <a class="game-card" href="micro-quiz.html">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #6a4f8a, #9775b5)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#128221;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 1 &middot; Themes 1 &amp; 3 &middot; All Topics</div>
+            <div class="card-title">Micro Quiz Bank</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">Pick any topic — ten questions appear, different every time. Covers all Paper 1 content from PPF and elasticities to oligopoly and labour markets. Immediate answer feedback, then a personalised debrief and exam technique tip.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">Theme 1</span>
+            <span class="ctag">Theme 3</span>
+            <span class="ctag">20+ Topics</span>
+            <span class="ctag">Personalised Debrief</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+      <a class="game-card" href="economics-gym.html#chain">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #a07830, #c9a84c)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#128279;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 1 &middot; Exam Skills &middot; Analysis</div>
+            <div class="card-title">Micro Chain Builder</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">A micro trigger appears alongside a shuffled set of steps — including two imposters that don't belong. Order the correct causal chain to build watertight analytical linkage.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">15 Chains</span>
+            <span class="ctag">No Timer</span>
+            <span class="ctag">~8 min</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+      <a class="game-card" href="economics-gym.html#diagram">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #4caf80, #52c9a0)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#127919;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 1 &middot; Exam Skills &middot; Precision</div>
+            <div class="card-title">Micro Diagram Sprint</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">A diagram prompt appears — ninety seconds to sketch and label on paper. Then reveal the model answer with full labels, explanation and an exam technique tip.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">10 Diagrams</span>
+            <span class="ctag">90s Each</span>
+            <span class="ctag">~10 min</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+      <a class="game-card" href="economics-gym.html#wbc">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #6a4f8a, #9775b5)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#9878;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 1 &middot; Exam Skills &middot; Evaluation</div>
+            <div class="card-title">Micro: Wrong but Convincing</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">Three answers to a micro question — one genuinely strong, two plausible but flawed. Identify the strongest and learn to name the flaw type that trips most students up.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">15 Questions</span>
+            <span class="ctag">Flaw Types</span>
+            <span class="ctag">~6 min</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAPER 2 — REVISION
+  ══════════════════════════════════════════ -->
+  <div class="paper-divider">
+    <div class="paper-divider-inner">
+      <span class="paper-divider-label">Revision Tools &mdash; Paper 2 &middot; Macroeconomics</span>
+    </div>
+  </div>
+
+  <div class="grid-section">
+    <div class="sec-head p2">
+      <span class="sec-badge p2">Paper 2</span>
+      <div class="sec-info">
+        <div class="sec-type">Revision &mdash; Macroeconomics &amp; Global Economy &middot; Themes 2 &amp; 4</div>
+        <div class="sec-title">Test it. Drill it. Own it.</div>
+        <div class="sec-sub">Questions across all macro topics that change every attempt, plus three targeted skill machines — transmission chains, timed diagram practice, and evaluation training — that directly address what Paper 2 rewards.</div>
+      </div>
+    </div>
+    <div class="games-grid">
+
+      <a class="game-card" href="macro-quiz.html">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #1a7060, #2a9d8f)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#128203;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 2 &middot; Themes 2 &amp; 4 &middot; All Topics</div>
+            <div class="card-title">Macro Quiz Bank</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">Pick any topic — ten questions appear, different every time. Covers everything from the multiplier and Phillips curve to development economics, exchange rates and income inequality. Ends with a personalised debrief and exam tip.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">Theme 2</span>
+            <span class="ctag">Theme 4</span>
+            <span class="ctag">22+ Topics</span>
+            <span class="ctag">Personalised Debrief</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+      <a class="game-card" href="macro-gym.html#chain">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #1a7060, #2a9d8f)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#128279;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 2 &middot; Exam Skills &middot; Analysis</div>
+            <div class="card-title">Macro Chain Builder</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">A macro trigger appears alongside a shuffled set of steps — including two imposters that don't belong. Order the correct transmission chain to master the linkage Paper 2 examiners demand.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">15 Chains</span>
+            <span class="ctag">No Timer</span>
+            <span class="ctag">~8 min</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+      <a class="game-card" href="macro-gym.html#diagram">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #2a9d8f, #52c9bc)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#127919;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 2 &middot; Exam Skills &middot; Precision</div>
+            <div class="card-title">Macro Diagram Sprint</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">A macro diagram prompt appears — ninety seconds to sketch AD/AS, Phillips Curve or similar on paper. Then reveal model answer labels, full explanation and a targeted exam tip.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">20 Diagrams</span>
+            <span class="ctag">90s Each</span>
+            <span class="ctag">~10 min</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+      <a class="game-card" href="macro-gym.html#wbc">
+        <div class="card-top-bar" style="background: linear-gradient(90deg, #2a9d8f, #52c9bc)"></div>
+        <div class="card-header">
+          <div class="card-icon">&#9878;</div>
+          <div class="card-meta">
+            <div class="card-paper">Paper 2 &middot; Exam Skills &middot; Evaluation</div>
+            <div class="card-title">Macro: Wrong but Convincing</div>
+          </div>
+          <div class="card-arrow">&#8594;</div>
+        </div>
+        <div class="card-desc">Three answers to a macro question — one genuinely strong, two plausible but flawed. Identify the strongest and learn to name the flaw type that costs students marks on Paper 2.</div>
+        <div class="card-footer">
+          <div class="card-tags">
+            <span class="ctag">15 Questions</span>
+            <span class="ctag">Flaw Types</span>
+            <span class="ctag">~6 min</span>
+          </div>
+          <span class="card-status status-live">Live</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-txt">Wycombe Abbey &mdash; Economics Department</span>
+    <span class="footer-txt">A-Level Edexcel &mdash; Papers 1 &amp; 2</span>
+  </footer>
+
+</div>
+
+<script>
+var USERS = { "economics": "wycombe2025", "student": "alevel2025" };
+
+function doLogin() {
+  var uname = document.getElementById('uname').value.trim();
+  var pwd   = document.getElementById('pwd').value;
+  var errEl = document.getElementById('loginErr');
+  var uEl   = document.getElementById('uname');
+  var pEl   = document.getElementById('pwd');
+  uEl.classList.remove('err'); pEl.classList.remove('err');
+  errEl.classList.remove('show');
+  if (!uname || !pwd) {
+    uEl.classList.add('err'); pEl.classList.add('err');
+    errEl.textContent = 'Please enter both a username and password.';
+    errEl.classList.add('show'); return;
+  }
+  if (USERS[uname] && USERS[uname] === pwd) {
+    sessionStorage.setItem('wa_user', uname); showApp(uname);
+  } else {
+    uEl.classList.add('err'); pEl.classList.add('err');
+    errEl.textContent = 'Incorrect username or password.';
+    errEl.classList.add('show'); pEl.value = '';
+    setTimeout(function(){ uEl.classList.remove('err'); pEl.classList.remove('err'); }, 400);
+  }
+}
+
+function showApp(username) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('hdrUser').textContent = 'Signed in as: ' + username;
+}
+
+function doLogout() {
+  sessionStorage.removeItem('wa_user');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('uname').value = '';
+  document.getElementById('pwd').value = '';
+  document.getElementById('loginErr').classList.remove('show');
+}
+
+var saved = sessionStorage.getItem('wa_user');
+if (saved) { showApp(saved); }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/db/client.js"></script>
+<script src="assets/js/db/auth.js"></script>
+</body>
+</html>

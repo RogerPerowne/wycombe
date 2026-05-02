@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Dashboard - Wycombe Abbey Economics</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+
+<header>
+  <div class="hl">
+    <img class="hlogo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display='none'">
+    <div>
+      <div class="htit">Teacher Dashboard</div>
+      <div class="hsub">A-Level Economics &middot; Student Progress</div>
+    </div>
+  </div>
+  <div class="hnav">
+    <a href="../micro-quiz.html" class="hbtn">Paper 1</a>
+    <a href="../macro-quiz.html" class="hbtn">Paper 2</a>
+    <span id="t-name" style="font-family:'IBM Plex Mono',monospace;font-size:.55rem;color:var(--goldl);margin-left:.4rem"></span>
+    <button class="hbtn" id="t-logout" style="display:none" onclick="location.reload()">Log out</button>
+  </div>
+</header>
+
+<div class="app" id="root">
+
+  <!-- Login -->
+  <div id="t-login" class="login-box">
+    <h2>Teacher Login</h2>
+    <div class="sub">Enter your teaching username and password</div>
+    <input id="t-user" type="text" class="form-input" placeholder="Username" autocomplete="off" autocapitalize="off">
+    <input id="t-pass" type="password" class="form-input" placeholder="Password">
+    <div id="t-err" class="form-err"></div>
+    <button class="btn b-blue" onclick="doTeacherLogin()" style="width:100%">Log in</button>
+    <div style="text-align:center;margin-top:1rem">
+      <a href="admin.html" style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;color:var(--mut);opacity:.4;text-decoration:none">Admin access &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="t-dash" style="display:none">
+    <div class="tabs">
+      <div class="tab active" data-tab="scores"  onclick="switchTab('scores')">Scores Overview</div>
+      <div class="tab"        data-tab="detail"  onclick="switchTab('detail')">Student Detail</div>
+    </div>
+
+    <!-- Scores -->
+    <div id="panel-scores" class="panel active">
+      <div class="scores-controls">
+        <select id="sc-class" onchange="renderScores()"><option value="all">All my classes</option></select>
+        <select id="sc-paper" onchange="renderScores()">
+          <option value="all">All papers</option>
+          <option value="micro">Paper 1 (Micro)</option>
+          <option value="macro">Paper 2 (Macro)</option>
+        </select>
+      </div>
+      <div id="scores-table" class="scores-wrap"></div>
+    </div>
+
+    <!-- Student detail -->
+    <div id="panel-detail" class="panel">
+      <div class="scores-controls">
+        <select id="detail-student" onchange="renderStudentDetail()">
+          <option value="">Select a student...</option>
+        </select>
+      </div>
+      <div id="student-detail"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../assets/data/quiz-data.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/db/client.js"></script>
+<script src="../assets/js/db/admin.js"></script>
+<script>
+
+var TEACHER = null;
+var TOKEN   = '';
+var DATA    = { students: [], attempts: [] };
+
+// ── LOGIN ─────────────────────────────────────────────────────
+['t-user','t-pass'].forEach(function(id){
+  document.getElementById(id).addEventListener('keydown', function(e){ if (e.key === 'Enter') doTeacherLogin(); });
+});
+
+async function doTeacherLogin() {
+  var user = document.getElementById('t-user').value;
+  var pass = document.getElementById('t-pass').value;
+  var err  = document.getElementById('t-err');
+  if (!user || !pass) { err.textContent = 'Enter username and password'; return; }
+
+  var result = await teacherLogin(user, pass);
+  if (result.error) { err.textContent = result.error; return; }
+
+  TEACHER = result.teacher;
+  TOKEN   = user + ':' + pass;
+
+  document.getElementById('t-login').style.display = 'none';
+  document.getElementById('t-dash').style.display  = 'block';
+  document.getElementById('t-name').textContent    = TEACHER.first_name;
+  document.getElementById('t-logout').style.display = 'inline-block';
+
+  await loadData();
+}
+
+// ── TABS ─────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.tab === name); });
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id === 'panel-' + name); });
+}
+
+// ── DATA ─────────────────────────────────────────────────────
+async function loadData() {
+  var d = await getTeacherData(TOKEN);
+  if (!d) return;
+  DATA = d;
+
+  // Populate class filter
+  var classes = [];
+  DATA.students.forEach(function(s){ if (classes.indexOf(s.class_set) === -1) classes.push(s.class_set); });
+  classes.sort();
+  var sel = document.getElementById('sc-class');
+  while (sel.options.length > 1) sel.remove(1);
+  classes.forEach(function(c){ var o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
+
+  // Student picker for detail view
+  var dsel = document.getElementById('detail-student');
+  dsel.innerHTML = '<option value="">Select a student...</option>';
+  DATA.students.sort(function(a,b){ return a.class_set.localeCompare(b.class_set) || a.last_name.localeCompare(b.last_name); }).forEach(function(s){
+    var o = document.createElement('option'); o.value = s.id; o.textContent = s.first_name + ' ' + s.last_name + ' (' + s.class_set + ')'; dsel.appendChild(o);
+  });
+
+  renderScores();
+}
+
+// ── SCORES TABLE ──────────────────────────────────────────────
+function renderScores() {
+  var cls   = document.getElementById('sc-class').value;
+  var paper = document.getElementById('sc-paper').value;
+
+  var students = DATA.students.filter(function(s){ return cls === 'all' || s.class_set === cls; });
+  var quizIds  = Object.keys(QUIZZES).filter(function(qid){ return paper === 'all' || QUIZZES[qid].paper === paper; });
+
+  var bestMap = {};
+  (DATA.attempts || []).forEach(function(a){
+    if (!bestMap[a.profile_id]) bestMap[a.profile_id] = {};
+    var pct = Math.round(a.score / a.max_score * 100);
+    if (!bestMap[a.profile_id][a.quiz_id] || pct > bestMap[a.profile_id][a.quiz_id]) bestMap[a.profile_id][a.quiz_id] = pct;
+  });
+
+  var html = '<table class="scores"><thead><tr><th>Student</th>';
+  quizIds.forEach(function(qid){
+    var title = QUIZZES[qid].title; if (title.length > 16) title = title.substring(0,14) + '...';
+    html += '<th title="' + QUIZZES[qid].title + '">' + title + '</th>';
+  });
+  html += '<th>Avg</th></tr></thead><tbody>';
+
+  students.forEach(function(s){
+    html += '<tr><td>' + s.first_name + ' ' + s.last_name + '<span class="student-class">' + s.class_set + '</span></td>';
+    var sum = 0, cnt = 0;
+    quizIds.forEach(function(qid){
+      var b = bestMap[s.id] && bestMap[s.id][qid];
+      if (typeof b === 'number') {
+        html += '<td class="' + (b >= 70 ? 'cell-g' : b >= 40 ? 'cell-a' : 'cell-r') + '">' + b + '</td>';
+        sum += b; cnt++;
+      } else { html += '<td class="cell-e">&middot;</td>'; }
+    });
+    var avg = cnt > 0 ? Math.round(sum/cnt) : '';
+    html += '<td class="' + (avg >= 70 ? 'cell-g' : avg >= 40 ? 'cell-a' : avg ? 'cell-r' : 'cell-e') + '" style="border-left:1px solid var(--bdr);font-weight:700">' + (avg || '&middot;') + '</td></tr>';
+  });
+
+  if (!students.length) html += '<tr><td colspan="' + (quizIds.length + 2) + '" style="text-align:center;padding:2rem;opacity:.4">No students.</td></tr>';
+  html += '</tbody></table>';
+  document.getElementById('scores-table').innerHTML = html;
+}
+
+// ── STUDENT DETAIL ────────────────────────────────────────────
+function renderStudentDetail() {
+  var id  = document.getElementById('detail-student').value;
+  var div = document.getElementById('student-detail');
+  if (!id) { div.innerHTML = ''; return; }
+
+  var student  = DATA.students.find(function(s){ return String(s.id) === id; });
+  var attempts = (DATA.attempts || []).filter(function(a){ return String(a.profile_id) === id; });
+
+  var byQuiz = {};
+  attempts.forEach(function(a){
+    if (!byQuiz[a.quiz_id]) byQuiz[a.quiz_id] = [];
+    byQuiz[a.quiz_id].push(a);
+  });
+
+  var html = '<div style="margin-bottom:1rem">'
+    + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.4rem;font-weight:700">' + student.first_name + ' ' + student.last_name + '</div>'
+    + '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.55rem;color:var(--bluel)">' + student.class_set + (student.email ? ' &middot; ' + student.email : '') + '</div>'
+    + '</div><div class="quiz-grid">';
+
+  Object.keys(QUIZZES).forEach(function(qid){
+    var q   = QUIZZES[qid];
+    var qAttempts = byQuiz[qid] || [];
+    var best = qAttempts.length ? Math.max.apply(null, qAttempts.map(function(a){ return Math.round(a.score/a.max_score*100); })) : null;
+    var col  = best !== null ? (best >= 70 ? 'var(--green)' : best >= 40 ? 'var(--goldl)' : 'var(--red)') : 'var(--bdr)';
+    html += '<div class="qcard' + (best === null ? ' not-done' : '') + '" style="--card-col:' + col + '">'
+      + '<div class="qcard-name">' + q.title + '</div>'
+      + '<div class="qcard-score">' + (best !== null ? '<span style="color:' + col + '">' + best + '%</span>' : '&mdash;') + '</div>'
+      + '<div class="qcard-meta">' + (qAttempts.length ? qAttempts.length + ' attempt' + (qAttempts.length > 1 ? 's' : '') : 'Not attempted') + '</div></div>';
+  });
+
+  html += '</div>';
+  div.innerHTML = html;
+}
+</script>
+</body>
+</html>

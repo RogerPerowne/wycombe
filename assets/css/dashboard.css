@@ -1,0 +1,100 @@
+/* ═══════════════════════════════════════════════════════════
+   Wycombe Abbey · Economics Quiz · Dashboard Styles
+   dashboard.css — student & teacher dashboard components
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── HUB / TOPIC GRID ─────────────────────────────────────── */
+.hub-hero    { text-align: center; padding: 2rem 1rem 1.5rem; }
+.hub-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; color: var(--bluel); margin-bottom: .5rem; opacity: .85; }
+.hub-title   { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; line-height: 1.1; margin-bottom: .25rem; }
+.hub-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: var(--goldl); margin-bottom: 1rem; }
+.hub-intro   { font-size: .88rem; color: var(--mut); max-width: 580px; margin: 0 auto; line-height: 1.8; opacity: .88; }
+
+.theme-section { margin-bottom: 1.6rem; }
+.theme-header  { display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem; padding-bottom: .5rem; border-bottom: 1px solid var(--bdr); }
+.theme-tag     { font-family: 'IBM Plex Mono', monospace; font-size: .55rem; letter-spacing: .1em; text-transform: uppercase; padding: .22rem .6rem; border-radius: 3px; font-weight: 700; }
+.theme-name    { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; color: var(--txt); }
+.theme-sub     { font-family: 'IBM Plex Mono', monospace; font-size: .52rem; text-transform: uppercase; letter-spacing: .07em; color: var(--mut); opacity: .55; }
+
+.topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: .55rem; }
+.topic-card  { background: rgba(26,39,68,.5); border: 1px solid var(--bdr); border-radius: 8px; padding: .75rem .9rem; cursor: pointer; transition: all .18s; position: relative; overflow: hidden; text-align: left; display: block; width: 100%; text-decoration: none; color: inherit; }
+.topic-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--tc, var(--bdr)); transition: height .18s; }
+.topic-card:hover     { border-color: var(--tc, var(--bdr)); background: rgba(26,39,68,.8); transform: translateY(-1px); }
+.topic-card:hover::before { height: 3px; }
+.topic-card.soon      { opacity: .42; cursor: default; pointer-events: none; }
+.topic-n    { font-family: 'IBM Plex Mono', monospace; font-size: .48rem; letter-spacing: .08em; text-transform: uppercase; color: var(--mut); opacity: .45; margin-bottom: .2rem; }
+.topic-name { font-family: 'Cormorant Garamond', serif; font-size: .98rem; font-weight: 700; color: var(--txt); line-height: 1.3; margin-bottom: .25rem; }
+.topic-meta { font-size: .7rem; color: var(--goldl); opacity: .7; font-family: 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: .06em; }
+.topic-arrow { position: absolute; right: .75rem; top: 50%; transform: translateY(-50%); font-size: .9rem; color: var(--mut); opacity: .3; transition: all .18s; }
+.topic-card:hover:not(.soon) .topic-arrow { opacity: .8; right: .55rem; }
+
+/* ── STAT BOXES ───────────────────────────────────────────── */
+.dash-stats  { display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; flex-wrap: wrap; }
+.stat-box    { text-align: center; }
+.stat-val    { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; line-height: 1; }
+.stat-lbl    { font-family: 'IBM Plex Mono', monospace; font-size: .48rem; letter-spacing: .1em; text-transform: uppercase; color: var(--mut); opacity: .55; margin-top: .2rem; }
+
+/* ── STUDENT PROGRESS CARDS ───────────────────────────────── */
+.quiz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: .55rem; }
+.qcard     { background: rgba(26,39,68,.5); border: 1px solid var(--bdr); border-radius: 8px; padding: .7rem .85rem; position: relative; overflow: hidden; text-decoration: none; color: inherit; display: block; transition: all .18s; }
+.qcard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--card-col, var(--bdr)); }
+.qcard:hover   { border-color: var(--card-col, var(--bdr)); background: rgba(26,39,68,.8); transform: translateY(-1px); }
+.qcard-name  { font-family: 'Cormorant Garamond', serif; font-size: .9rem; font-weight: 700; line-height: 1.3; margin-bottom: .3rem; }
+.qcard-score { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; font-weight: 700; margin-bottom: .15rem; }
+.qcard-meta  { font-family: 'IBM Plex Mono', monospace; font-size: .46rem; letter-spacing: .06em; text-transform: uppercase; color: var(--mut); opacity: .5; }
+.qcard.not-done { opacity: .45; }
+
+/* ── TEACHER TABS ─────────────────────────────────────────── */
+.tabs { display: flex; gap: .3rem; margin-bottom: 1.2rem; border-bottom: 1px solid var(--bdr); padding-bottom: .5rem; flex-wrap: wrap; }
+.tab  { font-family: 'IBM Plex Mono', monospace; font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; padding: .45rem .9rem; border-radius: 4px 4px 0 0; cursor: pointer; color: var(--mut); background: transparent; border: 1px solid transparent; border-bottom: none; transition: all .15s; }
+.tab:hover  { color: var(--txt); background: rgba(255,255,255,.04); }
+.tab.active { color: var(--goldl); border-color: var(--bdr); background: rgba(26,39,68,.6); }
+.panel      { display: none; }
+.panel.active { display: block; }
+
+/* ── SCORES TABLE ─────────────────────────────────────────── */
+.scores-controls { display: flex; gap: .6rem; margin-bottom: 1rem; align-items: center; flex-wrap: wrap; }
+.scores-controls select, .scores-controls input { font-family: 'IBM Plex Mono', monospace; font-size: .7rem; padding: .4rem .6rem; background: rgba(255,255,255,.06); border: 1px solid var(--bdr); border-radius: 4px; color: var(--txt); outline: none; }
+.scores-wrap { overflow-x: auto; margin-bottom: 1.5rem; }
+table.scores { border-collapse: collapse; font-size: .72rem; width: 100%; min-width: 600px; }
+table.scores th { font-family: 'IBM Plex Mono', monospace; font-size: .48rem; letter-spacing: .06em; text-transform: uppercase; color: var(--mut); padding: .4rem .3rem; text-align: center; border-bottom: 1px solid var(--bdr); position: sticky; top: 0; background: var(--navyd); white-space: nowrap; }
+table.scores th:first-child { text-align: left; min-width: 120px; }
+table.scores td { padding: .35rem .3rem; text-align: center; border-bottom: 1px solid rgba(46,63,96,.3); font-family: 'IBM Plex Mono', monospace; font-size: .65rem; }
+table.scores td:first-child { text-align: left; font-family: Nunito, sans-serif; font-size: .78rem; font-weight: 600; }
+table.scores tr:hover td { background: rgba(255,255,255,.03); }
+.cell-g { color: var(--green); font-weight: 700; }
+.cell-a { color: var(--goldl); font-weight: 600; }
+.cell-r { color: var(--red); }
+.cell-e { color: var(--mut); opacity: .2; }
+.student-class { font-family: 'IBM Plex Mono', monospace; font-size: .5rem; color: var(--bluel); opacity: .7; margin-left: .3rem; }
+
+/* ── ADMIN / STUDENT LIST ─────────────────────────────────── */
+.admin-section h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; margin-bottom: .6rem; }
+.add-form         { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: flex-end; }
+.add-form div     { display: flex; flex-direction: column; gap: .2rem; }
+.add-form label   { font-family: 'IBM Plex Mono', monospace; font-size: .48rem; letter-spacing: .06em; text-transform: uppercase; color: var(--mut); opacity: .55; }
+.add-form input, .add-form select { font-family: 'IBM Plex Mono', monospace; font-size: .72rem; padding: .45rem .6rem; background: rgba(255,255,255,.06); border: 1px solid var(--bdr); border-radius: 4px; color: var(--txt); outline: none; min-width: 100px; }
+.student-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: .5rem; }
+.scard        { background: rgba(26,39,68,.5); border: 1px solid var(--bdr); border-radius: 8px; padding: .65rem .85rem; display: flex; justify-content: space-between; align-items: center; }
+.scard-info   { flex: 1; }
+.scard-name   { font-size: .85rem; font-weight: 600; }
+.scard-user   { font-family: 'IBM Plex Mono', monospace; font-size: .58rem; color: var(--bluel); }
+.scard-class  { font-family: 'IBM Plex Mono', monospace; font-size: .5rem; color: var(--mut); opacity: .6; }
+.scard-actions { display: flex; gap: .3rem; }
+.scard-btn    { font-family: 'IBM Plex Mono', monospace; font-size: .5rem; padding: .25rem .5rem; border-radius: 3px; cursor: pointer; border: 1px solid var(--bdr); background: rgba(255,255,255,.04); color: var(--mut); transition: all .15s; }
+.scard-btn:hover         { color: var(--txt); background: rgba(255,255,255,.08); }
+.scard-btn.del:hover     { color: var(--red); border-color: var(--red); }
+
+/* ── RESULT NOTICE ────────────────────────────────────────── */
+.result-notice { border-radius: 8px; padding: .8rem 1rem; margin-bottom: 1rem; display: none; }
+.result-notice.ok  { background: rgba(76,175,128,.08); border: 1px solid rgba(76,175,128,.3); }
+.result-notice.err { background: rgba(224,80,96,.08);  border: 1px solid rgba(224,80,96,.3); }
+.result-notice code { font-family: 'IBM Plex Mono', monospace; font-size: .85rem; color: var(--goldl); background: rgba(0,0,0,.2); padding: .15rem .4rem; border-radius: 3px; }
+
+/* ── LOGIN FORM ───────────────────────────────────────────── */
+.login-box { max-width: 380px; margin: 5rem auto; background: rgba(26,39,68,.6); border: 1px solid var(--bdr); border-radius: 12px; padding: 2.2rem; }
+.login-box h2  { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: .3rem; }
+.login-box .sub { font-family: 'IBM Plex Mono', monospace; font-size: .52rem; letter-spacing: .1em; text-transform: uppercase; color: var(--mut); opacity: .5; margin-bottom: 1.2rem; }
+.form-input { width: 100%; padding: .65rem .8rem; margin-bottom: .7rem; background: rgba(255,255,255,.06); border: 1px solid var(--bdr); border-radius: 6px; color: #fff; font-family: Nunito, sans-serif; font-size: .9rem; outline: none; transition: border-color .2s; }
+.form-input:focus { border-color: var(--blue); }
+.form-err   { font-size: .78rem; color: var(--red); margin-bottom: .6rem; min-height: 1.2em; }
