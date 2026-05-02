@@ -45,7 +45,7 @@ async function doLogin(username, pin) {
   var sb = getSupabase();
   if (!sb) return { error: 'Database not configured' };
 
-  var { data, error } = await sb.rpc('login', {
+  var { data, error } = await sb.rpc('wa_login', {
     p_username:   username.trim(),
     p_credential: pin.trim()
   });

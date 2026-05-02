@@ -41,7 +41,7 @@ async function teacherLogin(username, credential) {
   var sb = getSupabase();
   if (!sb) return { ok: false, error: 'Database not configured' };
 
-  var { data, error } = await sb.rpc('login', {
+  var { data, error } = await sb.rpc('wa_login', {
     p_username:   username.trim(),
     p_credential: credential.trim()
   });

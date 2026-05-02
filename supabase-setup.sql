@@ -42,8 +42,8 @@ ALTER TABLE quiz_attempts ENABLE ROW LEVEL SECURITY;
 --  RPC FUNCTIONS (all SECURITY DEFINER to bypass RLS)
 -- ═══════════════════════════════════════════════════════════════
 
--- login — works for all roles; returns profile JSON or NULL
-CREATE OR REPLACE FUNCTION login(p_username TEXT, p_credential TEXT)
+-- wa_login — works for all roles; returns profile JSON or NULL
+CREATE OR REPLACE FUNCTION wa_login(p_username TEXT, p_credential TEXT)
 RETURNS JSON
 LANGUAGE plpgsql
 SECURITY DEFINER
