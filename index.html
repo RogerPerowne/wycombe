@@ -984,7 +984,13 @@ async function doLogin() {
   }
 
   sessionStorage.setItem('wa_user', JSON.stringify(data));
-  showApp(data.display_name);
+  if (data.role === 'teacher') {
+    window.location.href = 'dashboards/teacher.html';
+  } else if (data.role === 'admin') {
+    window.location.href = 'dashboards/admin.html';
+  } else {
+    showApp(data.display_name);
+  }
 }
 
 function showSignUp() {

@@ -188,8 +188,11 @@ function updateHeaderUI() {
   var root = rootPath();
 
   if (user) {
+    var dashUrl = root + (user.role === 'admin' ? 'dashboards/admin.html'
+                        : user.role === 'teacher' ? 'dashboards/teacher.html'
+                        : 'dashboards/student.html');
     container.innerHTML =
-      '<a href="' + root + 'dashboards/student.html" '
+      '<a href="' + dashUrl + '" '
       + 'style="font-family:\'IBM Plex Mono\',monospace;font-size:.55rem;letter-spacing:.06em;color:#e2c47a;margin-right:.4rem;text-decoration:none">'
       + escHtml(user.display_name)
       + '</a>'
