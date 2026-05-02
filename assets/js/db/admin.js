@@ -126,6 +126,67 @@ async function changeTeacherPassword(username, oldCred, newCred) {
   return { ok: true };
 }
 
+// ── Admin: teacher CRUD ──────────────────────────────────────────
+
+async function adminGetTeachers(username, credential) {
+  var sb = getSupabase();
+  if (!sb) return { ok: false, error: 'Database not configured' };
+  var { data, error } = await sb.rpc('admin_get_teachers', { p_username: username.trim(), p_credential: credential.trim() });
+  if (error) return { ok: false, error: error.message };
+  return { ok: true, data: data || [] };
+}
+
+async function adminAddTeacher(username, credential, newUsername, newPassword, displayName, assignedClasses) {
+  var sb = getSupabase();
+  if (!sb) return { ok: false, error: 'Database not configured' };
+  var { data, error } = await sb.rpc('admin_add_teacher', {
+    p_username:          username.trim(),
+    p_credential:        credential.trim(),
+    p_new_username:      newUsername.trim(),
+    p_new_password:      newPassword,
+    p_display_name:      displayName.trim(),
+    p_assigned_classes:  assignedClasses
+  });
+  if (error)              return { ok: false, error: error.message };
+  if (data && data.error) return { ok: false, error: data.error };
+  return { ok: true, data: data };
+}
+
+async function adminRemoveTeacher(username, credential, teacherId) {
+  var sb = getSupabase();
+  if (!sb) return { ok: false, error: 'Database not configured' };
+  var { data, error } = await sb.rpc('admin_remove_teacher', { p_username: username.trim(), p_credential: credential.trim(), p_teacher_id: teacherId });
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
+// ── Admin: class codes ───────────────────────────────────────────
+
+async function adminGetClassCodes(username, credential) {
+  var sb = getSupabase();
+  if (!sb) return { ok: false, error: 'Database not configured' };
+  var { data, error } = await sb.rpc('admin_get_class_codes', { p_username: username.trim(), p_credential: credential.trim() });
+  if (error) return { ok: false, error: error.message };
+  return { ok: true, data: data || [] };
+}
+
+async function adminCreateClassCode(username, credential, classSet) {
+  var sb = getSupabase();
+  if (!sb) return { ok: false, error: 'Database not configured' };
+  var { data, error } = await sb.rpc('admin_create_class_code', { p_username: username.trim(), p_credential: credential.trim(), p_class_set: classSet.trim() });
+  if (error)              return { ok: false, error: error.message };
+  if (data && data.error) return { ok: false, error: data.error };
+  return { ok: true, data: data };
+}
+
+async function adminRetireClassCode(username, credential, codeId) {
+  var sb = getSupabase();
+  if (!sb) return { ok: false, error: 'Database not configured' };
+  var { data, error } = await sb.rpc('admin_retire_class_code', { p_username: username.trim(), p_credential: credential.trim(), p_code_id: codeId });
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
 window.generateUsername      = generateUsername;
 window.generatePin           = generatePin;
 window.teacherLogin          = teacherLogin;
@@ -134,3 +195,9 @@ window.createStudent         = createStudent;
 window.deleteStudent         = deleteStudent;
 window.resetStudentPin       = resetStudentPin;
 window.changeTeacherPassword = changeTeacherPassword;
+window.adminGetTeachers      = adminGetTeachers;
+window.adminAddTeacher       = adminAddTeacher;
+window.adminRemoveTeacher    = adminRemoveTeacher;
+window.adminGetClassCodes    = adminGetClassCodes;
+window.adminCreateClassCode  = adminCreateClassCode;
+window.adminRetireClassCode  = adminRetireClassCode;

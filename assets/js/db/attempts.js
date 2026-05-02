@@ -32,4 +32,17 @@ async function saveQuizResult(quizId, score, maxScore) {
   }
 }
 
-window.saveQuizResult = saveQuizResult;
+async function getStudentProgress(profileId) {
+  var sb = getSupabase();
+  if (!sb) return { ok: false, error: 'database not configured' };
+  try {
+    var { data, error } = await sb.rpc('get_student_progress', { p_profile_id: profileId });
+    if (error) return { ok: false, error: error.message };
+    return { ok: true, data: data };
+  } catch(e) {
+    return { ok: false, error: e.message };
+  }
+}
+
+window.saveQuizResult    = saveQuizResult;
+window.getStudentProgress = getStudentProgress;

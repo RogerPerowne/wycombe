@@ -421,10 +421,53 @@ footer {
       <input type="password" id="pwd" placeholder="Enter password"
              autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
-    <button class="login-btn" onclick="doLogin()">Enter &rarr;</button>
+    <button class="login-btn" id="loginSubmitBtn" onclick="doLogin()">Enter &rarr;</button>
     <div class="login-err" id="loginErr"></div>
     <div class="login-divider"></div>
-    <div class="login-note">Access restricted to Wycombe Abbey students and staff.<br>Contact your Economics teacher for credentials.</div>
+    <div style="text-align:center">
+      <button onclick="showSignUp()" style="background:none;border:none;color:var(--goldl);font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.06em;cursor:pointer;text-decoration:underline;opacity:.7">New student? Sign up with a class code &rarr;</button>
+    </div>
+  </div>
+
+  <!-- Sign-up box (hidden initially) -->
+  <div class="login-box" id="signupBox" style="display:none">
+    <div class="login-school">Wycombe Abbey &middot; Economics</div>
+    <div class="login-title">Student Sign Up</div>
+    <div class="login-subtitle">Get your username &amp; PIN</div>
+
+    <!-- Step 1 + 2: code + name -->
+    <div id="signup-form">
+      <div class="field">
+        <label for="su-code">Class code</label>
+        <input type="text" id="su-code" placeholder="e.g. A7B2C3" autocomplete="off" autocapitalize="characters" maxlength="6" onkeydown="if(event.key==='Enter')doSignUpSubmit()">
+      </div>
+      <div class="field">
+        <label for="su-name">Your first name</label>
+        <input type="text" id="su-name" placeholder="e.g. Alice" autocapitalize="words" onkeydown="if(event.key==='Enter')doSignUpSubmit()">
+      </div>
+      <button class="login-btn" onclick="doSignUpSubmit()">Get my credentials &rarr;</button>
+      <div class="login-err" id="suErr"></div>
+    </div>
+
+    <!-- Step 3: show credentials -->
+    <div id="signup-result" style="display:none">
+      <div style="text-align:center;margin-bottom:1.2rem">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:.6rem">Account created!</div>
+        <div style="font-size:.82rem;color:var(--mut);margin-bottom:1.2rem">Note these down — your PIN is shown once only.</div>
+        <div style="background:rgba(0,0,0,.3);border:1px solid var(--bdr);border-radius:8px;padding:1rem 1.2rem;text-align:left;margin-bottom:1rem">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);opacity:.5;margin-bottom:.3rem">Username</div>
+          <div id="su-show-user" style="font-family:'IBM Plex Mono',monospace;font-size:1.05rem;color:var(--goldl);margin-bottom:.8rem"></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);opacity:.5;margin-bottom:.3rem">PIN</div>
+          <div id="su-show-pin" style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:700;color:var(--txt);letter-spacing:.2em"></div>
+        </div>
+      </div>
+      <button class="login-btn" onclick="goToLogin()">I've noted these down — Log in &rarr;</button>
+    </div>
+
+    <div class="login-divider"></div>
+    <div style="text-align:center">
+      <button onclick="showLogin()" style="background:none;border:none;color:var(--goldl);font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.06em;cursor:pointer;text-decoration:underline;opacity:.7">&larr; Back to login</button>
+    </div>
   </div>
 </div>
 
@@ -942,6 +985,56 @@ async function doLogin() {
 
   sessionStorage.setItem('wa_user', JSON.stringify(data));
   showApp(data.display_name);
+}
+
+function showSignUp() {
+  document.querySelector('.login-box:not(#signupBox)').style.display = 'none';
+  document.getElementById('signupBox').style.display = 'block';
+  document.getElementById('signup-form').style.display = 'block';
+  document.getElementById('signup-result').style.display = 'none';
+  document.getElementById('su-code').focus();
+}
+
+function showLogin() {
+  document.getElementById('signupBox').style.display = 'none';
+  document.querySelector('.login-box:not(#signupBox)').style.display = 'block';
+  document.getElementById('uname').focus();
+}
+
+async function doSignUpSubmit() {
+  var code    = document.getElementById('su-code').value.trim().toUpperCase();
+  var name    = document.getElementById('su-name').value.trim();
+  var errDiv  = document.getElementById('suErr');
+  var btn     = document.querySelector('#signup-form .login-btn');
+
+  errDiv.classList.remove('show');
+  if (!code || !name) { errDiv.textContent='Please enter both a class code and your first name'; errDiv.classList.add('show'); return; }
+
+  btn.textContent = '…'; btn.disabled = true;
+
+  var sb = getSupabase();
+  if (!sb) { errDiv.textContent='Database not configured'; errDiv.classList.add('show'); btn.textContent='Get my credentials →'; btn.disabled=false; return; }
+
+  var { data, error } = await sb.rpc('sign_up', { p_class_code: code, p_display_name: name });
+
+  btn.textContent = 'Get my credentials →'; btn.disabled = false;
+
+  if (error || !data || data.error) {
+    errDiv.textContent = (data && data.error) || (error && error.message) || 'Sign-up failed';
+    errDiv.classList.add('show'); return;
+  }
+
+  document.getElementById('su-show-user').textContent = data.username;
+  document.getElementById('su-show-pin').textContent  = data.pin;
+  document.getElementById('signup-form').style.display   = 'none';
+  document.getElementById('signup-result').style.display = 'block';
+}
+
+function goToLogin() {
+  var username = document.getElementById('su-show-user').textContent;
+  showLogin();
+  document.getElementById('uname').value = username;
+  document.getElementById('pwd').focus();
 }
 
 function showApp(displayName) {

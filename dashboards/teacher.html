@@ -16,7 +16,7 @@
     <img class="hlogo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display='none'">
     <div>
       <div class="htit">Teacher Dashboard</div>
-      <div class="hsub">A-Level Economics &middot; Student Tracking</div>
+      <div class="hsub">A-Level Economics &middot; Read-only</div>
     </div>
   </div>
   <div class="hnav">
@@ -26,21 +26,19 @@
 </header>
 
 <div class="app" id="root">
-  <!-- Login form (shown initially) -->
   <div id="teacher-login" class="t-login">
     <h2>Teacher Access</h2>
     <div class="sub">Enter your username and password</div>
     <input id="t-user" type="text" class="t-input" placeholder="Username" autocomplete="off" autocapitalize="off" aria-label="Username">
-    <input id="t-pass" type="password" class="t-input" placeholder="Password" autofocus aria-label="Teacher password">
+    <input id="t-pass" type="password" class="t-input" placeholder="Password" aria-label="Teacher password">
     <div id="t-err" class="t-err" role="alert"></div>
     <button class="btn b-blue" id="t-login-btn" style="width:100%">Enter</button>
   </div>
 
-  <!-- Dashboard (hidden until authenticated) -->
   <div id="teacher-dash" style="display:none">
     <div class="tabs">
       <div class="tab active" data-tab="scores"  onclick="switchTab('scores')">Scores Overview</div>
-      <div class="tab"        data-tab="admin"   onclick="switchTab('admin')">Manage Students</div>
+      <div class="tab"        data-tab="detail"  onclick="switchTab('detail')">Student Detail</div>
     </div>
 
     <!-- Scores Panel -->
@@ -52,34 +50,21 @@
           <option value="micro">Paper 1 (Micro)</option>
           <option value="macro">Paper 2 (Macro)</option>
         </select>
+        <select id="theme-filter"  onchange="renderScores()"><option value="all">All themes</option></select>
+        <select id="sort-by" onchange="renderScores()">
+          <option value="name">Sort by name</option>
+          <option value="score">Sort by avg score</option>
+        </select>
       </div>
       <div id="scores-table" class="scores-wrap"></div>
     </div>
 
-    <!-- Admin Panel -->
-    <div id="panel-admin" class="panel">
-      <div class="admin-section">
-        <h3>Add Student</h3>
-        <div class="add-form">
-          <div><label>First name</label><input id="add-name" type="text" placeholder="e.g. Amelia"></div>
-          <div><label>Class</label>
-            <select id="add-class">
-              <option value="U6-B">U6-B</option>
-              <option value="L6-B">L6-B</option>
-            </select>
-          </div>
-          <button class="btn b-blue" onclick="addStudent()" style="padding:.45rem .9rem;align-self:flex-end">Generate &amp; Add</button>
-        </div>
-        <div id="new-result" class="new-student-result"></div>
+    <!-- Student Detail Panel -->
+    <div id="panel-detail" class="panel">
+      <div class="scores-controls">
+        <select id="detail-student" onchange="renderStudentDetail()"><option value="">— Select a student —</option></select>
       </div>
-
-      <div class="admin-section">
-        <h3>Current Students</h3>
-        <div class="scores-controls" style="margin-bottom:.6rem">
-          <select id="admin-class-filter" onchange="renderStudentList()"><option value="all">All classes</option></select>
-        </div>
-        <div id="student-list" class="student-list"></div>
-      </div>
+      <div id="student-detail-content"></div>
     </div>
   </div>
 </div>
@@ -91,59 +76,37 @@
 <script src="../assets/js/db/auth.js"></script>
 <script src="../assets/js/db/admin.js"></script>
 <script>
-// ── State ────────────────────────────────────────────────────────
 var TEACHER_USER = '';
 var TEACHER_PASS = '';
 var DATA = { students: [], attempts: [] };
 
-// ── Init ─────────────────────────────────────────────────────────
 (function init() {
   if (!getSupabase()) {
     document.getElementById('root').innerHTML =
-      '<div class="db-error">'
-      + '<h2>Database not configured</h2>'
-      + '<p>Set <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> in '
-      + '<code>assets/js/config.js</code> to enable the teacher dashboard.</p>'
-      + '</div>';
+      '<div class="db-error"><h2>Database not configured</h2>'
+      + '<p>Set <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> in <code>assets/js/config.js</code>.</p></div>';
     return;
   }
-
-  var userInput = document.getElementById('t-user');
-  var passInput = document.getElementById('t-pass');
-  var loginBtn  = document.getElementById('t-login-btn');
-
-  loginBtn.onclick = doTeacherLogin;
-  userInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') doTeacherLogin();
-  });
-  passInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') doTeacherLogin();
-  });
+  var uIn = document.getElementById('t-user');
+  var pIn = document.getElementById('t-pass');
+  var btn = document.getElementById('t-login-btn');
+  btn.onclick = doTeacherLogin;
+  [uIn, pIn].forEach(function(el){ el.addEventListener('keydown', function(e){ if (e.key==='Enter') doTeacherLogin(); }); });
 })();
 
-// ── Teacher login ─────────────────────────────────────────────────
 async function doTeacherLogin() {
   var user   = document.getElementById('t-user').value;
   var pw     = document.getElementById('t-pass').value;
   var errDiv = document.getElementById('t-err');
   var btn    = document.getElementById('t-login-btn');
-
   if (!user || !pw) { errDiv.textContent = 'Please enter username and password'; return; }
-
-  btn.textContent = '...';
-  btn.disabled    = true;
-  errDiv.textContent = '';
-
+  btn.textContent = '...'; btn.disabled = true; errDiv.textContent = '';
   var result = await teacherLogin(user, pw);
   if (!result.ok) {
     errDiv.textContent = result.error || 'Invalid credentials';
-    btn.textContent    = 'Enter';
-    btn.disabled       = false;
-    return;
+    btn.textContent = 'Enter'; btn.disabled = false; return;
   }
-
-  TEACHER_USER = user;
-  TEACHER_PASS = pw;
+  TEACHER_USER = user; TEACHER_PASS = pw;
   document.getElementById('teacher-login').style.display = 'none';
   document.getElementById('teacher-dash').style.display  = 'block';
   await loadData();
@@ -153,183 +116,222 @@ async function loadData() {
   var result = await getTeacherData(TEACHER_USER, TEACHER_PASS);
   if (result.ok) {
     DATA = result.data;
-    populateClassFilters();
+    populateFilters();
     renderScores();
-    renderStudentList();
+    populateStudentDropdown();
   }
 }
 
-// ── Tabs ──────────────────────────────────────────────────────────
 function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(function(t) {
-    t.classList.toggle('active', t.dataset.tab === name);
-  });
-  document.querySelectorAll('.panel').forEach(function(p) {
-    p.classList.toggle('active', p.id === 'panel-' + name);
-  });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.tab===name); });
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id==='panel-'+name); });
 }
 
-// ── Class filters ─────────────────────────────────────────────────
-function populateClassFilters() {
-  var classes = [];
-  DATA.students.forEach(function(s) {
-    if (classes.indexOf(s.class_set) === -1) classes.push(s.class_set);
-  });
+function populateFilters() {
+  var classes = [], themes = [];
+  DATA.students.forEach(function(s){ if (classes.indexOf(s.class_set)===-1) classes.push(s.class_set); });
   classes.sort();
 
-  ['class-filter','admin-class-filter'].forEach(function(id) {
-    var sel = document.getElementById(id);
-    while (sel.options.length > 1) sel.remove(1);
-    classes.forEach(function(c) {
-      var opt = document.createElement('option');
-      opt.value = c; opt.textContent = c;
-      sel.appendChild(opt);
+  var cSel = document.getElementById('class-filter');
+  while (cSel.options.length > 1) cSel.remove(1);
+  classes.forEach(function(c){ var o=document.createElement('option'); o.value=c; o.textContent=c; cSel.appendChild(o); });
+
+  // Populate theme filter from THEMES
+  var themeSel = document.getElementById('theme-filter');
+  while (themeSel.options.length > 1) themeSel.remove(1);
+  ['micro','macro'].forEach(function(paper){
+    if (!THEMES[paper]) return;
+    THEMES[paper].forEach(function(th){
+      var o = document.createElement('option');
+      o.value = th.label; o.textContent = th.label + ' — ' + th.name;
+      themeSel.appendChild(o);
     });
   });
-
-  var addSel = document.getElementById('add-class');
-  addSel.innerHTML = '';
-  classes.forEach(function(c) {
-    var opt = document.createElement('option');
-    opt.value = c; opt.textContent = c;
-    addSel.appendChild(opt);
-  });
-  var other = document.createElement('option');
-  other.value = '__other'; other.textContent = '+ New class...';
-  addSel.appendChild(other);
 }
 
-// ── Scores table ──────────────────────────────────────────────────
+function populateStudentDropdown() {
+  var sel = document.getElementById('detail-student');
+  while (sel.options.length > 1) sel.remove(1);
+  var sorted = DATA.students.slice().sort(function(a,b){ return (a.class_set+a.display_name).localeCompare(b.class_set+b.display_name); });
+  sorted.forEach(function(s){
+    var o = document.createElement('option');
+    o.value = s.id; o.textContent = s.display_name + ' (' + s.class_set + ')';
+    sel.appendChild(o);
+  });
+}
+
+function getFilteredQuizIds() {
+  var paperFilter = document.getElementById('paper-filter').value;
+  var themeFilter = document.getElementById('theme-filter').value;
+  return Object.keys(QUIZZES).filter(function(qid){
+    var q = QUIZZES[qid];
+    if (paperFilter !== 'all' && q.paper !== paperFilter) return false;
+    if (themeFilter !== 'all') {
+      var found = false;
+      ['micro','macro'].forEach(function(paper){
+        if (!THEMES[paper]) return;
+        THEMES[paper].forEach(function(th){
+          if (th.label === themeFilter && th.topics.some(function(t){ return t.id===qid; })) found=true;
+        });
+      });
+      if (!found) return false;
+    }
+    return true;
+  });
+}
+
 function renderScores() {
   var classFilter = document.getElementById('class-filter').value;
-  var paperFilter = document.getElementById('paper-filter').value;
+  var sortBy      = document.getElementById('sort-by').value;
+  var quizIds     = getFilteredQuizIds();
 
-  var students = DATA.students.filter(function(s) {
-    return classFilter === 'all' || s.class_set === classFilter;
-  });
-  var quizIds = Object.keys(QUIZZES).filter(function(qid) {
-    return paperFilter === 'all' || QUIZZES[qid].paper === paperFilter;
-  });
+  var students = DATA.students.filter(function(s){ return classFilter==='all' || s.class_set===classFilter; });
 
-  // Build best-score map: profileId -> { quizId -> bestPct }
   var bestMap = {};
-  DATA.attempts.forEach(function(a) {
+  DATA.attempts.forEach(function(a){
     if (!bestMap[a.profile_id]) bestMap[a.profile_id] = {};
-    var pct = Math.round(a.score / a.max_score * 100);
-    if (!bestMap[a.profile_id][a.quiz_id] || pct > bestMap[a.profile_id][a.quiz_id]) {
+    var pct = Math.round(a.score/a.max_score*100);
+    if (!bestMap[a.profile_id][a.quiz_id] || pct > bestMap[a.profile_id][a.quiz_id])
       bestMap[a.profile_id][a.quiz_id] = pct;
-    }
   });
+
+  // Compute averages for sorting
+  if (sortBy === 'score') {
+    students = students.slice().sort(function(a, b) {
+      var avgA = computeAvg(bestMap[a.id], quizIds);
+      var avgB = computeAvg(bestMap[b.id], quizIds);
+      return avgB - avgA;
+    });
+  }
 
   if (students.length === 0) {
     document.getElementById('scores-table').innerHTML =
-      '<div style="text-align:center;padding:2rem;color:var(--mut);opacity:.5">No students found. Add students in the Manage Students tab.</div>';
+      '<div style="text-align:center;padding:2rem;color:var(--mut);opacity:.5">No students found.</div>';
     return;
   }
 
+  // Class averages
+  var classGroups = {};
+  students.forEach(function(s){ (classGroups[s.class_set] = classGroups[s.class_set]||[]).push(s); });
+
   var html = '<table class="scores"><thead><tr><th>Student</th>';
-  quizIds.forEach(function(qid) {
-    var title = QUIZZES[qid].title;
-    if (title.length > 18) title = title.substring(0,16) + '...';
-    html += '<th title="' + escHtml(QUIZZES[qid].title) + '">' + escHtml(title) + '</th>';
+  quizIds.forEach(function(qid){
+    var title = QUIZZES[qid].title; if (title.length>18) title=title.substring(0,16)+'…';
+    html += '<th title="'+escHtml(QUIZZES[qid].title)+'">'+escHtml(title)+'</th>';
   });
   html += '<th>Avg</th></tr></thead><tbody>';
 
-  students.forEach(function(s) {
-    html += '<tr><td>' + escHtml(s.display_name) + '<span class="student-class">' + escHtml(s.class_set) + '</span></td>';
-    var sum = 0, count = 0;
-    quizIds.forEach(function(qid) {
-      var best = bestMap[s.id] && bestMap[s.id][qid];
-      if (typeof best === 'number') {
-        var cls = best >= 70 ? 'cell-g' : best >= 40 ? 'cell-a' : 'cell-r';
-        html += '<td class="' + cls + '">' + best + '</td>';
-        sum += best; count++;
-      } else {
-        html += '<td class="cell-e">&middot;</td>';
-      }
+  Object.keys(classGroups).sort().forEach(function(cls){
+    var clsStudents = classGroups[cls];
+    clsStudents.forEach(function(s){
+      html += '<tr><td>'+escHtml(s.display_name)+'<span class="student-class">'+escHtml(s.class_set)+'</span></td>';
+      var sum=0, count=0;
+      quizIds.forEach(function(qid){
+        var best = bestMap[s.id] && bestMap[s.id][qid];
+        if (typeof best==='number') {
+          html += '<td class="'+(best>=70?'cell-g':best>=40?'cell-a':'cell-r')+'">'+best+'</td>';
+          sum+=best; count++;
+        } else { html += '<td class="cell-e">&middot;</td>'; }
+      });
+      var avg=count>0?Math.round(sum/count):'';
+      html += '<td class="'+(avg>=70?'cell-g':avg>=40?'cell-a':avg?'cell-r':'cell-e')+'" style="font-weight:700;border-left:1px solid var(--bdr)">'+(avg||'&middot;')+'</td></tr>';
     });
-    var avg    = count > 0 ? Math.round(sum / count) : '';
-    var avgCls = avg >= 70 ? 'cell-g' : avg >= 40 ? 'cell-a' : avg ? 'cell-r' : 'cell-e';
-    html += '<td class="' + avgCls + '" style="font-weight:700;border-left:1px solid var(--bdr)">' + (avg || '&middot;') + '</td>';
-    html += '</tr>';
+    // Class average row
+    html += '<tr style="background:rgba(255,255,255,.03);font-style:italic"><td style="font-size:.68rem;opacity:.55;padding-left:.5rem">'+escHtml(cls)+' avg</td>';
+    quizIds.forEach(function(qid){
+      var vals=[]; clsStudents.forEach(function(s){ var v=bestMap[s.id]&&bestMap[s.id][qid]; if(typeof v==='number') vals.push(v); });
+      if (vals.length) { var a=Math.round(vals.reduce(function(s,v){return s+v;},0)/vals.length); html+='<td class="'+(a>=70?'cell-g':a>=40?'cell-a':'cell-r')+'" style="opacity:.65">'+a+'</td>'; }
+      else html+='<td class="cell-e">&middot;</td>';
+    });
+    html += '<td style="border-left:1px solid var(--bdr)"></td></tr>';
   });
 
   html += '</tbody></table>';
   document.getElementById('scores-table').innerHTML = html;
 }
 
-// ── Student management ────────────────────────────────────────────
-function renderStudentList() {
-  var classFilter = document.getElementById('admin-class-filter').value;
-  var students = DATA.students.filter(function(s) {
-    return classFilter === 'all' || s.class_set === classFilter;
+function computeAvg(quizMap, quizIds) {
+  if (!quizMap) return -1;
+  var sum=0, count=0;
+  quizIds.forEach(function(qid){ if (typeof quizMap[qid]==='number') { sum+=quizMap[qid]; count++; } });
+  return count>0 ? sum/count : -1;
+}
+
+function renderStudentDetail() {
+  var studentId = parseInt(document.getElementById('detail-student').value);
+  var container = document.getElementById('student-detail-content');
+  if (!studentId) { container.innerHTML = ''; return; }
+
+  var student = DATA.students.filter(function(s){ return s.id===studentId; })[0];
+  if (!student) return;
+
+  var attempts = DATA.attempts.filter(function(a){ return a.profile_id===studentId; });
+
+  // Build per-quiz stats
+  var quizStats = {};
+  attempts.forEach(function(a){
+    if (!quizStats[a.quiz_id]) quizStats[a.quiz_id] = { best:0, latest:null, count:0, dates:[] };
+    var pct = Math.round(a.score/a.max_score*100);
+    if (pct > quizStats[a.quiz_id].best) quizStats[a.quiz_id].best = pct;
+    quizStats[a.quiz_id].count++;
+    quizStats[a.quiz_id].dates.push({ pct:pct, at: a.completed_at });
+  });
+  // Set latest (most recent by date)
+  Object.keys(quizStats).forEach(function(qid){
+    var sorted = quizStats[qid].dates.slice().sort(function(a,b){ return b.at.localeCompare(a.at); });
+    quizStats[qid].latest = sorted[0].pct;
+    quizStats[qid].lastDate = sorted[0].at ? sorted[0].at.substring(0,10) : '';
   });
 
-  if (students.length === 0) {
-    document.getElementById('student-list').innerHTML =
-      '<div style="color:var(--mut);opacity:.5;padding:1rem">No students yet. Use the form above to add students.</div>';
+  var attempted   = Object.keys(quizStats);
+  var totalQuizzes = Object.keys(QUIZZES).length;
+  var avgBest = 0;
+  if (attempted.length) {
+    avgBest = Math.round(attempted.reduce(function(s,qid){ return s+quizStats[qid].best; },0) / attempted.length);
+  }
+
+  var html = '<div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.4rem;padding:.8rem 1rem;background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:8px">'
+    + '<div class="stat-box"><div class="stat-val" style="color:var(--bluel)">'+attempted.length+' <span style="font-size:1rem;color:var(--mut);opacity:.4">/ '+totalQuizzes+'</span></div><div class="stat-lbl">Topics attempted</div></div>'
+    + '<div class="stat-box"><div class="stat-val" style="color:'+(avgBest>=70?'var(--green)':avgBest>=40?'var(--goldl)':'var(--red)')+'">'+( attempted.length ? avgBest+'%' : '—')+'</div><div class="stat-lbl">Average best</div></div>'
+    + '<div class="stat-box"><div class="stat-val" style="color:var(--mut)">'+attempts.length+'</div><div class="stat-lbl">Total attempts</div></div>'
+    + '</div>';
+
+  if (attempted.length === 0) {
+    html += '<div style="text-align:center;padding:2rem;color:var(--mut);opacity:.5">No quiz attempts yet.</div>';
+    document.getElementById('student-detail-content').innerHTML = html;
     return;
   }
 
-  var html = '';
-  students.forEach(function(s) {
-    html += '<div class="scard">'
-      + '<div class="scard-info">'
-      + '<div class="scard-name">'  + escHtml(s.display_name) + '</div>'
-      + '<div class="scard-user">'  + escHtml(s.username)     + '</div>'
-      + '<div class="scard-class">' + escHtml(s.class_set)    + '</div>'
-      + '</div>'
-      + '<div class="scard-actions">'
-      + '<button class="scard-btn"     onclick="doResetPin('    + s.id + ',\'' + escHtml(s.display_name) + '\')">Reset PIN</button>'
-      + '<button class="scard-btn del" onclick="doDeleteStudent(' + s.id + ',\'' + escHtml(s.display_name) + '\')">Remove</button>'
-      + '</div></div>';
+  html += '<div class="scores-wrap"><table class="scores"><thead><tr>'
+    + '<th style="text-align:left">Quiz</th><th>Best</th><th>Latest</th><th>Tries</th><th>Last attempt</th></tr></thead><tbody>';
+
+  // Attempted topics
+  var allTopics = [];
+  ['micro','macro'].forEach(function(paper){ if (THEMES[paper]) THEMES[paper].forEach(function(th){ th.topics.forEach(function(t){ if(QUIZZES[t.id]) allTopics.push(t); }); }); });
+
+  allTopics.forEach(function(t){
+    var s = quizStats[t.id];
+    if (!s) return;
+    var bc = s.best>=70?'cell-g':s.best>=40?'cell-a':'cell-r';
+    var lc = s.latest>=70?'cell-g':s.latest>=40?'cell-a':'cell-r';
+    html += '<tr><td style="font-family:Nunito,sans-serif;text-align:left">'+escHtml(t.name)+'</td>'
+      +'<td class="'+bc+'">'+s.best+'%</td>'
+      +'<td class="'+lc+'">'+s.latest+'%</td>'
+      +'<td>'+s.count+'</td>'
+      +'<td style="font-size:.6rem;color:var(--mut)">'+s.lastDate+'</td></tr>';
   });
-  document.getElementById('student-list').innerHTML = html;
-}
 
-async function addStudent() {
-  var name     = document.getElementById('add-name').value.trim();
-  var classSel = document.getElementById('add-class');
-  var classSet = classSel.value;
-
-  if (classSet === '__other') {
-    classSet = prompt('Enter new class name (e.g. U6-A):');
-    if (!classSet) return;
+  // Not yet attempted
+  var notAttempted = allTopics.filter(function(t){ return !quizStats[t.id]; });
+  if (notAttempted.length) {
+    notAttempted.forEach(function(t){
+      html += '<tr style="opacity:.3"><td style="font-family:Nunito,sans-serif;text-align:left">'+escHtml(t.name)+'</td>'
+        +'<td class="cell-e">&middot;</td><td class="cell-e">&middot;</td><td class="cell-e">&middot;</td><td class="cell-e">—</td></tr>';
+    });
   }
-  if (!name) { alert('Please enter a first name'); return; }
 
-  var username = generateUsername();
-  var pin      = generatePin();
-
-  var result = await createStudent(TEACHER_USER, TEACHER_PASS, username, pin, name, classSet);
-  if (!result.ok) { alert(result.error); return; }
-
-  var resultDiv = document.getElementById('new-result');
-  resultDiv.style.display = 'block';
-  resultDiv.innerHTML =
-    '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:.4rem">Student Created</div>'
-    + '<div style="font-size:.9rem;margin-bottom:.3rem"><strong>' + escHtml(name) + '</strong> &middot; ' + escHtml(classSet) + '</div>'
-    + '<div style="font-size:.85rem">Username: <code>' + escHtml(username) + '</code></div>'
-    + '<div style="font-size:.85rem">PIN: <code>' + escHtml(pin) + '</code></div>'
-    + '<div style="font-size:.7rem;color:var(--mut);opacity:.5;margin-top:.4rem">Note this PIN down - it cannot be viewed again (only reset).</div>';
-
-  document.getElementById('add-name').value = '';
-  await loadData();
-}
-
-async function doDeleteStudent(id, name) {
-  if (!confirm('Remove ' + name + '? This will delete all their quiz attempts too.')) return;
-  var result = await deleteStudent(TEACHER_USER, TEACHER_PASS, id);
-  if (!result.ok) { alert(result.error); return; }
-  await loadData();
-}
-
-async function doResetPin(id, name) {
-  var newPin = generatePin();
-  if (!confirm('Reset PIN for ' + name + '?\n\nNew PIN will be: ' + newPin)) return;
-  var result = await resetStudentPin(TEACHER_USER, TEACHER_PASS, id, newPin);
-  if (!result.ok) { alert(result.error); return; }
-  alert('PIN for ' + name + ' reset to: ' + newPin);
+  html += '</tbody></table></div>';
+  document.getElementById('student-detail-content').innerHTML = html;
 }
 </script>
 </body>

@@ -26,62 +26,106 @@
 </header>
 
 <div class="app" id="root">
-  <!-- Login form -->
   <div id="admin-login" class="t-login">
     <h2>Admin Access</h2>
     <div class="sub">Enter your username and password</div>
     <input id="a-user" type="text" class="t-input" placeholder="Username" autocomplete="off" autocapitalize="off" aria-label="Username">
-    <input id="a-pass" type="password" class="t-input" placeholder="Password" autofocus aria-label="Admin password">
+    <input id="a-pass" type="password" class="t-input" placeholder="Password" aria-label="Admin password">
     <div id="a-err" class="t-err" role="alert"></div>
     <button class="btn b-blue" id="a-login-btn" style="width:100%">Enter</button>
   </div>
 
-  <!-- Dashboard (hidden until authenticated) -->
   <div id="admin-dash" style="display:none">
     <div class="tabs">
-      <div class="tab active" data-tab="students" onclick="switchTab('students')">Manage Students</div>
-      <div class="tab"        data-tab="password" onclick="switchTab('password')">Change Password</div>
+      <div class="tab active" data-tab="students"  onclick="switchTab('students')">Students</div>
+      <div class="tab"        data-tab="teachers"  onclick="switchTab('teachers')">Teachers</div>
+      <div class="tab"        data-tab="scores"    onclick="switchTab('scores')">Scores</div>
+      <div class="tab"        data-tab="settings"  onclick="switchTab('settings')">Settings</div>
     </div>
 
-    <!-- Students Panel -->
+    <!-- STUDENTS -->
     <div id="panel-students" class="panel active">
       <div class="admin-section">
         <h3>Add Student</h3>
         <div class="add-form">
           <div><label>First name</label><input id="add-name" type="text" placeholder="e.g. Amelia"></div>
           <div><label>Class</label>
-            <select id="add-class">
-              <option value="U6-B">U6-B</option>
-              <option value="L6-B">L6-B</option>
-            </select>
+            <select id="add-class"><option value="U6-B">U6-B</option><option value="L6-B">L6-B</option></select>
           </div>
           <button class="btn b-blue" onclick="addStudent()" style="padding:.45rem .9rem;align-self:flex-end">Generate &amp; Add</button>
         </div>
         <div id="new-result" class="new-student-result"></div>
       </div>
-
       <div class="admin-section">
         <h3>Current Students</h3>
         <div class="scores-controls" style="margin-bottom:.6rem">
           <select id="admin-class-filter" onchange="renderStudentList()"><option value="all">All classes</option></select>
+          <input id="student-search" type="text" placeholder="Search name…" oninput="renderStudentList()" style="min-width:140px">
         </div>
         <div id="student-list" class="student-list"></div>
       </div>
     </div>
 
-    <!-- Change Password Panel -->
-    <div id="panel-password" class="panel">
+    <!-- TEACHERS -->
+    <div id="panel-teachers" class="panel">
       <div class="admin-section">
-        <h3>Change Teacher Password</h3>
-        <p style="font-size:.85rem;color:var(--mut);margin-bottom:1.2rem;line-height:1.7">
-          This updates the shared password used by all teachers to access the Teacher and Admin dashboards.
-          Make sure to share the new password with your colleagues.
+        <h3>Add Teacher</h3>
+        <div class="add-form" style="flex-wrap:wrap">
+          <div><label>Display name</label><input id="t-name" type="text" placeholder="e.g. Ms Smith"></div>
+          <div><label>Username</label><input id="t-uname" type="text" placeholder="e.g. msmith" autocapitalize="off"></div>
+          <div><label>Password</label><input id="t-pwd" type="password" placeholder="Min 8 chars"></div>
+          <div style="flex-basis:100%"><label>Assigned classes (leave blank = all classes)</label>
+            <input id="t-classes" type="text" placeholder="e.g. U6-A, L6-B  —  blank for all classes" style="width:100%;min-width:280px"></div>
+          <button class="btn b-blue" onclick="addTeacher()" style="padding:.45rem .9rem;align-self:flex-end">Add Teacher</button>
+        </div>
+        <div id="t-result" class="new-student-result"></div>
+      </div>
+      <div class="admin-section">
+        <h3>Current Teachers</h3>
+        <div id="teacher-list" class="student-list"></div>
+      </div>
+    </div>
+
+    <!-- SCORES -->
+    <div id="panel-scores" class="panel">
+      <div class="scores-controls">
+        <select id="score-class-filter"  onchange="renderScores()"><option value="all">All classes</option></select>
+        <select id="score-paper-filter"  onchange="renderScores()">
+          <option value="all">All papers</option>
+          <option value="micro">Paper 1 (Micro)</option>
+          <option value="macro">Paper 2 (Macro)</option>
+        </select>
+        <select id="score-theme-filter"  onchange="renderScores()"><option value="all">All themes</option></select>
+        <select id="score-sort"          onchange="renderScores()">
+          <option value="name">Sort by name</option>
+          <option value="score">Sort by avg score</option>
+        </select>
+      </div>
+      <div id="scores-table" class="scores-wrap"></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="panel-settings" class="panel">
+      <div class="admin-section">
+        <h3>Class Codes</h3>
+        <p style="font-size:.82rem;color:var(--mut);margin-bottom:1rem;line-height:1.7">
+          Give students a class code to self-register. Each code is tied to one class set.
+          Retire codes to prevent further sign-ups with that code.
         </p>
+        <div class="add-form" style="margin-bottom:1rem">
+          <div><label>Class set</label><input id="code-class" type="text" placeholder="e.g. U6-A"></div>
+          <button class="btn b-blue" onclick="createCode()" style="padding:.45rem .9rem;align-self:flex-end">Generate Code</button>
+        </div>
+        <div id="codes-list"></div>
+      </div>
+
+      <div class="admin-section">
+        <h3>Change Admin Password</h3>
         <div class="pw-form">
           <label style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);opacity:.6;display:block;margin-bottom:.2rem">Current password</label>
           <input id="pw-old" type="password" placeholder="Current password" aria-label="Current password">
           <label style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);opacity:.6;display:block;margin-bottom:.2rem">New password</label>
-          <input id="pw-new" type="password" placeholder="New password" aria-label="New password">
+          <input id="pw-new" type="password" placeholder="New password (min 8 chars)" aria-label="New password">
           <label style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);opacity:.6;display:block;margin-bottom:.2rem">Confirm new password</label>
           <input id="pw-confirm" type="password" placeholder="Confirm new password" aria-label="Confirm new password">
           <button class="btn b-blue" onclick="doChangePassword()" style="margin-top:.4rem">Update Password</button>
@@ -93,141 +137,120 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../quiz-data.js"></script>
 <script src="../assets/js/config.js"></script>
 <script src="../assets/js/db/client.js"></script>
 <script src="../assets/js/db/auth.js"></script>
 <script src="../assets/js/db/admin.js"></script>
 <script>
-// ── State ────────────────────────────────────────────────────────
 var ADMIN_USER = '';
 var ADMIN_PASS = '';
-var DATA = { students: [] };
+var DATA = { students: [], attempts: [] };
+var TEACHERS = [];
+var CODES = [];
 
-// ── Init ─────────────────────────────────────────────────────────
 (function init() {
   if (!getSupabase()) {
     document.getElementById('root').innerHTML =
-      '<div class="db-error">'
-      + '<h2>Database not configured</h2>'
-      + '<p>Set <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> in '
-      + '<code>assets/js/config.js</code> to enable the admin dashboard.</p>'
-      + '</div>';
+      '<div class="db-error"><h2>Database not configured</h2>'
+      + '<p>Set <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> in <code>assets/js/config.js</code>.</p></div>';
     return;
   }
-
-  var userInput = document.getElementById('a-user');
-  var passInput = document.getElementById('a-pass');
-  var loginBtn  = document.getElementById('a-login-btn');
-
-  loginBtn.onclick = doAdminLogin;
-  userInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') doAdminLogin();
-  });
-  passInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') doAdminLogin();
-  });
+  var uIn = document.getElementById('a-user');
+  var pIn = document.getElementById('a-pass');
+  var btn = document.getElementById('a-login-btn');
+  btn.onclick = doAdminLogin;
+  [uIn, pIn].forEach(function(el){ el.addEventListener('keydown', function(e){ if (e.key==='Enter') doAdminLogin(); }); });
 })();
 
-// ── Admin login ───────────────────────────────────────────────────
 async function doAdminLogin() {
   var user   = document.getElementById('a-user').value;
   var pw     = document.getElementById('a-pass').value;
   var errDiv = document.getElementById('a-err');
   var btn    = document.getElementById('a-login-btn');
-
   if (!user || !pw) { errDiv.textContent = 'Please enter username and password'; return; }
-
-  btn.textContent = '...';
-  btn.disabled    = true;
-  errDiv.textContent = '';
-
+  btn.textContent = '...'; btn.disabled = true; errDiv.textContent = '';
   var result = await teacherLogin(user, pw);
-  if (!result.ok) {
-    errDiv.textContent = result.error || 'Invalid credentials';
-    btn.textContent    = 'Enter';
-    btn.disabled       = false;
-    return;
+  if (!result.ok || result.role !== 'admin') {
+    errDiv.textContent = result.ok ? 'Admin account required' : (result.error || 'Invalid credentials');
+    btn.textContent = 'Enter'; btn.disabled = false; return;
   }
-
-  ADMIN_USER = user;
-  ADMIN_PASS = pw;
+  ADMIN_USER = user; ADMIN_PASS = pw;
   document.getElementById('admin-login').style.display = 'none';
   document.getElementById('admin-dash').style.display  = 'block';
-  await loadData();
+  await loadAll();
 }
 
-async function loadData() {
-  var result = await getTeacherData(ADMIN_USER, ADMIN_PASS);
-  if (result.ok) {
-    DATA = result.data;
-    populateClassFilters();
-    renderStudentList();
-  }
+async function loadAll() {
+  var [dRes, tRes, cRes] = await Promise.all([
+    getTeacherData(ADMIN_USER, ADMIN_PASS),
+    adminGetTeachers(ADMIN_USER, ADMIN_PASS),
+    adminGetClassCodes(ADMIN_USER, ADMIN_PASS)
+  ]);
+  if (dRes.ok)   DATA     = dRes.data;
+  if (tRes.ok)   TEACHERS = tRes.data;
+  if (cRes.ok)   CODES    = cRes.data;
+  populateFilters();
+  renderStudentList();
+  renderTeacherList();
+  renderScores();
+  renderCodes();
 }
 
-// ── Tabs ──────────────────────────────────────────────────────────
 function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(function(t) {
-    t.classList.toggle('active', t.dataset.tab === name);
-  });
-  document.querySelectorAll('.panel').forEach(function(p) {
-    p.classList.toggle('active', p.id === 'panel-' + name);
-  });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.tab===name); });
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id==='panel-'+name); });
 }
 
-// ── Class filters ─────────────────────────────────────────────────
-function populateClassFilters() {
+// ── Filters ──────────────────────────────────────────────────────
+function populateFilters() {
   var classes = [];
-  DATA.students.forEach(function(s) {
-    if (classes.indexOf(s.class_set) === -1) classes.push(s.class_set);
-  });
+  DATA.students.forEach(function(s){ if (classes.indexOf(s.class_set)===-1) classes.push(s.class_set); });
   classes.sort();
 
-  var filterSel = document.getElementById('admin-class-filter');
-  while (filterSel.options.length > 1) filterSel.remove(1);
-  classes.forEach(function(c) {
-    var opt = document.createElement('option');
-    opt.value = c; opt.textContent = c;
-    filterSel.appendChild(opt);
+  ['admin-class-filter','score-class-filter','add-class'].forEach(function(id){
+    var sel = document.getElementById(id);
+    var isAddClass = id === 'add-class';
+    while (sel.options.length > (isAddClass ? 0 : 1)) sel.remove(isAddClass ? 0 : 1);
+    classes.forEach(function(c){ var o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); });
+    if (isAddClass) { var o=document.createElement('option'); o.value='__other'; o.textContent='+ New class…'; sel.appendChild(o); }
   });
 
-  var addSel = document.getElementById('add-class');
-  addSel.innerHTML = '';
-  classes.forEach(function(c) {
-    var opt = document.createElement('option');
-    opt.value = c; opt.textContent = c;
-    addSel.appendChild(opt);
+  var themeSel = document.getElementById('score-theme-filter');
+  while (themeSel.options.length > 1) themeSel.remove(1);
+  ['micro','macro'].forEach(function(paper){
+    if (!THEMES[paper]) return;
+    THEMES[paper].forEach(function(th){
+      var o=document.createElement('option'); o.value=th.label; o.textContent=th.label+' — '+th.name; themeSel.appendChild(o);
+    });
   });
-  var other = document.createElement('option');
-  other.value = '__other'; other.textContent = '+ New class...';
-  addSel.appendChild(other);
 }
 
-// ── Student management ────────────────────────────────────────────
+// ── Student list ──────────────────────────────────────────────────
 function renderStudentList() {
-  var classFilter = document.getElementById('admin-class-filter').value;
-  var students = DATA.students.filter(function(s) {
-    return classFilter === 'all' || s.class_set === classFilter;
+  var classFilter  = document.getElementById('admin-class-filter').value;
+  var search       = (document.getElementById('student-search').value||'').toLowerCase();
+  var students = DATA.students.filter(function(s){
+    return (classFilter==='all'||s.class_set===classFilter)
+      && (!search || s.display_name.toLowerCase().includes(search) || s.username.toLowerCase().includes(search));
   });
-
-  if (students.length === 0) {
-    document.getElementById('student-list').innerHTML =
-      '<div style="color:var(--mut);opacity:.5;padding:1rem">No students yet. Use the form above to add students.</div>';
+  if (!students.length) {
+    document.getElementById('student-list').innerHTML = '<div style="color:var(--mut);opacity:.5;padding:1rem">No students found.</div>';
     return;
   }
-
   var html = '';
-  students.forEach(function(s) {
+  students.forEach(function(s){
+    var ll = s.last_login ? s.last_login.substring(0,10) : 'never';
     html += '<div class="scard">'
-      + '<div class="scard-info">'
-      + '<div class="scard-name">'  + escHtml(s.display_name) + '</div>'
-      + '<div class="scard-user">'  + escHtml(s.username)     + '</div>'
-      + '<div class="scard-class">' + escHtml(s.class_set)    + '</div>'
-      + '</div>'
-      + '<div class="scard-actions">'
-      + '<button class="scard-btn"     onclick="doResetPin('    + s.id + ',\'' + escHtml(s.display_name) + '\')">Reset PIN</button>'
-      + '<button class="scard-btn del" onclick="doDeleteStudent(' + s.id + ',\'' + escHtml(s.display_name) + '\')">Remove</button>'
-      + '</div></div>';
+      +'<div class="scard-info">'
+      +'<div class="scard-name">'+escHtml(s.display_name)+'</div>'
+      +'<div class="scard-user">'+escHtml(s.username)+'</div>'
+      +'<div class="scard-class">'+escHtml(s.class_set)+' &middot; last login: '+ll+'</div>'
+      +'</div>'
+      +'<div class="scard-actions">'
+      +'<button class="scard-btn" onclick="doResetPin('+s.id+',\''+escHtml(s.display_name)+'\')">Reset PIN</button>'
+      +'<button class="scard-btn del" onclick="doDeleteStudent('+s.id+',\''+escHtml(s.display_name)+'\')">Remove</button>'
+      +'</div></div>';
   });
   document.getElementById('student-list').innerHTML = html;
 }
@@ -236,45 +259,218 @@ async function addStudent() {
   var name     = document.getElementById('add-name').value.trim();
   var classSel = document.getElementById('add-class');
   var classSet = classSel.value;
-
-  if (classSet === '__other') {
-    classSet = prompt('Enter new class name (e.g. U6-A):');
-    if (!classSet) return;
-  }
+  if (classSet === '__other') { classSet = prompt('Enter new class name (e.g. U6-A):'); if (!classSet) return; }
   if (!name) { alert('Please enter a first name'); return; }
-
   var username = generateUsername();
   var pin      = generatePin();
-
-  var result = await createStudent(ADMIN_USER, ADMIN_PASS, username, pin, name, classSet);
+  var result   = await createStudent(ADMIN_USER, ADMIN_PASS, username, pin, name, classSet);
   if (!result.ok) { alert(result.error); return; }
-
   var resultDiv = document.getElementById('new-result');
   resultDiv.style.display = 'block';
   resultDiv.innerHTML =
     '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:.4rem">Student Created</div>'
-    + '<div style="font-size:.9rem;margin-bottom:.3rem"><strong>' + escHtml(name) + '</strong> &middot; ' + escHtml(classSet) + '</div>'
-    + '<div style="font-size:.85rem">Username: <code>' + escHtml(username) + '</code></div>'
-    + '<div style="font-size:.85rem">PIN: <code>' + escHtml(pin) + '</code></div>'
-    + '<div style="font-size:.7rem;color:var(--mut);opacity:.5;margin-top:.4rem">Note this PIN down — it cannot be viewed again, only reset.</div>';
-
+    +'<div style="font-size:.9rem;margin-bottom:.3rem"><strong>'+escHtml(name)+'</strong> &middot; '+escHtml(classSet)+'</div>'
+    +'<div style="font-size:.85rem">Username: <code>'+escHtml(username)+'</code></div>'
+    +'<div style="font-size:.85rem">PIN: <code>'+escHtml(pin)+'</code></div>'
+    +'<div style="font-size:.7rem;color:var(--mut);opacity:.5;margin-top:.4rem">Note this PIN — it cannot be viewed again, only reset.</div>';
   document.getElementById('add-name').value = '';
-  await loadData();
+  await loadAll();
 }
 
 async function doDeleteStudent(id, name) {
-  if (!confirm('Remove ' + name + '? This will delete all their quiz attempts too.')) return;
+  if (!confirm('Remove '+name+'? This will delete all their quiz attempts too.')) return;
   var result = await deleteStudent(ADMIN_USER, ADMIN_PASS, id);
   if (!result.ok) { alert(result.error); return; }
-  await loadData();
+  await loadAll();
 }
 
 async function doResetPin(id, name) {
   var newPin = generatePin();
-  if (!confirm('Reset PIN for ' + name + '?\n\nNew PIN will be: ' + newPin)) return;
+  if (!confirm('Reset PIN for '+name+'?\n\nNew PIN will be: '+newPin)) return;
   var result = await resetStudentPin(ADMIN_USER, ADMIN_PASS, id, newPin);
   if (!result.ok) { alert(result.error); return; }
-  alert('PIN for ' + name + ' reset to: ' + newPin);
+  alert('PIN for '+name+' reset to: '+newPin);
+}
+
+// ── Teacher list ──────────────────────────────────────────────────
+function renderTeacherList() {
+  if (!TEACHERS.length) {
+    document.getElementById('teacher-list').innerHTML = '<div style="color:var(--mut);opacity:.5;padding:1rem">No teachers yet.</div>';
+    return;
+  }
+  var html = '';
+  TEACHERS.forEach(function(t){
+    var classes = t.assigned_classes ? t.assigned_classes.join(', ') : 'All classes';
+    var ll = t.last_login ? t.last_login.substring(0,10) : 'never';
+    html += '<div class="scard">'
+      +'<div class="scard-info">'
+      +'<div class="scard-name">'+escHtml(t.display_name)+'</div>'
+      +'<div class="scard-user">'+escHtml(t.username)+'</div>'
+      +'<div class="scard-class">'+escHtml(classes)+' &middot; last login: '+ll+'</div>'
+      +'</div>'
+      +'<div class="scard-actions">'
+      +'<button class="scard-btn del" onclick="doRemoveTeacher('+t.id+',\''+escHtml(t.display_name)+'\')">Remove</button>'
+      +'</div></div>';
+  });
+  document.getElementById('teacher-list').innerHTML = html;
+}
+
+async function addTeacher() {
+  var name    = document.getElementById('t-name').value.trim();
+  var uname   = document.getElementById('t-uname').value.trim();
+  var pwd     = document.getElementById('t-pwd').value;
+  var classes = document.getElementById('t-classes').value.trim();
+  var resultDiv = document.getElementById('t-result');
+
+  if (!name || !uname || !pwd) { alert('Please fill in display name, username, and password'); return; }
+  if (pwd.length < 8) { alert('Password must be at least 8 characters'); return; }
+
+  var assignedClasses = classes ? classes.split(',').map(function(c){ return c.trim().toUpperCase(); }).filter(Boolean) : [];
+
+  var result = await adminAddTeacher(ADMIN_USER, ADMIN_PASS, uname, pwd, name, assignedClasses);
+  if (!result.ok) { alert(result.error); return; }
+
+  resultDiv.style.display = 'block';
+  resultDiv.innerHTML = '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:.4rem">Teacher Added</div>'
+    +'<div style="font-size:.9rem"><strong>'+escHtml(name)+'</strong> &middot; <code>'+escHtml(uname)+'</code></div>'
+    +'<div style="font-size:.82rem;color:var(--mut)">Classes: '+(assignedClasses.length ? assignedClasses.join(', ') : 'All classes')+'</div>';
+
+  document.getElementById('t-name').value = '';
+  document.getElementById('t-uname').value = '';
+  document.getElementById('t-pwd').value = '';
+  document.getElementById('t-classes').value = '';
+  await loadAll();
+}
+
+async function doRemoveTeacher(id, name) {
+  if (!confirm('Remove teacher account for '+name+'?')) return;
+  var result = await adminRemoveTeacher(ADMIN_USER, ADMIN_PASS, id);
+  if (!result.ok) { alert(result.error); return; }
+  await loadAll();
+}
+
+// ── Scores ────────────────────────────────────────────────────────
+function renderScores() {
+  var classFilter = document.getElementById('score-class-filter').value;
+  var paperFilter = document.getElementById('score-paper-filter').value;
+  var themeFilter = document.getElementById('score-theme-filter').value;
+  var sortBy      = document.getElementById('score-sort').value;
+
+  var quizIds = Object.keys(QUIZZES).filter(function(qid){
+    var q = QUIZZES[qid];
+    if (paperFilter !== 'all' && q.paper !== paperFilter) return false;
+    if (themeFilter !== 'all') {
+      var found = false;
+      ['micro','macro'].forEach(function(p){ if (!THEMES[p]) return;
+        THEMES[p].forEach(function(th){ if (th.label===themeFilter && th.topics.some(function(t){ return t.id===qid; })) found=true; }); });
+      if (!found) return false;
+    }
+    return true;
+  });
+
+  var students = DATA.students.filter(function(s){ return classFilter==='all' || s.class_set===classFilter; });
+
+  var bestMap = {};
+  DATA.attempts.forEach(function(a){
+    if (!bestMap[a.profile_id]) bestMap[a.profile_id] = {};
+    var pct = Math.round(a.score/a.max_score*100);
+    if (!bestMap[a.profile_id][a.quiz_id] || pct > bestMap[a.profile_id][a.quiz_id])
+      bestMap[a.profile_id][a.quiz_id] = pct;
+  });
+
+  if (sortBy === 'score') {
+    students = students.slice().sort(function(a,b){
+      var aa=computeAvg(bestMap[a.id],quizIds), ba=computeAvg(bestMap[b.id],quizIds);
+      return ba-aa;
+    });
+  }
+
+  if (!students.length) {
+    document.getElementById('scores-table').innerHTML = '<div style="text-align:center;padding:2rem;color:var(--mut);opacity:.5">No students found.</div>';
+    return;
+  }
+
+  var classGroups = {};
+  students.forEach(function(s){ (classGroups[s.class_set]=classGroups[s.class_set]||[]).push(s); });
+
+  var html = '<table class="scores"><thead><tr><th>Student</th>';
+  quizIds.forEach(function(qid){
+    var title=QUIZZES[qid].title; if(title.length>18) title=title.substring(0,16)+'…';
+    html += '<th title="'+escHtml(QUIZZES[qid].title)+'">'+escHtml(title)+'</th>';
+  });
+  html += '<th>Avg</th></tr></thead><tbody>';
+
+  Object.keys(classGroups).sort().forEach(function(cls){
+    classGroups[cls].forEach(function(s){
+      html += '<tr><td>'+escHtml(s.display_name)+'<span class="student-class">'+escHtml(s.class_set)+'</span></td>';
+      var sum=0, count=0;
+      quizIds.forEach(function(qid){
+        var best=bestMap[s.id]&&bestMap[s.id][qid];
+        if (typeof best==='number') { html+='<td class="'+(best>=70?'cell-g':best>=40?'cell-a':'cell-r')+'">'+best+'</td>'; sum+=best; count++; }
+        else html+='<td class="cell-e">&middot;</td>';
+      });
+      var avg=count>0?Math.round(sum/count):'';
+      html+='<td class="'+(avg>=70?'cell-g':avg>=40?'cell-a':avg?'cell-r':'cell-e')+'" style="font-weight:700;border-left:1px solid var(--bdr)">'+(avg||'&middot;')+'</td></tr>';
+    });
+    html += '<tr style="background:rgba(255,255,255,.03);font-style:italic"><td style="font-size:.68rem;opacity:.55;padding-left:.5rem">'+escHtml(cls)+' avg</td>';
+    quizIds.forEach(function(qid){
+      var vals=[]; classGroups[cls].forEach(function(s){ var v=bestMap[s.id]&&bestMap[s.id][qid]; if(typeof v==='number') vals.push(v); });
+      if (vals.length) { var a=Math.round(vals.reduce(function(s,v){return s+v;},0)/vals.length); html+='<td class="'+(a>=70?'cell-g':a>=40?'cell-a':'cell-r')+'" style="opacity:.65">'+a+'</td>'; }
+      else html+='<td class="cell-e">&middot;</td>';
+    });
+    html += '<td style="border-left:1px solid var(--bdr)"></td></tr>';
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('scores-table').innerHTML = html;
+}
+
+function computeAvg(quizMap, quizIds) {
+  if (!quizMap) return -1;
+  var sum=0, count=0;
+  quizIds.forEach(function(qid){ if(typeof quizMap[qid]==='number'){sum+=quizMap[qid];count++;} });
+  return count>0?sum/count:-1;
+}
+
+// ── Class codes ───────────────────────────────────────────────────
+function renderCodes() {
+  if (!CODES.length) {
+    document.getElementById('codes-list').innerHTML = '<div style="color:var(--mut);opacity:.5;padding:.5rem 0">No codes yet. Generate one above.</div>';
+    return;
+  }
+  var html = '<div class="student-list">';
+  CODES.forEach(function(c){
+    var activeStyle = c.active ? '' : 'opacity:.35;';
+    html += '<div class="scard" style="'+activeStyle+'">'
+      +'<div class="scard-info">'
+      +'<div class="scard-name" style="font-family:\'IBM Plex Mono\',monospace;letter-spacing:.1em">'+escHtml(c.code)+'</div>'
+      +'<div class="scard-class">'+escHtml(c.class_set)+' &middot; '+(c.active?'<span style="color:var(--green)">Active</span>':'<span style="color:var(--mut)">Retired</span>')+'</div>'
+      +'</div>'
+      +'<div class="scard-actions">'
+      +(c.active ? '<button class="scard-btn del" onclick="doRetireCode('+c.id+')">Retire</button>' : '')
+      +'</div></div>';
+  });
+  html += '</div>';
+  document.getElementById('codes-list').innerHTML = html;
+}
+
+async function createCode() {
+  var classSet = document.getElementById('code-class').value.trim();
+  if (!classSet) { alert('Please enter a class set name'); return; }
+  var result = await adminCreateClassCode(ADMIN_USER, ADMIN_PASS, classSet);
+  if (!result.ok) { alert(result.error); return; }
+  document.getElementById('code-class').value = '';
+  var c = result.data;
+  alert('Code created!\n\nCode: ' + c.code + '\nClass: ' + c.class_set + '\n\nShare this code with students to let them self-register.');
+  var cRes = await adminGetClassCodes(ADMIN_USER, ADMIN_PASS);
+  if (cRes.ok) { CODES = cRes.data; renderCodes(); }
+}
+
+async function doRetireCode(id) {
+  if (!confirm('Retire this code? Students can no longer use it to sign up.')) return;
+  await adminRetireClassCode(ADMIN_USER, ADMIN_PASS, id);
+  var cRes = await adminGetClassCodes(ADMIN_USER, ADMIN_PASS);
+  if (cRes.ok) { CODES = cRes.data; renderCodes(); }
 }
 
 // ── Change password ───────────────────────────────────────────────
@@ -283,32 +479,15 @@ async function doChangePassword() {
   var newPw  = document.getElementById('pw-new').value;
   var confPw = document.getElementById('pw-confirm').value;
   var msg    = document.getElementById('pw-msg');
-
-  msg.className = 'pw-msg';
-  msg.textContent = '';
-
-  if (!oldPw || !newPw || !confPw) {
-    msg.className = 'pw-msg err'; msg.textContent = 'Please fill in all fields'; return;
-  }
-  if (newPw !== confPw) {
-    msg.className = 'pw-msg err'; msg.textContent = 'New passwords do not match'; return;
-  }
-  if (newPw.length < 8) {
-    msg.className = 'pw-msg err'; msg.textContent = 'New password must be at least 8 characters'; return;
-  }
-
+  msg.className = 'pw-msg'; msg.textContent = '';
+  if (!oldPw||!newPw||!confPw) { msg.className='pw-msg err'; msg.textContent='Please fill in all fields'; return; }
+  if (newPw !== confPw)        { msg.className='pw-msg err'; msg.textContent='New passwords do not match'; return; }
+  if (newPw.length < 8)        { msg.className='pw-msg err'; msg.textContent='New password must be at least 8 characters'; return; }
   var result = await changeTeacherPassword(ADMIN_USER, oldPw, newPw);
-  if (!result.ok) {
-    msg.className = 'pw-msg err'; msg.textContent = result.error || 'Failed to change password';
-    return;
-  }
-
-  // Update stored credential so admin can continue using the dashboard
+  if (!result.ok) { msg.className='pw-msg err'; msg.textContent=result.error||'Failed to change password'; return; }
   ADMIN_PASS = newPw;
-  document.getElementById('pw-old').value = '';
-  document.getElementById('pw-new').value = '';
-  document.getElementById('pw-confirm').value = '';
-  msg.className = 'pw-msg ok'; msg.textContent = '&#10003; Password updated successfully';
+  ['pw-old','pw-new','pw-confirm'].forEach(function(id){ document.getElementById(id).value=''; });
+  msg.className='pw-msg ok'; msg.textContent='✓ Password updated successfully';
 }
 </script>
 </body>

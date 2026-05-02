@@ -41,6 +41,19 @@ function rootPath() {
 
 // ── Login / Logout ───────────────────────────────────────────────
 
+async function doSignUp(classCode, displayName) {
+  var sb = getSupabase();
+  if (!sb) return { error: 'Database not configured' };
+  var { data, error } = await sb.rpc('sign_up', {
+    p_class_code:   classCode.trim().toUpperCase(),
+    p_display_name: displayName.trim()
+  });
+  if (error) return { error: error.message };
+  if (!data)  return { error: 'Sign-up failed' };
+  if (data.error) return { error: data.error };
+  return { result: data };
+}
+
 async function doLogin(username, pin) {
   var sb = getSupabase();
   if (!sb) return { error: 'Database not configured' };
@@ -207,6 +220,7 @@ window.WA = {
 };
 
 // Expose functions globally so inline onclick attributes can find them
+window.doSignUp         = doSignUp;
 window.showLoginModal   = showLoginModal;
 window.handleLogin      = handleLogin;
 window.doLogout         = doLogout;

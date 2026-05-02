@@ -67,12 +67,12 @@
 
       if (quiz) {
         html += ''
-          + '<a class="topic-card" href="quiz.html?topic=' + topic.id + '" style="--tc:' + theme.colour + '">'
+          + '<div class="topic-card" onclick="startQuiz(\'' + topic.id + '\')" style="--tc:' + theme.colour + '">'
           + '  <div class="topic-n">Topic ' + num + '</div>'
           + '  <div class="topic-name">'    + topic.name + '</div>'
-          + '  <div class="topic-meta">'    + quiz.questions.length + ' questions &middot; Available</div>'
+          + '  <div class="topic-meta">'    + quiz.questions.length + ' questions &middot; Click to start</div>'
           + '  <div class="topic-arrow">&rarr;</div>'
-          + '</a>';
+          + '</div>';
       } else {
         html += ''
           + '<div class="topic-card soon" style="--tc:' + theme.colour + '">'
@@ -87,6 +87,14 @@
   });
 
   root.innerHTML = html;
+
+  window.startQuiz = function(topicId) {
+    if (typeof WA !== 'undefined' && WA.isLoggedIn()) {
+      window.location.href = 'quiz.html?topic=' + topicId;
+    } else {
+      if (typeof WA !== 'undefined') WA.showLoginModal();
+    }
+  };
 
   function hexAlpha(hex, alpha){
     hex = hex.replace('#', '');
