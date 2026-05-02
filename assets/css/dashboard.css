@@ -1,0 +1,153 @@
+/* ═══════════════════════════════════════════════════════════════
+   Wycombe Abbey Economics · Dashboard Styles
+   Student progress, teacher analytics, hub pages.
+   Requires base.css to be loaded first.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Hub hero ────────────────────────────────────────────────── */
+.hub-hero    { text-align: center; padding: 2rem 1rem 1.5rem; }
+.hub-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; color: var(--bluel); margin-bottom: .5rem; opacity: .85; }
+.hub-title   { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; line-height: 1.1; margin-bottom: .25rem; }
+.hub-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: var(--goldl); margin-bottom: 1rem; }
+.hub-intro   { font-size: .88rem; color: var(--mut); max-width: 580px; margin: 0 auto; line-height: 1.8; opacity: .88; }
+
+/* ── Theme sections (used on hub and student dashboard) ──────── */
+.theme-section { margin-bottom: 1.6rem; }
+.theme-header  { display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem; padding-bottom: .5rem; border-bottom: 1px solid var(--bdr); }
+.theme-tag     { font-family: 'IBM Plex Mono', monospace; font-size: .55rem; letter-spacing: .1em; text-transform: uppercase; padding: .22rem .6rem; border-radius: 3px; font-weight: 700; }
+.theme-name    { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; color: var(--txt); }
+.theme-sub     { font-family: 'IBM Plex Mono', monospace; font-size: .52rem; text-transform: uppercase; letter-spacing: .07em; color: var(--mut); opacity: .55; }
+
+/* ── Topic grid (hub pages) ──────────────────────────────────── */
+.topics-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: .55rem; }
+.topic-card  {
+  background: rgba(26,39,68,.5);
+  border: 1px solid var(--bdr);
+  border-radius: 8px;
+  padding: .75rem .9rem;
+  cursor: pointer;
+  transition: all .18s;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+.topic-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--tc, var(--bdr)); transition: height .18s; }
+.topic-card:hover   { border-color: var(--tc, var(--bdr)); background: rgba(26,39,68,.8); transform: translateY(-1px); }
+.topic-card:hover::before { height: 3px; }
+.topic-card.soon    { opacity: .42; cursor: default; pointer-events: none; }
+.topic-card.soon:hover { transform: none; background: rgba(26,39,68,.5); border-color: var(--bdr); }
+.topic-card.soon::before { height: 2px; }
+
+.topic-n    { font-family: 'IBM Plex Mono', monospace; font-size: .48rem; letter-spacing: .08em; text-transform: uppercase; color: var(--mut); opacity: .45; margin-bottom: .2rem; }
+.topic-name { font-family: 'Cormorant Garamond', serif; font-size: .98rem; font-weight: 700; color: var(--txt); line-height: 1.3; margin-bottom: .25rem; }
+.topic-meta { font-size: .7rem; color: var(--mut); opacity: .55; font-family: 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: .06em; }
+.topic-card.soon .topic-meta { color: var(--mut); }
+.topic-card:not(.soon) .topic-meta { color: var(--goldl); opacity: .7; }
+.topic-arrow { position: absolute; right: .75rem; top: 50%; transform: translateY(-50%); font-size: .9rem; color: var(--mut); opacity: .3; transition: all .18s; }
+.topic-card:hover:not(.soon) .topic-arrow { opacity: .8; right: .55rem; }
+
+/* ── Student dashboard ───────────────────────────────────────── */
+.dash-hero   { text-align: center; padding: 1.8rem 1rem 1.2rem; }
+.dash-name   { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; }
+.dash-class  { font-family: 'IBM Plex Mono', monospace; font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; color: var(--bluel); margin-top: .25rem; }
+.dash-stats  { display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; flex-wrap: wrap; }
+.stat-box    { text-align: center; }
+.stat-val    { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; line-height: 1; }
+.stat-lbl    { font-family: 'IBM Plex Mono', monospace; font-size: .48rem; letter-spacing: .1em; text-transform: uppercase; color: var(--mut); opacity: .55; margin-top: .2rem; }
+
+.quiz-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: .55rem; }
+.qcard     { background: rgba(26,39,68,.5); border: 1px solid var(--bdr); border-radius: 8px; padding: .7rem .85rem; position: relative; overflow: hidden; text-decoration: none; color: inherit; display: block; transition: all .18s; }
+.qcard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--card-col, var(--bdr)); }
+.qcard:hover   { border-color: var(--card-col, var(--bdr)); background: rgba(26,39,68,.8); transform: translateY(-1px); }
+.qcard-name    { font-family: 'Cormorant Garamond', serif; font-size: .9rem; font-weight: 700; line-height: 1.3; margin-bottom: .3rem; }
+.qcard-score   { font-family: 'IBM Plex Mono', monospace; font-size: .78rem; font-weight: 700; margin-bottom: .15rem; }
+.qcard-meta    { font-family: 'IBM Plex Mono', monospace; font-size: .46rem; letter-spacing: .06em; text-transform: uppercase; color: var(--mut); opacity: .5; }
+.qcard.not-done { opacity: .45; }
+.qcard.not-done .qcard-score { color: var(--mut); }
+
+.login-prompt    { text-align: center; padding: 4rem 2rem; }
+.login-prompt h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin-bottom: .8rem; }
+.login-prompt p  { color: var(--mut); margin-bottom: 1.5rem; font-size: .9rem; }
+
+/* ── Teacher dashboard login form ────────────────────────────── */
+.t-login { max-width: 380px; margin: 6rem auto; background: rgba(26,39,68,.6); border: 1px solid var(--bdr); border-radius: 12px; padding: 2.2rem; }
+.t-login h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: .3rem; }
+.t-login .sub { font-family: 'IBM Plex Mono', monospace; font-size: .52rem; letter-spacing: .1em; text-transform: uppercase; color: var(--mut); opacity: .5; margin-bottom: 1.2rem; }
+.t-input { width: 100%; padding: .65rem .8rem; margin-bottom: .7rem; background: rgba(255,255,255,.06); border: 1px solid var(--bdr); border-radius: 6px; color: #fff; font-family: Nunito, sans-serif; font-size: .9rem; outline: none; }
+.t-input:focus { border-color: var(--blue); }
+.t-err { font-size: .78rem; color: var(--red); margin-bottom: .6rem; min-height: 1.2em; }
+
+/* ── Tabs ────────────────────────────────────────────────────── */
+.tabs { display: flex; gap: .3rem; margin-bottom: 1.2rem; border-bottom: 1px solid var(--bdr); padding-bottom: .5rem; flex-wrap: wrap; }
+.tab  { font-family: 'IBM Plex Mono', monospace; font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; padding: .45rem .9rem; border-radius: 4px 4px 0 0; cursor: pointer; color: var(--mut); background: transparent; border: 1px solid transparent; border-bottom: none; transition: all .15s; }
+.tab:hover  { color: var(--txt); background: rgba(255,255,255,.04); }
+.tab.active { color: var(--goldl); border-color: var(--bdr); background: rgba(26,39,68,.6); }
+.panel      { display: none; }
+.panel.active { display: block; }
+
+/* ── Scores table ────────────────────────────────────────────── */
+.scores-controls { display: flex; gap: .6rem; margin-bottom: 1rem; align-items: center; flex-wrap: wrap; }
+.scores-controls select,
+.scores-controls input { font-family: 'IBM Plex Mono', monospace; font-size: .7rem; padding: .4rem .6rem; background: rgba(255,255,255,.06); border: 1px solid var(--bdr); border-radius: 4px; color: var(--txt); outline: none; }
+.scores-wrap { overflow-x: auto; margin-bottom: 1.5rem; }
+table.scores { border-collapse: collapse; font-size: .72rem; width: 100%; min-width: 600px; }
+table.scores th { font-family: 'IBM Plex Mono', monospace; font-size: .48rem; letter-spacing: .06em; text-transform: uppercase; color: var(--mut); padding: .4rem .3rem; text-align: center; border-bottom: 1px solid var(--bdr); position: sticky; top: 0; background: var(--navyd); white-space: nowrap; }
+table.scores th:first-child { text-align: left; min-width: 120px; }
+table.scores td { padding: .35rem .3rem; text-align: center; border-bottom: 1px solid rgba(46,63,96,.3); font-family: 'IBM Plex Mono', monospace; font-size: .65rem; }
+table.scores td:first-child { text-align: left; font-family: Nunito, sans-serif; font-size: .78rem; font-weight: 600; }
+table.scores tr:hover td { background: rgba(255,255,255,.03); }
+.cell-g { color: var(--green); font-weight: 700; }
+.cell-a { color: var(--goldl); font-weight: 600; }
+.cell-r { color: var(--red); }
+.cell-e { color: var(--mut); opacity: .2; }
+.student-class { font-family: 'IBM Plex Mono', monospace; font-size: .5rem; color: var(--bluel); opacity: .7; margin-left: .3rem; }
+
+/* ── Student management (teacher & admin) ────────────────────── */
+.admin-section    { margin-bottom: 2rem; }
+.admin-section h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; margin-bottom: .6rem; }
+
+.add-form       { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: flex-end; }
+.add-form div   { display: flex; flex-direction: column; gap: .2rem; }
+.add-form label { font-family: 'IBM Plex Mono', monospace; font-size: .48rem; letter-spacing: .06em; text-transform: uppercase; color: var(--mut); opacity: .55; }
+.add-form input,
+.add-form select { font-family: 'IBM Plex Mono', monospace; font-size: .72rem; padding: .45rem .6rem; background: rgba(255,255,255,.06); border: 1px solid var(--bdr); border-radius: 4px; color: var(--txt); outline: none; min-width: 100px; }
+
+.student-list { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: .5rem; }
+.scard        { background: rgba(26,39,68,.5); border: 1px solid var(--bdr); border-radius: 8px; padding: .65rem .85rem; display: flex; justify-content: space-between; align-items: center; }
+.scard-info   { flex: 1; }
+.scard-name   { font-size: .85rem; font-weight: 600; }
+.scard-user   { font-family: 'IBM Plex Mono', monospace; font-size: .58rem; color: var(--bluel); }
+.scard-class  { font-family: 'IBM Plex Mono', monospace; font-size: .5rem; color: var(--mut); opacity: .6; }
+.scard-actions{ display: flex; gap: .3rem; }
+.scard-btn    { font-family: 'IBM Plex Mono', monospace; font-size: .5rem; padding: .25rem .5rem; border-radius: 3px; cursor: pointer; border: 1px solid var(--bdr); background: rgba(255,255,255,.04); color: var(--mut); transition: all .15s; }
+.scard-btn:hover { color: var(--txt); background: rgba(255,255,255,.08); }
+.scard-btn.del:hover { color: var(--red); border-color: var(--red); }
+
+.new-student-result { background: rgba(76,175,128,.08); border: 1px solid rgba(76,175,128,.3); border-radius: 8px; padding: .8rem 1rem; margin-bottom: 1rem; display: none; animation: fadeIn .3s; }
+.new-student-result code { font-family: 'IBM Plex Mono', monospace; font-size: .85rem; color: var(--goldl); background: rgba(0,0,0,.2); padding: .15rem .4rem; border-radius: 3px; }
+
+/* ── Change password form ────────────────────────────────────── */
+.pw-form { max-width: 420px; }
+.pw-form input { width: 100%; padding: .6rem .8rem; margin-bottom: .6rem; background: rgba(255,255,255,.06); border: 1px solid var(--bdr); border-radius: 6px; color: #fff; font-family: Nunito, sans-serif; font-size: .88rem; outline: none; }
+.pw-form input:focus { border-color: var(--blue); }
+.pw-msg { font-family: 'IBM Plex Mono', monospace; font-size: .62rem; letter-spacing: .06em; margin-top: .5rem; min-height: 1.2em; animation: errSlide .25s ease both; }
+.pw-msg:empty { animation: none; }
+.pw-msg.ok  { color: var(--green); }
+.pw-msg.err { color: var(--red); }
+
+/* ── DB unconfigured banner ──────────────────────────────────── */
+.db-error {
+  max-width: 520px;
+  margin: 5rem auto;
+  background: rgba(224,80,96,.08);
+  border: 1px solid rgba(224,80,96,.3);
+  border-radius: 12px;
+  padding: 2rem 2.2rem;
+  text-align: center;
+}
+.db-error h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--red); margin-bottom: .6rem; }
+.db-error p  { font-size: .85rem; color: var(--mut); line-height: 1.7; }
