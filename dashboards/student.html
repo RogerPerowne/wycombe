@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="wa-root" content="../">
+<title>My Progress - Wycombe Abbey Economics</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+
+<header>
+  <div class="hl">
+    <img class="hlogo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display='none'">
+    <div>
+      <div class="htit">My Progress</div>
+      <div class="hsub">A-Level Economics &middot; Quiz Dashboard</div>
+    </div>
+  </div>
+  <div class="hnav">
+    <a href="../micro-quiz.html" class="hbtn">Paper 1</a>
+    <a href="../macro-quiz.html" class="hbtn">Paper 2</a>
+  </div>
+</header>
+
+<div class="app" id="root">
+  <div style="text-align:center;padding:4rem 0;color:var(--mut);opacity:.5">Loading...</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../quiz-data.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/db/client.js"></script>
+<script src="../assets/js/db/auth.js"></script>
+<script src="../assets/js/db/attempts.js"></script>
+<script>
+(async function(){
+  var root = document.getElementById('root');
+
+  // Defensive check - show clear error if Supabase is not configured
+  if (!getSupabase()) {
+    root.innerHTML =
+      '<div class="db-error">'
+      + '<h2>Database not configured</h2>'
+      + '<p>The Supabase connection is not set up yet. Set <code>SUPABASE_URL</code> and '
+      + '<code>SUPABASE_ANON_KEY</code> in <code>assets/js/config.js</code> to enable login and score tracking.</p>'
+      + '</div>';
+    return;
+  }
+
+  var user = getCurrentUser();
+
+  if (!user) {
+    root.innerHTML =
+      '<div class="login-prompt">'
+      + '<h2>Student Dashboard</h2>'
+      + '<p>Log in to see your quiz progress and scores across all topics.</p>'
+      + '<button class="btn b-blue" onclick="showLoginModal()" style="font-size:.7rem;padding:.8rem 1.6rem">Log In</button>'
+      + '<p style="margin-top:1.5rem;font-size:.75rem;opacity:.4">'
+      + '<a href="../micro-quiz.html" style="color:var(--goldl);text-decoration:none">Browse quizzes without logging in &rarr;</a></p>'
+      + '</div>';
+    return;
+  }
+
+  // Fetch attempts
+  var sb = getSupabase();
+  var attempts = [];
+  try {
+    var { data } = await sb.rpc('get_my_attempts', { p_profile_id: user.id });
+    if (data) attempts = data;
+  } catch(e) { console.warn(e); }
+
+  // Build best-score map: quizId -> { best, latest, count }
+  var scoreMap = {};
+  attempts.forEach(function(a) {
+    if (!scoreMap[a.quiz_id]) scoreMap[a.quiz_id] = { best: 0, latest: 0, count: 0 };
+    scoreMap[a.quiz_id].count++;
+    var pct = Math.round(a.score / a.max_score * 100);
+    if (pct > scoreMap[a.quiz_id].best) scoreMap[a.quiz_id].best = pct;
+  });
+  // First entry in desc-sorted array is latest
+  attempts.forEach(function(a) {
+    if (!scoreMap[a.quiz_id]._latestSet) {
+      scoreMap[a.quiz_id].latest = Math.round(a.score / a.max_score * 100);
+      scoreMap[a.quiz_id]._latestSet = true;
+    }
+  });
+
+  // Summary stats
+  var totalQuizzes = Object.keys(QUIZZES).length;
+  var completed = Object.keys(scoreMap).length;
+  var avgBest = 0;
+  if (completed > 0) {
+    var sum = 0;
+    Object.keys(scoreMap).forEach(function(k){ sum += scoreMap[k].best; });
+    avgBest = Math.round(sum / completed);
+  }
+
+  // Theme structure from quiz-data.js
+  var themeStructure = [];
+  if (typeof THEMES !== 'undefined') {
+    ['micro','macro'].forEach(function(paper) {
+      if (THEMES[paper]) THEMES[paper].forEach(function(t) {
+        themeStructure.push({ tag: t.label + ' · ' + t.paper, name: t.name, colour: t.colour, topics: t.topics });
+      });
+    });
+  }
+
+  var html = '<div class="dash-hero">'
+    + '<div class="dash-name">' + escHtml(user.display_name) + '</div>'
+    + '<div class="dash-class">' + escHtml(user.class_set) + '</div>'
+    + '<div class="dash-stats">'
+    + '<div class="stat-box"><div class="stat-val" style="color:var(--bluel)">' + completed
+    + '<span style="font-size:1rem;color:var(--mut);opacity:.4"> / ' + totalQuizzes + '</span></div>'
+    + '<div class="stat-lbl">Quizzes completed</div></div>'
+    + '<div class="stat-box"><div class="stat-val" style="color:'
+    + (avgBest >= 70 ? 'var(--green)' : avgBest >= 40 ? 'var(--goldl)' : 'var(--red)') + '">'
+    + (completed > 0 ? avgBest + '%' : '&mdash;') + '</div><div class="stat-lbl">Average best score</div></div>'
+    + '<div class="stat-box"><div class="stat-val" style="color:var(--coral)">' + attempts.length + '</div>'
+    + '<div class="stat-lbl">Total attempts</div></div>'
+    + '</div></div>';
+
+  if (themeStructure.length > 0) {
+    themeStructure.forEach(function(theme) {
+      html += '<div class="theme-section">'
+        + '<div class="theme-header">'
+        + '<span class="theme-tag" style="color:' + theme.colour + ';border:1px solid ' + theme.colour + '55;background:' + theme.colour + '15">' + theme.tag + '</span>'
+        + '<span class="theme-name">' + theme.name + '</span></div>'
+        + '<div class="quiz-grid">';
+
+      theme.topics.forEach(function(t) {
+        var s = scoreMap[t.id];
+        var col, scoreTxt, metaTxt, cls;
+        if (s) {
+          col      = s.best >= 70 ? 'var(--green)' : s.best >= 40 ? 'var(--goldl)' : 'var(--red)';
+          scoreTxt = '<span style="color:' + col + '">' + s.best + '%</span>';
+          metaTxt  = s.count + ' attempt' + (s.count > 1 ? 's' : '') + (s.count > 1 ? ' &middot; latest ' + s.latest + '%' : '');
+          cls = '';
+        } else {
+          col      = 'var(--bdr)';
+          scoreTxt = '&mdash;';
+          metaTxt  = 'Not yet attempted';
+          cls = ' not-done';
+        }
+
+        // Links resolve to /quiz.html?topic=X when site is at root (../ from /dashboards/)
+        html += '<a href="../quiz.html?topic=' + t.id + '" class="qcard' + cls + '" style="--card-col:' + col + '">'
+          + '<div class="qcard-name">' + t.name + '</div>'
+          + '<div class="qcard-score">' + scoreTxt + '</div>'
+          + '<div class="qcard-meta">' + metaTxt + '</div></a>';
+      });
+
+      html += '</div></div>';
+    });
+  } else {
+    // Fallback: flat list
+    html += '<div class="quiz-grid">';
+    Object.keys(QUIZZES).forEach(function(qid) {
+      var q = QUIZZES[qid];
+      var s = scoreMap[qid];
+      var col = s ? (s.best >= 70 ? 'var(--green)' : s.best >= 40 ? 'var(--goldl)' : 'var(--red)') : 'var(--bdr)';
+      html += '<a href="../quiz.html?topic=' + qid + '" class="qcard' + (s ? '' : ' not-done') + '" style="--card-col:' + col + '">'
+        + '<div class="qcard-name">' + q.title + '</div>'
+        + '<div class="qcard-score">' + (s ? '<span style="color:' + col + '">' + s.best + '%</span>' : '&mdash;') + '</div>'
+        + '<div class="qcard-meta">' + (s ? s.count + ' attempt' + (s.count > 1 ? 's' : '') : 'Not attempted') + '</div></a>';
+    });
+    html += '</div>';
+  }
+
+  root.innerHTML = html;
+})();
+</script>
+</body>
+</html>

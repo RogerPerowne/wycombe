@@ -3,52 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="wa-root" content="">
 <title>Microeconomics Quiz - Wycombe Abbey</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{--navy:#1a2744;--navyd:#0f1729;--gold:#c9a84c;--goldl:#e2c47a;--green:#4caf80;--red:#e05060;--orange:#e0933a;--blue:#4a7fb5;--bluel:#6fa8d8;--teal:#2a9d8f;--purple:#9775b5;--coral:#e07a5f;--amber:#d4a72c;--txt:#fff;--mut:#dde3f0;--bdr:#2e3f60}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--navyd);color:var(--txt);font-family:'Nunito','Segoe UI',sans-serif;font-size:16px;min-height:100vh}
-header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);border-bottom:2px solid var(--gold);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:72px;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.5)}
-.hl{display:flex;align-items:center;gap:.9rem}
-.hlogo{height:48px;width:48px;object-fit:contain;border-radius:4px}
-.htit{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:700;color:var(--txt)}
-.hsub{font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.7}
-.hbdg{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--blue);color:var(--bluel);padding:.24rem .78rem;border-radius:3px;background:rgba(74,127,181,.08)}
-.hnav{display:flex;align-items:center;gap:.6rem}
-.hbtn{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.28rem .72rem;border-radius:4px;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-block}
-.hbtn:hover{background:rgba(255,255,255,.1);color:var(--txt)}
-.app{max-width:920px;margin:0 auto;padding:1.6rem 1.8rem}
-@media(max-width:650px){header{padding:0 1rem;height:64px}.hbdg{display:none}.app{padding:1rem}}
-
-/* HUB */
-.hub-hero{text-align:center;padding:2rem 1rem 1.5rem}
-.hub-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bluel);margin-bottom:.5rem;opacity:.85}
-.hub-title{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;line-height:1.1;margin-bottom:.25rem}
-.hub-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--goldl);margin-bottom:1rem}
-.hub-intro{font-size:.88rem;color:var(--mut);max-width:580px;margin:0 auto;line-height:1.8;opacity:.88}
-.theme-section{margin-bottom:1.6rem}
-.theme-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--bdr)}
-.theme-tag{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;padding:.22rem .6rem;border-radius:3px;font-weight:700}
-.theme-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--txt)}
-.theme-sub{font-family:'IBM Plex Mono',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);opacity:.55}
-.topics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.55rem}
-.topic-card{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:8px;padding:.75rem .9rem;cursor:pointer;transition:all .18s;position:relative;overflow:hidden;text-align:left;display:block;width:100%;text-decoration:none;color:inherit}
-.topic-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--tc,var(--bdr));transition:height .18s}
-.topic-card:hover{border-color:var(--tc,var(--bdr));background:rgba(26,39,68,.8);transform:translateY(-1px)}
-.topic-card:hover::before{height:3px}
-.topic-card.soon{opacity:.42;cursor:default;pointer-events:none}
-.topic-card.soon:hover{transform:none;background:rgba(26,39,68,.5);border-color:var(--bdr)}
-.topic-card.soon::before{height:2px}
-.topic-n{font-family:'IBM Plex Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);opacity:.45;margin-bottom:.2rem}
-.topic-name{font-family:'Cormorant Garamond',serif;font-size:.98rem;font-weight:700;color:var(--txt);line-height:1.3;margin-bottom:.25rem}
-.topic-meta{font-size:.7rem;color:var(--mut);opacity:.55;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.06em}
-.topic-card.soon .topic-meta{color:var(--mut)}
-.topic-card:not(.soon) .topic-meta{color:var(--goldl);opacity:.7}
-.topic-arrow{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);font-size:.9rem;color:var(--mut);opacity:.3;transition:all .18s}
-.topic-card:hover:not(.soon) .topic-arrow{opacity:.8;right:.55rem}
-.section-lbl{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.55;margin-bottom:.6rem}
-</style>
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/dashboard.css">
 </head>
 <body>
 <header>
@@ -61,68 +20,67 @@ header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);b
   </div>
   <div class="hnav">
     <a href="index.html" class="hbtn">&#8592; Home</a>
-    <span class="hbdg">Paper 1</span>
+    <span class="hbdg" style="border-color:var(--blue);color:var(--bluel);background:rgba(74,127,181,.08)">Paper 1</span>
   </div>
 </header>
 <div class="app" id="root"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="quiz-data.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/db/client.js"></script>
+<script src="assets/js/db/auth.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
-//  Microeconomics Hub - auto-renders from THEMES.micro
+//  Microeconomics Hub — auto-renders from THEMES.micro
 // ───────────────────────────────────────────────────────────────
 //  A topic appears as "Available" if QUIZZES[id] exists,
 //  otherwise as "Coming Soon" (visible but disabled).
-//  Add new topics by adding entries to QUIZZES in quiz-data.js.
 // ═══════════════════════════════════════════════════════════════
 
 (function(){
-  var root = document.getElementById('root');
+  var root   = document.getElementById('root');
   var themes = THEMES.micro;
 
-  // Hero section
   var html = ''
     + '<div class="hub-hero">'
     + '  <div class="hub-eyebrow">Edexcel A-Level &middot; Paper 1</div>'
     + '  <h1 class="hub-title">Microeconomics</h1>'
     + '  <div class="hub-tagline">Topic-by-topic revision quizzes &middot; Themes 1 &amp; 3</div>'
-    + '  <p class="hub-intro">Pick any topic to start a ten-question quiz. Each features a mix of formats - sorts, calculations, diagram interpretation, paragraph completion, multi-select, and more - with detailed feedback designed for A-level analysis and evaluation marks.</p>'
+    + '  <p class="hub-intro">Pick any topic to start a ten-question quiz. Each features a mix of formats — sorts, calculations, diagram interpretation, paragraph completion, multi-select, and more — with detailed feedback designed for A-level analysis and evaluation marks.</p>'
     + '</div>';
 
-  // Render each theme block
   themes.forEach(function(theme){
     var available = theme.topics.filter(function(t){ return QUIZZES[t.id]; }).length;
 
     html += ''
       + '<div class="theme-section">'
       + '  <div class="theme-header">'
-      + '    <span class="theme-tag" style="background:'+ hexAlpha(theme.colour, 0.18) +';color:'+ theme.colour +';border:1px solid '+ hexAlpha(theme.colour, 0.4) +'">'+ theme.label +'</span>'
+      + '    <span class="theme-tag" style="background:' + hexAlpha(theme.colour, 0.18) + ';color:' + theme.colour + ';border:1px solid ' + hexAlpha(theme.colour, 0.4) + '">' + theme.label + '</span>'
       + '    <div>'
-      + '      <div class="theme-name">'+ theme.name +'</div>'
-      + '      <div class="theme-sub">'+ theme.topics.length +' topics &middot; '+ available +' available</div>'
+      + '      <div class="theme-name">' + theme.name + '</div>'
+      + '      <div class="theme-sub">'  + theme.topics.length + ' topics &middot; ' + available + ' available</div>'
       + '    </div>'
       + '  </div>'
       + '  <div class="topics-grid">';
 
     theme.topics.forEach(function(topic, i){
-      var num = String(i + 1).padStart(2, '0');
+      var num  = String(i + 1).padStart(2, '0');
       var quiz = QUIZZES[topic.id];
 
-      if (quiz){
-        // Available: link to universal quiz runner
+      if (quiz) {
         html += ''
-          + '<a class="topic-card" href="quiz.html?topic='+ topic.id +'" style="--tc:'+ theme.colour +'">'
-          + '  <div class="topic-n">Topic '+ num +'</div>'
-          + '  <div class="topic-name">'+ topic.name +'</div>'
-          + '  <div class="topic-meta">'+ quiz.questions.length +' questions &middot; Available</div>'
+          + '<a class="topic-card" href="quiz.html?topic=' + topic.id + '" style="--tc:' + theme.colour + '">'
+          + '  <div class="topic-n">Topic ' + num + '</div>'
+          + '  <div class="topic-name">'    + topic.name + '</div>'
+          + '  <div class="topic-meta">'    + quiz.questions.length + ' questions &middot; Available</div>'
           + '  <div class="topic-arrow">&rarr;</div>'
           + '</a>';
       } else {
-        // Coming soon: visible placeholder
         html += ''
-          + '<div class="topic-card soon" style="--tc:'+ theme.colour +'">'
-          + '  <div class="topic-n">Topic '+ num +'</div>'
-          + '  <div class="topic-name">'+ topic.name +'</div>'
+          + '<div class="topic-card soon" style="--tc:' + theme.colour + '">'
+          + '  <div class="topic-n">Topic ' + num + '</div>'
+          + '  <div class="topic-name">'    + topic.name + '</div>'
           + '  <div class="topic-meta">Coming soon</div>'
           + '</div>';
       }
@@ -133,13 +91,12 @@ header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);b
 
   root.innerHTML = html;
 
-  // Helper: convert "#c9a84c" + alpha to "rgba(...)"
   function hexAlpha(hex, alpha){
-    hex = hex.replace('#','');
-    var r = parseInt(hex.substr(0,2),16);
-    var g = parseInt(hex.substr(2,2),16);
-    var b = parseInt(hex.substr(4,2),16);
-    return 'rgba('+r+','+g+','+b+','+alpha+')';
+    hex = hex.replace('#', '');
+    var r = parseInt(hex.substr(0,2), 16);
+    var g = parseInt(hex.substr(2,2), 16);
+    var b = parseInt(hex.substr(4,2), 16);
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
   }
 })();
 </script>

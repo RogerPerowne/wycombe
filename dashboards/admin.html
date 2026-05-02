@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="wa-root" content="../">
+<title>Admin Dashboard - Wycombe Abbey Economics</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+<body>
+
+<header>
+  <div class="hl">
+    <img class="hlogo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display='none'">
+    <div>
+      <div class="htit">Admin Dashboard</div>
+      <div class="hsub">A-Level Economics &middot; Administration</div>
+    </div>
+  </div>
+  <div class="hnav">
+    <a href="teacher.html" class="hbtn">Teacher view</a>
+    <a href="../index.html" class="hbtn">&#8962; Home</a>
+  </div>
+</header>
+
+<div class="app" id="root">
+  <!-- Login form -->
+  <div id="admin-login" class="t-login">
+    <h2>Admin Access</h2>
+    <div class="sub">Enter the admin (teacher) password</div>
+    <input id="a-pass" type="password" class="t-input" placeholder="Password" autofocus aria-label="Admin password">
+    <div id="a-err" class="t-err" role="alert"></div>
+    <button class="btn b-blue" id="a-login-btn" style="width:100%">Enter</button>
+  </div>
+
+  <!-- Dashboard (hidden until authenticated) -->
+  <div id="admin-dash" style="display:none">
+    <div class="tabs">
+      <div class="tab active" data-tab="students" onclick="switchTab('students')">Manage Students</div>
+      <div class="tab"        data-tab="password" onclick="switchTab('password')">Change Password</div>
+    </div>
+
+    <!-- Students Panel -->
+    <div id="panel-students" class="panel active">
+      <div class="admin-section">
+        <h3>Add Student</h3>
+        <div class="add-form">
+          <div><label>First name</label><input id="add-name" type="text" placeholder="e.g. Amelia"></div>
+          <div><label>Class</label>
+            <select id="add-class">
+              <option value="U6-B">U6-B</option>
+              <option value="L6-B">L6-B</option>
+            </select>
+          </div>
+          <button class="btn b-blue" onclick="addStudent()" style="padding:.45rem .9rem;align-self:flex-end">Generate &amp; Add</button>
+        </div>
+        <div id="new-result" class="new-student-result"></div>
+      </div>
+
+      <div class="admin-section">
+        <h3>Current Students</h3>
+        <div class="scores-controls" style="margin-bottom:.6rem">
+          <select id="admin-class-filter" onchange="renderStudentList()"><option value="all">All classes</option></select>
+        </div>
+        <div id="student-list" class="student-list"></div>
+      </div>
+    </div>
+
+    <!-- Change Password Panel -->
+    <div id="panel-password" class="panel">
+      <div class="admin-section">
+        <h3>Change Teacher Password</h3>
+        <p style="font-size:.85rem;color:var(--mut);margin-bottom:1.2rem;line-height:1.7">
+          This updates the shared password used by all teachers to access the Teacher and Admin dashboards.
+          Make sure to share the new password with your colleagues.
+        </p>
+        <div class="pw-form">
+          <label style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);opacity:.6;display:block;margin-bottom:.2rem">Current password</label>
+          <input id="pw-old" type="password" placeholder="Current password" aria-label="Current password">
+          <label style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);opacity:.6;display:block;margin-bottom:.2rem">New password</label>
+          <input id="pw-new" type="password" placeholder="New password" aria-label="New password">
+          <label style="font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);opacity:.6;display:block;margin-bottom:.2rem">Confirm new password</label>
+          <input id="pw-confirm" type="password" placeholder="Confirm new password" aria-label="Confirm new password">
+          <button class="btn b-blue" onclick="doChangePassword()" style="margin-top:.4rem">Update Password</button>
+          <div id="pw-msg" class="pw-msg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/db/client.js"></script>
+<script src="../assets/js/db/auth.js"></script>
+<script src="../assets/js/db/admin.js"></script>
+<script>
+// ── State ────────────────────────────────────────────────────────
+var ADMIN_PASS = '';
+var DATA = { students: [] };
+
+// ── Init ─────────────────────────────────────────────────────────
+(function init() {
+  if (!getSupabase()) {
+    document.getElementById('root').innerHTML =
+      '<div class="db-error">'
+      + '<h2>Database not configured</h2>'
+      + '<p>Set <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> in '
+      + '<code>assets/js/config.js</code> to enable the admin dashboard.</p>'
+      + '</div>';
+    return;
+  }
+
+  var passInput = document.getElementById('a-pass');
+  var loginBtn  = document.getElementById('a-login-btn');
+
+  loginBtn.onclick = doAdminLogin;
+  passInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doAdminLogin();
+  });
+})();
+
+// ── Admin login ───────────────────────────────────────────────────
+async function doAdminLogin() {
+  var pw     = document.getElementById('a-pass').value;
+  var errDiv = document.getElementById('a-err');
+  var btn    = document.getElementById('a-login-btn');
+
+  if (!pw) { errDiv.textContent = 'Please enter a password'; return; }
+
+  btn.textContent = '...';
+  btn.disabled    = true;
+  errDiv.textContent = '';
+
+  var result = await teacherLogin(pw);
+  if (!result.ok) {
+    errDiv.textContent = result.error || 'Invalid password';
+    btn.textContent    = 'Enter';
+    btn.disabled       = false;
+    return;
+  }
+
+  ADMIN_PASS = pw;
+  document.getElementById('admin-login').style.display = 'none';
+  document.getElementById('admin-dash').style.display  = 'block';
+  await loadData();
+}
+
+async function loadData() {
+  var result = await getTeacherData(ADMIN_PASS);
+  if (result.ok) {
+    DATA = result.data;
+    populateClassFilters();
+    renderStudentList();
+  }
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.classList.toggle('active', t.dataset.tab === name);
+  });
+  document.querySelectorAll('.panel').forEach(function(p) {
+    p.classList.toggle('active', p.id === 'panel-' + name);
+  });
+}
+
+// ── Class filters ─────────────────────────────────────────────────
+function populateClassFilters() {
+  var classes = [];
+  DATA.students.forEach(function(s) {
+    if (classes.indexOf(s.class_set) === -1) classes.push(s.class_set);
+  });
+  classes.sort();
+
+  var filterSel = document.getElementById('admin-class-filter');
+  while (filterSel.options.length > 1) filterSel.remove(1);
+  classes.forEach(function(c) {
+    var opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    filterSel.appendChild(opt);
+  });
+
+  var addSel = document.getElementById('add-class');
+  addSel.innerHTML = '';
+  classes.forEach(function(c) {
+    var opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    addSel.appendChild(opt);
+  });
+  var other = document.createElement('option');
+  other.value = '__other'; other.textContent = '+ New class...';
+  addSel.appendChild(other);
+}
+
+// ── Student management ────────────────────────────────────────────
+function renderStudentList() {
+  var classFilter = document.getElementById('admin-class-filter').value;
+  var students = DATA.students.filter(function(s) {
+    return classFilter === 'all' || s.class_set === classFilter;
+  });
+
+  if (students.length === 0) {
+    document.getElementById('student-list').innerHTML =
+      '<div style="color:var(--mut);opacity:.5;padding:1rem">No students yet. Use the form above to add students.</div>';
+    return;
+  }
+
+  var html = '';
+  students.forEach(function(s) {
+    html += '<div class="scard">'
+      + '<div class="scard-info">'
+      + '<div class="scard-name">'  + escHtml(s.display_name) + '</div>'
+      + '<div class="scard-user">'  + escHtml(s.username)     + '</div>'
+      + '<div class="scard-class">' + escHtml(s.class_set)    + '</div>'
+      + '</div>'
+      + '<div class="scard-actions">'
+      + '<button class="scard-btn"     onclick="doResetPin('    + s.id + ',\'' + escHtml(s.display_name) + '\')">Reset PIN</button>'
+      + '<button class="scard-btn del" onclick="doDeleteStudent(' + s.id + ',\'' + escHtml(s.display_name) + '\')">Remove</button>'
+      + '</div></div>';
+  });
+  document.getElementById('student-list').innerHTML = html;
+}
+
+async function addStudent() {
+  var name     = document.getElementById('add-name').value.trim();
+  var classSel = document.getElementById('add-class');
+  var classSet = classSel.value;
+
+  if (classSet === '__other') {
+    classSet = prompt('Enter new class name (e.g. U6-A):');
+    if (!classSet) return;
+  }
+  if (!name) { alert('Please enter a first name'); return; }
+
+  var username = generateUsername();
+  var pin      = generatePin();
+
+  var result = await createStudent(ADMIN_PASS, username, pin, name, classSet);
+  if (!result.ok) { alert(result.error); return; }
+
+  var resultDiv = document.getElementById('new-result');
+  resultDiv.style.display = 'block';
+  resultDiv.innerHTML =
+    '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:.4rem">Student Created</div>'
+    + '<div style="font-size:.9rem;margin-bottom:.3rem"><strong>' + escHtml(name) + '</strong> &middot; ' + escHtml(classSet) + '</div>'
+    + '<div style="font-size:.85rem">Username: <code>' + escHtml(username) + '</code></div>'
+    + '<div style="font-size:.85rem">PIN: <code>' + escHtml(pin) + '</code></div>'
+    + '<div style="font-size:.7rem;color:var(--mut);opacity:.5;margin-top:.4rem">Note this PIN down — it cannot be viewed again, only reset.</div>';
+
+  document.getElementById('add-name').value = '';
+  await loadData();
+}
+
+async function doDeleteStudent(id, name) {
+  if (!confirm('Remove ' + name + '? This will delete all their quiz attempts too.')) return;
+  var result = await deleteStudent(ADMIN_PASS, id);
+  if (!result.ok) { alert(result.error); return; }
+  await loadData();
+}
+
+async function doResetPin(id, name) {
+  var newPin = generatePin();
+  if (!confirm('Reset PIN for ' + name + '?\n\nNew PIN will be: ' + newPin)) return;
+  var result = await resetStudentPin(ADMIN_PASS, id, newPin);
+  if (!result.ok) { alert(result.error); return; }
+  alert('PIN for ' + name + ' reset to: ' + newPin);
+}
+
+// ── Change password ───────────────────────────────────────────────
+async function doChangePassword() {
+  var oldPw  = document.getElementById('pw-old').value;
+  var newPw  = document.getElementById('pw-new').value;
+  var confPw = document.getElementById('pw-confirm').value;
+  var msg    = document.getElementById('pw-msg');
+
+  msg.className = 'pw-msg';
+  msg.textContent = '';
+
+  if (!oldPw || !newPw || !confPw) {
+    msg.className = 'pw-msg err'; msg.textContent = 'Please fill in all fields'; return;
+  }
+  if (newPw !== confPw) {
+    msg.className = 'pw-msg err'; msg.textContent = 'New passwords do not match'; return;
+  }
+  if (newPw.length < 8) {
+    msg.className = 'pw-msg err'; msg.textContent = 'New password must be at least 8 characters'; return;
+  }
+
+  var result = await changeTeacherPassword(oldPw, newPw);
+  if (!result.ok) {
+    msg.className = 'pw-msg err'; msg.textContent = result.error || 'Failed to change password';
+    return;
+  }
+
+  // Update stored pass so admin can continue using the dashboard
+  ADMIN_PASS = newPw;
+  document.getElementById('pw-old').value = '';
+  document.getElementById('pw-new').value = '';
+  document.getElementById('pw-confirm').value = '';
+  msg.className = 'pw-msg ok'; msg.textContent = '&#10003; Password updated successfully';
+}
+</script>
+</body>
+</html>
