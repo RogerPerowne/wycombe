@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>econOS – Assignment Builder</title>
+<link rel="stylesheet" href="../assets/css/econos.css">
+<style>
+/* BUILDER SPECIFIC */
+.builder-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1.75rem;
+  align-items: flex-start;
+}
+
+/* STEP WIZARD */
+.wizard-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.75rem;
+  box-shadow: var(--shadow-sm);
+}
+.wizard-step {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: var(--r-sm);
+  transition: background var(--t-fast);
+}
+.wizard-step:hover { background: var(--bg-subtle); }
+.wizard-num {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 0.875rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  transition: all var(--t-base);
+}
+.wizard-step.active .wizard-num  { background: var(--land); border-color: var(--land); color: white; }
+.wizard-step.done   .wizard-num  { background: var(--learn); border-color: var(--learn); color: white; }
+.wizard-step-info {}
+.wizard-step-label { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; }
+.wizard-step.active .wizard-step-label { color: var(--land); }
+.wizard-step.done   .wizard-step-label { color: var(--learn-dark); }
+.wizard-step-name   { font-size: 0.875rem; font-weight: 700; color: var(--navy); }
+.wizard-step.active .wizard-step-name { color: var(--land); }
+.wizard-divider { width: 40px; height: 1px; background: var(--border); margin: 0 0.5rem; flex-shrink: 0; }
+.wizard-divider.done { background: var(--learn); }
+
+/* STEP PANELS */
+.step-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+.step-panel-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+.step-panel-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--land);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.step-panel-header h3 { font-size: 1rem; font-weight: 700; color: var(--navy); }
+.step-panel-body { padding: 1.5rem; }
+
+/* TOPIC SELECTOR */
+.topic-search-wrap {
+  position: relative;
+  margin-bottom: 1rem;
+}
+.topic-search-wrap svg { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+.topic-search { padding-left: 2.375rem; }
+.topic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; max-height: 280px; overflow-y: auto; }
+.topic-option {
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 0.875rem;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.topic-option:hover { border-color: var(--land-light); background: var(--land-light); }
+.topic-option.selected { border-color: var(--land); background: var(--land-light); }
+.topic-option .topic-code { font-size: 0.65rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.25rem; }
+.topic-option .topic-name { font-size: 0.8rem; font-weight: 700; color: var(--navy); line-height: 1.3; }
+.topic-option .topic-check {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  border: 2px solid var(--border);
+  float: right;
+  margin-left: 0.5rem;
+  transition: all var(--t-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+}
+.topic-option.selected .topic-check { background: var(--land); border-color: var(--land); }
+.topic-option.selected .topic-check::after { content: '✓'; font-size: 0.6rem; font-weight: 800; color: white; }
+
+/* STAGE SELECTOR */
+.stages-selector { display: flex; gap: 1rem; }
+.stage-toggle {
+  flex: 1;
+  border: 2px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all var(--t-base);
+  text-align: center;
+}
+.stage-toggle:hover { border-color: var(--land-light); }
+.stage-toggle.selected-learn { border-color: var(--learn); background: var(--learn-light); }
+.stage-toggle.selected-link  { border-color: var(--link);  background: var(--link-light); }
+.stage-toggle.selected-land  { border-color: var(--land);  background: var(--land-light); }
+.stage-toggle .stage-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.stage-toggle .stage-name { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.25rem; }
+.stage-toggle.selected-learn .stage-name { color: var(--learn-dark); }
+.stage-toggle.selected-link  .stage-name { color: var(--link-dark); }
+.stage-toggle.selected-land  .stage-name { color: var(--land); }
+.stage-toggle .stage-desc { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4; }
+.stage-check-wrap {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  margin: 0.75rem auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stage-toggle.selected-learn .stage-check-wrap { background: var(--learn); border-color: var(--learn); }
+.stage-toggle.selected-link  .stage-check-wrap { background: var(--link);  border-color: var(--link); }
+.stage-toggle.selected-land  .stage-check-wrap { background: var(--land);  border-color: var(--land); }
+.stage-toggle.selected-learn .stage-check-wrap::after,
+.stage-toggle.selected-link  .stage-check-wrap::after,
+.stage-toggle.selected-land  .stage-check-wrap::after { content: '✓'; font-size: 0.65rem; font-weight: 800; color: white; }
+.stage-toggle.selected-link .stage-check-wrap::after { color: var(--navy); }
+
+/* ESSAY BUILDER */
+.essay-builder { display: flex; flex-direction: column; gap: 1rem; }
+.essay-q-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+.essay-q-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--land-light);
+  color: var(--land);
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.375rem;
+}
+.essay-q-row .form-input { flex: 1; }
+.remove-btn {
+  width: 30px; height: 30px;
+  border-radius: var(--r-sm);
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  margin-top: 0.375rem;
+  flex-shrink: 0;
+  transition: all var(--t-fast);
+}
+.remove-btn:hover { background: #FEE2E2; border-color: #EF4444; color: #EF4444; }
+
+/* ASSIGN STEP */
+.class-assign-list { display: flex; flex-direction: column; gap: 0.625rem; }
+.class-assign-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.class-assign-item:hover { border-color: var(--land-light); background: var(--land-light); }
+.class-assign-item.selected { border-color: var(--land); background: var(--land-light); }
+.class-assign-check {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--t-fast);
+}
+.class-assign-item.selected .class-assign-check { background: var(--land); border-color: var(--land); }
+.class-assign-item.selected .class-assign-check::after { content: '✓'; font-size: 0.65rem; font-weight: 800; color: white; }
+.class-name-info .cn { font-size: 0.875rem; font-weight: 700; color: var(--navy); }
+.class-name-info .cs { font-size: 0.75rem; color: var(--text-muted); }
+.class-assign-count { margin-left: auto; font-size: 0.75rem; color: var(--text-muted); }
+
+/* PREVIEW CARD */
+.preview-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: calc(var(--header-h) + 1.5rem);
+}
+.preview-card h3 { font-size: 0.9375rem; font-weight: 700; margin-bottom: 1.25rem; }
+.preview-section { margin-bottom: 1rem; }
+.preview-label { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 0.375rem; }
+.preview-value { font-size: 0.875rem; font-weight: 600; color: var(--navy); }
+.preview-empty { font-size: 0.8rem; color: var(--text-muted); font-style: italic; }
+.preview-stages { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.preview-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+
+/* ESTIMATED TIME */
+.estimated-time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--bg-subtle);
+  border-radius: var(--r-md);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) { .builder-layout { grid-template-columns: 1fr; } .topic-grid { grid-template-columns: 1fr 1fr; } .stages-selector { flex-direction: column; } }
+</style>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+
+  <div class="main-content">
+    <header class="main-header">
+      <div class="header-title">
+        <a href="dashboard.html" style="display:flex;align-items:center;gap:0.375rem;font-size:0.8rem;font-weight:600;color:var(--text-secondary);text-decoration:none;">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Back to Dashboard
+        </a>
+      </div>
+      <div class="header-title" style="flex:none;">
+        <div style="font-size:1.125rem;font-weight:700;color:var(--navy);">Assignment Builder</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);">Create structured homework in minutes</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost btn-sm">Save draft</button>
+        <button class="btn btn-primary btn-sm" onclick="publishAssignment()">Publish →</button>
+      </div>
+    </header>
+
+    <div class="page-body">
+      <!-- WIZARD STEPS -->
+      <div class="wizard-steps">
+        <div class="wizard-step done" onclick="goToStep(1)">
+          <div class="wizard-num">✓</div>
+          <div class="wizard-step-info">
+            <div class="wizard-step-label">Step 1</div>
+            <div class="wizard-step-name">Select topic</div>
+          </div>
+        </div>
+        <div class="wizard-divider done"></div>
+        <div class="wizard-step done" onclick="goToStep(2)">
+          <div class="wizard-num">✓</div>
+          <div class="wizard-step-info">
+            <div class="wizard-step-label">Step 2</div>
+            <div class="wizard-step-name">Choose stages</div>
+          </div>
+        </div>
+        <div class="wizard-divider done"></div>
+        <div class="wizard-step active" onclick="goToStep(3)">
+          <div class="wizard-num">3</div>
+          <div class="wizard-step-info">
+            <div class="wizard-step-label">Step 3</div>
+            <div class="wizard-step-name">Add essay</div>
+          </div>
+        </div>
+        <div class="wizard-divider"></div>
+        <div class="wizard-step" onclick="goToStep(4)">
+          <div class="wizard-num">4</div>
+          <div class="wizard-step-info">
+            <div class="wizard-step-label">Step 4</div>
+            <div class="wizard-step-name">Set deadline</div>
+          </div>
+        </div>
+        <div class="wizard-divider"></div>
+        <div class="wizard-step" onclick="goToStep(5)">
+          <div class="wizard-num">5</div>
+          <div class="wizard-step-info">
+            <div class="wizard-step-label">Step 5</div>
+            <div class="wizard-step-name">Assign</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="builder-layout">
+        <!-- MAIN CONTENT -->
+        <div>
+          <!-- STEP 1: SELECT TOPIC (done, collapsed) -->
+          <div class="step-panel" id="step1Panel" style="opacity:0.7;">
+            <div class="step-panel-header" style="cursor:pointer;" onclick="togglePanel('step1Panel')">
+              <div class="step-panel-num" style="background:var(--learn);">✓</div>
+              <div>
+                <h3>1. Select topic</h3>
+                <div style="font-size:0.775rem;color:var(--learn-dark);font-weight:600;margin-top:2px;">✓ Monetary policy (2.3.2) selected</div>
+              </div>
+              <button class="btn btn-ghost btn-sm" style="margin-left:auto;" onclick="event.stopPropagation();togglePanel('step1Panel')">Edit</button>
+            </div>
+            <div class="step-panel-body" id="step1Body" style="display:none;">
+              <div class="topic-search-wrap">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input type="text" class="form-input topic-search" placeholder="Search topics…">
+              </div>
+              <div style="font-size:0.75rem;font-weight:700;color:var(--text-muted);margin-bottom:0.625rem;text-transform:uppercase;letter-spacing:0.06em;">Theme 2: National and Global Economy</div>
+              <div class="topic-grid">
+                <div class="topic-option selected" onclick="selectTopic(this)">
+                  <div class="topic-check"></div>
+                  <div class="topic-code">2.3.2</div>
+                  <div class="topic-name">Monetary policy</div>
+                </div>
+                <div class="topic-option" onclick="selectTopic(this)">
+                  <div class="topic-check"></div>
+                  <div class="topic-code">2.3.1</div>
+                  <div class="topic-name">Fiscal policy</div>
+                </div>
+                <div class="topic-option" onclick="selectTopic(this)">
+                  <div class="topic-check"></div>
+                  <div class="topic-code">2.3.3</div>
+                  <div class="topic-name">Supply-side policies</div>
+                </div>
+                <div class="topic-option" onclick="selectTopic(this)">
+                  <div class="topic-check"></div>
+                  <div class="topic-code">2.2.1</div>
+                  <div class="topic-name">Inflation</div>
+                </div>
+                <div class="topic-option" onclick="selectTopic(this)">
+                  <div class="topic-check"></div>
+                  <div class="topic-code">2.2.2</div>
+                  <div class="topic-name">Unemployment</div>
+                </div>
+                <div class="topic-option" onclick="selectTopic(this)">
+                  <div class="topic-check"></div>
+                  <div class="topic-code">2.2.3</div>
+                  <div class="topic-name">Balance of payments</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 2: STAGES (done, collapsed) -->
+          <div class="step-panel" id="step2Panel" style="opacity:0.7;">
+            <div class="step-panel-header" style="cursor:pointer;" onclick="togglePanel('step2Panel')">
+              <div class="step-panel-num" style="background:var(--learn);">✓</div>
+              <div>
+                <h3>2. Choose stages</h3>
+                <div style="font-size:0.775rem;color:var(--learn-dark);font-weight:600;margin-top:2px;display:flex;gap:0.5rem;">
+                  <span class="stage-pill pill-learn">✓ Learn it</span>
+                  <span class="stage-pill pill-link">✓ Link it</span>
+                </div>
+              </div>
+              <button class="btn btn-ghost btn-sm" style="margin-left:auto;" onclick="event.stopPropagation();togglePanel('step2Panel')">Edit</button>
+            </div>
+            <div class="step-panel-body" id="step2Body" style="display:none;">
+              <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1.25rem;">Select which learning stages to include. Students must complete each stage in order.</p>
+              <div class="stages-selector">
+                <div class="stage-toggle selected-learn" onclick="toggleStage(this,'learn')">
+                  <div class="stage-icon">📗</div>
+                  <div class="stage-name">Learn it</div>
+                  <div class="stage-desc">Build knowledge and understanding from the ground up.</div>
+                  <div class="stage-check-wrap"></div>
+                </div>
+                <div class="stage-toggle selected-link" onclick="toggleStage(this,'link')">
+                  <div class="stage-icon">🔗</div>
+                  <div class="stage-name">Link it</div>
+                  <div class="stage-desc">Build chains of economic reasoning and spot the imposters.</div>
+                  <div class="stage-check-wrap"></div>
+                </div>
+                <div class="stage-toggle" onclick="toggleStage(this,'land')">
+                  <div class="stage-icon">🎯</div>
+                  <div class="stage-name">Land it</div>
+                  <div class="stage-desc">Write exam-ready answers with AI feedback.</div>
+                  <div class="stage-check-wrap"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 3: ADD ESSAY (ACTIVE) -->
+          <div class="step-panel" id="step3Panel">
+            <div class="step-panel-header">
+              <div class="step-panel-num">3</div>
+              <div>
+                <h3>Add essay question (optional)</h3>
+                <div style="font-size:0.775rem;color:var(--text-muted);margin-top:2px;">Add one or more essay questions for students to practise.</div>
+              </div>
+            </div>
+            <div class="step-panel-body">
+              <div class="essay-builder" id="essayBuilder">
+                <div class="essay-q-row">
+                  <div class="essay-q-num">1</div>
+                  <input type="text" class="form-input" placeholder="e.g. Evaluate the effectiveness of monetary policy as a tool for controlling inflation. (25)" value="Evaluate the effectiveness of monetary policy as a tool for controlling inflation in the UK. (25)">
+                  <div style="display:flex;flex-direction:column;gap:0.25rem;">
+                    <select class="form-input form-select" style="font-size:0.75rem;padding:0.375rem 1.75rem 0.375rem 0.625rem;width:auto;">
+                      <option>25 marks</option>
+                      <option>20 marks</option>
+                      <option>15 marks</option>
+                      <option>12 marks</option>
+                      <option>8 marks</option>
+                    </select>
+                    <button class="remove-btn">✕</button>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top:1rem;display:flex;gap:0.625rem;">
+                <button class="btn btn-ghost btn-sm" onclick="addEssayQ()">+ Add another question</button>
+                <button class="btn btn-ghost btn-sm" onclick="openQuestionBank()">Browse question bank</button>
+              </div>
+              <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border);">
+                <label style="display:flex;align-items:center;gap:0.625rem;font-size:0.875rem;cursor:pointer;">
+                  <input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--land);">
+                  <span><strong>AI feedback enabled</strong> — Students will get instant marking and feedback on their essays.</span>
+                </label>
+                <label style="display:flex;align-items:center;gap:0.625rem;font-size:0.875rem;cursor:pointer;margin-top:0.75rem;">
+                  <input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--land);">
+                  <span><strong>Show model answer</strong> after submission.</span>
+                </label>
+              </div>
+              <div style="display:flex;justify-content:flex-end;margin-top:1.25rem;">
+                <button class="btn btn-primary" onclick="goToStep(4)">Next: Set deadline →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 4: DEADLINE (locked) -->
+          <div class="step-panel" id="step4Panel" style="opacity:0.5;pointer-events:none;">
+            <div class="step-panel-header">
+              <div class="step-panel-num" style="background:var(--bg-subtle);color:var(--text-muted);border-color:var(--border);">4</div>
+              <div>
+                <h3>Set deadline</h3>
+                <div style="font-size:0.775rem;color:var(--text-muted);margin-top:2px;">Choose when this assignment is due.</div>
+              </div>
+            </div>
+            <div class="step-panel-body" id="step4Body" style="display:none;">
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label">Due date</label>
+                  <input type="date" class="form-input" value="2024-05-10">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Due time</label>
+                  <input type="time" class="form-input" value="23:59">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Instructions for students (optional)</label>
+                <textarea class="form-input form-textarea" placeholder="Add any specific instructions, context, or resources for students to read before starting…" style="min-height:80px;"></textarea>
+              </div>
+              <div style="display:flex;justify-content:flex-end;margin-top:0.5rem;">
+                <button class="btn btn-primary" onclick="goToStep(5)">Next: Assign →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 5: ASSIGN (locked) -->
+          <div class="step-panel" id="step5Panel" style="opacity:0.5;pointer-events:none;">
+            <div class="step-panel-header">
+              <div class="step-panel-num" style="background:var(--bg-subtle);color:var(--text-muted);border-color:var(--border);">5</div>
+              <div>
+                <h3>Assign to classes</h3>
+                <div style="font-size:0.775rem;color:var(--text-muted);margin-top:2px;">Select which classes should receive this assignment.</div>
+              </div>
+            </div>
+            <div class="step-panel-body" id="step5Body" style="display:none;">
+              <div class="class-assign-list">
+                <div class="class-assign-item selected" onclick="toggleClass(this)">
+                  <div class="class-assign-check"></div>
+                  <div class="class-name-info">
+                    <div class="cn">Year 12 Economics (A)</div>
+                    <div class="cs">28 students</div>
+                  </div>
+                  <div class="class-assign-count">Mr. Harris</div>
+                </div>
+                <div class="class-assign-item selected" onclick="toggleClass(this)">
+                  <div class="class-assign-check"></div>
+                  <div class="class-name-info">
+                    <div class="cn">Year 12 Economics (B)</div>
+                    <div class="cs">26 students</div>
+                  </div>
+                  <div class="class-assign-count">Mr. Harris</div>
+                </div>
+                <div class="class-assign-item" onclick="toggleClass(this)">
+                  <div class="class-assign-check"></div>
+                  <div class="class-name-info">
+                    <div class="cn">Year 13 Economics (A)</div>
+                    <div class="cs">30 students</div>
+                  </div>
+                  <div class="class-assign-count">Mr. Harris</div>
+                </div>
+                <div class="class-assign-item" onclick="toggleClass(this)">
+                  <div class="class-assign-check"></div>
+                  <div class="class-name-info">
+                    <div class="cn">Year 13 Economics (B)</div>
+                    <div class="cs">28 students</div>
+                  </div>
+                  <div class="class-assign-count">Mr. Harris</div>
+                </div>
+              </div>
+              <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);">
+                <label style="display:flex;align-items:center;gap:0.625rem;font-size:0.875rem;cursor:pointer;">
+                  <input type="checkbox" checked style="width:16px;height:16px;accent-color:var(--land);">
+                  <span>Send notification to students when published</span>
+                </label>
+              </div>
+              <div style="display:flex;justify-content:flex-end;margin-top:1.25rem;">
+                <button class="btn btn-primary btn-lg" onclick="publishAssignment()">🚀 Publish assignment</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: PREVIEW -->
+        <div>
+          <div class="preview-card">
+            <h3>Assignment preview</h3>
+
+            <div class="preview-section">
+              <div class="preview-label">Topic</div>
+              <div class="preview-value">2.3.2 · Monetary policy</div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Stages included</div>
+              <div class="preview-stages">
+                <span class="stage-pill pill-learn">📗 Learn it</span>
+                <span class="stage-pill pill-link">🔗 Link it</span>
+              </div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Essay questions</div>
+              <div class="preview-value" style="font-size:0.8rem;line-height:1.55;">Evaluate the effectiveness of monetary policy… (25 marks)</div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">AI feedback</div>
+              <div class="preview-value" style="color:var(--learn-dark);">✓ Enabled</div>
+            </div>
+
+            <div class="preview-divider"></div>
+
+            <div class="preview-section">
+              <div class="preview-label">Deadline</div>
+              <div class="preview-empty">Not set yet</div>
+            </div>
+
+            <div class="preview-section">
+              <div class="preview-label">Assigned to</div>
+              <div class="preview-empty">Not assigned yet</div>
+            </div>
+
+            <div class="preview-divider"></div>
+
+            <div class="estimated-time">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <span>Estimated student time: <strong>35–45 mins</strong></span>
+            </div>
+
+            <div style="margin-top:1.25rem;">
+              <div style="font-size:0.75rem;font-weight:700;color:var(--text-muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.06em;">Progress</div>
+              <div class="progress-bar thick"><div class="fill fill-land" style="width:60%;"></div></div>
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.25rem;">Step 3 of 5 complete</div>
+            </div>
+
+            <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border);">
+              <button class="btn btn-primary" style="width:100%;" onclick="publishAssignment()">Publish →</button>
+              <button class="btn btn-ghost" style="width:100%;margin-top:0.5rem;">Save as draft</button>
+            </div>
+          </div>
+
+          <!-- TIPS CARD -->
+          <div class="card card-pad" style="margin-top:1.25rem;">
+            <div style="font-size:0.9rem;font-weight:700;margin-bottom:0.875rem;">💡 Builder tips</div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.775rem;color:var(--text-secondary);">
+              <div style="display:flex;align-items:flex-start;gap:0.5rem;">
+                <span style="color:var(--learn-dark);margin-top:1px;">✓</span>
+                <span>Include all three stages (Learn, Link, Land) for the best learning outcome.</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:0.5rem;">
+                <span style="color:var(--learn-dark);margin-top:1px;">✓</span>
+                <span>Set deadlines at least 3 days in advance to allow for catch-up.</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:0.5rem;">
+                <span style="color:var(--learn-dark);margin-top:1px;">✓</span>
+                <span>AI feedback is most valuable for 12+ mark essay questions.</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:0.5rem;">
+                <span style="color:var(--learn-dark);margin-top:1px;">✓</span>
+                <span>Average completion time is ~35 mins for a Learn + Link + Essay assignment.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal" style="display:none;">
+  <div class="modal" style="max-width:440px;text-align:center;padding:2rem;">
+    <div style="font-size:3rem;margin-bottom:1rem;">🎉</div>
+    <h3 style="font-size:1.375rem;font-weight:800;color:var(--navy);margin-bottom:0.5rem;">Assignment published!</h3>
+    <p style="font-size:0.875rem;color:var(--text-secondary);margin-bottom:1.5rem;">Students have been notified. You can track completion in your dashboard.</p>
+    <div style="display:flex;gap:0.75rem;">
+      <a href="dashboard.html" class="btn btn-secondary" style="flex:1;">Back to dashboard</a>
+      <button class="btn btn-primary" style="flex:1;" onclick="closeModal()">Create another</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/nav.js"></script>
+<script>
+buildSidebar('assignments', 'teacher');
+
+function togglePanel(id) {
+  const body = document.getElementById(id).querySelector('[id$="Body"]');
+  if (body) body.style.display = body.style.display === 'none' ? 'block' : 'none';
+}
+
+function goToStep(n) {
+  // Simplified step navigation
+  const panels = ['step1Panel','step2Panel','step3Panel','step4Panel','step5Panel'];
+  panels.forEach((id, i) => {
+    const panel = document.getElementById(id);
+    const body = document.getElementById(id.replace('Panel','Body'));
+    if (i < n - 1) {
+      panel.style.opacity = '0.7';
+      panel.style.pointerEvents = 'auto';
+      if (body) body.style.display = 'none';
+    } else if (i === n - 1) {
+      panel.style.opacity = '1';
+      panel.style.pointerEvents = 'auto';
+      if (body) body.style.display = 'block';
+    } else {
+      panel.style.opacity = '0.5';
+      panel.style.pointerEvents = 'none';
+      if (body) body.style.display = 'none';
+    }
+  });
+}
+
+function selectTopic(el) {
+  document.querySelectorAll('.topic-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function toggleStage(el, stage) {
+  el.classList.toggle('selected-' + stage);
+}
+
+function toggleClass(el) {
+  el.classList.toggle('selected');
+}
+
+function addEssayQ() {
+  const builder = document.getElementById('essayBuilder');
+  const count = builder.querySelectorAll('.essay-q-row').length + 1;
+  const row = document.createElement('div');
+  row.className = 'essay-q-row';
+  row.innerHTML = `
+    <div class="essay-q-num">${count}</div>
+    <input type="text" class="form-input" placeholder="Enter essay question…">
+    <div style="display:flex;flex-direction:column;gap:0.25rem;">
+      <select class="form-input form-select" style="font-size:0.75rem;padding:0.375rem 1.75rem 0.375rem 0.625rem;width:auto;">
+        <option>25 marks</option><option>20 marks</option><option>15 marks</option><option>12 marks</option>
+      </select>
+      <button class="remove-btn" onclick="this.closest('.essay-q-row').remove()">✕</button>
+    </div>`;
+  builder.appendChild(row);
+}
+
+function openQuestionBank() {
+  alert('Question bank feature — browse and import past exam questions by topic and mark scheme.');
+}
+
+function publishAssignment() {
+  document.getElementById('successModal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('successModal').style.display = 'none';
+  location.reload();
+}
+</script>
+</body>
+</html>
