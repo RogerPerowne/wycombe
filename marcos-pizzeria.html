@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marco's Pizzeria — Wycombe Abbey Economics</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2744;--navyd:#0f1729;--gold:#c9a84c;--goldl:#e2c47a;--cream:#f0e3c2;--green:#4caf80;--red:#e05060;--orange:#e0933a;--blue:#4a7fb5;--bluel:#6fa8d8;--teal:#2a9d8f;--pizza:#c0392b;--pizzal:#e74c3c;--warm:#f39c12;--purple:#9775b5;--txt:#fff;--mut:#dde3f0;--bdr:#2e3f60}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navyd);color:var(--txt);font-family:'Nunito','Segoe UI',sans-serif;font-size:16px;min-height:100vh}
+header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);border-bottom:2px solid var(--gold);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:72px;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.hl{display:flex;align-items:center;gap:.9rem}
+.hlogo{height:48px;width:48px;object-fit:contain;border-radius:4px}
+.hsch{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:600;color:var(--goldl);line-height:1.2}
+.htit{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:700;color:var(--txt)}
+.hsub{font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.7}
+.hbdg{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:.24rem .78rem;border-radius:3px;background:rgba(201,168,76,.08)}
+.hnav{display:flex;align-items:center;gap:.6rem}
+.hbtn{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.28rem .72rem;border-radius:4px;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-block}
+.hbtn:hover{background:rgba(255,255,255,.1);color:var(--txt)}
+.app{max-width:1060px;margin:0 auto;padding:1.4rem 1.8rem}
+@media(max-width:650px){header{padding:0 1rem;height:64px}.htit{font-size:.95rem}.hbdg{display:none}.app{padding:1rem}}
+
+/* HUB */
+.hub-hero{text-align:center;padding:2rem 1rem 1.2rem}
+.hub-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;opacity:.85}
+.hub-title{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;line-height:1.1;margin-bottom:.3rem;color:var(--txt)}
+.hub-emoji{font-size:2.4rem;display:block;margin-bottom:.4rem}
+.hub-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--goldl);margin-bottom:.9rem}
+.hub-intro{font-size:.9rem;color:var(--mut);max-width:640px;margin:0 auto 1.4rem;line-height:1.8;opacity:.88}
+
+/* HUB ZONES */
+.zone{margin-bottom:2rem}
+.zone-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.7rem;padding:0 .2rem;border-bottom:1px solid var(--bdr);padding-bottom:.45rem}
+.zone-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--txt)}
+.zone-title .zt-num{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);opacity:.75;margin-right:.55rem;font-weight:500;display:inline-block;vertical-align:middle}
+.zone-sub{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);opacity:.5}
+
+/* FOUNDATION CARDS — lighter, parchment feel */
+.found-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:.7rem;margin-bottom:.6rem}
+.fc-card{background:linear-gradient(180deg,rgba(240,227,194,.07),rgba(240,227,194,.03));border:1px solid rgba(240,227,194,.22);border-radius:10px;padding:.95rem 1rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;text-align:left}
+.fc-card:hover{border-color:rgba(240,227,194,.5);background:linear-gradient(180deg,rgba(240,227,194,.12),rgba(240,227,194,.05));transform:translateY(-2px)}
+.fc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cream);opacity:.45}
+.fc-icon{font-size:1.4rem;margin-bottom:.3rem;display:block}
+.fc-num{font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);opacity:.6;margin-bottom:.15rem}
+.fc-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--txt);margin-bottom:.25rem;line-height:1.2}
+.fc-tag{font-size:.7rem;color:var(--mut);opacity:.7;line-height:1.5}
+
+/* PHASE CARDS — coloured accents (existing visual language) */
+.phase-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:.6rem;margin-bottom:.8rem}
+.pm-card{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:9px;padding:.8rem .85rem;position:relative;overflow:hidden;cursor:pointer;transition:all .2s;text-align:left}
+.pm-card:hover{border-color:rgba(201,168,76,.4);background:rgba(26,39,68,.7);transform:translateY(-2px)}
+.pm-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--c,var(--bdr))}
+.pm-n{font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.09em;text-transform:uppercase;color:var(--mut);opacity:.5;margin-bottom:.2rem}
+.pm-title{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:700;margin-bottom:.2rem;color:var(--txt)}
+.pm-concepts{font-size:.68rem;color:var(--mut);opacity:.65;line-height:1.45}
+.start-btn{display:block;margin:.6rem auto 0;padding:.95rem 2.6rem;background:linear-gradient(135deg,var(--pizza),var(--pizzal));border:none;border-radius:8px;color:var(--txt);font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(192,57,43,.4)}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(192,57,43,.5)}
+.start-hint{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);opacity:.5;margin-top:.5rem}
+
+/* LESSON / PHASE HEADER */
+.phase-hdr{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.3rem;background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:9px 9px 0 0;gap:1rem}
+.ph-left{flex:1}
+.ph-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.25rem}
+.ph-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--txt)}
+.ph-right{text-align:right;flex-shrink:0}
+.ph-score-lbl{font-family:'IBM Plex Mono',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);opacity:.6}
+.ph-score{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--goldl)}
+.phase-progress{height:4px;background:var(--bdr);margin-bottom:1.1rem}
+.phase-pfill{height:100%;transition:width .4s;background:linear-gradient(90deg,var(--pizza),var(--warm))}
+.phase-pfill.found{background:linear-gradient(90deg,var(--cream),var(--goldl))}
+
+/* RECAP PILL */
+.recap-pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(240,227,194,.08);border:1px solid rgba(240,227,194,.28);color:var(--cream);padding:.2rem .55rem;border-radius:3px;margin-bottom:.6rem;cursor:pointer;transition:all .15s;text-decoration:none}
+.recap-pill:hover{background:rgba(240,227,194,.15);color:var(--txt)}
+
+/* BLOCKS */
+.story-box{background:rgba(26,39,68,.4);border:1px solid var(--bdr);border-radius:0 0 9px 9px;padding:1.2rem 1.4rem;margin-bottom:1rem;font-size:.9rem;line-height:1.8;color:var(--txt)}
+.story-box em{color:var(--goldl);font-style:italic}
+.concept-strip{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.cbadge{font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;padding:.14rem .42rem;border-radius:3px}
+.cb-cost{background:rgba(74,127,181,.12);border:1px solid rgba(74,127,181,.3);color:var(--bluel)}
+.cb-rev{background:rgba(76,175,128,.12);border:1px solid rgba(76,175,128,.3);color:var(--green)}
+.cb-mkt{background:rgba(151,117,181,.12);border:1px solid rgba(151,117,181,.3);color:#c3a8e8}
+.cb-eff{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);color:var(--goldl)}
+.cb-spec{background:rgba(42,157,143,.1);border:1px solid rgba(42,157,143,.3);color:#52c9bc}
+.cb-found{background:rgba(240,227,194,.08);border:1px solid rgba(240,227,194,.3);color:var(--cream)}
+.data-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.65rem;margin-bottom:1rem}
+.data-box{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:8px;padding:.8rem .9rem}
+.data-lbl{font-family:'IBM Plex Mono',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);opacity:.55;margin-bottom:.2rem}
+.data-val{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--goldl);line-height:1;margin-bottom:.12rem}
+.data-note{font-size:.7rem;color:var(--mut);opacity:.65;line-height:1.4}
+
+/* DIAGRAM */
+.diagram-wrap{background:rgba(26,39,68,.4);border:1px solid var(--bdr);border-radius:9px;padding:1.1rem;margin-bottom:1rem}
+.diag-title{font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;opacity:.9}
+.diag-live{display:flex;justify-content:center;gap:1rem;margin-top:.8rem;flex-wrap:wrap}
+.live-box{text-align:center;background:rgba(26,39,68,.6);border:1px solid var(--bdr);border-radius:7px;padding:.55rem .8rem;min-width:95px}
+.live-lbl{font-family:'IBM Plex Mono',monospace;font-size:.5rem;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);opacity:.6}
+.live-val{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--goldl)}
+.live-val.profit{color:var(--green)}.live-val.loss{color:var(--red)}
+.slider-wrap{text-align:center;margin:.6rem 0}
+.slider-lbl{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.09em;text-transform:uppercase;color:var(--mut);opacity:.7;margin-bottom:.4rem}
+input[type=range]{-webkit-appearance:none;width:100%;max-width:400px;height:6px;background:var(--bdr);border-radius:3px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--pizza);cursor:pointer;border:2px solid #fff;box-shadow:0 2px 8px rgba(192,57,43,.4)}
+
+/* DRAG & DROP CATEGORISER (Lesson 2) */
+.dd-wrap{background:rgba(26,39,68,.4);border:1px solid var(--bdr);border-radius:9px;padding:1.1rem;margin-bottom:1rem}
+.dd-pool{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;min-height:50px;padding:.6rem;background:rgba(15,23,41,.4);border:1px dashed var(--bdr);border-radius:7px;margin-bottom:.85rem}
+.dd-item{display:inline-block;font-size:.78rem;background:rgba(26,39,68,.7);border:1px solid var(--bdr);border-radius:6px;padding:.45rem .75rem;cursor:grab;user-select:none;transition:all .15s}
+.dd-item:hover{border-color:var(--gold);background:rgba(201,168,76,.1)}
+.dd-item.dragging{opacity:.4;cursor:grabbing}
+.dd-item.placed-fc{background:rgba(74,127,181,.18);border-color:var(--blue)}
+.dd-item.placed-vc{background:rgba(76,175,128,.18);border-color:var(--green)}
+.dd-item.placed-wrong{background:rgba(224,80,96,.18);border-color:var(--red)}
+.dd-bins{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.dd-bin{background:rgba(15,23,41,.5);border:2px dashed var(--bdr);border-radius:8px;padding:.8rem;min-height:140px;transition:all .15s}
+.dd-bin.over{border-style:solid;background:rgba(15,23,41,.7);border-color:var(--gold)}
+.dd-bin-title{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.55rem;text-align:center}
+.dd-bin.bin-fc .dd-bin-title{color:var(--bluel)}
+.dd-bin.bin-vc .dd-bin-title{color:var(--green)}
+.dd-bin-items{display:flex;flex-wrap:wrap;gap:.4rem}
+.dd-feedback{margin-top:.7rem;padding:.55rem .8rem;font-size:.78rem;color:var(--mut);text-align:center;border-radius:5px;display:none}
+.dd-feedback.show{display:block;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);color:var(--cream)}
+@media(max-width:540px){.dd-bins{grid-template-columns:1fr}}
+
+/* KITCHEN STORY (Lesson 3) */
+.kitchen-narrative{background:rgba(15,23,41,.5);border:1px solid var(--bdr);border-radius:8px;padding:1rem 1.2rem;margin-top:.6rem;min-height:90px;transition:all .25s}
+.kn-stage{font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.kn-stage.falling{color:var(--green)}
+.kn-stage.bottom{color:var(--gold)}
+.kn-stage.rising{color:var(--red)}
+.kn-text{font-size:.86rem;line-height:1.65;color:var(--txt)}
+.kn-text em{color:var(--goldl);font-style:italic}
+
+/* QUESTIONS */
+.q-section-title{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.55;margin-bottom:.65rem}
+.q-stem-box{background:rgba(26,39,68,.4);border:1px solid var(--bdr);border-radius:8px;padding:.9rem 1.1rem;margin-bottom:.8rem}
+.q-spec-link{font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);background:rgba(42,157,143,.1);border:1px solid rgba(42,157,143,.28);padding:.14rem .4rem;border-radius:3px;display:inline-block;margin-bottom:.45rem}
+.q-stem{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:600;line-height:1.45;color:var(--txt)}
+.q-opts{display:flex;flex-direction:column;gap:.55rem;margin-bottom:.9rem}
+.q-opt{background:rgba(26,39,68,.45);border:2px solid var(--bdr);border-radius:9px;padding:.85rem 1.1rem;cursor:pointer;transition:all .18s;display:flex;gap:.8rem;align-items:flex-start;text-align:left;width:100%;font-family:inherit}
+.q-opt:hover:not(.locked){border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.05)}
+.q-opt.locked{cursor:default}
+.q-opt.correct{border-color:var(--green)!important;background:rgba(76,175,128,.1)!important}
+.q-opt.wrong{border-color:var(--red)!important;background:rgba(224,80,96,.08)!important}
+.q-opt.reveal{border-color:var(--green)!important;background:rgba(76,175,128,.04)!important}
+.q-letter{font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:700;width:20px;flex-shrink:0}
+.q-opt.correct .q-letter{color:var(--green)}.q-opt.wrong .q-letter{color:var(--red)}.q-opt.reveal .q-letter{color:var(--green)}
+.q-text{font-size:.86rem;line-height:1.6;color:var(--mut)}
+.q-opt.correct .q-text,.q-opt.reveal .q-text{color:var(--txt)}
+.q-fb{border-radius:8px;padding:.9rem 1.2rem;display:none;animation:fadeIn .3s;margin-bottom:.9rem}
+.q-fb.show{display:block}
+.q-fb.ok{background:rgba(76,175,128,.1);border:1px solid rgba(76,175,128,.3)}
+.q-fb.bad{background:rgba(224,80,96,.08);border:1px solid rgba(224,80,96,.3)}
+.fb-head{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem}
+.q-fb.ok .fb-head{color:var(--green)}.q-fb.bad .fb-head{color:var(--red)}
+.key-learn{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:5px;padding:.5rem .75rem;margin-bottom:.6rem}
+.kl-lbl{font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:.2rem}
+.kl-text{font-size:.8rem;line-height:1.55;color:var(--txt)}
+.fb-text{font-size:.84rem;line-height:1.72;color:var(--mut)}
+.fb-text strong{color:var(--txt)}
+.econ-box{background:rgba(74,127,181,.08);border:1px solid rgba(74,127,181,.28);border-radius:8px;padding:.9rem 1.1rem;margin-bottom:1rem}
+.econ-lbl{font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bluel);margin-bottom:.5rem}
+.econ-text{font-size:.84rem;line-height:1.75;color:var(--mut)}
+.econ-text strong{color:var(--txt)}
+.ms-box{background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.3);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.ms-lbl{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--goldl);margin-bottom:.5rem}
+.ms-text{font-size:.82rem;line-height:1.72;color:var(--mut)}
+.ms-text strong{color:var(--txt)}
+
+/* SHUTDOWN */
+.sd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.8rem;margin-bottom:1rem}
+.sd-box{border-radius:9px;padding:1rem 1.1rem}
+.sd-continue{background:rgba(76,175,128,.1);border:2px solid rgba(76,175,128,.4)}
+.sd-close{background:rgba(224,80,96,.09);border:2px solid rgba(224,80,96,.35)}
+.sd-neutral{background:rgba(224,147,58,.1);border:2px solid rgba(224,147,58,.35)}
+.sd-title{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.45rem}
+.sd-continue .sd-title{color:var(--green)}.sd-close .sd-title{color:var(--red)}.sd-neutral .sd-title{color:var(--orange)}
+.sd-condition{font-size:.8rem;line-height:1.65;color:var(--mut)}
+.sd-condition strong{color:var(--txt)}
+
+/* OBJECTIVES & EFFICIENCY */
+.obj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:.7rem;margin-bottom:1rem}
+.obj-box{border-radius:8px;padding:.85rem 1rem;position:relative;overflow:hidden}
+.obj-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.obj-pm{background:rgba(76,175,128,.1);border:1px solid rgba(76,175,128,.28)}.obj-pm::before{background:var(--green)}
+.obj-srm{background:rgba(224,147,58,.09);border:1px solid rgba(224,147,58,.28)}.obj-srm::before{background:var(--orange)}
+.obj-out{background:rgba(74,127,181,.08);border:1px solid rgba(74,127,181,.25)}.obj-out::before{background:var(--blue)}
+.obj-sat{background:rgba(151,117,181,.09);border:1px solid rgba(151,117,181,.28)}.obj-sat::before{background:var(--purple)}
+.obj-title{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.09em;text-transform:uppercase;margin-bottom:.3rem}
+.obj-pm .obj-title{color:var(--green)}.obj-srm .obj-title{color:var(--orange)}.obj-out .obj-title{color:var(--bluel)}.obj-sat .obj-title{color:#c3a8e8}
+.obj-rule{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--txt);margin-bottom:.3rem}
+.obj-detail{font-size:.74rem;color:var(--mut);line-height:1.55;opacity:.85}
+.eff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.8rem;margin-bottom:1rem}
+.eff-box{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:9px;padding:1.1rem 1.2rem;position:relative;overflow:hidden}
+.eff-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ec,var(--bdr))}
+.eff-name{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.09em;text-transform:uppercase;margin-bottom:.25rem}
+.eff-score{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;line-height:1;margin-bottom:.25rem}
+.eff-verdict{font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.06em;text-transform:uppercase;padding:.12rem .38rem;border-radius:3px;display:inline-block;margin-bottom:.5rem}
+.ev-high{background:rgba(76,175,128,.15);border:1px solid rgba(76,175,128,.35);color:var(--green)}
+.ev-med{background:rgba(224,147,58,.12);border:1px solid rgba(224,147,58,.3);color:var(--orange)}
+.ev-low{background:rgba(224,80,96,.1);border:1px solid rgba(224,80,96,.3);color:var(--red)}
+.eff-text{font-size:.76rem;line-height:1.65;color:var(--mut)}
+.eff-text strong{color:var(--txt)}
+
+/* DEBRIEF */
+.debrief-box{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:10px;padding:1.4rem;min-height:100px;font-size:.86rem;line-height:1.8;color:var(--mut)}
+.debrief-box p{margin-bottom:.8rem}.debrief-box p:last-child{margin-bottom:0}
+.debrief-box strong{color:var(--txt)}
+.debrief-loading{text-align:center;padding:2rem;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);opacity:.75}
+.typing-dot{display:inline-block;animation:blink 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+
+/* BUTTONS */
+.btn{padding:.75rem 1.2rem;border:none;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-weight:600}
+.b-pizza{background:linear-gradient(135deg,var(--pizza),var(--pizzal));color:#fff}
+.b-pizza:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(192,57,43,.4)}
+.b-found{background:linear-gradient(135deg,var(--gold),var(--cream));color:var(--navyd)}
+.b-found:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(201,168,76,.4)}
+.b-sec{background:rgba(255,255,255,.06);border:1px solid var(--bdr);color:var(--mut)}
+.b-sec:hover{background:rgba(255,255,255,.12);color:var(--txt)}
+.btn-row{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-top:.8rem}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .32s ease both}
+</style>
+</head>
+<body>
+<header>
+  <div class="hl">
+    <img class="hlogo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display='none'">
+    <div>
+      <div class="hsch">Wycombe Abbey</div>
+      <div class="htit">Marco's Pizzeria</div>
+      <div class="hsub">A-Level &middot; Edexcel Paper 1 &middot; Business Economics Simulator</div>
+    </div>
+  </div>
+  <div class="hnav">
+    <a href="index.html" class="hbtn">&#8592; Home</a>
+    <button class="hbtn" onclick="goHub()">&#8962; Hub</button>
+    <span class="hbdg">Business Economics</span>
+  </div>
+</header>
+<div class="app" id="root"></div>
+<script>
+// ════════════════════════════════════════════════════════════════
+//  COST MODEL — Nike-tick MC throughout
+//  VC(Q) = 10Q − 0.15Q² + 0.00125Q³
+//  MC(Q) = 10 − 0.3Q + 0.00375Q²    (U-shaped: min £4 at Q=40)
+//  AVC(Q) = 10 − 0.15Q + 0.00125Q²  (min £5.50 at Q=60, MC=AVC there)
+//  AC(Q)  = FC/Q + AVC(Q)           (min ≈£8.45 at Q≈75, MC=AC there)
+// ════════════════════════════════════════════════════════════════
+var FC=200;
+function vc(q){return 10*q - 0.15*q*q + 0.00125*q*q*q}
+function tc(q){return FC+vc(q)}
+function mc(q){return 10 - 0.3*q + 0.00375*q*q}
+function avc(q){return q>0 ? 10 - 0.15*q + 0.00125*q*q : 10}
+function ac(q){return q>0 ? FC/q + avc(q) : 1e9}
+function trv(q,p){return p*q}
+
+// State
+var G={node:'hub',answers:[],phaseScore:0,foundScore:0,locked:false,chosenQ:60,chosenP:10,kitchenStage:1,FCp1:200,FCp2:300};
+
+// Render helper
+function render(html){document.getElementById('root').innerHTML='<div class="fade-in">'+html+'</div>';window.scrollTo({top:0,behavior:'smooth'});}
+
+// Headers/badges
+function lessHdr(n,total,title,colour){
+  return '<div class="phase-hdr"><div class="ph-left"><div class="ph-eyebrow" style="color:'+colour+'">Foundation '+n+' of '+total+'</div><div class="ph-title">'+title+'</div></div></div>'
+    +'<div class="phase-progress"><div class="phase-pfill found" style="width:'+(n/total*100).toFixed(0)+'%"></div></div>';
+}
+function phHdr(n,total,title,colour){
+  return '<div class="phase-hdr"><div class="ph-left"><div class="ph-eyebrow" style="color:'+colour+'">Phase '+n+' of '+total+'</div><div class="ph-title">'+title+'</div></div></div>'
+    +'<div class="phase-progress"><div class="phase-pfill" style="width:'+(n/total*100).toFixed(0)+'%"></div></div>';
+}
+function bdg(items){
+  return '<div class="concept-strip">'+items.map(function(a){return '<span class="cbadge '+a[1]+'">'+a[0]+'</span>';}).join('')+'</div>';
+}
+function recap(lessNum,title){
+  return '<a class="recap-pill" onclick="goLesson('+lessNum+')">&#8634; Recap: Foundation '+lessNum+' — '+title+'</a>';
+}
+function qOpt(i,text,kind,id){
+  return '<button class="q-opt" onclick="ans('+i+',\''+kind+'\',\''+id+'\')">'
+    +'<span class="q-letter">'+['A','B','C','D'][i]+'</span>'
+    +'<span class="q-text">'+text+'</span></button>';
+}
+function msBox(text){return '<div class="ms-box"><div class="ms-lbl">&#9670; Exam Technique</div><div class="ms-text">'+text+'</div></div>';}
+function econBox(text){return '<div class="econ-box"><div class="econ-lbl">&#9632; Economics Commentary</div><div class="econ-text">'+text+'</div></div>';}
+
+// Answer keys
+var CORRECT={
+  l1:1, l2:1, l3:2, l4:0,
+  p1:1, p2:1, p3:1, p4:0, p5:2
+};
+
+var KEY_LEARN={
+  l1:'Total revenue = price × quantity. You can grow it by selling more or charging more, but they normally trade off — higher prices tend to mean fewer customers.',
+  l2:'Costs split into two families: fixed (don\'t move with output) and variable (do). Average cost falls as output rises because fixed costs get spread across more units.',
+  l3:'Marginal cost is the cost of one more unit. Its Nike-tick shape isn\'t a textbook artefact — it\'s the lived experience of a kitchen. Specialisation drives MC down at first; diminishing returns to a fixed factor drive it back up.',
+  l4:'Profit is maximised where MC = MR — not where AC is minimised, and not where TR is highest. This is the single most important rule in microeconomics.',
+  p1:'Profit is maximised where MC=MR (=P for a price-taker). This is not the same as minimum AC (productive efficiency). Confusing the two is a very common exam error.',
+  p2:'Shut-down rule: produce in the SR if P≥AVC (revenue covers variable costs, contributing to FC). Close in the LR if P<AC persistently. Losses do not automatically mean shut down.',
+  p3:'Under monopolistic competition: MC=MR gives profit-max output; read the demand curve for price. P>MC creates allocative inefficiency. In the LR, entry erodes supernormal profit until the demand curve is tangent to AC (normal profit only).',
+  p4:'Baumol\'s sales revenue maximisation (SRM) sets MR=0. This maximises TR but collapses profit — a minimum profit constraint is needed in practice. SRM differs from profit max (MC=MR) and output max (P=AC).',
+  p5:'When ownership and control divorce, the principal-agent problem appears: the manager (agent) does not automatically pursue the owner\'s (principal\'s) goals. Two consequences: <strong>X-inefficiency</strong> (Leibenstein) — operating above minimum AC because of organisational slack — and <strong>profit satisficing</strong> (Simon) — targeting "good enough" profit while pursuing other objectives such as community standing.'
+};
+
+var FEEDBACKS={
+  l1:{ok:'Correct. TR = P × Q. Charging £20 might sound appealing, but if customers walk away the quantity drops faster than the price rises, and total revenue falls. Marco needs to find the price that maximises P × Q, not just the highest P. We\'ll meet the exact rule (MR = 0) in a later lesson.',
+       bad:'TR = P × Q always. The flaw in "just charge £20" is that customers respond to price — at £20, demand might collapse. Higher prices don\'t always mean higher revenue, because Q falls. Revenue depends on <strong>both levers</strong>, and they normally trade off.'},
+  l2:{ok:'Correct. AC fell from £15 to £6 because total fixed cost (£200) is now divided across many more pizzas. £200/20 = £10 per pizza in FC; £200/80 = £2.50 per pizza. The "spreading effect" is one of the most important reasons scale matters in business — it\'s the foundation of <strong>economies of scale</strong>, which we\'ll meet again in Phase 6.',
+       bad:'The dominant force here is the <strong>spreading of fixed costs</strong>. FC is £200 regardless of output. At Q=20, that\'s £10 of FC per pizza. At Q=80, just £2.50. Variable cost per pizza changes too, but at moderate output the spreading effect dominates. This is why bigger firms often have lower per-unit costs.'},
+  l3:{ok:'Correct. The Nike tick reflects two opposing forces. <strong>Specialisation and division of labour</strong> drive MC down early — extra workers can specialise (one preps, one bakes, one delivers), so each new pizza takes less labour to produce. Eventually <strong>diminishing marginal returns to the variable factor</strong> kick in — too many cooks crowded around one fixed oven means each new worker contributes less, so each new pizza costs more. The shape is fundamental to microeconomics.',
+       bad:'MC doesn\'t move because of ingredient prices or demand — it\'s a <strong>production</strong> concept, not a market one. The Nike tick comes from two forces inside Marco\'s kitchen: <strong>specialisation and division of labour</strong> (early gains as workers specialise) and <strong>diminishing marginal returns</strong> (later losses as workers crowd around fixed capital — the one oven). Both forces are about how output responds to adding workers when capital is fixed.'},
+  l4:{ok:'Correct. The profit peak sits exactly where MC = MR. At Q=50, MC=£4.4 and MR=£10 — every extra pizza adds £5.6 more to revenue than to cost, so produce more. Keep going until MC has risen to meet MR. Past that point, each extra pizza costs more than it earns and profit falls. <strong>This is the single most important rule in microeconomics</strong> — every Edexcel question on the firm comes back to it.',
+       bad:'When MC < MR, every extra pizza adds more to revenue than to cost — so make more. When MC > MR, every extra pizza costs more than it earns — so make fewer. The profit-max output is the unique point where MC = MR. <strong>Producing fewer</strong> at MC=£4.4, MR=£10 leaves £5.60 of profit on the table per pizza. <strong>Producing the same</strong> ignores the rule. The right answer is "more, until MC rises to meet MR."'},
+  p1:{ok:'Correct. Setting MC=MR=£12 on the rising part of the U-shaped MC curve gives <strong>Q≈86</strong>. TR=12×86=£1,032. TC=£746. Profit ≈£286/day. Note: AC is minimised earlier at Q≈75 (productive efficiency), where AC≈£8.45. These are <strong>different outputs</strong> — Edexcel mark schemes test this distinction explicitly.',
+       bad:'The profit-maximising rule is <strong>MC=MR</strong> (=P for a price-taker). At Q=40, MC=£4 < £12 — produce more. At Q=110, MC≈£20 > £12 — those last pizzas lose money. At Q=75, AC is minimised (productive efficiency, ≈£8.45) — but profit is still rising there because MC<MR. Profit max sits at Q≈86, beyond min AC. Profit max ≠ cost min.'},
+  p2:{ok:'Correct. At P=£6, MC=MR=P gives Q≈63. AVC(63)≈£5.51. Since P=£6 > AVC=£5.51, each pizza covers its variable cost <em>and</em> contributes a small amount toward FC. Loss from operating ≈ £269; loss from shutting = FC = £300. Better to operate by ~£31. <strong>Long run</strong>: AC(63) ≈ £10.27, far above £6 — exit unless price recovers or costs fall.',
+       bad:'The shut-down decision compares <strong>P with AVC</strong>, not AC. Even with a total loss, if P≥AVC the firm covers variable costs and contributes to FC — operating beats shutting. Min AVC is £5.50 (at Q=60). At P=£6, P>AVC → produce. Only when P<AVC does producing worsen the loss. The LR exit condition is different: P<AC persistently → exit. Always distinguish these in exam answers.'},
+  p3:{ok:'Correct. Setting MC=MR gives <strong>Q≈71</strong>. Reading up to the demand curve: P=22−0.1(71)=<strong>£14.90</strong>. AC(71)≈£8.47, so supernormal profit ≈ (14.90−8.47)×71 ≈ <strong>£457/day</strong>. In the <strong>long run</strong>, rivals enter attracted by supernormal profit, shifting Marco\'s demand curve left until tangent to AC — only normal profit remains. This tangency is the defining feature of monopolistic competition.',
+       bad:'MR<P at every output because demand slopes down. £12 ignores Marco\'s new pricing power; £22 sells almost nothing. Correct: set MC=MR (Q≈71), then read up to demand for price (≈£15). Revenue max (MR=0) is a different objective at a higher output — we meet it in Phase 4.'},
+  p4:{ok:'Correct. TR=PQ=22Q−0.1Q². TR maximised where MR=0: 22−0.2Q=0 → Q=110, P=£11. TR=£1,210. TC(110)=£1,149, giving a <strong>profit of just £61/day</strong> — a collapse from £457/day at profit max. Baumol\'s SRM doesn\'t bankrupt Marco, but it sacrifices ~87% of his profit. In practice, managerial firms add a <strong>minimum profit constraint</strong> — they maximise revenue <em>subject to</em> keeping profit above a floor that satisfies shareholders. This is why managerial firms typically <em>satisfice</em> rather than purely maximise either revenue or profit.',
+       bad:'Sales revenue max sets MR=0 — the peak of the TR curve, NOT MC=MR. TR=22Q−0.1Q² peaks at Q=110, P=£11. At Q=71 (profit max), MR is still positive, so TR is still rising. Profit-maximisers stop at MC=MR; revenue-maximisers push to MR=0. The numbers prove the trade-off: TR(110)=£1,210 > TR(71)=£1,058, so revenue is higher — but profit collapses from £457 to just £61, because TC has risen from £601 to £1,149.'},
+  p5:{ok:'Correct. Two distinct phenomena, two distinct responses. <strong>Cost slack</strong> (kitchen running above minimum AC, lazy procurement, idle staffing) is <strong>X-inefficiency</strong> — avoidable waste arising from the principal-agent gap. The remedy is incentive design: performance pay, profit-sharing, equity stake, sharper monitoring. <strong>Pricing below profit-max for goodwill</strong> is something else entirely — it is <strong>satisficing</strong> (Simon, 1956), a deliberate trade-off of profit for reputation, customer loyalty and community standing. The "popularity premium" is real economic value even if it does not appear on the P&amp;L. Fold the two together and Marco either over-corrects (squeezing Sofia until she damages the brand) or under-corrects (treating cost slack as a legitimate trade-off when it is not).',
+       bad:'Two different things are happening and they need different responses. <strong>X-inefficiency</strong> (Leibenstein, 1966) is operating <em>above</em> minimum AC — production possibilities are being left on the table. It is avoidable waste, addressed through monitoring and incentive alignment. <strong>Profit satisficing</strong> (Simon, 1956) is the rational pursuit of multiple objectives — Sofia trades a bit of profit for the goodwill that comes with being seen as a fair, local, well-loved business. That goodwill is genuine value (repeat custom, lower marketing spend, resilience in downturns). Conflating the two leads either to over-correction (squeezing the brand to chase a profit-max output that customers will resent) or under-correction (excusing real cost slack as a "trade-off"). The exam-grade answer separates the diagnosis from the remedy.'}
+};
+
+// ════════════════════════════════════════════════════════════════
+//  HUB
+// ════════════════════════════════════════════════════════════════
+function goHub(){
+  G.node='hub';G.locked=false;
+  var foundCards=[
+    {n:'01',t:'Opening Day',ic:'&#127829;',tag:'What can I earn? · Revenue = P × Q'},
+    {n:'02',t:'The Bills Arrive',ic:'&#128179;',tag:'Fixed vs Variable · Average Cost'},
+    {n:'03',t:'One More Pizza',ic:'&#128293;',tag:'Marginal Cost · The Nike Tick'},
+    {n:'04',t:'Saturday Morning',ic:'&#128176;',tag:'Profit · The Golden Rule MC=MR'}
+  ];
+  var phases=[
+    {n:'Phase 1',t:'The First Month',c:'#4a7fb5',p:'Profit Max under Perfect Competition · Productive Efficiency'},
+    {n:'Phase 2',t:'The Crisis',c:'#e05060',p:'Shut-down Point · AVC · SR vs LR · Break-even'},
+    {n:'Phase 3',t:'Going Artisan',c:'#4caf80',p:'Monopolistic Competition · MC=MR · LR Normal Profit'},
+    {n:'Phase 4',t:'Revenue & Objectives',c:'#e0933a',p:'PED · TR · MR · Baumol · Satisficing · Output Max'},
+    {n:'Phase 5',t:'The Founder Steps Back',c:'#9775b5',p:'Principal-Agent · X-Inefficiency · Profit Satisficing'},
+    {n:'Phase 6',t:'The Efficiency Report',c:'#6fa8d8',p:'Productive · Allocative · Dynamic · X-Efficiency'}
+  ];
+
+  var fcHtml=foundCards.map(function(f,i){
+    return '<button class="fc-card" onclick="goLesson('+(i+1)+')">'
+      +'<span class="fc-icon">'+f.ic+'</span>'
+      +'<div class="fc-num">Foundation '+f.n+'</div>'
+      +'<div class="fc-title">'+f.t+'</div>'
+      +'<div class="fc-tag">'+f.tag+'</div>'
+      +'</button>';
+  }).join('');
+
+  var pmHtml=phases.map(function(p,i){
+    return '<button class="pm-card" style="--c:'+p.c+'" onclick="goPhase('+(i+1)+')">'
+      +'<div class="pm-n">'+p.n+'</div>'
+      +'<div class="pm-title">'+p.t+'</div>'
+      +'<div class="pm-concepts">'+p.p+'</div>'
+      +'</button>';
+  }).join('');
+
+  render('<div class="hub-hero"><div class="hub-eyebrow">A-Level Economics &middot; Edexcel Paper 1 &middot; Business Economics</div>'
+    +'<span class="hub-emoji">&#127829;</span>'
+    +'<div class="hub-title">Marco\'s Pizzeria</div>'
+    +'<div class="hub-tagline">From opening week to market domination — every decision has consequences.</div>'
+    +'<p class="hub-intro">You are Marco, owner of a pizza restaurant in a UK market town. Begin with the four foundation lessons to meet revenue, costs, and profit step by step. Then follow Marco\'s journey through six phases — from short-run cost theory and the shut-down decision, through differentiation and revenue objectives, to the moment Marco hands the keys to a manager and asks: how efficient is this business, really?</p></div>'
+    +'<div class="zone">'
+    +'<div class="zone-hdr"><div class="zone-title"><span class="zt-num">Part I</span>Foundations</div><div class="zone-sub">Start here · ~15 min</div></div>'
+    +'<div class="found-grid">'+fcHtml+'</div>'
+    +'<button class="start-btn" onclick="goLesson(1)">Begin with Foundation 1 &rarr;</button>'
+    +'<div class="start-hint">Recommended starting point for first-time students</div>'
+    +'</div>'
+    +'<div class="zone">'
+    +'<div class="zone-hdr"><div class="zone-title"><span class="zt-num">Part II</span>Marco\'s Journey</div><div class="zone-sub">Six phases · Edexcel Paper 1</div></div>'
+    +'<div class="phase-map">'+pmHtml+'</div>'
+    +'</div>'
+    +'<div style="height:2rem"></div>');
+}
+
+function goLesson(n){G.node='l'+n;G.locked=false;var fns=[null,l1,l2,l3,l4];fns[n]();}
+
+// ════════════════════════════════════════════════════════════════
+//  FOUNDATION 1 — OPENING DAY: WHAT CAN I EARN?
+// ════════════════════════════════════════════════════════════════
+function l1(){
+  var html=lessHdr(1,4,'Opening Day — What Can I Earn?','#e2c47a')
+    +bdg([['Total Revenue','cb-rev'],['Price','cb-rev'],['Quantity','cb-rev'],['Foundation','cb-found']])
+    +'<div class="story-box">It is Monday morning. Marco\'s Pizzeria has just opened. The oven is hot, the dough is proved, the doors are unlocked. Marco\'s cousin Luca leans on the counter with a coffee and asks the obvious question: <em>"How much money can this place actually make?"</em><br><br>Today is purely about the money coming in. Costs are tomorrow\'s problem. The two levers Marco can pull are <strong>price</strong> (how much each pizza sells for) and <strong>quantity</strong> (how many he sells). The total money flowing in is called <strong>total revenue</strong>.</div>'
+    +'<div class="diagram-wrap"><div class="diag-title">&#9632; Interactive — Move Both Sliders to Explore Total Revenue</div>'
+    +'<div class="slider-wrap"><div class="slider-lbl">Price per pizza: £<span id="l1pv">10</span></div>'
+    +'<input type="range" id="l1p" min="6" max="14" value="10" step="0.5" oninput="updL1()"></div>'
+    +'<div class="slider-wrap"><div class="slider-lbl">Quantity sold: <span id="l1qv">50</span> pizzas</div>'
+    +'<input type="range" id="l1q" min="0" max="100" value="50" oninput="updL1()"></div>'
+    +'<svg viewBox="0 0 540 240" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:.4rem auto">'
+    +'<line x1="60" y1="20" x2="60" y2="200" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<line x1="60" y1="200" x2="510" y2="200" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<text x="285" y="220" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle">Quantity (pizzas)</text>'
+    +'<text x="18" y="110" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" transform="rotate(-90,18,110)">Total Revenue (£)</text>'
+    +'<text x="52" y="204" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">0</text>'
+    +'<text x="52" y="155" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£500</text>'
+    +'<text x="52" y="105" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£1000</text>'
+    +'<text x="52" y="55" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£1500</text>'
+    +'<rect id="l1bar" x="0" y="0" width="0" height="0" fill="rgba(76,175,128,0.3)" stroke="#4caf80" stroke-width="2"/>'
+    +'<text id="l1lbl" x="0" y="0" fill="#4caf80" font-size="14" font-family="Cormorant Garamond" font-weight="700" text-anchor="middle">£500</text>'
+    +'</svg>'
+    +'<div class="diag-live">'
+    +'<div class="live-box"><div class="live-lbl">Price</div><div class="live-val" id="l1lP">£10</div></div>'
+    +'<div class="live-box"><div class="live-lbl">×</div><div class="live-val" style="opacity:.4">×</div></div>'
+    +'<div class="live-box"><div class="live-lbl">Quantity</div><div class="live-val" id="l1lQ">50</div></div>'
+    +'<div class="live-box"><div class="live-lbl">=</div><div class="live-val" style="opacity:.4">=</div></div>'
+    +'<div class="live-box" style="border-color:rgba(76,175,128,0.5)"><div class="live-lbl">Total Revenue</div><div class="live-val profit" id="l1lTR">£500</div></div>'
+    +'</div></div>'
+    +econBox('<strong>The Trade-off Hidden in the Sliders.</strong> You can move the two sliders independently in this exercise — but in the real world, they are linked. If Marco raises his price from £10 to £14, he won\'t still sell 50 pizzas. Some customers will go elsewhere. So the question isn\'t "what\'s the highest price I can charge?" — it\'s "what combination of P and Q gives me the most revenue?" The branch of economics that handles this is <strong>price elasticity of demand</strong>. We\'ll meet it properly in Phase 4.')
+    +'<div class="q-section-title">Your Decision — Foundation 1</div>'
+    +'<div class="q-stem-box"><div class="q-spec-link">Theme 3 · Total Revenue · The P × Q Relationship</div>'
+    +'<div class="q-stem">Marco\'s brother Antonio says: <em>"Just charge £20 a pizza, you\'ll make a fortune."</em> Why is this advice flawed?</div></div>'
+    +'<div class="q-opts">'
+    +qOpt(0,'It\'s not flawed — TR = P × Q, so a higher price will always raise revenue because the multiplication produces a bigger number, regardless of any change in customer behaviour.','l','l1')
+    +qOpt(1,'Total revenue depends on <strong>both</strong> price and quantity. At £20, far fewer customers will buy — quantity could collapse so much that revenue actually falls. Marco needs the combination of P and Q that maximises P × Q.','l','l1')
+    +qOpt(2,'Charging £20 is unfair to ordinary customers and would damage Marco\'s reputation in the local community — economics shouldn\'t be used to set prices that exploit people.','l','l1')
+    +qOpt(3,'Marco can\'t charge £20 because the market price for pizza is set externally by supply and demand at equilibrium — as a small business owner, he has no individual control over what price he can charge customers.','l','l1')
+    +'</div>'
+    +'<div class="q-fb" id="fb-l1"></div>'
+    +'<div class="btn-row" id="nx-l1" style="display:none"><button class="btn b-found" onclick="goLesson(2)">Foundation 2 &rarr;</button><button class="btn b-sec" onclick="goHub()">Hub</button></div>';
+  render(html);updL1();
+}
+
+function updL1(){
+  var p=parseFloat(document.getElementById('l1p').value);
+  var q=parseInt(document.getElementById('l1q').value);
+  var tr=p*q;
+  document.getElementById('l1pv').textContent=p.toFixed(p%1?1:0);
+  document.getElementById('l1qv').textContent=q;
+  document.getElementById('l1lP').textContent='£'+p.toFixed(p%1?1:0);
+  document.getElementById('l1lQ').textContent=q;
+  document.getElementById('l1lTR').textContent='£'+Math.round(tr);
+  // Bar: x scales with Q (60-510 pixels = 0-100 pizzas), height scales with TR (200-20 = 0-1500)
+  var barX=60, barW=q*4.5;
+  var barH=tr*180/1500;
+  var barY=200-barH;
+  var bar=document.getElementById('l1bar');
+  bar.setAttribute('x',barX);bar.setAttribute('y',barY);bar.setAttribute('width',barW);bar.setAttribute('height',barH);
+  var lbl=document.getElementById('l1lbl');
+  lbl.setAttribute('x',barX+barW/2);lbl.setAttribute('y',Math.max(barY-6,15));
+  lbl.textContent='£'+Math.round(tr);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  FOUNDATION 2 — THE BILLS ARRIVE: FIXED & VARIABLE
+// ════════════════════════════════════════════════════════════════
+function l2(){
+  var html=lessHdr(2,4,'The Bills Arrive — Fixed and Variable Costs','#e2c47a')
+    +bdg([['Fixed Cost','cb-cost'],['Variable Cost','cb-cost'],['Average Cost','cb-cost'],['Spreading Effect','cb-cost'],['Foundation','cb-found']])
+    +'<div class="story-box">Friday evening, end of week one. Marco empties the till — <strong>£2,400 in revenue</strong>. Then he opens three envelopes on the kitchen counter:<br><br>&middot; A rent demand from the landlord. Same amount whether he sold one pizza or two hundred.<br>&middot; An invoice from the wholesaler. Bigger this week than last — because he made more pizzas.<br>&middot; A payslip for his cousin Maria, who came in to help on Thursday lunchtime.<br><br>Marco notices something. <em>Some of these bills came regardless of how busy he was. Others scaled with the number of pizzas he made.</em> That distinction — between costs that move with output and costs that don\'t — is the foundation of cost analysis.</div>'
+    +'<div class="dd-wrap"><div class="diag-title">&#9632; Drag Each Cost Into the Right Bucket</div>'
+    +'<div class="dd-pool" id="l2pool">'
+    +'<div class="dd-item" draggable="true" data-id="rent" data-type="fc">Rent £200/day</div>'
+    +'<div class="dd-item" draggable="true" data-id="moz" data-type="vc">Mozzarella per pizza</div>'
+    +'<div class="dd-item" draggable="true" data-id="ins" data-type="fc">Insurance £30/day</div>'
+    +'<div class="dd-item" draggable="true" data-id="box" data-type="vc">Pizza box per order</div>'
+    +'<div class="dd-item" draggable="true" data-id="oven" data-type="fc">Oven lease £50/day</div>'
+    +'<div class="dd-item" draggable="true" data-id="driver" data-type="vc">Delivery driver per shift</div>'
+    +'<div class="dd-item" draggable="true" data-id="flour" data-type="vc">Flour per pizza</div>'
+    +'<div class="dd-item" draggable="true" data-id="acc" data-type="fc">Accountant £40/day</div>'
+    +'</div>'
+    +'<div class="dd-bins">'
+    +'<div class="dd-bin bin-fc" data-bin="fc"><div class="dd-bin-title">&#9633; Fixed Costs (paid regardless of output)</div><div class="dd-bin-items"></div></div>'
+    +'<div class="dd-bin bin-vc" data-bin="vc"><div class="dd-bin-title">&#9650; Variable Costs (scale with output)</div><div class="dd-bin-items"></div></div>'
+    +'</div>'
+    +'<div class="dd-feedback" id="l2dd">All sorted. Now look below at how average cost per pizza changes as Marco sells more.</div>'
+    +'</div>'
+    +'<div class="diagram-wrap"><div class="diag-title">&#9632; Average Cost — Watch It Fall as Output Rises</div>'
+    +'<div class="slider-wrap"><div class="slider-lbl">Output: <span id="l2qv">40</span> pizzas per day</div>'
+    +'<input type="range" id="l2q" min="10" max="100" value="40" oninput="updL2()"></div>'
+    +'<svg viewBox="0 0 540 240" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:.4rem auto">'
+    +'<line x1="60" y1="20" x2="60" y2="200" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<line x1="60" y1="200" x2="510" y2="200" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<text x="285" y="220" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle">Output Q (pizzas/day)</text>'
+    +'<text x="18" y="110" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" transform="rotate(-90,18,110)">£ per pizza</text>'
+    +'<text x="52" y="204" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">0</text>'
+    +'<text x="52" y="155" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£10</text>'
+    +'<text x="52" y="110" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£20</text>'
+    +'<text x="52" y="65" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£30</text>'
+    +'<polyline id="l2acC" fill="none" stroke="#e0933a" stroke-width="2.5" points=""/>'
+    +'<text x="490" y="180" fill="#e0933a" font-size="11" font-family="IBM Plex Mono">AC</text>'
+    +'<line id="l2qline" x1="0" y1="20" x2="0" y2="200" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-dasharray="4,3"/>'
+    +'<circle id="l2dot" cx="0" cy="0" r="6" fill="#e0933a"/>'
+    +'</svg>'
+    +'<div class="diag-live">'
+    +'<div class="live-box"><div class="live-lbl">Output</div><div class="live-val" id="l2lQ">40</div></div>'
+    +'<div class="live-box"><div class="live-lbl">FC per pizza</div><div class="live-val" id="l2lFC">£5.00</div></div>'
+    +'<div class="live-box"><div class="live-lbl">VC per pizza</div><div class="live-val" id="l2lAVC">£6.00</div></div>'
+    +'<div class="live-box" style="border-color:rgba(224,147,58,.5)"><div class="live-lbl">Average Cost</div><div class="live-val" style="color:var(--orange)" id="l2lAC">£11.00</div></div>'
+    +'</div></div>'
+    +msBox('<strong>For 4-mark "explain" questions on costs:</strong> distinguish clearly between FC (unchanged with output, e.g. rent, oven lease) and VC (rises with output, e.g. ingredients, packaging). The phrase mark schemes reward: "Fixed costs do not change with the level of output, whereas variable costs vary directly with the quantity produced." Average cost falls initially because <strong>fixed costs are spread across more units</strong> as output rises — a phenomenon also known as the <em>spreading effect</em>, central to economies of scale.')
+    +'<div class="q-section-title">Your Decision — Foundation 2</div>'
+    +'<div class="q-stem-box"><div class="q-spec-link">Theme 3 · Average Cost · The Spreading Effect</div>'
+    +'<div class="q-stem">Marco\'s average cost falls from £15 per pizza at Q=20 to £6 per pizza at Q=80. What is the dominant reason for this fall?</div></div>'
+    +'<div class="q-opts">'
+    +qOpt(0,'Marco and his staff get better at making pizzas with practice, so each pizza takes less time to produce and costs less in labour overall as the kitchen builds experience.','l','l2')
+    +qOpt(1,'Fixed costs (rent, insurance, oven lease) are spread across many more pizzas — the "spreading effect". £200 of FC is £10 per pizza at Q=20 but only £2.50 per pizza at Q=80.','l','l2')
+    +qOpt(2,'The wholesaler offers Marco a bulk discount on flour, mozzarella and other ingredients once he starts buying in larger weekly quantities for his growing business.','l','l2')
+    +qOpt(3,'Variable costs per pizza fall sharply as Marco\'s output rises because ingredients are sourced more cheaply per unit at higher volumes of weekly production.','l','l2')
+    +'</div>'
+    +'<div class="q-fb" id="fb-l2"></div>'
+    +'<div class="btn-row" id="nx-l2" style="display:none"><button class="btn b-found" onclick="goLesson(3)">Foundation 3 &rarr;</button><button class="btn b-sec" onclick="goHub()">Hub</button></div>';
+  render(html);
+  initDD();
+  updL2();
+}
+
+// Drag and drop initialiser for Lesson 2
+function initDD(){
+  var items=document.querySelectorAll('.dd-item');
+  var bins=document.querySelectorAll('.dd-bin');
+  items.forEach(function(it){
+    it.addEventListener('dragstart',function(e){
+      e.dataTransfer.setData('text/plain',it.dataset.id);
+      e.dataTransfer.setData('type',it.dataset.type);
+      it.classList.add('dragging');
+    });
+    it.addEventListener('dragend',function(){it.classList.remove('dragging');});
+  });
+  bins.forEach(function(b){
+    b.addEventListener('dragover',function(e){e.preventDefault();b.classList.add('over');});
+    b.addEventListener('dragleave',function(){b.classList.remove('over');});
+    b.addEventListener('drop',function(e){
+      e.preventDefault();b.classList.remove('over');
+      var id=e.dataTransfer.getData('text/plain');
+      var type=e.dataTransfer.getData('type');
+      var bin=b.dataset.bin;
+      var src=document.querySelector('.dd-item[data-id="'+id+'"]');
+      if(!src) return;
+      if(type===bin){
+        src.classList.remove('placed-wrong');
+        src.classList.add(bin==='fc'?'placed-fc':'placed-vc');
+      } else {
+        src.classList.remove('placed-fc','placed-vc');
+        src.classList.add('placed-wrong');
+        setTimeout(function(){src.classList.remove('placed-wrong');},650);
+        return;
+      }
+      src.setAttribute('draggable','false');
+      b.querySelector('.dd-bin-items').appendChild(src);
+      var pool=document.getElementById('l2pool');
+      if(pool && pool.children.length===0){
+        document.getElementById('l2dd').classList.add('show');
+      }
+    });
+  });
+}
+
+function updL2(){
+  var q=parseInt(document.getElementById('l2q').value);
+  var fcpu=200/q, avcpu=avc(q), acpu=ac(q);
+  document.getElementById('l2qv').textContent=q;
+  document.getElementById('l2lQ').textContent=q;
+  document.getElementById('l2lFC').textContent='£'+fcpu.toFixed(2);
+  document.getElementById('l2lAVC').textContent='£'+avcpu.toFixed(2);
+  document.getElementById('l2lAC').textContent='£'+acpu.toFixed(2);
+  // Build AC curve points
+  var pts=[];
+  for(var i=10;i<=100;i+=2){
+    var x=60+(i-0)*(450/100);
+    var v=ac(i);
+    var y=200-(v/30*180);
+    if(y>=15&&y<=200) pts.push(x.toFixed(1)+','+y.toFixed(1));
+  }
+  document.getElementById('l2acC').setAttribute('points',pts.join(' '));
+  // Marker
+  var mx=60+q*(450/100), my=200-(acpu/30*180);
+  document.getElementById('l2qline').setAttribute('x1',mx);document.getElementById('l2qline').setAttribute('x2',mx);
+  document.getElementById('l2dot').setAttribute('cx',mx);document.getElementById('l2dot').setAttribute('cy',my);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  FOUNDATION 3 — ONE MORE PIZZA: THE NIKE TICK
+// ════════════════════════════════════════════════════════════════
+// Map kitchen stage (1-7 cooks) to a representative output level
+// where MC sits at a particular point along the U-curve
+var KITCHEN_STAGES=[
+  null,
+  {q:8, label:'1 cook (Marco alone)', stage:'falling', text:'Marco does <em>everything</em> — prep dough, stretch, top, bake, plate, serve, take payment, clean. He\'s rushed. Each pizza is a juggling act. <strong>MC is high (~£8)</strong> because his time is fragmented across eight different jobs.'},
+  {q:22, label:'2 cooks', stage:'falling', text:'Maria joins. Marco bakes; Maria preps. Each does what they\'re good at. The kitchen flows. <strong>MC drops to ~£5</strong>. This is the gain from <em>specialisation</em> — the same workers, focused on fewer tasks, produce more output per hour.'},
+  {q:32, label:'3 cooks', stage:'falling', text:'A third cook joins for evenings. Now Marco bakes, Maria preps, the new cook handles deliveries and front-of-house. Division of labour deepens. <strong>MC falls further to ~£4.30</strong>.'},
+  {q:40, label:'4 cooks (sweet spot)', stage:'bottom', text:'Four cooks. Real division of labour. Two on prep, one on the oven, one on service. Nobody is waiting, nobody is duplicating effort. This is the kitchen at its most efficient. <strong>MC reaches its minimum: £4 per pizza.</strong> The bottom of the Nike tick.'},
+  {q:60, label:'5 cooks', stage:'rising', text:'A fifth cook is hired but there\'s still only <em>one oven</em>. People start waiting their turn. The bottleneck is now the fixed capital, not the labour. <strong>MC ticks back up to £5.50</strong>. This is <em>diminishing marginal returns</em> beginning to bite.'},
+  {q:78, label:'7 cooks', stage:'rising', text:'Seven cooks. The kitchen is crowded. Pizzas wait on the side while the oven runs flat out. Coordination breaks down. Mistakes happen. <strong>MC has risen to ~£8.5</strong>. Each new worker now adds <em>less</em> to output than the previous one — the textbook definition of diminishing marginal returns to a fixed factor.'},
+  {q:90, label:'9 cooks (chaos)', stage:'rising', text:'Nine cooks fighting for one oven. People queueing, pizzas burning, orders missed. The kitchen is past its limit. <strong>MC has shot up to ~£12</strong> — higher than the original one-cook figure. Adding more workers to fixed capital eventually becomes <em>worse</em> than what you started with.'}
+];
+
+function l3(){
+  var html=lessHdr(3,4,'One More Pizza — The Nike Tick','#e2c47a')
+    +bdg([['Marginal Cost','cb-cost'],['Specialisation','cb-cost'],['Diminishing Returns','cb-cost'],['Nike Tick MC','cb-cost'],['Foundation','cb-found']])
+    +'<div class="story-box">Saturday lunchtime rush. Marco\'s already produced 70 pizzas. An order comes in for one more. He pauses with the dough in his hands. <em>What does it actually cost him to make this single extra pizza?</em><br><br>Not the average. The marginal one. The cost of just the <strong>next</strong> unit. This number — <strong>marginal cost</strong> — is the most important number in the kitchen. It\'s also the strangest, because as Marco\'s kitchen grows it doesn\'t just rise or fall: it traces out the shape of a <em>Nike tick</em>. Falling first, then climbing. The reason is the entire story of how production works.</div>'
+    +'<div class="diagram-wrap"><div class="diag-title">&#9632; Drag the Slider — Watch the Kitchen Grow and MC Move</div>'
+    +'<div class="slider-wrap"><div class="slider-lbl">Kitchen state: <span id="l3sv">4 cooks (sweet spot)</span></div>'
+    +'<input type="range" id="l3s" min="1" max="7" value="4" oninput="updL3()"></div>'
+    +'<svg viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:.4rem auto">'
+    +'<line x1="60" y1="20" x2="60" y2="240" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<line x1="60" y1="240" x2="510" y2="240" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<text x="285" y="260" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle">Output Q (pizzas/day)</text>'
+    +'<text x="18" y="130" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" transform="rotate(-90,18,130)">£ per pizza</text>'
+    +'<text x="52" y="244" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">0</text>'
+    +'<text x="52" y="200" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£4</text>'
+    +'<text x="52" y="155" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£8</text>'
+    +'<text x="52" y="110" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£12</text>'
+    +'<text x="52" y="65" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£16</text>'
+    // MC curve (Nike tick)
+    +'<polyline id="l3mcC" fill="none" stroke="#e0933a" stroke-width="2.8" points=""/>'
+    +'<text x="490" y="105" fill="#e0933a" font-size="12" font-family="IBM Plex Mono">MC</text>'
+    // Min point marker
+    +'<line x1="240" y1="200" x2="240" y2="240" stroke="rgba(201,168,76,.35)" stroke-width="1" stroke-dasharray="3,3"/>'
+    +'<text x="240" y="252" fill="#c9a84c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">Q=40 · min MC</text>'
+    // Falling/rising annotations
+    +'<text x="115" y="40" fill="#4caf80" font-size="10" font-family="IBM Plex Mono">&#11014; Falling</text>'
+    +'<text x="115" y="52" fill="#4caf80" font-size="9" font-family="IBM Plex Mono" opacity=".75">specialisation gains</text>'
+    +'<text x="380" y="40" fill="#e05060" font-size="10" font-family="IBM Plex Mono">&#11015; Rising</text>'
+    +'<text x="380" y="52" fill="#e05060" font-size="9" font-family="IBM Plex Mono" opacity=".75">diminishing returns</text>'
+    // Dynamic dot
+    +'<circle id="l3dot" cx="0" cy="0" r="7" fill="#c9a84c" stroke="#fff" stroke-width="2"/>'
+    +'<line id="l3qline" x1="0" y1="20" x2="0" y2="240" stroke="rgba(201,168,76,.35)" stroke-width="1.2" stroke-dasharray="4,3"/>'
+    +'</svg>'
+    +'<div class="kitchen-narrative" id="l3narr">'
+    +'<div class="kn-stage bottom" id="l3stage">&#9670; The Sweet Spot</div>'
+    +'<div class="kn-text" id="l3text">Loading...</div>'
+    +'</div>'
+    +'<div class="diag-live" style="margin-top:.7rem">'
+    +'<div class="live-box"><div class="live-lbl">Output</div><div class="live-val" id="l3lQ">40</div></div>'
+    +'<div class="live-box" style="border-color:rgba(224,147,58,.5)"><div class="live-lbl">MC</div><div class="live-val" style="color:var(--orange)" id="l3lMC">£4.00</div></div>'
+    +'</div></div>'
+    +econBox('<strong>Why does MC fall, then rise? Two opposing forces.</strong><br><br><strong>Force 1 — Specialisation and Division of Labour (the falling part).</strong> When workers are added to a small operation, they can specialise. One person becomes the prep specialist; another the oven specialist. Each gets faster at their narrower task. Output rises faster than the wage bill, so the cost of an extra pizza falls. Adam Smith\'s pin factory (1776) is the classic illustration.<br><br><strong>Force 2 — Diminishing Marginal Returns (the rising part).</strong> Eventually, with capital fixed (one oven, one kitchen), each extra worker has less capital to work with. They start getting in each other\'s way. The marginal product of labour falls. With wage costs unchanged but each worker producing less, the cost of an extra pizza rises. <em>This is the law of diminishing returns to the variable factor.</em>')
+    +msBox('<strong>For 4-mark "explain MC" questions:</strong> the mark scheme phrase is "<em>as more workers are added to fixed capital, each additional worker contributes less to output, so the cost of each additional unit of output rises</em>." For <strong>8-mark diagram questions</strong>, draw MC as a U-shape (Nike tick) — never a straight line. Mark schemes specifically penalise candidates who draw MC as upward-sloping linear from the origin. The minimum of MC is to the left of the minimum of AVC, which is to the left of the minimum of AC. MC cuts AVC and AC at <em>their</em> respective minimums.')
+    +'<div class="q-section-title">Your Decision — Foundation 3</div>'
+    +'<div class="q-stem-box"><div class="q-spec-link">Theme 3 · Marginal Cost · The Two Forces Behind the Nike Tick</div>'
+    +'<div class="q-stem">Why does Marco\'s MC curve initially fall and then rise as output increases?</div></div>'
+    +'<div class="q-opts">'
+    +qOpt(0,'Ingredient prices fall when Marco buys in bulk, then rise again as he becomes desperate for last-minute supplies — MC reflects what he\'s paying for inputs at any given moment in production.','l','l3')
+    +qOpt(1,'Customer demand for pizza increases at first as Marco\'s reputation gradually grows, then falls again as the novelty of the new restaurant wears off — MC follows the same path because it tracks how busy the kitchen happens to be at any given time.','l','l3')
+    +qOpt(2,'Adding workers early on allows <strong>specialisation and division of labour</strong> — output rises faster than costs, so MC falls. With capital fixed (one oven), each extra worker eventually has less to work with — <strong>diminishing returns</strong> set in.','l','l3')
+    +qOpt(3,'MC is fixed by market conditions and Marco has no real control over it — the curve simply reflects supplier prices and prevailing wage rates set in the local labour market.','l','l3')
+    +'</div>'
+    +'<div class="q-fb" id="fb-l3"></div>'
+    +'<div class="btn-row" id="nx-l3" style="display:none"><button class="btn b-found" onclick="goLesson(4)">Foundation 4 &rarr;</button><button class="btn b-sec" onclick="goHub()">Hub</button></div>';
+  render(html);updL3();
+}
+
+function updL3(){
+  var s=parseInt(document.getElementById('l3s').value);
+  var stage=KITCHEN_STAGES[s];
+  document.getElementById('l3sv').textContent=stage.label;
+  document.getElementById('l3lQ').textContent=stage.q;
+  var mcv=mc(stage.q);
+  document.getElementById('l3lMC').textContent='£'+mcv.toFixed(2);
+  // Build MC curve
+  var pts=[];
+  for(var i=2;i<=100;i+=2){
+    var x=60+i*(450/100);
+    var v=mc(i);
+    var y=240-(v/16*220);
+    if(y>=15&&y<=240) pts.push(x.toFixed(1)+','+y.toFixed(1));
+  }
+  document.getElementById('l3mcC').setAttribute('points',pts.join(' '));
+  // Marker
+  var mx=60+stage.q*(450/100), my=240-(mcv/16*220);
+  document.getElementById('l3dot').setAttribute('cx',mx);document.getElementById('l3dot').setAttribute('cy',my);
+  document.getElementById('l3qline').setAttribute('x1',mx);document.getElementById('l3qline').setAttribute('x2',mx);
+  // Narrative
+  var stEl=document.getElementById('l3stage');
+  stEl.className='kn-stage '+stage.stage;
+  stEl.innerHTML=(stage.stage==='falling'?'&#11014; MC Falling — Specialisation Gains':stage.stage==='bottom'?'&#9670; The Sweet Spot — MC at Minimum':'&#11015; MC Rising — Diminishing Returns');
+  document.getElementById('l3text').innerHTML=stage.text;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  FOUNDATION 4 — SATURDAY MORNING: PROFIT AND THE GOLDEN RULE
+// ════════════════════════════════════════════════════════════════
+function l4(){
+  var html=lessHdr(4,4,'Saturday Morning — Profit and the Golden Rule','#e2c47a')
+    +bdg([['Profit = TR - TC','cb-rev'],['Profit Maximisation','cb-rev'],['MC = MR Rule','cb-rev'],['Foundation','cb-found']])
+    +'<div class="story-box">Sunday morning. Marco\'s at the kitchen table with a notepad. The week\'s revenue figures are on the left. The week\'s cost figures are on the right. Subtract one from the other — that\'s <strong>profit</strong>.<br><br>But there\'s a deeper question. Marco currently makes <strong>60 pizzas a day</strong>. What if he made 80? Or 40? Which output makes him <em>most</em> money? He has all the pieces now: revenue from Foundation 1, average cost from Foundation 2, marginal cost from Foundation 3. Time to put them together and meet the most important rule in microeconomics.</div>'
+    +'<div class="data-row">'
+    +'<div class="data-box"><div class="data-lbl">Selling Price (MR)</div><div class="data-val">£10</div><div class="data-note">Set by local market — Marco is a price-taker for now</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Fixed Cost / day</div><div class="data-val">£200</div><div class="data-note">Rent + insurance + oven lease</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Variable Cost</div><div class="data-val" style="font-size:1rem">10Q − 0.15Q² + 0.00125Q³</div><div class="data-note">Reflects the Nike-tick MC from Foundation 3</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Marginal Cost</div><div class="data-val" style="font-size:1rem">10 − 0.3Q + 0.00375Q²</div><div class="data-note">U-shaped: minimum £4 at Q=40</div></div>'
+    +'</div>'
+    +'<div class="diagram-wrap"><div class="diag-title">&#9632; Find the Profit Peak — Drag the Slider</div>'
+    +'<div class="slider-wrap"><div class="slider-lbl">Output: <span id="l4qv">60</span> pizzas per day</div>'
+    +'<input type="range" id="l4q" min="0" max="100" value="60" oninput="updL4()"></div>'
+    +'<svg viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:.4rem auto">'
+    +'<line x1="60" y1="20" x2="60" y2="240" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<line x1="60" y1="240" x2="510" y2="240" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<text x="285" y="260" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle">Output Q (pizzas/day)</text>'
+    +'<text x="18" y="130" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" transform="rotate(-90,18,130)">£ per day</text>'
+    +'<text x="52" y="244" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">0</text>'
+    +'<text x="52" y="200" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£300</text>'
+    +'<text x="52" y="155" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£600</text>'
+    +'<text x="52" y="110" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£900</text>'
+    +'<text x="52" y="65" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£1200</text>'
+    // FC line
+    +'<line x1="60" y1="'+(240-200*220/1500).toFixed(1)+'" x2="510" y2="'+(240-200*220/1500).toFixed(1)+'" stroke="#6fa8d8" stroke-width="1.2" stroke-dasharray="5,4" opacity=".55"/>'
+    +'<text x="63" y="'+(240-200*220/1500-4).toFixed(1)+'" fill="#6fa8d8" font-size="9" font-family="IBM Plex Mono" opacity=".7">FC=£200</text>'
+    // TC curve
+    +'<polyline id="l4tcC" fill="none" stroke="#e05060" stroke-width="2" points=""/>'
+    +'<text x="490" y="50" fill="#e05060" font-size="11" font-family="IBM Plex Mono">TC</text>'
+    // TR line
+    +'<line x1="60" y1="240" x2="510" y2="'+(240-1000*220/1500).toFixed(1)+'" stroke="#4caf80" stroke-width="2"/>'
+    +'<text x="490" y="'+(240-1000*220/1500-4).toFixed(1)+'" fill="#4caf80" font-size="11" font-family="IBM Plex Mono">TR</text>'
+    // Profit shading (dynamic)
+    +'<polygon id="l4prP" fill="rgba(76,175,128,0.22)" stroke="none"/>'
+    +'<polygon id="l4lsP" fill="rgba(224,80,96,0.18)" stroke="none"/>'
+    +'<line id="l4qline" x1="0" y1="20" x2="0" y2="240" stroke="rgba(255,255,255,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>'
+    +'</svg>'
+    +'<div class="diag-live">'
+    +'<div class="live-box"><div class="live-lbl">TR</div><div class="live-val profit" id="l4lTR">£600</div></div>'
+    +'<div class="live-box"><div class="live-lbl">TC</div><div class="live-val loss" id="l4lTC">£517</div></div>'
+    +'<div class="live-box" style="border-color:rgba(201,168,76,.5)"><div class="live-lbl">Profit / Loss</div><div class="live-val" id="l4lPR">+£83</div></div>'
+    +'<div class="live-box"><div class="live-lbl">MC at Q</div><div class="live-val" id="l4lMC">£6.50</div></div>'
+    +'<div class="live-box"><div class="live-lbl">MR</div><div class="live-val">£10</div></div>'
+    +'</div></div>'
+    +econBox('<strong>The Golden Rule: Profit Max where MC = MR.</strong><br><br>Imagine producing one more pizza. It earns Marco £MR more in revenue and costs him £MC more to produce. The pizza is worth making if MR > MC. Keep going while this is true.<br><br>Eventually, as output rises, MC climbs (the right side of the Nike tick) until MC = MR. <strong>This is the profit-maximising output.</strong> One more pizza beyond this point would cost more than it earns — profit falls.<br><br>So the rule is: <strong>set MC = MR</strong>. Try it on the slider — find the output where MC reaches £10 (the price). That\'s the profit peak.')
+    +msBox('<strong>The single most-tested rule in Edexcel Theme 3.</strong> The profit-maximising condition is <strong>MC = MR</strong>, regardless of market structure. For a price-taker (perfect competition), MR=P, so this becomes MC=P. For firms with pricing power (monopolistic competition, monopoly, oligopoly), MR < P, so the firm produces less and charges more. <strong>Common error to avoid:</strong> "profit max where AC is minimised" — wrong. AC min is <em>productive efficiency</em>, a different concept tested separately. Profit max output is normally larger than min-AC output.')
+    +'<div class="q-section-title">Your Decision — Foundation 4</div>'
+    +'<div class="q-stem-box"><div class="q-spec-link">Theme 3 · The Profit-Maximising Rule</div>'
+    +'<div class="q-stem">Marco is currently producing 50 pizzas a day. At Q=50, MC = £4.40 and MR = £10. What should he do?</div></div>'
+    +'<div class="q-opts">'
+    +qOpt(0,'Produce <strong>more</strong> pizzas. At Q=50, every extra pizza adds £10 to revenue but only £4.40 to cost — a £5.60 profit each. Marco should keep going until MC has risen to meet MR (= £10).','l','l4')
+    +qOpt(1,'Produce <strong>fewer</strong> pizzas. MC being below MR means production costs are too low — Marco should cut output to drive marginal costs back up to a healthy level.','l','l4')
+    +qOpt(2,'Produce <strong>the same</strong> amount. As long as MR exceeds MC at the current output level, profits remain positive — there\'s no economic case for changing anything now.','l','l4')
+    +qOpt(3,'Stop producing entirely. MR being higher than MC means Marco is losing money on each pizza he sells, and producing more would only deepen those losses further.','l','l4')
+    +'</div>'
+    +'<div class="q-fb" id="fb-l4"></div>'
+    +'<div class="btn-row" id="nx-l4" style="display:none"><button class="btn b-pizza" onclick="goPhase(1)">Begin Marco\'s Journey &rarr;</button><button class="btn b-sec" onclick="goHub()">Hub</button></div>';
+  render(html);updL4();
+}
+
+function l4_xS(q){return 60+q*(450/100);}
+function l4_yS(v){return 240-v*(220/1500);}
+
+function updL4(){
+  var q=parseInt(document.getElementById('l4q').value);
+  var P=10;
+  var tr=P*q, tCost=tc(q), pft=tr-tCost, mCost=mc(q);
+  document.getElementById('l4qv').textContent=q;
+  document.getElementById('l4lTR').textContent='£'+Math.round(tr);
+  document.getElementById('l4lTC').textContent='£'+Math.round(tCost);
+  var pEl=document.getElementById('l4lPR');
+  pEl.textContent=(pft>=0?'+£':'−£')+Math.abs(Math.round(pft));
+  pEl.className='live-val '+(pft>=0?'profit':'loss');
+  document.getElementById('l4lMC').textContent='£'+mCost.toFixed(2);
+  // TC curve points
+  var tcPts=[];
+  for(var i=0;i<=100;i+=2){
+    tcPts.push(l4_xS(i).toFixed(1)+','+l4_yS(tc(i)).toFixed(1));
+  }
+  document.getElementById('l4tcC').setAttribute('points',tcPts.join(' '));
+  // Profit/loss shading
+  var prP=document.getElementById('l4prP'), lsP=document.getElementById('l4lsP');
+  var trArr=[],tcArr=[];
+  for(var j=0;j<=q;j+=2){trArr.push(l4_xS(j).toFixed(1)+','+l4_yS(P*j).toFixed(1));}
+  for(var k=q;k>=0;k-=2){tcArr.push(l4_xS(k).toFixed(1)+','+l4_yS(tc(k)).toFixed(1));}
+  if(pft>=0){prP.setAttribute('points',trArr.concat(tcArr).join(' '));lsP.setAttribute('points','');}
+  else{lsP.setAttribute('points',tcArr.reverse().concat(trArr.reverse()).join(' '));prP.setAttribute('points','');}
+  // Q line
+  var mx=l4_xS(q);
+  document.getElementById('l4qline').setAttribute('x1',mx);document.getElementById('l4qline').setAttribute('x2',mx);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  PHASE 1 — THE FIRST MONTH (perfect competition, profit max)
+// ════════════════════════════════════════════════════════════════
+function p1xS(q){return 60+q*(450/110);}
+function p1yS(v){return 240-v*(220/1500);}
+
+function p1(){
+  var P=12, FCp=200;
+  // Find profit-max Q: MC=P → 0.00375Q² - 0.3Q + (10-P) = 0
+  var disc=0.09 - 0.015*(10-P);
+  var qStar=(0.3 + Math.sqrt(disc))/0.0075; // ≈ 86.2
+  var qStarR=Math.round(qStar);
+  var tcStar=tc(qStarR);
+  var profitStar=P*qStarR - tcStar;
+  var qMinAC=75; // approx min AC location
+  var minAC=ac(qMinAC);
+
+  var html=phHdr(1,6,'The First Month — Finding the Sweet Spot','#4a7fb5')
+    +bdg([['Profit Max','cb-rev'],['MC=MR Rule','cb-cost'],['Productive Efficiency','cb-cost'],['Perfect Competition','cb-mkt'],['Edexcel · Theme 3','cb-spec']])
+    +recap(4,'Profit and the Golden Rule')
+    +'<div class="story-box">A month into trading. Marco has settled into a rhythm — staff trained, suppliers reliable, Saturday queues out the door. The local market for pizzas is competitive: half a dozen restaurants sell similar product. The market price has settled at <strong>£12 per pizza</strong>. Marco can\'t move it — he is a <strong>price-taker</strong>. So MR = P = £12. His only real decision: how many pizzas to make each day. <em>Apply the rule from Foundation 4 properly, on a Nike-tick MC, with all costs in play.</em></div>'
+    +'<div class="data-row">'
+    +'<div class="data-box"><div class="data-lbl">Market Price</div><div class="data-val">£12</div><div class="data-note">P = MR for a price-taker</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Fixed Cost / day</div><div class="data-val">£200</div><div class="data-note">Rent + insurance + oven lease</div></div>'
+    +'<div class="data-box"><div class="data-lbl">MC formula</div><div class="data-val" style="font-size:1rem">10 − 0.3Q + 0.00375Q²</div><div class="data-note">Nike tick · min £4 at Q=40</div></div>'
+    +'<div class="data-box"><div class="data-lbl">AC minimum</div><div class="data-val">≈£8.45</div><div class="data-note">At Q≈75 — productive efficiency</div></div>'
+    +'</div>'
+    +'<div class="diagram-wrap"><div class="diag-title">&#9632; Move the Slider — Find the Profit-Maximising Output</div>'
+    +'<div class="slider-wrap"><div class="slider-lbl">Output: <span id="p1sv">'+qStarR+'</span> pizzas per day</div>'
+    +'<input type="range" id="p1sl" min="0" max="110" value="'+qStarR+'" oninput="updP1()"></div>'
+    +'<svg viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:.4rem auto">'
+    +'<line x1="60" y1="20" x2="60" y2="240" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<line x1="60" y1="240" x2="510" y2="240" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<text x="285" y="260" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle">Output Q</text>'
+    +'<text x="18" y="130" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" transform="rotate(-90,18,130)">£ per day</text>'
+    +'<text x="52" y="244" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">0</text>'
+    +'<text x="52" y="200" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£300</text>'
+    +'<text x="52" y="155" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£600</text>'
+    +'<text x="52" y="110" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£900</text>'
+    +'<text x="52" y="65" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£1200</text>'
+    // FC line
+    +'<line x1="60" y1="'+p1yS(200)+'" x2="510" y2="'+p1yS(200)+'" stroke="#6fa8d8" stroke-width="1.2" stroke-dasharray="5,4" opacity=".55"/>'
+    +'<text x="63" y="'+(p1yS(200)-4)+'" fill="#6fa8d8" font-size="9" font-family="IBM Plex Mono" opacity=".7">FC=£200</text>'
+    // Min AC marker
+    +'<line x1="'+p1xS(qMinAC)+'" y1="220" x2="'+p1xS(qMinAC)+'" y2="240" stroke="#c9a84c" stroke-width="1"/>'
+    +'<text x="'+p1xS(qMinAC)+'" y="252" fill="#c9a84c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">Min AC (Q='+qMinAC+')</text>'
+    // TC curve
+    +'<polyline id="p1tcC" fill="none" stroke="#e05060" stroke-width="2" points=""/>'
+    +'<text x="490" y="50" fill="#e05060" font-size="11" font-family="IBM Plex Mono">TC</text>'
+    // TR line
+    +'<line x1="60" y1="240" x2="'+p1xS(110)+'" y2="'+p1yS(P*110)+'" stroke="#4caf80" stroke-width="2"/>'
+    +'<text x="490" y="'+(p1yS(P*110)+4)+'" fill="#4caf80" font-size="11" font-family="IBM Plex Mono">TR</text>'
+    // Profit/loss shading
+    +'<polygon id="p1prP" fill="rgba(76,175,128,0.22)" stroke="none"/>'
+    +'<polygon id="p1lsP" fill="rgba(224,80,96,0.18)" stroke="none"/>'
+    +'<line id="p1qline" x1="0" y1="20" x2="0" y2="240" stroke="rgba(255,255,255,.4)" stroke-width="1.5" stroke-dasharray="4,3"/>'
+    +'</svg>'
+    +'<div class="diag-live">'
+    +'<div class="live-box"><div class="live-lbl">TR</div><div class="live-val" id="p1lTR">£'+(P*qStarR)+'</div></div>'
+    +'<div class="live-box"><div class="live-lbl">TC</div><div class="live-val" id="p1lTC">£'+Math.round(tcStar)+'</div></div>'
+    +'<div class="live-box" style="border-color:rgba(201,168,76,.5)"><div class="live-lbl">Profit</div><div class="live-val profit" id="p1lPR">+£'+Math.round(profitStar)+'</div></div>'
+    +'<div class="live-box"><div class="live-lbl">MC at Q</div><div class="live-val" id="p1lMC">£'+mc(qStarR).toFixed(2)+'</div></div>'
+    +'<div class="live-box"><div class="live-lbl">AC at Q</div><div class="live-val" id="p1lAC">£'+ac(qStarR).toFixed(2)+'</div></div>'
+    +'</div></div>'
+    +econBox('<strong>Profit max vs productive efficiency — two different outputs.</strong> The profit-maximising output sits where MC = MR. Here, MC = £12 at <strong>Q ≈ '+qStarR+'</strong>, where profit ≈ £'+Math.round(profitStar)+'/day. Productive efficiency, by contrast, is where AC is at its minimum — for our cost structure, that\'s around Q ≈ 75 with AC ≈ £'+minAC.toFixed(2)+'. <strong>These are different outputs.</strong> At Q=75, profit is still rising (because MC < MR), so Marco hasn\'t maximised yet. The Edexcel mark scheme treats profit max and productive efficiency as separate concepts — never claim the firm is most profitable where AC is lowest.')
+    +msBox('<strong>For 25-mark essays on perfect competition</strong>: always show the MC/AVC/AC stack with a horizontal price line P=AR=MR. Mark the profit-max output where MC cuts MR <em>from below</em> (rising portion of MC). Distinguish productive efficiency (min AC, technical) from allocative efficiency (P=MC, social) — under perfect competition in the LR, both hold simultaneously. <strong>For 4-mark questions</strong> on why MC=MR: "If MC < MR, producing more adds more to revenue than to cost, raising profit. If MC > MR, the marginal unit reduces profit. The profit-maximising output is where MC = MR."')
+    +'<div class="q-section-title">Your Decision — Phase 1</div>'
+    +'<div class="q-stem-box"><div class="q-spec-link">Theme 3 · Profit Maximisation under Perfect Competition</div>'
+    +'<div class="q-stem">Using the slider and the MC=MR rule, identify Marco\'s profit-maximising output. Why is this different from the output at minimum average cost?</div></div>'
+    +'<div class="q-opts">'
+    +qOpt(0,'Q≈40 — produce at the bottom of the U-shaped MC curve, where each additional pizza is cheapest to make and the kitchen is operating at peak efficiency.','p','p1')
+    +qOpt(1,'Q≈86 — where MC=MR=£12 on the rising part of the U-shaped curve. Profit ≈ £'+Math.round(profitStar)+'/day. Min AC is earlier at Q≈75 (productive efficiency, AC≈£8.45) — different output.','p','p1')
+    +qOpt(2,'Q≈110 — make as many pizzas as Marco can produce. More output means more revenue at a fixed price, so producing flat-out delivers maximum profit.','p','p1')
+    +qOpt(3,'Q≈75 — produce at minimum AC, where productive efficiency holds. Lowest cost per pizza means highest profit per pizza, so total profit is maximised here.','p','p1')
+    +'</div>'
+    +'<div class="q-fb" id="fb-p1"></div>'
+    +'<div class="btn-row" id="nx-p1" style="display:none"><button class="btn b-pizza" onclick="goPhase(2)">Phase 2 &rarr;</button></div>';
+  render(html);updP1();
+}
+
+function updP1(){
+  var P=12;
+  var q=parseInt(document.getElementById('p1sl').value);
+  var tr=P*q, tCost=tc(q), pft=tr-tCost, mCost=mc(q), aCost=q>0?ac(q):0;
+  document.getElementById('p1sv').textContent=q;
+  document.getElementById('p1lTR').textContent='£'+Math.round(tr);
+  document.getElementById('p1lTC').textContent='£'+Math.round(tCost);
+  var pEl=document.getElementById('p1lPR');
+  pEl.textContent=(pft>=0?'+£':'−£')+Math.abs(Math.round(pft));
+  pEl.className='live-val '+(pft>=0?'profit':'loss');
+  document.getElementById('p1lMC').textContent='£'+mCost.toFixed(2);
+  document.getElementById('p1lAC').textContent=q>0?'£'+aCost.toFixed(2):'—';
+  // TC curve
+  var tcPts=[];for(var i=0;i<=110;i+=2)tcPts.push(p1xS(i).toFixed(1)+','+p1yS(tc(i)).toFixed(1));
+  document.getElementById('p1tcC').setAttribute('points',tcPts.join(' '));
+  // Q line
+  var mx=p1xS(q);
+  document.getElementById('p1qline').setAttribute('x1',mx);document.getElementById('p1qline').setAttribute('x2',mx);
+  // Profit/loss shading
+  var prP=document.getElementById('p1prP'), lsP=document.getElementById('p1lsP');
+  var trArr=[],tcArr=[];
+  for(var j=0;j<=q;j+=2){trArr.push(p1xS(j).toFixed(1)+','+p1yS(P*j).toFixed(1));}
+  for(var k=q;k>=0;k-=2){tcArr.push(p1xS(k).toFixed(1)+','+p1yS(tc(k)).toFixed(1));}
+  if(pft>=0){prP.setAttribute('points',trArr.concat(tcArr).join(' '));lsP.setAttribute('points','');}
+  else{lsP.setAttribute('points',tcArr.reverse().concat(trArr.reverse()).join(' '));prP.setAttribute('points','');}
+}
+
+// ════════════════════════════════════════════════════════════════
+//  PHASE 2 — THE CRISIS (shut-down rule)
+// ════════════════════════════════════════════════════════════════
+function p2(){
+  // P=6, FC=300. MC=6 → Q≈63.1
+  var P=6, FCp=300;
+  var oldFC=FC;FC=FCp;
+  var qStar=Math.round((0.3 + Math.sqrt(0.09-0.06))/0.0075); // ≈ 63
+  var avcStar=avc(qStar), acStar=ac(qStar);
+  var trStar=P*qStar, tcStar=tc(qStar), lossOp=trStar-tcStar, lossShut=-FCp;
+  FC=oldFC; // restore for other phases
+
+  var html=phHdr(2,6,'The Crisis — Should I Close?','#e05060')
+    +bdg([['Shut-Down Rule','cb-cost'],['AVC','cb-cost'],['SR vs LR','cb-cost'],['Break-Even','cb-cost'],['Edexcel · Theme 3','cb-spec']])
+    +recap(2,'Fixed and Variable Costs')
+    +'<div class="story-box">Three months in, disaster. A new chain — <em>QuickSlice</em> — opens three local sites with heavy discounting. The market price collapses to <strong>£6 per pizza</strong>. Worse, Marco\'s landlord has raised the rent: fixed costs are now <strong>£300 per day</strong>. Marco\'s is making serious losses. The question is no longer just <em>how much to produce</em> — it is whether to <strong>stay open at all</strong>.</div>'
+    +'<div class="data-row">'
+    +'<div class="data-box"><div class="data-lbl">New Market Price</div><div class="data-val" style="color:var(--red)">£6</div><div class="data-note">Crashed from £12 due to QuickSlice</div></div>'
+    +'<div class="data-box"><div class="data-lbl">New Fixed Cost</div><div class="data-val" style="color:var(--red)">£300</div><div class="data-note">Rent rise — unavoidable in SR</div></div>'
+    +'<div class="data-box"><div class="data-lbl">AVC at Q='+qStar+'</div><div class="data-val">£'+avcStar.toFixed(2)+'</div><div class="data-note">Approaches £5.50 minimum at Q=60</div></div>'
+    +'<div class="data-box"><div class="data-lbl">AC at Q='+qStar+'</div><div class="data-val" style="color:var(--red)">£'+acStar.toFixed(2)+'</div><div class="data-note">P=£6 ≪ AC → losses persist</div></div>'
+    +'</div>'
+    +econBox('<strong>The Shut-Down Framework — Two Separate Questions.</strong><br><br><strong>Short-run (tonight): should Marco produce at all?</strong> Compare P with AVC. If P ≥ AVC → produce: revenue covers variable cost <em>and</em> contributes a little to fixed cost. If P < AVC → shut down immediately: producing worsens the loss.<br><br><strong>Long-run (should Marco stay in business?)</strong> If P < AC persistently, Marco can\'t cover total costs and should exit the market. Fixed costs are sunk in the SR but not in the LR — they can be avoided by leaving.')
+    +'<div class="sd-grid">'
+    +'<div class="sd-box sd-continue"><div class="sd-title">&#10003; Stay Open (Short Run)</div><div class="sd-condition">Condition: <strong>P ≥ AVC</strong><br><br>At P=£6, MC=MR=P at Q≈'+qStar+'.<br>AVC('+qStar+') ≈ <strong>£'+avcStar.toFixed(2)+'</strong>.<br>P=£6 &gt; AVC=£'+avcStar.toFixed(2)+' ✓ → Produce<br><br>Loss from operating: TR−TC<br>= '+Math.round(trStar)+' − '+Math.round(tcStar)+' = <strong>−£'+Math.abs(Math.round(lossOp))+'</strong><br>Loss from shutting: FC = <strong>−£'+FCp+'</strong><br>Better to operate by ~£'+(FCp-Math.abs(Math.round(lossOp)))+'.</div></div>'
+    +'<div class="sd-box sd-close"><div class="sd-title">&#10007; Shut Down Now</div><div class="sd-condition">Condition: <strong>P &lt; AVC</strong><br><br>If price falls further, e.g. <strong>£5</strong>:<br>Min AVC is £5.50 (at Q=60).<br>P=£5 &lt; AVC min — <em>any</em> output makes things worse.<br><br>Each pizza now sells for less than its variable cost.<br>Shut down — lose only FC (£300).<br>Producing makes losses <em>larger</em>.</div></div>'
+    +'<div class="sd-box sd-neutral"><div class="sd-title">&#9670; Long-Run Exit</div><div class="sd-condition">Condition: <strong>P &lt; AC</strong> persistently<br><br>Even when P &gt; AVC (so SR: produce),<br>if P &lt; AC long-run → exit the market.<br><br>At Q='+qStar+', AC ≈ £'+acStar.toFixed(2)+'.<br>P=£6 ≪ AC=£'+acStar.toFixed(2)+' → exit in LR<br>unless price recovers or costs fall.</div></div>'
+    +'</div>'
+    +msBox('<strong>Never write "the firm shuts down when making a loss"</strong> — this is a common error and loses marks. Correct phrasing: "The firm continues to produce in the short run as long as price covers average variable cost (P ≥ AVC), thereby contributing to fixed costs. Only when P falls below AVC should the firm cease production immediately." For <strong>8-mark diagram questions</strong>: draw the U-shaped MC, AVC and AC, and mark the <em>shut-down point</em> (P = min AVC) and the <em>break-even point</em> (P = min AC) separately.')
+    +'<div class="q-section-title">Your Decision — Phase 2</div>'
+    +'<div class="q-stem-box"><div class="q-spec-link">Theme 3 · Shut-Down Condition: P vs AVC</div>'
+    +'<div class="q-stem">Market price is £6, fixed costs are now £300, AVC at the optimal output Q≈'+qStar+' is £'+avcStar.toFixed(2)+'. What should Marco do tonight — and what about long-term?</div></div>'
+    +'<div class="q-opts">'
+    +qOpt(0,'Shut down immediately — Marco is making a substantial daily loss with no clear path back to profitability, so closing tonight and conserving cash is the rational call.','p','p2')
+    +qOpt(1,'Stay open at Q≈'+qStar+' tonight (P=£6 > AVC=£'+avcStar.toFixed(2)+' — each pizza contributes to FC, reducing the loss from £300 to ~£'+Math.abs(Math.round(lossOp))+'). In the long run, plan to exit — P is far below AC.','p','p2')
+    +qOpt(2,'Raise price to £12 to restore profitability — Marco sets his own price and should simply charge whatever is needed to cover his costs and earn a reasonable margin.','p','p2')
+    +qOpt(3,'Shut down immediately and exit the market permanently — at this price level there is no meaningful distinction between the short-run and long-run decisions.','p','p2')
+    +'</div>'
+    +'<div class="q-fb" id="fb-p2"></div>'
+    +'<div class="btn-row" id="nx-p2" style="display:none"><button class="btn b-pizza" onclick="goPhase(3)">Phase 3 &rarr;</button></div>';
+  render(html);
+}
+
+function goPhase(n){G.node='p'+n;G.locked=false;
+  if(n>=1&&n<=5){[null,p1,p2,p3,p4,p5][n]();}
+  else if(n===6){pAudit();}
+}
+
+// Answer handler — works for both lessons and phases
+function ans(chosen,kind,id){
+  if(G.locked) return;
+  G.locked=true;
+  var correct=CORRECT[id];
+  var ok=chosen===correct;
+  if(ok){
+    if(kind==='l') G.foundScore++;
+    else G.phaseScore++;
+  }
+  G.answers.push({id:id,kind:kind,ok:ok,chosen:chosen,correct:correct});
+  document.querySelectorAll('.q-opt').forEach(function(el,i){
+    el.classList.add('locked');
+    if(i===correct) el.classList.add(ok?'correct':'reveal');
+    if(i===chosen&&!ok) el.classList.add('wrong');
+  });
+  var fb=document.getElementById('fb-'+id);
+  fb.className='q-fb show '+(ok?'ok':'bad');
+  fb.innerHTML='<div class="fb-head">'+(ok?'&#10003; Correct':'&#10007; Not quite — here\'s the economics')+'</div>'
+    +'<div class="key-learn"><div class="kl-lbl">Key Learning</div><div class="kl-text">'+KEY_LEARN[id]+'</div></div>'
+    +'<div class="fb-text">'+(ok?FEEDBACKS[id].ok:FEEDBACKS[id].bad)+'</div>';
+  document.getElementById('nx-'+id).style.display='flex';
+  G.locked=false;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  PHASE 3 — GOING ARTISAN (monopolistic competition)
+// ════════════════════════════════════════════════════════════════
+function p3xS(q){return 60+q*(450/110);}
+function p3yS(p){return 240-(p/24*220);}
+function p3acPts(){var a=[];for(var q=10;q<=100;q+=2){var v=ac(q);if(v<=24)a.push(p3xS(q)+','+p3yS(v));}return a.join(' ');}
+function p3mcPts(){var a=[];for(var q=2;q<=100;q+=2){var v=mc(q);if(v<=24)a.push(p3xS(q)+','+p3yS(v));}return a.join(' ');}
+
+function p3(){
+  // Demand P=22-0.1Q, MR=22-0.2Q, MC=10-0.3Q+0.00375Q²
+  // MC=MR: 0.00375Q² -0.1Q -12 = 0 → Q≈71, P≈14.90
+  var qSR=71, pSR=22-0.1*qSR, acSR=ac(qSR), profSR=(pSR-acSR)*qSR;
+  // LR demand P=19-0.2Q, MR=19-0.4Q
+  // MC=MR: 0.00375Q²+0.1Q-9=0 → Q≈37, P=19-0.2(37)=11.60, AC(37)≈11.57 (tangency)
+  var qLR=37, pLR=19-0.2*qLR;
+
+  var html=phHdr(3,6,'Going Artisan','#4caf80')
+    +bdg([['Monopolistic Competition','cb-mkt'],['Downward-Sloping Demand','cb-mkt'],['MC=MR Pricing','cb-cost'],['Supernormal Profit','cb-rev'],['LR Normal Profit','cb-mkt'],['Edexcel · Theme 3','cb-spec']])
+    +recap(3,'Marginal Cost — The Nike Tick')
+    +'<div class="story-box">QuickSlice undercut the market on price — so Marco went the other way. <em>A £15,000 Neapolitan wood-fired oven. Hand-stretched dough. Local farm suppliers. A real menu.</em> It worked. Marco\'s is no longer just another pizza place. Customers will pay more. The demand curve has tilted: Marco now has <strong>pricing power</strong>. The market structure has shifted from perfect competition to <strong>monopolistic competition</strong> — many sellers, differentiated products, free entry.</div>'
+    +'<div class="data-row">'
+    +'<div class="data-box"><div class="data-lbl">Demand (AR)</div><div class="data-val" style="font-size:1rem">P = 22 − 0.1Q</div><div class="data-note">Downward sloping — Marco sets the price</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Marginal Revenue</div><div class="data-val" style="font-size:1rem">MR = 22 − 0.2Q</div><div class="data-note">MR falls twice as fast as AR (always)</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Marginal Cost</div><div class="data-val" style="font-size:1rem">10 − 0.3Q + 0.00375Q²</div><div class="data-note">Same Nike tick as Phases 1 &amp; 2</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Fixed Cost</div><div class="data-val">£200</div><div class="data-note">Restored — rent normalised</div></div>'
+    +'</div>'
+    // SR diagram
+    +'<div class="diagram-wrap"><div class="diag-title">&#9632; Short Run — Supernormal Profit under Monopolistic Competition</div>'
+    +'<svg viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:0 auto">'
+    +'<line x1="60" y1="20" x2="60" y2="240" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<line x1="60" y1="240" x2="510" y2="240" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<text x="285" y="260" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle">Q</text>'
+    +'<text x="18" y="130" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" transform="rotate(-90,18,130)">Price £</text>'
+    +'<text x="52" y="244" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">0</text>'
+    +'<text x="52" y="200" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£4</text>'
+    +'<text x="52" y="155" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£10</text>'
+    +'<text x="52" y="110" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£14</text>'
+    +'<text x="52" y="65" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">£20</text>'
+    // AR/Demand
+    +'<line x1="60" y1="'+p3yS(22)+'" x2="'+p3xS(110)+'" y2="'+p3yS(11)+'" stroke="#6fa8d8" stroke-width="2"/>'
+    +'<text x="'+(p3xS(110)+3)+'" y="'+p3yS(11)+'" fill="#6fa8d8" font-size="11" font-family="IBM Plex Mono">AR=D</text>'
+    // MR
+    +'<line x1="60" y1="'+p3yS(22)+'" x2="'+p3xS(100)+'" y2="'+p3yS(2)+'" stroke="#9775b5" stroke-width="2"/>'
+    +'<text x="'+(p3xS(100)+3)+'" y="'+p3yS(2)+'" fill="#9775b5" font-size="11" font-family="IBM Plex Mono">MR</text>'
+    // MC curve (Nike tick)
+    +'<polyline fill="none" stroke="#e0933a" stroke-width="2" points="'+p3mcPts()+'"/>'
+    +'<text x="'+(p3xS(100)+3)+'" y="'+(p3yS(mc(100))-2)+'" fill="#e0933a" font-size="11" font-family="IBM Plex Mono">MC</text>'
+    // AC curve
+    +'<polyline fill="none" stroke="#e05060" stroke-width="2" points="'+p3acPts()+'"/>'
+    +'<text x="'+(p3xS(100)+3)+'" y="'+(p3yS(ac(100))+12)+'" fill="#e05060" font-size="11" font-family="IBM Plex Mono">AC</text>'
+    // Profit-max output line
+    +'<line x1="'+p3xS(qSR)+'" y1="20" x2="'+p3xS(qSR)+'" y2="240" stroke="rgba(76,175,128,.5)" stroke-width="1.5" stroke-dasharray="4,3"/>'
+    +'<circle cx="'+p3xS(qSR)+'" cy="'+p3yS(pSR)+'" r="6" fill="#4caf80"/>'
+    +'<circle cx="'+p3xS(qSR)+'" cy="'+p3yS(acSR)+'" r="5" fill="#e05060" opacity=".85"/>'
+    +'<text x="'+(p3xS(qSR)+5)+'" y="'+(p3yS(pSR)-6)+'" fill="#4caf80" font-size="10" font-family="IBM Plex Mono">P=£'+pSR.toFixed(2)+'</text>'
+    +'<text x="'+(p3xS(qSR)+5)+'" y="'+(p3yS(acSR)+12)+'" fill="#e05060" font-size="9" font-family="IBM Plex Mono">AC=£'+acSR.toFixed(2)+'</text>'
+    +'<text x="'+p3xS(qSR)+'" y="252" fill="#4caf80" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">Q='+qSR+'</text>'
+    // Supernormal profit rectangle
+    +'<rect x="'+p3xS(0)+'" y="'+p3yS(pSR)+'" width="'+(p3xS(qSR)-p3xS(0))+'" height="'+(p3yS(acSR)-p3yS(pSR))+'" fill="rgba(76,175,128,.18)" stroke="none"/>'
+    +'<text x="'+((p3xS(qSR)+p3xS(0))/2)+'" y="'+((p3yS(pSR)+p3yS(acSR))/2+3)+'" fill="#4caf80" font-size="11" font-family="Cormorant Garamond" font-weight="700" text-anchor="middle">Supernormal Profit ≈ £'+Math.round(profSR)+'/day</text>'
+    +'</svg>'
+    +'<div style="font-size:.78rem;color:var(--mut);opacity:.75;line-height:1.6;margin-top:.4rem">MC=MR at Q='+qSR+'. Read up to the demand curve: P=£'+pSR.toFixed(2)+'. AC at this output ≈ £'+acSR.toFixed(2)+'. Profit per pizza ≈ £'+(pSR-acSR).toFixed(2)+', total profit ≈ £'+Math.round(profSR)+'/day.</div>'
+    +'</div>'
+    // LR diagram
+    +'<div class="diagram-wrap"><div class="diag-title">&#9632; Long Run — Entry Erodes Profit, Demand Becomes Tangent to AC</div>'
+    +'<svg viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:0 auto">'
+    +'<line x1="60" y1="20" x2="60" y2="240" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<line x1="60" y1="240" x2="510" y2="240" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<text x="285" y="260" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle">Q</text>'
+    +'<text x="18" y="130" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" transform="rotate(-90,18,130)">Price £</text>'
+    // SR demand (dashed)
+    +'<line x1="60" y1="'+p3yS(22)+'" x2="'+p3xS(110)+'" y2="'+p3yS(11)+'" stroke="#6fa8d8" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.4"/>'
+    +'<text x="'+(p3xS(110)+3)+'" y="'+p3yS(11)+'" fill="#6fa8d8" font-size="9" font-family="IBM Plex Mono" opacity="0.5">D₁ (SR)</text>'
+    // LR demand
+    +'<line x1="60" y1="'+p3yS(19)+'" x2="'+p3xS(95)+'" y2="'+p3yS(0)+'" stroke="#6fa8d8" stroke-width="2"/>'
+    +'<text x="'+(p3xS(95)+3)+'" y="'+p3yS(2)+'" fill="#6fa8d8" font-size="10" font-family="IBM Plex Mono">D₂ (LR)</text>'
+    // LR MR
+    +'<line x1="60" y1="'+p3yS(19)+'" x2="'+p3xS(48)+'" y2="'+p3yS(-0.2)+'" stroke="#9775b5" stroke-width="1.5" stroke-dasharray="5,3"/>'
+    +'<text x="'+(p3xS(48)+3)+'" y="'+p3yS(0.5)+'" fill="#9775b5" font-size="9" font-family="IBM Plex Mono">MR₂</text>'
+    // MC + AC (same as before)
+    +'<polyline fill="none" stroke="#e0933a" stroke-width="2" points="'+p3mcPts()+'"/>'
+    +'<text x="'+(p3xS(100)+3)+'" y="'+(p3yS(mc(100))-2)+'" fill="#e0933a" font-size="11" font-family="IBM Plex Mono">MC</text>'
+    +'<polyline fill="none" stroke="#e05060" stroke-width="2" points="'+p3acPts()+'"/>'
+    +'<text x="'+(p3xS(100)+3)+'" y="'+(p3yS(ac(100))+12)+'" fill="#e05060" font-size="11" font-family="IBM Plex Mono">AC</text>'
+    // LR equilibrium tangency
+    +'<line x1="'+p3xS(qLR)+'" y1="20" x2="'+p3xS(qLR)+'" y2="240" stroke="rgba(255,255,255,.22)" stroke-width="1.2" stroke-dasharray="4,3"/>'
+    +'<circle cx="'+p3xS(qLR)+'" cy="'+p3yS(pLR)+'" r="6" fill="#4caf80"/>'
+    +'<text x="'+(p3xS(qLR)+5)+'" y="'+(p3yS(pLR)-6)+'" fill="#4caf80" font-size="10" font-family="IBM Plex Mono">LR tangency</text>'
+    +'<text x="'+(p3xS(qLR)+5)+'" y="'+(p3yS(pLR)+8)+'" fill="#4caf80" font-size="9" font-family="IBM Plex Mono">P=AC≈£'+pLR.toFixed(2)+'</text>'
+    +'<text x="52" y="'+p3yS(pLR)+'" fill="#4caf80" font-size="10" font-family="IBM Plex Mono" text-anchor="end">£'+pLR.toFixed(0)+'</text>'
+    +'<text x="'+p3xS(qLR)+'" y="252" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">Q='+qLR+'</text>'
+    // Annotation
+    +'<text x="310" y="38" fill="#dde3f0" font-size="11" font-family="Cormorant Garamond" font-style="italic">Rivals enter → D shifts left &amp; becomes more elastic</text>'
+    +'<text x="310" y="55" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" opacity="0.6">Entry continues until P=AC (tangency) — only normal profit. P&gt;MC remains.</text>'
+    +'</svg>'
+    +'<div style="font-size:.78rem;color:var(--mut);opacity:.75;line-height:1.6;margin-top:.4rem">In LR, demand is tangent to AC (not at minimum AC). The firm is <strong>productively inefficient</strong> in long-run monopolistic competition — operating on the downward-sloping section of AC, with <em>excess capacity</em>. This is the structural cost of product differentiation.</div>'
+    +'</div>'
+    +msBox('<strong>For 25-mark essays on monopolistic competition</strong>: always include TWO diagrams — (1) the SR supernormal profit diagram and (2) the LR normal profit tangency diagram. Candidates who draw only one typically lose Level 4 marks. Mark scheme phrase: "In the long run, freedom of entry means supernormal profit is eroded as rivals enter the market, shifting the firm\'s demand curve to the left until it is tangent to the average cost curve, yielding only normal profit." Note: even in LR, P&gt;MC → allocative inefficiency persists.')
+    +'<div class="q-section-title">Your Decision — Phase 3</div>'
+    +'<div class="q-stem-box"><div class="q-spec-link">Theme 3 · Monopolistic Competition · MC=MR Pricing</div>'
+    +'<div class="q-stem">With demand P=22−0.1Q and MR=22−0.2Q, applying the MC=MR rule from Foundation 4, what price should Marco charge to maximise profit, and what happens in the long run?</div></div>'
+    +'<div class="q-opts">'
+    +qOpt(0,'Charge £12 — the original market price. Marco\'s pricing power is illusory; rivals will quickly undercut anyone who tries to charge more, and customers will simply defect.','p','p3')
+    +qOpt(1,'Charge ≈£14.90 — set MC=MR (Q≈71), then read up to the demand curve for price. Earns ≈£457/day supernormal profit. In the long run, entry will erode this until D is tangent to AC (normal profit only).','p','p3')
+    +qOpt(2,'Charge £22 — the demand intercept and the maximum any customer is willing to pay. Charging this captures all the available consumer surplus and converts it into producer revenue.','p','p3')
+    +qOpt(3,'Charge £10 — set price equal to MC. This achieves allocative efficiency, maximises social welfare, and is the price a benevolent regulator concerned with consumers would impose.','p','p3')
+    +'</div>'
+    +'<div class="q-fb" id="fb-p3"></div>'
+    +'<div class="btn-row" id="nx-p3" style="display:none"><button class="btn b-pizza" onclick="goPhase(4)">Phase 4 &rarr;</button></div>';
+  render(html);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  PHASE 4 — REVENUE & OBJECTIVES
+// ════════════════════════════════════════════════════════════════
+function p4(){
+  function tr4x(q){return 50+q*(460/120);}
+  function tr4y(t){return 230-t*(210/1300);}
+  var trPts=[];for(var q=0;q<=120;q+=2)trPts.push(tr4x(q)+','+tr4y(22*q-0.1*q*q));
+  var tcPts4=[];for(var qq=0;qq<=120;qq+=2)tcPts4.push(tr4x(qq)+','+tr4y(tc(qq)));
+  // Profit max Q=71, TR=1058, TC=601, profit=457
+  // Revenue max Q=110, TR=1210, TC=1149, profit=61
+  var qPM=71, qTRmax=110;
+  var trPM=22*qPM-0.1*qPM*qPM, tcPM=tc(qPM), pPM=trPM-tcPM;
+  var trTR=22*qTRmax-0.1*qTRmax*qTRmax, tcTR=tc(qTRmax), pTR=trTR-tcTR;
+
+  var html=phHdr(4,6,'Revenue & Objectives','#e0933a')
+    +bdg([['PED','cb-rev'],['Total Revenue','cb-rev'],['MR &amp; TR Relationship','cb-rev'],['Baumol\'s SRM','cb-mkt'],['Satisficing','cb-mkt'],['Edexcel · Theme 3','cb-spec']])
+    +recap(1,'Revenue — Price × Quantity')
+    +'<div class="story-box">Marco\'s artisan positioning has attracted interest from a private equity investor — £500,000 in exchange for 40% equity. The investor\'s condition is unusual: <em>Marco\'s must target maximum sales revenue, not profit.</em> "Market share drives long-run value," they argue. Marco\'s economist-friend disagrees: <em>"Revenue max and profit max are different objectives — and one of them sacrifices most of your profit."</em> Who is right?</div>'
+    +'<div class="data-row">'
+    +'<div class="data-box"><div class="data-lbl">Demand</div><div class="data-val" style="font-size:1rem">P=22−0.1Q</div><div class="data-note">Same as Phase 3</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Profit Max (Q=71)</div><div class="data-val" style="color:var(--green)">Profit £'+Math.round(pPM)+'</div><div class="data-note">TR £'+Math.round(trPM)+', TC £'+Math.round(tcPM)+'</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Revenue Max (Q=110)</div><div class="data-val" style="color:var(--orange)">Profit £'+Math.round(pTR)+'</div><div class="data-note">TR £'+Math.round(trTR)+', TC £'+Math.round(tcTR)+'</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Profit Sacrificed</div><div class="data-val" style="color:var(--red)">≈87%</div><div class="data-note">£'+Math.round(pPM-pTR)+' lost moving from MC=MR to MR=0</div></div>'
+    +'</div>'
+    // TR diagram
+    +'<div class="diagram-wrap"><div class="diag-title">&#9632; TR Curve — TR = PQ = 22Q − 0.1Q²</div>'
+    +'<svg viewBox="0 0 540 270" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:0 auto">'
+    +'<line x1="50" y1="20" x2="50" y2="230" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<line x1="50" y1="230" x2="510" y2="230" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<text x="280" y="252" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle">Output Q</text>'
+    +'<text x="16" y="130" fill="#dde3f0" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" transform="rotate(-90,16,130)">TR / TC (£)</text>'
+    +'<text x="42" y="33" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">1300</text>'
+    +'<text x="42" y="84" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">1000</text>'
+    +'<text x="42" y="133" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">700</text>'
+    +'<text x="42" y="181" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">400</text>'
+    // TR
+    +'<polyline fill="none" stroke="#4caf80" stroke-width="2.5" points="'+trPts.join(' ')+'"/>'
+    +'<text x="512" y="'+(tr4y(trTR)-5)+'" fill="#4caf80" font-size="11" font-family="IBM Plex Mono">TR</text>'
+    // TC
+    +'<polyline fill="none" stroke="#e05060" stroke-width="1.8" stroke-dasharray="6,4" points="'+tcPts4.join(' ')+'"/>'
+    +'<text x="512" y="'+(tr4y(tc(120))+4)+'" fill="#e05060" font-size="11" font-family="IBM Plex Mono">TC</text>'
+    // Profit-max marker
+    +'<line x1="'+tr4x(qPM)+'" y1="20" x2="'+tr4x(qPM)+'" y2="230" stroke="#c9a84c" stroke-width="1.3" stroke-dasharray="4,3"/>'
+    +'<circle cx="'+tr4x(qPM)+'" cy="'+tr4y(trPM)+'" r="5" fill="#c9a84c"/>'
+    +'<text x="'+(tr4x(qPM)+5)+'" y="'+(tr4y(trPM)-6)+'" fill="#c9a84c" font-size="9" font-family="IBM Plex Mono">Profit max &middot; Q='+qPM+'</text>'
+    +'<text x="'+(tr4x(qPM)+5)+'" y="'+(tr4y(trPM)+9)+'" fill="#c9a84c" font-size="8" font-family="IBM Plex Mono" opacity="0.85">TR &pound;'+Math.round(trPM)+' &middot; &pi; &pound;'+Math.round(pPM)+'</text>'
+    // Revenue-max marker
+    +'<line x1="'+tr4x(qTRmax)+'" y1="20" x2="'+tr4x(qTRmax)+'" y2="230" stroke="#6fa8d8" stroke-width="1.3" stroke-dasharray="4,3"/>'
+    +'<circle cx="'+tr4x(qTRmax)+'" cy="'+tr4y(trTR)+'" r="5" fill="#6fa8d8"/>'
+    +'<text x="'+(tr4x(qTRmax)-8)+'" y="32" fill="#6fa8d8" font-size="9" font-family="IBM Plex Mono" text-anchor="end">TR max &middot; Q='+qTRmax+' (MR=0)</text>'
+    +'<text x="'+(tr4x(qTRmax)-8)+'" y="44" fill="#6fa8d8" font-size="8" font-family="IBM Plex Mono" text-anchor="end" opacity="0.85">TR &pound;'+Math.round(trTR)+' &middot; &pi; &pound;'+Math.round(pTR)+'</text>'
+    +'<text x="'+tr4x(qPM)+'" y="244" fill="#c9a84c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">'+qPM+'</text>'
+    +'<text x="'+tr4x(qTRmax)+'" y="244" fill="#6fa8d8" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">'+qTRmax+'</text>'
+    // PED zone caption — single consolidated tag in the empty top-left
+    +'<text x="115" y="40" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" opacity="0.65">Elastic &middot; MR &gt; 0 &middot; TR rising</text>'
+    +'<text x="115" y="53" fill="#dde3f0" font-size="8" font-family="IBM Plex Mono" opacity="0.5">&rarr; inelastic past Q=110, TR falls</text>'
+    +'</svg></div>'
+    // Objectives grid
+    +'<div class="section-lbl" style="font-family:\'IBM Plex Mono\',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.55;margin-bottom:.65rem">Business Objectives — Four Models</div>'
+    +'<div class="obj-grid">'
+    +'<div class="obj-box obj-pm"><div class="obj-title">Profit Maximisation</div><div class="obj-rule">MC = MR → Q=71, P=£14.90</div><div class="obj-detail">Shareholder model (Friedman). Edexcel\'s default assumption. Profit ≈ £'+Math.round(pPM)+'/day.</div></div>'
+    +'<div class="obj-box obj-srm"><div class="obj-title">Baumol\'s Sales Rev Max</div><div class="obj-rule">MR = 0 → Q=110, P=£11</div><div class="obj-detail">Managers rewarded on revenue, not profit. Profit collapses to ≈ £'+Math.round(pTR)+' — needs minimum profit constraint.</div></div>'
+    +'<div class="obj-box obj-out"><div class="obj-title">Output Maximisation</div><div class="obj-rule">P = AC → Q≈112, P≈£10.80</div><div class="obj-detail">Zero (normal) profit. Maximises output while breaking even. Common in co-ops and public enterprises.</div></div>'
+    +'<div class="obj-box obj-sat"><div class="obj-title">Satisficing (Simon)</div><div class="obj-rule">"Good enough" profit</div><div class="obj-detail">Bounded rationality: managers lack info for MC=MR. Target a satisfactory profit and maintain it.</div></div>'
+    +'</div>'
+    +msBox('<strong>PED and TR relationship (frequently examined):</strong> Elastic demand (|PED|&gt;1) → price cut raises TR (MR&gt;0). Inelastic (|PED|&lt;1) → price cut reduces TR (MR&lt;0). TR maximised where MR=0 (PED=−1, unit elastic). For <strong>business objectives essays</strong>: always state the decision rule for each objective (MC=MR, MR=0, P=AC) and evaluate whether it requires a profit constraint. Baumol\'s model is the most commonly tested alternative to profit max.')
+    +'<div class="q-section-title">Your Decision — Phase 4</div>'
+    +'<div class="q-stem-box"><div class="q-spec-link">Theme 3 · Business Objectives · Baumol\'s Sales Revenue Maximisation</div>'
+    +'<div class="q-stem">The investor wants sales revenue maximisation. Using demand P=22−0.1Q, what output and price maximise TR — and what is the fundamental problem with this objective?</div></div>'
+    +'<div class="q-opts">'
+    +qOpt(0,'Q=110, P=£11 — MR=0 here, so TR=£1,210 is maximised. But profit collapses from £'+Math.round(pPM)+' (at profit max) to just £'+Math.round(pTR)+'. Baumol\'s SRM needs a <strong>minimum profit constraint</strong> to be viable in practice.','p','p4')
+    +qOpt(1,'Q=71, P=£14.90 — this is the profit maximisation output. Sales revenue maximisation and profit maximisation give the same answer because TR is highest when profit is highest.','p','p4')
+    +qOpt(2,'Q=80, P=£14 — a compromise position: TR is still rising (MR=£6), and the firm comfortably remains profitable. This represents the best balance between revenue growth and profit.','p','p4')
+    +qOpt(3,'Q=55, P=£16.50 — sitting just below the profit-max output minimises the tension between the investor\'s revenue growth goals and Marco\'s underlying profit objectives nicely.','p','p4')
+    +'</div>'
+    +'<div class="q-fb" id="fb-p4"></div>'
+    +'<div class="btn-row" id="nx-p4" style="display:none"><button class="btn b-pizza" onclick="goPhase(5)">Phase 5 &rarr;</button></div>';
+  render(html);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  PHASE 5 — THE FOUNDER STEPS BACK (principal-agent, X-inefficiency, satisficing)
+// ════════════════════════════════════════════════════════════════
+function p5(){
+  var html=phHdr(5,6,'The Founder Steps Back','#9775b5')
+    +bdg([['Principal-Agent','cb-mkt'],['Divorce of Ownership & Control','cb-mkt'],['X-Inefficiency','cb-eff'],['Profit Satisficing','cb-mkt'],['Bounded Rationality','cb-mkt'],['Edexcel · Theme 3','cb-spec']])
+    +recap(4,'Profit and the Golden Rule MC=MR')
+    +'<div class="story-box">Three years in. Marco is exhausted. The artisan oven, the Tuesday-night deal, the loyalty cards — all his ideas, all running, all needing him in the kitchen at 6am. His daughter is starting school in September and he wants Saturdays back. He hires <em>Sofia</em>, a calm and experienced manager from a competing chain, to run day-to-day operations. Marco keeps ownership; Sofia takes the keys.<br><br>Twelve months later, the numbers tell an interesting story. Daily profit is down 12% from the Marco-as-manager peak. Costs have crept up — the kitchen runs a little slower, suppliers are no longer being squeezed quite as hard, staffing levels have edged upward. And Sofia has held prices below where the MC=MR rule would put them. Her reasoning, when Marco asks: <em>"People love coming here because it feels fair. Push prices to the maximum and you lose that. The town stops thinking of us as a local place and starts thinking of us as a chain."</em></div>'
+    +'<div class="data-row">'
+    +'<div class="data-box"><div class="data-lbl">Profit vs Marco-as-manager</div><div class="data-val" style="color:var(--orange)">−12%</div><div class="data-note">Combined cost slack + price restraint</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Avg Cost vs minimum</div><div class="data-val" style="color:var(--red)">+8%</div><div class="data-note">Kitchen running above its PPF</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Sofia\'s avg price</div><div class="data-val">£13.50</div><div class="data-note">Profit-max would set ~£14.90</div></div>'
+    +'<div class="data-box"><div class="data-lbl">Customer NPS</div><div class="data-val" style="color:var(--green)">+8 pts</div><div class="data-note">"Still feels like a proper local place"</div></div>'
+    +'</div>'
+    // The two-frame diagram: X-inefficiency on the left (AC curve with actual point above min),
+    // satisficing on the right (D/MR curve with chosen output left of profit-max).
+    +'<div class="diagram-wrap"><div class="diag-title">&#9632; Two Things Happening At Once — Diagnose Each Separately</div>'
+    +'<svg viewBox="0 0 540 250" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;display:block;margin:0 auto">'
+    // ── LEFT FRAME: X-inefficiency on the AC curve ──
+    +'<text x="135" y="22" fill="#dde3f0" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">X-Inefficiency — operating above min AC</text>'
+    +'<line x1="40" y1="40" x2="40" y2="215" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<line x1="40" y1="215" x2="240" y2="215" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<text x="240" y="232" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">Output Q</text>'
+    +'<text x="33" y="82" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="start" transform="rotate(-90,33,82)">£/pizza</text>'
+    // U-shaped AC curve
+    +'<path d="M55,70 C75,60 100,140 140,150 C180,160 210,90 235,55" fill="none" stroke="#6fa8d8" stroke-width="2.2"/>'
+    +'<text x="218" y="68" fill="#6fa8d8" font-size="10" font-family="IBM Plex Mono">AC</text>'
+    // Min AC point (Marco)
+    +'<line x1="140" y1="150" x2="140" y2="215" stroke="rgba(76,175,128,.4)" stroke-width="1" stroke-dasharray="3,3"/>'
+    +'<circle cx="140" cy="150" r="5" fill="#4caf80"/>'
+    +'<text x="143" y="166" fill="#4caf80" font-size="9" font-family="IBM Plex Mono">Marco (lean)</text>'
+    +'<text x="143" y="177" fill="#4caf80" font-size="9" font-family="IBM Plex Mono">on the PPF</text>'
+    // Sofia point ABOVE the AC curve at same Q
+    +'<circle cx="140" cy="118" r="5" fill="#e05060"/>'
+    +'<text x="143" y="115" fill="#e05060" font-size="9" font-family="IBM Plex Mono">Sofia</text>'
+    +'<text x="143" y="126" fill="#e05060" font-size="9" font-family="IBM Plex Mono">(slack)</text>'
+    // Gap arrow
+    +'<line x1="118" y1="118" x2="118" y2="150" stroke="#c9a84c" stroke-width="1.2" marker-end=""/>'
+    +'<text x="78" y="138" fill="#c9a84c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">X-ineff</text>'
+    +'<text x="78" y="149" fill="#c9a84c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">gap</text>'
+    // ── RIGHT FRAME: Satisficing on D/MR/MC/AC ──
+    +'<text x="395" y="22" fill="#dde3f0" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">Satisficing — lower price, higher output</text>'
+    +'<line x1="300" y1="40" x2="300" y2="215" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<line x1="300" y1="215" x2="500" y2="215" stroke="#2e3f60" stroke-width="1.5"/>'
+    +'<text x="500" y="232" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="end">Output Q</text>'
+    +'<text x="293" y="82" fill="#dde3f0" font-size="9" font-family="IBM Plex Mono" text-anchor="start" transform="rotate(-90,293,82)">£/pizza</text>'
+    // Demand (AR)
+    +'<line x1="300" y1="50" x2="490" y2="195" stroke="#6fa8d8" stroke-width="2"/>'
+    +'<text x="478" y="200" fill="#6fa8d8" font-size="9" font-family="IBM Plex Mono">D=AR</text>'
+    // MR (twice the slope of D)
+    +'<line x1="300" y1="50" x2="395" y2="195" stroke="#9775b5" stroke-width="1.5" stroke-dasharray="4,3"/>'
+    +'<text x="370" y="195" fill="#9775b5" font-size="9" font-family="IBM Plex Mono">MR</text>'
+    // MC (rising)
+    +'<line x1="300" y1="210" x2="490" y2="120" stroke="#e0933a" stroke-width="1.8"/>'
+    +'<text x="478" y="118" fill="#e0933a" font-size="9" font-family="IBM Plex Mono">MC</text>'
+    // AC (U-shape)
+    +'<path d="M310,135 Q400,180 490,150" fill="none" stroke="#52c9bc" stroke-width="1.5"/>'
+    +'<text x="478" y="153" fill="#52c9bc" font-size="9" font-family="IBM Plex Mono">AC</text>'
+    // Horizontal price-level dashes to make P1 vs P2 obvious on the y-axis
+    +'<line x1="300" y1="111" x2="380" y2="111" stroke="rgba(76,175,128,.35)" stroke-width="1" stroke-dasharray="2,2"/>'
+    +'<line x1="300" y1="157" x2="440" y2="157" stroke="rgba(151,117,181,.4)" stroke-width="1" stroke-dasharray="2,2"/>'
+    +'<text x="296" y="113" fill="#4caf80" font-size="8" font-family="IBM Plex Mono" text-anchor="end">P1</text>'
+    +'<text x="296" y="160" fill="#9775b5" font-size="8" font-family="IBM Plex Mono" text-anchor="end">P2</text>'
+    // Profit-max marker (P1, Q1) — where MC=MR, price read up to demand
+    +'<line x1="380" y1="40" x2="380" y2="215" stroke="rgba(76,175,128,.35)" stroke-width="1" stroke-dasharray="3,3"/>'
+    +'<circle cx="380" cy="111" r="5" fill="#4caf80"/>'
+    +'<text x="384" y="103" fill="#4caf80" font-size="9" font-family="IBM Plex Mono">Profit-max</text>'
+    +'<text x="384" y="114" fill="#4caf80" font-size="9" font-family="IBM Plex Mono">£14.90</text>'
+    +'<text x="380" y="227" fill="#4caf80" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">Q1</text>'
+    // Sofia satisficing marker (P2, Q2) — further RIGHT on demand, LOWER price
+    +'<line x1="440" y1="40" x2="440" y2="215" stroke="rgba(151,117,181,.45)" stroke-width="1" stroke-dasharray="3,3"/>'
+    +'<circle cx="440" cy="157" r="5" fill="#9775b5"/>'
+    +'<text x="445" y="172" fill="#9775b5" font-size="9" font-family="IBM Plex Mono">Sofia</text>'
+    +'<text x="445" y="183" fill="#9775b5" font-size="9" font-family="IBM Plex Mono">£13.50</text>'
+    +'<text x="440" y="227" fill="#9775b5" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">Q2</text>'
+    // Direction-of-travel arrow along the demand curve (from P1 down-right to P2)
+    +'<path d="M392,118 Q412,135 432,151" fill="none" stroke="#c9a84c" stroke-width="1.3" stroke-dasharray="2,2" marker-end="url(#arr5)"/>'
+    +'<defs><marker id="arr5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c9a84c"/></marker></defs>'
+    // Popularity premium annotation
+    +'<text x="455" y="55" fill="#c9a84c" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">"popularity</text>'
+    +'<text x="455" y="65" fill="#c9a84c" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">premium"</text>'
+    +'</svg>'
+    +'<div style="font-size:.78rem;color:var(--mut);opacity:.75;line-height:1.65;margin-top:.4rem"><strong style="color:var(--txt)">Diagnose them separately.</strong> The left frame shows <em>cost slack</em> — Sofia\'s kitchen sits above its own minimum AC. This is avoidable; the firm could be cheaper if it tried. The right frame shows <em>price restraint</em> — Sofia sets P2 below the profit-max P1, which moves her further down the demand curve to a higher output (Q2 &gt; Q1). She sells more pizzas, but each one earns a slimmer margin (P2 is closer to AC), and total profit ends up below the MC=MR optimum. This is a chosen trade-off — volume and goodwill bought at the cost of margin — not waste. Same person, same business, two different economic stories.</div>'
+    +'</div>'
+    // Three concept cards laid out as the data-row pattern (works on the existing CSS)
+    +'<div class="section-lbl" style="font-family:\'IBM Plex Mono\',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.55;margin-bottom:.65rem">Three Linked Concepts — Edexcel Theme 3</div>'
+    +'<div class="data-row">'
+    +'<div class="data-box" style="border-top:3px solid #9775b5"><div class="data-lbl">Principal-Agent (Berle &amp; Means, 1932)</div><div class="data-note" style="font-size:.78rem;line-height:1.6">When ownership (Marco) and control (Sofia) divorce, their objectives need not align. Marco wants profit; Sofia wants an easier life, security, professional standing. Information asymmetry — Marco can\'t observe every kitchen decision — means he can\'t fully discipline her choices. <em>Remedies: monitoring, performance pay, equity stakes, profit-share schemes.</em></div></div>'
+    +'<div class="data-box" style="border-top:3px solid #2a9d8f"><div class="data-lbl">X-Inefficiency (Leibenstein, 1966)</div><div class="data-note" style="font-size:.78rem;line-height:1.6">A firm operates <em>above</em> its minimum AC — inside its production possibility frontier. Slack tasks, idle staffing, weak procurement, tolerated waste. Caused by weak competitive pressure or weak owner oversight (here: both). <em>Distinct from</em> productive inefficiency on the LRAC curve — this is wasted capacity at the firm\'s current scale.</div></div>'
+    +'<div class="data-box" style="border-top:3px solid #c9a84c"><div class="data-lbl">Profit Satisficing (Simon, 1956)</div><div class="data-note" style="font-size:.78rem;line-height:1.6">Bounded rationality + multiple objectives. Sofia targets a "good enough" profit and uses spare margin to pursue community standing. Price sits below the profit-max level, which moves output further <em>right</em> down the demand curve — more pizzas sold, but at a slimmer margin per pizza. <em>Different from X-inefficiency</em>: this is a chosen trade-off, not avoidable waste. The "popularity premium" is real economic value (repeat custom, lower marketing spend, resilience).</div></div>'
+    +'</div>'
+    +econBox('<strong>Why this matters for the audit ahead.</strong> The four efficiency types you\'ll meet in Phase 6 are not all about the cost curves. Productive and allocative efficiency are <em>technical</em> conditions on AC and MC. Dynamic efficiency is about innovation over time. <strong>X-efficiency is the one that depends on people</strong> — on whether managers actually push the firm onto its frontier, or let slack accumulate. Marco\'s pizzeria is a textbook setup: pricing power (no perfect-competition discipline), an absent owner (no principal monitoring), and a manager whose objectives differ from the principal\'s. All three of Leibenstein\'s preconditions for X-inefficiency are satisfied.<br><br><strong>Note on satisficing as "rational".</strong> An A-level critique often asks whether satisficing is irrational. The answer is no — it is rational under bounded rationality (information costs, computational limits) and under multiple-objective utility functions. Sofia is not failing to maximise profit; she is maximising a broader utility function in which goodwill carries weight. That is a different model of the firm, not a worse one.')
+    +msBox('<strong>For 25-mark essays on business objectives or efficiency:</strong> always specify <em>which</em> form of inefficiency you mean. Distinguish productive (min AC), allocative (P=MC), dynamic (innovation), and X-efficiency (slack). The Edexcel mark scheme phrase: <em>"X-inefficiency arises when a firm fails to minimise its average costs at a given output, often associated with a lack of competitive pressure or the divorce of ownership from control."</em> For <strong>principal-agent</strong>: name Berle and Means (1932) on the divorce of ownership and control; Jensen and Meckling (1976) on agency costs. For <strong>satisficing</strong>: Simon (1956), bounded rationality, multiple-objective firms — explicitly contrast with Friedman\'s shareholder-primacy view. Top-band answers evaluate <em>both</em>: cost slack is avoidable waste; chosen trade-offs are legitimate when the non-profit objective has genuine value.')
+    +'<div class="q-section-title">Your Decision — Phase 5</div>'
+    +'<div class="q-stem-box"><div class="q-spec-link">Theme 3 · Principal-Agent · X-Inefficiency vs Satisficing</div>'
+    +'<div class="q-stem">Daily profit is 12% below what Marco used to deliver. Two things appear to be driving the gap: Sofia\'s kitchen runs above its own minimum AC (cost slack), and Sofia holds prices below the profit-max level "to keep the place feeling local". Customer satisfaction is up 8 NPS points. How should Marco interpret what he is seeing?</div></div>'
+    +'<div class="q-opts">'
+    +qOpt(0,'The full 12% gap is X-inefficiency in action — Sofia is allowing standards to slip across the board. Marco should reinstall himself as manager and apply tighter cost discipline to recover the lost profit immediately.','p','p5')
+    +qOpt(1,'The lower profit is the rational outcome of Sofia satisficing across multiple objectives. Marco should accept the new equilibrium without intervention — the goodwill premium fully justifies the foregone margin and any extra cost.','p','p5')
+    +qOpt(2,'Two distinct phenomena are present and they need different responses. Cost slack is X-inefficiency — avoidable waste, addressed through monitoring and incentive design (performance pay, profit share). Price restraint for goodwill is satisficing — a legitimate trade-off Marco may choose to accept. Treating them as one problem causes either over-correction or under-correction.','p','p5')
+    +qOpt(3,'The principal-agent problem is fundamentally unsolvable in services because the owner cannot observe every decision. Marco should sell the business while it is still profitable and reinvest the proceeds in a passive portfolio elsewhere.','p','p5')
+    +'</div>'
+    +'<div class="q-fb" id="fb-p5"></div>'
+    +'<div class="btn-row" id="nx-p5" style="display:none"><button class="btn b-pizza" onclick="goPhase(6)">Final Audit &rarr;</button></div>';
+  render(html);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  PHASE 6 — EFFICIENCY AUDIT
+// ════════════════════════════════════════════════════════════════
+function effBlock(name,colour,verdict,vClass,text){
+  return '<div class="eff-box" style="--ec:'+colour+'"><div class="eff-name" style="color:'+colour+'">'+name+'</div>'
+    +'<div class="eff-verdict '+vClass+'">'+verdict+'</div>'
+    +'<div class="eff-text">'+text+'</div></div>';
+}
+
+function pAudit(){
+  var ok=G.phaseScore, total=5;
+  // Per-phase outcomes
+  var by={};G.answers.forEach(function(a){if(a.kind==='p')by[a.id]=a.ok;});
+  var p1ok=!!by.p1, p2ok=!!by.p2, p3ok=!!by.p3, p4ok=!!by.p4, p5ok=!!by.p5;
+
+  var prodText=p1ok
+    ? 'Marco understands the difference between profit max (MC=MR, Q≈86 in Phase 1) and productive efficiency (min AC, Q≈75). Under perfect competition, both conditions can hold in the long run as entry erodes supernormal profit. With pricing power (Phase 3 onwards) Marco produces below min AC — productively inefficient by definition, but consistent with profit-maximising behaviour. <strong>Productive efficiency requires AC = min AC.</strong>'
+    : '<strong>Productive efficiency</strong> occurs at minimum average cost (where MC=AC). Under perfect competition long-run equilibrium, firms produce here because of zero economic profit and free entry. With pricing power (monopolistic competition, oligopoly), profit-maximising firms produce below min AC and so are productively inefficient. Marco\'s differentiated business after Phase 3 trades productive efficiency for differentiation rents.';
+
+  var allocText=p3ok
+    ? 'Allocative efficiency requires <strong>P = MC</strong>. Marco achieved this only in Phase 1 (perfect competition: P=MR=MC=£12). After differentiation (Phase 3), P&gt;MC even in long-run normal profit equilibrium — Marco\'s artisan pizzeria is allocatively inefficient. Interestingly, Sofia\'s satisficing in Phase 5 nudges price <em>closer</em> to MC than profit-max would — a small allocative gain bought at the cost of supernormal profit. The welfare loss from monopoly power is the gap between consumer willingness to pay (P) and resource cost (MC).'
+    : 'Allocative efficiency requires <strong>P = MC</strong>, where price equals marginal cost. Achieved in perfect competition (P=MR=MC). NOT achieved in monopolistic competition or monopoly — these produce P&gt;MC and create deadweight loss. The intuition: when P&gt;MC, customers value extra units more than they cost to produce, so society is under-producing. Pricing restraint by satisficing managers can partly close the gap, but at the cost of supernormal profit.';
+
+  var dynText=(p3ok&&p4ok)
+    ? 'Dynamic efficiency is about <strong>improvement over time</strong> — innovation, R&amp;D, new products and processes. Marco\'s wood-fired oven and artisan brand (Phase 3) and the willingness to experiment with different business objectives (Phase 4) both reflect dynamic efficiency in action. Schumpeter argued monopoly profits fund innovation; the counter-view is that competition forces it. Edexcel marks both perspectives — show evaluation. Note the tension with X-efficiency: the same supernormal profit that funds dynamic efficiency can also breed the slack that X-inefficiency feeds on.'
+    : 'Dynamic efficiency means <strong>improvements over time</strong> — innovation, new products, lower costs through R&amp;D. Schumpeter\'s thesis: monopoly profits give firms the resources and incentive to innovate. Counter-view: competitive pressure forces innovation while market power breeds complacency. Strong A-level answers acknowledge both. Marco\'s Phase 3 differentiation (artisan oven, brand) is dynamic efficiency in action — funded by the supernormal profit pricing power allows.';
+
+  var xText=p5ok
+    ? 'Phase 5 was the X-efficiency moment. <strong>X-efficiency (Leibenstein, 1966)</strong> is whether a firm operates on its production possibility frontier — no managerial slack, no waste. The principal-agent gap that opened when Marco hired Sofia is the textbook setup for X-inefficiency: pricing power means no competitive discipline, an absent owner means no monitoring discipline, and the manager\'s objectives differ from the owner\'s. The remedy is incentive design — performance pay, profit share, equity — which aligns Sofia\'s payoff with Marco\'s. Crucially, Sofia\'s satisficing on price is <em>not</em> X-inefficiency: it is a chosen trade-off for goodwill. Distinguishing avoidable slack from legitimate trade-offs is the hard part.'
+    : '<strong>X-efficiency (Leibenstein, 1966)</strong> means a firm operating on its PPF — no slack, no waste. Market power and absent oversight create X-inefficiency risk: insulated from competition and from the owner, managers may tolerate slack. Phase 5 set this up explicitly — Sofia\'s kitchen running above its own minimum AC is X-inefficiency. The remedy is not micromanagement but incentive design: align the agent\'s payoff with the principal\'s through performance pay, profit share or equity. Note that satisficing on price (sub-profit-max output) is something different — a deliberate trade-off, not avoidable waste.';
+
+  var html='<div class="phase-hdr"><div class="ph-left"><div class="ph-eyebrow" style="color:#6fa8d8">Phase 6 — Final Report</div><div class="ph-title">The Efficiency Audit</div></div><div class="ph-right"><div class="ph-score-lbl">Phase Score</div><div class="ph-score">'+ok+'/'+total+'</div></div></div>'
+    +'<div class="phase-progress"><div class="phase-pfill" style="width:100%"></div></div>'
+    +'<div class="story-box">Marco\'s Pizzeria has come a long way — from a single restaurant finding its sweet spot, through a price crisis, into a differentiated artisan brand with multiple objectives, and now run by a manager whose goals do not perfectly match the owner\'s. How <em>efficient</em> is the business? Economics recognises four distinct types of efficiency — each one tells a different story about resource allocation, and each one has shown up somewhere in Marco\'s journey.</div>'
+    +'<div class="eff-grid">'
+    +effBlock('Productive Efficiency','#4a7fb5',p1ok?'Understood':'Developing',p1ok?'ev-high':'ev-med',prodText)
+    +effBlock('Allocative Efficiency','#4caf80','Partially Achieved','ev-med',allocText)
+    +effBlock('Dynamic Efficiency','#c9a84c',(p3ok&&p4ok)?'Strong':'Developing',(p3ok&&p4ok)?'ev-high':'ev-med',dynText)
+    +effBlock('X-Efficiency','#2a9d8f',p5ok?'Diagnosed':'At Risk',p5ok?'ev-high':'ev-med',xText)
+    +'</div>'
+    +msBox('<strong>In efficiency essays</strong>: always specify WHICH efficiency type and connect it to the specific market structure. Perfect competition (LR): both productive AND allocative efficiency. Monopoly: neither — P&gt;MC and Q below min AC. Monopolistic competition (LR): neither — P&gt;MC (allocative inefficiency) and tangency above min AC (productive inefficiency, excess capacity). For X-efficiency, the trigger is weak competitive pressure <em>or</em> divorce of ownership and control (Berle &amp; Means, 1932) — Marco\'s pizzeria after Sofia takes over is the canonical setup. <strong>Edexcel mark scheme phrase</strong>: "Productive efficiency occurs where average cost is minimised (MC=AC). Allocative efficiency occurs where P=MC, representing the socially optimal allocation of resources. X-inefficiency arises when a firm fails to minimise its average costs at a given output, often associated with a lack of competitive pressure or the divorce of ownership from control."')
+    +'<div class="section-lbl" style="font-family:\'IBM Plex Mono\',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.55;margin-bottom:.5rem">AI Economics Tutor &mdash; Personalised Debrief</div>'
+    +'<div class="debrief-box" id="debriefBox"><div class="debrief-loading">Reviewing your journey through Marco\'s<span class="typing-dot">.</span><span class="typing-dot">.</span><span class="typing-dot">.</span></div></div>'
+    +'<div class="btn-row" style="margin-top:1rem"><button class="btn b-pizza" onclick="goHub()">&#8635; Play Again</button><button class="btn b-sec" onclick="goHub()">&larr; Hub</button></div>'
+    +'<div style="height:2rem"></div>';
+  render(html);
+  fetchDebrief(ok,total);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  AI DEBRIEF (uses Anthropic API)
+// ════════════════════════════════════════════════════════════════
+function fetchDebrief(ok,total){
+  var phaseAnswers=G.answers.filter(function(a){return a.kind==='p';});
+  var foundAnswers=G.answers.filter(function(a){return a.kind==='l';});
+  var summary=phaseAnswers.map(function(a){
+    var n=parseInt(a.id.replace('p',''));
+    var names={1:'Profit max under perfect competition (MC=MR vs min AC)',2:'Shut-down rule (P vs AVC)',3:'Monopolistic competition pricing &amp; LR tangency',4:'Baumol\'s sales revenue maximisation',5:'Principal-agent, X-inefficiency &amp; satisficing'};
+    return 'Phase '+n+' ('+names[n]+'): '+(a.ok?'Correct':'Incorrect');
+  }).join('; ');
+  var foundSummary=foundAnswers.length>0
+    ? 'Foundation lessons completed: '+foundAnswers.length+'/4 ('+foundAnswers.filter(function(a){return a.ok;}).length+' correct).'
+    : 'Foundation lessons not attempted.';
+
+  var prompt='You are an experienced A-level Economics teacher at a UK independent school giving personalised feedback after a 10-stage business economics simulation called Marco\'s Pizzeria — covering core Edexcel Paper 1 microeconomics (4 foundation lessons + 5 phases + 1 efficiency audit). Write in UK English, in a warm but academically rigorous tone. Plain paragraphs only — no bullet points, no headers, no markdown asterisks. Three focused paragraphs.\n\n'
+    +'Phase score: '+ok+'/'+total+'. '+foundSummary+'\nPhase breakdown: '+summary+'.\n\n'
+    +'Paragraph 1: Identify any phases where the student answered incorrectly and explain the economic concept they misapplied. Use precise Edexcel terminology: MC=MR profit maximisation, productive efficiency (minimum AC), shut-down condition (P>=AVC), monopolistic competition long-run tangency, Baumol\'s sales revenue maximisation (MR=0, minimum profit constraint), principal-agent problem (Berle and Means 1932, divorce of ownership and control), X-inefficiency (Leibenstein 1966), profit satisficing (Simon 1956, bounded rationality), allocative efficiency (P=MC). If all correct, deepen analysis of the most nuanced concept — typically the distinction between X-inefficiency and satisficing in Phase 5.\n\n'
+    +'Paragraph 2: Discuss the progression the student experienced — from perfect competition (Phase 1-2) through monopolistic competition (Phase 3-4) to the principal-agent setup (Phase 5) — and what the efficiency outcomes were at each stage. Connect explicitly to the four efficiency types (productive, allocative, dynamic, X-efficiency) and how they change as the firm gains market power and as ownership divorces from control. Reference the Nike-tick MC curve from Foundation 3 as the underlying production reality. Emphasise that Phase 5 is where X-efficiency becomes the live concept: pricing power plus an absent owner is the textbook setup for X-inefficiency.\n\n'
+    +'Paragraph 3: Give two specific, targeted Edexcel Paper 1 exam technique tips tailored to the gaps revealed by this student\'s performance — referencing specific question types (4-mark explain, 8-mark diagram, 25-mark essay), mark scheme language, and the specific concepts this student needs to practise.';
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var text=(data.content||[]).map(function(b){return b.text||'';}).join('');
+    var box=document.getElementById('debriefBox');
+    if(box){
+      var paras=text.split(/\n\n+/).filter(function(p){return p.trim();});
+      box.innerHTML=paras.map(function(p){return '<p>'+p.trim()+'</p>';}).join('');
+    }
+  })
+  .catch(function(){
+    var box=document.getElementById('debriefBox');
+    if(box)box.innerHTML='<p>Debrief unavailable — check your connection.</p>';
+  });
+}
+
+// Bootstrap
+goHub();
+</script>
+</body>
+</html>
