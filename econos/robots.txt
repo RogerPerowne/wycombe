@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /student/
+Disallow: /teacher/
+Disallow: /supabase/
+
+# Allow public pages
+Allow: /index.html
+Allow: /login.html
+
+Sitemap: https://econos.app/sitemap.xml
