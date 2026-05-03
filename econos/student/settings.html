@@ -49,7 +49,7 @@
         <div style="font-size:0.75rem;color:var(--text-muted);">Manage your profile and preferences</div>
       </div>
       <div class="header-actions">
-        <a href="settings.html"><div class="user-avatar" id="header-avatar">?</div></a>
+        <a href="settings"><div class="user-avatar" id="header-avatar">?</div></a>
       </div>
     </header>
 
@@ -98,7 +98,7 @@
         <div class="danger-section">
           <h2>Account</h2>
           <p class="section-desc">Actions that affect your account.</p>
-          <div class="danger-row"><div class="info"><div class="title">Sign out</div><div class="desc">Sign out of econOS on this device.</div></div><button class="btn btn-secondary btn-sm" onclick="Auth.signOut('../login.html')">Sign out</button></div>
+          <div class="danger-row"><div class="info"><div class="title">Sign out</div><div class="desc">Sign out of econOS on this device.</div></div><button class="btn btn-secondary btn-sm" onclick="Auth.signOut('/login')">Sign out</button></div>
           <div class="danger-row"><div class="info"><div class="title">Delete account</div><div class="desc">Permanently delete your account and all progress data.</div></div><button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete account</button></div>
         </div>
 
@@ -112,7 +112,7 @@
 let _profile = null, _session = null;
 
 async function init() {
-  const auth = await Auth.requireStudent('../login.html');
+  const auth = await Auth.requireStudent();
   if (!auth) return;
   const { session, profile } = auth;
   _profile = profile; _session = session;
@@ -182,7 +182,7 @@ async function confirmDelete() {
   try {
     await window._sb.from('profiles').delete().eq('id', _session.user.id);
     await window._sb.auth.signOut();
-    window.location.href = '../login.html';
+    window.location.href = '/login';
   } catch (err) { alert('Could not delete account: ' + err.message); }
 }
 

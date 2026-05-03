@@ -30,17 +30,14 @@
 .flaw-answer.correct-reveal .flaw-explanation { display:block; background:#DCFCE7; color:#166534; }
 .flaw-answer.wrong-reveal .flaw-explanation { display:block; background:#FEE2E2; color:#991B1B; }
 .flaw-answer.flawed-reveal .flaw-explanation { display:block; background:#FEF3C7; color:#92400E; }
-
 .flaw-actions { display:flex; gap:0.75rem; margin-top:1.5rem; }
 .flaw-result { border-radius:var(--r-md); padding:1rem 1.25rem; font-size:0.875rem; font-weight:600; margin-top:1rem; display:none; }
 .flaw-result.correct { background:var(--learn-light); color:var(--learn-dark); border:1px solid var(--learn); }
 .flaw-result.wrong   { background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; }
-
 .score-summary { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.25rem; box-shadow:var(--shadow-sm); display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
 .score-item { text-align:center; }
 .score-item .val { font-size:1.5rem; font-weight:900; color:var(--navy); }
 .score-item .lbl { font-size:0.7rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; }
-
 .skel { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
 @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 </style>
@@ -73,7 +70,6 @@
           <div class="score-item"><div class="val" id="sc-remaining">—</div><div class="lbl">Remaining</div></div>
           <div class="score-item"><div class="val" id="sc-pct">—</div><div class="lbl">Accuracy</div></div>
         </div>
-
         <div class="flaw-card" id="flaw-card">
           <div class="flaw-stage-pill">🔍 Spot the Flaw</div>
           <div id="question-num" style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem;">Question 1 of …</div>
@@ -89,7 +85,6 @@
             <button onclick="nextQuestion()" id="next-btn" class="btn btn-secondary btn-lg" style="display:none;">Next question →</button>
           </div>
         </div>
-
         <div id="finish-card" style="display:none;">
           <div class="flaw-card" style="text-align:center;">
             <div style="font-size:3rem;margin-bottom:1rem;" id="finish-emoji">🏆</div>
@@ -97,7 +92,7 @@
             <p style="color:var(--text-secondary);font-size:0.9rem;" id="finish-msg"></p>
             <div style="margin-top:1.5rem;display:flex;gap:0.75rem;justify-content:center;">
               <button onclick="restart()" class="btn btn-ghost btn-lg">Play again</button>
-              <a href="exam-mode.html" class="btn btn-primary btn-lg">Exam Mode →</a>
+              <a href="exam-mode" class="btn btn-primary btn-lg">Exam Mode →</a>
             </div>
           </div>
         </div>
@@ -113,21 +108,19 @@ let correctCount = 0, wrongCount = 0;
 let userId = null;
 
 async function init() {
-  const auth = await Auth.requireStudent('../login.html');
+  const auth = await Auth.requireStudent();
   if (!auth) return;
   const { session, profile } = auth;
   userId = session.user.id;
   const initials = (profile.full_name||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
   buildSidebar('spotflaw', 'student', { name: profile.full_name, initials, school: profile.school_name||'', yearGroup: profile.year_group||'Year 12' });
   document.getElementById('header-avatar').textContent = initials;
-
   try {
     const [flawQs, streakData] = await Promise.all([
       API.getFlawQuestions(null, 8),
       API.getStreakData(userId)
     ]);
     document.getElementById('header-streak').textContent = streakData.streak + ' day streak';
-
     if (!flawQs.length) {
       document.getElementById('flaw-card').innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-muted);">No spot-the-flaw questions available yet. Check back soon!</div>';
       return;
@@ -162,7 +155,6 @@ function renderQuestion() {
   document.getElementById('next-btn').style.display = 'none';
   document.getElementById('flaw-actions').style.display = 'flex';
   document.getElementById('sc-remaining').textContent = questions.length - currentIdx;
-
   const answers = Array.isArray(q.flaw_answers) ? q.flaw_answers : [];
   const letters = ['A','B','C','D'];
   document.getElementById('flaw-answers').innerHTML = answers.map((ans, i) => `
@@ -184,13 +176,10 @@ async function checkAnswer() {
   if (selectedChoice === null) return;
   const q = questions[currentIdx];
   const answers = Array.isArray(q.flaw_answers) ? q.flaw_answers : [];
-  const chosen = answers[selectedChoice];
   const flawedIdx = answers.findIndex(a => a.is_flawed);
   const isCorrect = selectedChoice === flawedIdx;
-
   if (isCorrect) correctCount++;
   else wrongCount++;
-
   answers.forEach((ans, i) => {
     const el = document.getElementById('ans-' + i);
     if (i === flawedIdx) el.classList.add('flawed-reveal');
@@ -199,25 +188,19 @@ async function checkAnswer() {
     el.style.cursor = 'default';
     el.onclick = null;
   });
-
   const resultEl = document.getElementById('flaw-result');
   resultEl.style.display = 'block';
   resultEl.className = 'flaw-result ' + (isCorrect ? 'correct' : 'wrong');
   resultEl.textContent = isCorrect
     ? '✅ Correct! You identified the flawed reasoning.'
     : `⚠ Not quite — answer ${['A','B','C','D'][flawedIdx]} contained the flaw.`;
-
   document.getElementById('check-btn').style.display = 'none';
   document.getElementById('next-btn').style.display = 'inline-flex';
   updateScore();
-
   if (userId) Auth.recordActivity('flaw', q.topic?.title || null, null, isCorrect ? 1 : 0, 1, null);
 }
 
-function nextQuestion() {
-  currentIdx++;
-  renderQuestion();
-}
+function nextQuestion() { currentIdx++; renderQuestion(); }
 
 function updateScore() {
   const total = correctCount + wrongCount;

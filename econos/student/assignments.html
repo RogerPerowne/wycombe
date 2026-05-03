@@ -49,7 +49,7 @@
         <div style="font-size:0.75rem;color:var(--text-muted);" id="assign-sub">Loading…</div>
       </div>
       <div class="header-actions">
-        <a href="settings.html"><div class="user-avatar" id="header-avatar">?</div></a>
+        <a href="settings"><div class="user-avatar" id="header-avatar">?</div></a>
       </div>
     </header>
     <div class="page-body">
@@ -112,13 +112,13 @@ function renderList() {
     const isDone   = status === 'completed';
     const teacher  = a.class?.teacher?.full_name ? ' · ' + a.class.teacher.full_name : '';
     let pill = isDone ? '<span class="stage-pill pill-learn" style="font-size:0.65rem;">✓ Submitted</span>' : status === 'overdue' ? '<span class="stage-pill" style="background:#FEE2E2;color:#DC2626;font-size:0.65rem;">Overdue</span>' : status === 'due-today' ? '<span class="stage-pill pill-link" style="font-size:0.65rem;">Due today</span>' : '';
-    let actionBtn = !isDone && status !== 'overdue' ? `<a href="land.html" class="btn btn-primary btn-sm">Start →</a>` : !isDone ? `<a href="land.html" class="btn btn-danger btn-sm">Submit now</a>` : `<a href="land.html" class="btn btn-ghost btn-sm">Review</a>`;
-    return `<div class="assign-card"><div class="assign-type-icon" style="background:${bg};">${icon}</div><div class="assign-body"><div class="title">${a.title}</div><div class="meta">${a.class?.name || 'Unknown class'}${teacher}</div></div><div class="assign-due"><div class="due-date ${isUrgent?'urgent':''} ${isDone?'done':''}}">${isDone ? '✓ Done' : (isUrgent?'⚠ ':'')+due}</div><div style="margin-top:0.25rem;">${pill}</div></div><div class="assign-actions">${actionBtn}</div></div>`;
+    let actionBtn = !isDone && status !== 'overdue' ? `<a href="land" class="btn btn-primary btn-sm">Start →</a>` : !isDone ? `<a href="land" class="btn btn-danger btn-sm">Submit now</a>` : `<a href="land" class="btn btn-ghost btn-sm">Review</a>`;
+    return `<div class="assign-card"><div class="assign-type-icon" style="background:${bg};">${icon}</div><div class="assign-body"><div class="title">${a.title}</div><div class="meta">${a.class?.name || 'Unknown class'}${teacher}</div></div><div class="assign-due"><div class="due-date ${isUrgent?'urgent':''} ${isDone?'done':''}">${isDone ? '✓ Done' : (isUrgent?'⚠ ':'')+due}</div><div style="margin-top:0.25rem;">${pill}</div></div><div class="assign-actions">${actionBtn}</div></div>`;
   }).join('');
 }
 
 async function init() {
-  const auth = await Auth.requireStudent('../login.html');
+  const auth = await Auth.requireStudent();
   if (!auth) return;
   const { session, profile } = auth;
   const userId = session.user.id;

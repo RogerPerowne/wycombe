@@ -13,7 +13,6 @@
 .exam-pill { display:inline-flex; align-items:center; gap:0.375rem; background:#FEF3C7; color:#92400E; font-size:0.7rem; font-weight:700; padding:0.25rem 0.625rem; border-radius:var(--r-full); }
 .timer-display { font-size:1.5rem; font-weight:900; color:var(--navy); font-variant-numeric:tabular-nums; padding:0.375rem 0.875rem; background:var(--bg-subtle); border-radius:var(--r-md); border:1px solid var(--border); }
 .timer-display.warning { color:#DC2626; background:#FEF2F2; border-color:#FECACA; }
-
 .question-block { margin-bottom:2rem; padding-bottom:2rem; border-bottom:1px solid var(--border); }
 .question-block:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
 .question-num  { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin-bottom:0.5rem; }
@@ -33,18 +32,15 @@
 .opt-expl { font-size:0.775rem; color:var(--text-secondary); margin-top:0.375rem; display:none; }
 .mcq-opt.correct-reveal .opt-expl,
 .mcq-opt.wrong-reveal .opt-expl { display:block; }
-
 .exam-sidebar-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.25rem; box-shadow:var(--shadow-sm); margin-bottom:1rem; }
 .exam-sidebar-card h4 { font-size:0.875rem; font-weight:700; color:var(--navy); margin-bottom:0.875rem; }
 .session-stat { display:flex; justify-content:space-between; align-items:center; padding:0.375rem 0; font-size:0.8rem; border-bottom:1px solid var(--border); }
 .session-stat:last-child { border-bottom:none; }
 .session-stat .lbl { color:var(--text-muted); }
 .session-stat .val { font-weight:700; color:var(--navy); }
-
 .result-screen { display:none; }
 .result-screen .big-score { font-size:4rem; font-weight:900; color:var(--learn); letter-spacing:-0.04em; }
 .result-screen .score-label { font-size:0.875rem; color:var(--text-muted); font-weight:600; }
-
 .skel { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
 @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 </style>
@@ -70,7 +66,6 @@
       </div>
     </header>
     <div class="page-body">
-      <!-- START SCREEN -->
       <div id="start-screen">
         <div style="max-width:640px;margin:2rem auto;">
           <div class="exam-card" style="text-align:center;">
@@ -105,8 +100,6 @@
           </div>
         </div>
       </div>
-
-      <!-- EXAM SCREEN -->
       <div id="exam-screen" style="display:none;">
         <div class="exam-layout">
           <div>
@@ -127,7 +120,6 @@
               </div>
             </div>
           </div>
-
           <div>
             <div class="exam-sidebar-card">
               <h4>Session progress</h4>
@@ -142,8 +134,6 @@
           </div>
         </div>
       </div>
-
-      <!-- RESULT SCREEN -->
       <div id="result-screen" style="display:none;">
         <div style="max-width:640px;margin:2rem auto;">
           <div class="exam-card" style="text-align:center;">
@@ -166,7 +156,7 @@
             </div>
             <div style="display:flex;gap:0.75rem;justify-content:center;">
               <button onclick="restart()" class="btn btn-ghost btn-lg">New session</button>
-              <a href="topics.html" class="btn btn-primary btn-lg">Review topics →</a>
+              <a href="topics" class="btn btn-primary btn-lg">Review topics →</a>
             </div>
           </div>
         </div>
@@ -182,14 +172,13 @@ let questions = [], answers = {};
 let timerInterval = null, secondsLeft = 900, secondsUsed = 0;
 
 async function init() {
-  const auth = await Auth.requireStudent('../login.html');
+  const auth = await Auth.requireStudent();
   if (!auth) return;
   const { session, profile } = auth;
   userId = session.user.id;
   const initials = (profile.full_name||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
   buildSidebar('exam', 'student', { name: profile.full_name, initials, school: profile.school_name||'', yearGroup: profile.year_group||'Year 12' });
   document.getElementById('header-avatar').textContent = initials;
-
   try {
     const [mastery, streakData] = await Promise.all([
       API.getStudentMastery(userId),
@@ -207,7 +196,6 @@ async function startExam() {
   const qCount = parseInt(document.getElementById('session-length').value);
   document.getElementById('start-screen').style.display = 'none';
   document.getElementById('exam-screen').style.display  = 'block';
-
   try {
     questions = await API.getRandomMCQ(qCount);
     if (!questions.length) {
@@ -227,7 +215,6 @@ function renderQuestions() {
   const letters = ['A','B','C','D'];
   document.getElementById('exam-pill').textContent = `${questions.length} questions`;
   document.getElementById('ss-answered').textContent = `0 / ${questions.length}`;
-
   document.getElementById('questions-container').innerHTML = questions.map((q, qi) => {
     const opts = Array.isArray(q.options) ? q.options : [];
     return `
@@ -246,7 +233,6 @@ function renderQuestions() {
         </div>
       </div>`;
   }).join('');
-
   document.getElementById('q-navigator').innerHTML = questions.map((_,i) => `<button id="nav-${i}" onclick="scrollToQ(${i})" style="width:32px;height:32px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg-subtle);font-size:0.75rem;font-weight:700;cursor:pointer;">${i+1}</button>`).join('');
 }
 
@@ -280,7 +266,6 @@ function startTimer(qCount) {
 async function submitExam() {
   clearInterval(timerInterval);
   document.getElementById('exam-actions').style.display = 'none';
-
   let correct = 0;
   questions.forEach((q, qi) => {
     const opts = Array.isArray(q.options) ? q.options : [];
@@ -288,7 +273,6 @@ async function submitExam() {
     const correctIdx = opts.findIndex(o => o.correct);
     const isCorrect = chosen === correctIdx;
     if (isCorrect) correct++;
-
     document.querySelectorAll(`[data-q="${qi}"]`).forEach(el => {
       const oi = parseInt(el.dataset.o);
       el.onclick = null;
@@ -297,13 +281,11 @@ async function submitExam() {
       else if (oi === chosen && !isCorrect) el.classList.add('wrong-reveal');
     });
   });
-
   const total  = questions.length;
   const pct    = Math.round((correct/total)*100);
   const mins   = Math.floor(secondsUsed/60);
   const secs   = secondsUsed%60;
   const timeStr = `${mins}:${secs.toString().padStart(2,'0')}`;
-
   setTimeout(() => {
     document.getElementById('exam-screen').style.display   = 'none';
     document.getElementById('result-screen').style.display = 'block';
@@ -315,7 +297,6 @@ async function submitExam() {
     document.getElementById('res-wrong').textContent    = total - correct;
     document.getElementById('res-time').textContent     = timeStr;
   }, 1500);
-
   if (userId) Auth.recordActivity('mcq', 'Exam Mode', null, correct, total, null);
 }
 
