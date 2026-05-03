@@ -281,45 +281,6 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── OTP STEP ── */
-.otp-step {
-  text-align: center; padding: 1rem 0;
-}
-.otp-step h2 {
-  font-size: 1.375rem; font-weight: 800; color: #0F172A;
-  letter-spacing: -0.02em; margin: 0 0 0.5rem;
-}
-.otp-step p { font-size: 0.9rem; color: #475569; margin: 0 0 1.75rem; line-height: 1.55; }
-.otp-step .otp-input-wrap {
-  position: relative; margin-bottom: 1.25rem;
-}
-.otp-step .otp-input {
-  width: 100%; padding: 0.875rem 1rem;
-  font-size: 2rem; font-weight: 700;
-  letter-spacing: 0.5em; text-align: center;
-  border: 2px solid #E2E8F0; border-radius: 12px;
-  background: #F8FAFC; color: #0F172A; outline: none;
-  font-family: 'IBM Plex Mono', monospace;
-  transition: border-color 0.15s;
-}
-.otp-step .otp-input:focus { border-color: #2563EB; background: #fff; }
-.otp-step .btn-verify {
-  width: 100%; padding: 0.875rem;
-  background: #2563EB; color: #fff;
-  font-size: 1rem; font-weight: 700;
-  border: none; border-radius: 10px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-  transition: background 0.15s;
-  margin-bottom: 1rem;
-}
-.otp-step .btn-verify:hover { background: #1D4ED8; }
-.otp-step .resend-link {
-  font-size: 0.8125rem; color: #2563EB; cursor: pointer;
-  font-weight: 600; text-decoration: none; background: none; border: none;
-  padding: 0;
-}
-.otp-step .resend-link:hover { text-decoration: underline; }
-
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .sidebar { display: none; }
@@ -344,7 +305,7 @@ body {
 
 <!-- ── TOPBAR ── -->
 <div class="topbar">
-  Already have an account? <a href="login?mode=signin">Log in</a>
+  Already have an account? <a href="login.html?mode=signin">Log in</a>
 </div>
 
 <div class="page-body">
@@ -432,7 +393,7 @@ body {
           <div class="role-badge-meta">
             <div class="role-badge-label">You're signing up as a</div>
             <div class="role-badge-name" id="roleBadgeName">Student</div>
-            <a class="role-badge-change" href="login">Change</a>
+            <a class="role-badge-change" href="login.html">Change</a>
           </div>
         </div>
       </div>
@@ -696,31 +657,8 @@ body {
         </div>
       </div>
 
-      <!-- ── OTP VERIFICATION STEP ── -->
-      <div id="otpStep" style="display:none;">
-        <hr style="border:none;border-top:1px solid #E2E8F0;margin:0 0 2rem;">
-        <div class="otp-step">
-          <div style="width:56px;height:56px;border-radius:50%;background:#EFF6FF;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
-          </div>
-          <h2>Check your inbox</h2>
-          <p id="otp-email-hint">We've sent a 6-digit verification code to your email address. Enter it below to complete your account.</p>
-          <div class="auth-msg" id="otp-msg" style="text-align:left;"></div>
-          <form onsubmit="handleVerifySignupOtp(event)">
-            <div class="otp-input-wrap">
-              <input id="signup-otp" class="otp-input" type="text" inputmode="numeric" maxlength="6" placeholder="000000" required autocomplete="one-time-code">
-            </div>
-            <button type="submit" id="verifyOtpBtn" class="btn-verify">
-              Verify &amp; create account
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </form>
-          <button class="resend-link" onclick="handleResendOtp()">Didn't receive it? Resend code</button>
-        </div>
-      </div>
-
       <!-- ── FOOTER ── -->
-      <div class="form-footer" id="formFooter">
+      <div class="form-footer">
         <button class="btn-back" onclick="goBack()">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 12l-4-4 4-4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Back
@@ -845,14 +783,11 @@ async function handleComplete() {
   btn.disabled = true;
 
   const extra = gatherExtraData();
-  // Persist extra data so OTP callback can upsert profile
-  signupData.extra = extra;
-  sessionStorage.setItem('econos_signup', JSON.stringify(signupData));
 
-  const { error } = await window._sb.auth.signInWithOtp({
+  const { data, error } = await window._sb.auth.signUp({
     email: signupData.email,
+    password: signupData.password,
     options: {
-      shouldCreateUser: true,
       data: {
         full_name: signupData.name,
         role: signupData.role,
@@ -865,82 +800,28 @@ async function handleComplete() {
   btn.disabled = false;
 
   if (error) {
-    showMsg(error.message || 'Could not send verification code. Please try again.', 'error');
+    showMsg(error.message || 'Could not create account.', 'error');
     return;
   }
 
-  // Show OTP step
-  document.getElementById('otp-email-hint').textContent =
-    'We sent a 6-digit code to ' + signupData.email + '. Enter it below to complete your account.';
-  document.getElementById('otpStep').style.display = 'block';
-  document.getElementById('formFooter').style.display = 'none';
-  document.getElementById('signup-otp').focus();
-}
-
-async function handleVerifySignupOtp(e) {
-  e.preventDefault();
-  if (!window._sbConfigured || !signupData) return;
-  const token = document.getElementById('signup-otp').value.replace(/\s/g, '');
-  if (token.length < 6) {
-    _showOtpMsg('Please enter the full 6-digit code.', 'error');
-    return;
-  }
-  const btn = document.getElementById('verifyOtpBtn');
-  btn.classList.add('btn-loading');
-  btn.disabled = true;
-
-  const { data, error } = await window._sb.auth.verifyOtp({
-    email: signupData.email,
-    token,
-    type: 'email'
-  });
-
-  btn.classList.remove('btn-loading');
-  btn.disabled = false;
-
-  if (error) {
-    _showOtpMsg(error.message || 'Invalid or expired code. Click "Resend code" to get a new one.', 'error');
-    return;
-  }
+  sessionStorage.removeItem('econos_signup');
 
   if (data.session) {
-    // For existing users, update their profile with any new data supplied
-    const uid = data.session.user.id;
-    const profileUpdates = {
-      full_name: signupData.name,
-      role: signupData.role || 'student',
-      ...(signupData.extra || {})
-    };
-    // Upsert so returning users get their profile updated
-    await window._sb.from('profiles').upsert(
-      { id: uid, ...profileUpdates, updated_at: new Date().toISOString() },
-      { onConflict: 'id' }
-    );
-    sessionStorage.removeItem('econos_signup');
-    const role = profileUpdates.role;
+    const role = data.session.user.user_metadata?.role || signupData.role || 'student';
     window.location.href = role === 'teacher' ? '../teacher/dashboard' : '../student/dashboard';
-  }
-}
-
-async function handleResendOtp() {
-  if (!window._sbConfigured || !signupData) return;
-  _showOtpMsg('', '');
-  const { error } = await window._sb.auth.signInWithOtp({
-    email: signupData.email,
-    options: { shouldCreateUser: true }
-  });
-  if (error) {
-    _showOtpMsg(error.message || 'Could not resend code.', 'error');
   } else {
-    _showOtpMsg('New code sent — check your inbox.', 'success');
+    // Account already exists with this email — try signing in instead
+    const { data: signinData, error: signinError } = await window._sb.auth.signInWithPassword({
+      email: signupData.email,
+      password: signupData.password
+    });
+    if (signinData?.session) {
+      const role = signinData.session.user.user_metadata?.role || 'student';
+      window.location.href = role === 'teacher' ? '../teacher/dashboard' : '../student/dashboard';
+    } else {
+      showMsg('An account with this email already exists. Please sign in instead.', 'error');
+    }
   }
-}
-
-function _showOtpMsg(text, type) {
-  const el = document.getElementById('otp-msg');
-  el.textContent = text;
-  el.className = 'auth-msg' + (type ? ' ' + type : '');
 }
 </script>
 </body>
-</html>
