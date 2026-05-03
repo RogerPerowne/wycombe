@@ -53,6 +53,109 @@ header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);b
 .sess-score{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--goldl);line-height:1}
 .sess-progress{height:4px;background:var(--bdr);position:relative}
 .sess-pfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldl));transition:width .4s ease;width:0%}
+/* FRICTION */
+.frict-scenario{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:9px;padding:1.4rem;margin-bottom:1rem;font-size:1.02rem;line-height:1.75;color:var(--txt)}
+.timer-bar{height:6px;background:var(--bdr);border-radius:3px;overflow:hidden;margin-bottom:1rem}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold),var(--red));transition:width 1s linear;width:100%}
+.fopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.6rem}
+.fopt{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:7px;padding:.75rem .85rem;cursor:pointer;transition:all .18s;text-align:left;display:flex;gap:.55rem;align-items:center}
+.fopt:hover:not(.locked){border-color:var(--gold);background:rgba(201,168,76,.07);transform:translateY(-1px)}
+.fopt.locked{cursor:default}
+.fopt.ok{border-color:var(--green)!important;background:rgba(76,175,128,.12)!important}
+.fopt.bad{border-color:var(--red)!important;background:rgba(224,80,96,.1)!important}
+.fopt.reveal{border-color:var(--green)!important;background:rgba(76,175,128,.06)!important}
+.fopt-icon{font-size:1.15rem;flex-shrink:0}
+.fopt-name{font-size:.82rem;font-weight:600}
+.frict-reveal{margin-top:1rem;padding:1rem 1.1rem;background:rgba(74,127,181,.08);border:1px solid rgba(74,127,181,.3);border-radius:7px;display:none}
+.frict-reveal.show{display:block;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.frict-reveal p{font-size:.86rem;line-height:1.7;color:var(--mut)}
+.frict-reveal p strong{color:var(--txt)}
+/* CHAIN BUILDER */
+.chain-trigger{background:rgba(26,39,68,.5);border-left:3px solid var(--gold);padding:.95rem 1.2rem;border-radius:0 6px 6px 0;margin-bottom:1.1rem}
+.chain-trigger-lbl{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:.4rem}
+.chain-trigger p{font-size:.95rem;line-height:1.7;color:var(--txt)}
+.chain-instr{font-size:.8rem;color:var(--mut);margin-bottom:.7rem;line-height:1.6;opacity:.85}
+.chain-instr strong{color:var(--goldl)}
+.chain-columns{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+@media(max-width:680px){.chain-columns{grid-template-columns:1fr}}
+.chain-col{background:rgba(26,39,68,.4);border:1px solid var(--bdr);border-radius:8px;padding:.85rem;min-height:220px}
+.chain-col-title{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:.65rem;opacity:.75}
+.chain-col.active{border-color:rgba(201,168,76,.45)}
+.chain-step{background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:6px;padding:.6rem .75rem;margin-bottom:.42rem;cursor:pointer;font-size:.82rem;line-height:1.55;transition:all .18s;display:flex;align-items:flex-start;gap:.55rem}
+.chain-step:hover:not(.locked){border-color:var(--gold);background:rgba(201,168,76,.07)}
+.chain-step.locked{cursor:default}
+.chain-step.ordered{background:rgba(26,39,68,.8);border-color:rgba(201,168,76,.35)}
+.chain-step-num{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--gold);flex-shrink:0;font-weight:600;min-width:18px}
+.chain-step-txt{flex:1}
+.chain-submit{text-align:center;margin:.8rem 0}
+.chain-result{margin-top:1rem;padding:1rem;border-radius:7px;display:none}
+.chain-result.show{display:block;animation:fadeIn .3s}
+.chain-result.ok{background:rgba(76,175,128,.08);border:1px solid rgba(76,175,128,.3)}
+.chain-result.bad{background:rgba(224,80,96,.08);border:1px solid rgba(224,80,96,.3)}
+.chain-result-title{font-family:'IBM Plex Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.65rem}
+.chain-result.ok .chain-result-title{color:var(--green)}
+.chain-result.bad .chain-result-title{color:var(--red)}
+.chain-result ol{padding-left:1.3rem;margin-bottom:.7rem}
+.chain-result li{font-size:.82rem;line-height:1.65;color:var(--mut);margin-bottom:.32rem}
+.chain-result li strong{color:var(--txt)}
+/* DIAGRAM SPRINT */
+.diag-prompt{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:9px;padding:1.2rem;margin-bottom:1rem}
+.diag-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--goldl);margin-bottom:.5rem}
+.diag-framework{font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.11em;color:var(--gold);margin-bottom:.6rem}
+.diag-prompt-text{font-size:.92rem;line-height:1.75;color:var(--txt)}
+.diag-instr{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);border-radius:7px;padding:.85rem 1.05rem;margin-bottom:1.1rem;font-size:.8rem;color:var(--goldl);line-height:1.65}
+.diag-instr strong{color:var(--gold)}
+.diag-timer{text-align:center;margin:1.2rem 0}
+.diag-timer-circle{width:130px;height:130px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--gold) 0deg, var(--bdr) 0deg);transition:background 1s linear;position:relative}
+.diag-timer-circle::before{content:'';position:absolute;width:116px;height:116px;border-radius:50%;background:var(--navyd)}
+.diag-timer-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--goldl);z-index:2}
+.diag-btn-row{text-align:center;margin-top:.8rem;display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap}
+.diag-reveal{display:none}
+.diag-reveal.show{display:block;animation:fadeIn .35s}
+.diag-labels-box{background:rgba(74,127,181,.07);border:1px solid rgba(74,127,181,.28);border-radius:8px;padding:1.1rem;margin-bottom:.9rem}
+.diag-labels-title{font-family:'IBM Plex Mono',monospace;font-size:.57rem;text-transform:uppercase;letter-spacing:.1em;color:var(--bluel);margin-bottom:.7rem}
+.diag-labels-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.4rem}
+.diag-label-chip{font-family:'IBM Plex Mono',monospace;font-size:.75rem;background:rgba(255,255,255,.05);border:1px solid var(--bdr);padding:.35rem .58rem;border-radius:4px;color:var(--txt);line-height:1.35}
+.diag-explain{background:rgba(26,39,68,.5);border-left:3px solid var(--blue);padding:.9rem 1.1rem;border-radius:0 6px 6px 0;margin-bottom:.9rem}
+.diag-explain p{font-size:.84rem;line-height:1.72;color:var(--mut)}
+.diag-tip{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);border-radius:6px;padding:.75rem 1rem;margin-bottom:1rem;font-size:.82rem;line-height:1.7;color:var(--goldl)}
+.diag-tip strong{color:var(--gold)}
+.diag-selfrate{text-align:center;padding:.8rem 0 .3rem}
+.diag-selfrate-q{font-family:'IBM Plex Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);margin-bottom:.7rem}
+.diag-rate-btns{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap}
+.diag-rate-btn{padding:.7rem 1.1rem;border-radius:7px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;border:1px solid;transition:all .2s;font-weight:600}
+.rate-nailed{background:rgba(76,175,128,.1);border-color:var(--green);color:var(--green)}
+.rate-nailed:hover{background:rgba(76,175,128,.18)}
+.rate-nearly{background:rgba(224,147,58,.1);border-color:var(--orange);color:var(--orange)}
+.rate-nearly:hover{background:rgba(224,147,58,.18)}
+.rate-missed{background:rgba(224,80,96,.1);border-color:var(--red);color:var(--red)}
+.rate-missed:hover{background:rgba(224,80,96,.18)}
+/* WRONG BUT CONVINCING */
+.wbc-question{background:rgba(26,39,68,.5);border-left:3px solid var(--purple);padding:1rem 1.25rem;border-radius:0 6px 6px 0;margin-bottom:1rem}
+.wbc-q-lbl{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;color:var(--purple);margin-bottom:.4rem}
+.wbc-question p{font-size:.93rem;line-height:1.7;color:var(--txt)}
+.wbc-instr{font-size:.82rem;color:var(--mut);margin-bottom:.95rem;opacity:.85;line-height:1.65}
+.wbc-instr strong{color:var(--goldl)}
+.wbc-answers{display:flex;flex-direction:column;gap:.7rem;margin-bottom:1rem}
+.wbc-answer{background:rgba(255,255,255,.04);border:2px solid var(--bdr);border-radius:9px;padding:.9rem 1.05rem;cursor:pointer;transition:all .18s;position:relative}
+.wbc-answer:hover:not(.locked){border-color:var(--gold);background:rgba(201,168,76,.06)}
+.wbc-answer.locked{cursor:default}
+.wbc-answer-label{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.11em;text-transform:uppercase;color:var(--mut);margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+.wbc-answer-verdict{font-family:'IBM Plex Mono',monospace;font-size:.56rem;padding:.14rem .45rem;border-radius:3px;letter-spacing:.05em;display:none}
+.wbc-answer.revealed .wbc-answer-verdict{display:inline-block}
+.wbc-answer.revealed-strong{border-color:var(--green)!important;background:rgba(76,175,128,.06)!important}
+.wbc-answer.revealed-strong .wbc-answer-verdict{background:rgba(76,175,128,.18);color:var(--green);border:1px solid var(--green)}
+.wbc-answer.revealed-flawed{border-color:var(--red)!important;background:rgba(224,80,96,.05)!important}
+.wbc-answer.revealed-flawed .wbc-answer-verdict{background:rgba(224,80,96,.15);color:var(--red);border:1px solid var(--red)}
+.wbc-answer-text{font-size:.85rem;line-height:1.72;color:var(--txt)}
+.wbc-answer-why{display:none;margin-top:.7rem;padding-top:.7rem;border-top:1px solid rgba(46,63,96,.7);font-size:.8rem;line-height:1.7;color:var(--mut)}
+.wbc-answer.revealed .wbc-answer-why{display:block;animation:fadeIn .3s}
+.wbc-answer-why strong{color:var(--txt)}
+.wbc-flaw-box{background:rgba(74,127,181,.07);border:1px solid rgba(74,127,181,.28);border-radius:7px;padding:.8rem 1.05rem;margin-top:.6rem;display:none}
+.wbc-answer.revealed .wbc-flaw-box{display:block}
+.wbc-flaw-name{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--bluel);margin-bottom:.35rem}
+.wbc-flaw-desc{font-size:.78rem;line-height:1.65;color:var(--mut);font-style:italic}
 /* BUTTONS */
 .btn{padding:.75rem 1.15rem;border:none;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-weight:600}
 .bg{background:linear-gradient(135deg,#b8922a,var(--gold));color:var(--navyd)}
@@ -60,6 +163,23 @@ header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);b
 .bg:disabled{opacity:.4;cursor:default}
 .bs{background:rgba(255,255,255,.06);border:1px solid var(--bdr);color:var(--mut)}
 .bs:hover{background:rgba(255,255,255,.12);color:var(--txt)}
+/* SUMMARY */
+.summary-hero{text-align:center;padding:1.8rem 1rem 1rem}
+.summary-eye{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.55rem}
+.summary-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;margin-bottom:.25rem}
+.summary-num{font-family:'Cormorant Garamond',serif;font-size:4.5rem;font-weight:700;color:var(--goldl);line-height:1;margin:.6rem 0 .25rem}
+.summary-max{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--mut);opacity:.65;margin-bottom:1rem}
+.summary-pct{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--goldl);margin-bottom:.8rem}
+.summary-break{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin:1rem auto 1.5rem;max-width:560px}
+.summary-stat{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:7px;padding:.7rem .95rem;min-width:115px;text-align:center}
+.summary-stat-num{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--goldl)}
+.summary-stat-lbl{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);opacity:.75;margin-top:.15rem}
+.summary-btns{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-top:1rem}
+/* GENERIC */
+.center{text-align:center}
+.mt{margin-top:1rem}
+.diag-svg-box{margin-bottom:.9rem;text-align:center}
+.diag-svg-box svg{max-width:100%;height:auto;box-shadow:0 4px 14px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08)}
 @media(max-width:650px){
   header{padding:0 1rem;height:64px}
   .htit{font-size:1.05rem}
@@ -67,8 +187,10 @@ header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);b
   .app{padding:1.1rem 1rem}
   .hub-hero h1{font-size:2rem}
 }
+
 .hub-btn{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.3rem .75rem;border-radius:4px;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-block}
 .hub-btn:hover{background:rgba(255,255,255,.12);color:var(--txt)}
+
 /* econOS topbar */
 .sim-topbar{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9999;font-family:'Inter',system-ui,sans-serif;box-shadow:0 1px 3px rgba(15,23,42,.04)}
 .sim-topbar-left{display:flex;align-items:center;gap:.75rem}
@@ -93,13 +215,1072 @@ header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);b
       <span class="sim-logo-word"><span class="sim-econ">econ</span><span class="sim-os">OS</span></span>
     </a>
     <span class="sim-divider"></span>
-    <span class="sim-page-name">Economics Gym</span>
+    <span class="sim-page-name">The Economics Gym</span>
   </div>
   <div>
-    <a href="../dashboard" class="sim-back-btn">← Dashboard</a>
+    <a href="../dashboard" class="sim-back-btn">&#8592; Dashboard</a>
   </div>
 </nav>
+<header>
+  <div class="hl">
+    <img class="hlogo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display='none'">
+    <div>
+      <div class="hsch">Wycombe Abbey</div>
+      <div class="htit">The Economics Gym</div>
+      <div class="hsub">A-Level &middot; Edexcel Paper 1 &middot; Skills Training</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:.6rem">
+    <a href="index.html" style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.28rem .72rem;border-radius:4px;text-decoration:none;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.color='var(--mut)'">&#8592; Home</a>
+    <a class="hub-btn" href="index.html">&larr; Hub</a>
+    <span class="hbdg">Revision Drills</span>
+    <button class="homebtn" id="homeBtn" onclick="goHub()" style="display:none">&larr; Hub</button>
+  </div>
+</header>
 <div class="app" id="root"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  CONTENT DATA
+// ══════════════════════════════════════════════════════════════
+// CONTENT DATA FOR ECONOMICS GYM
+// Edit these arrays to add, remove, or change content.
+// All items are mapped to Edexcel Paper 1 frameworks.
+
+
+// ── MACHINE 2: CHAIN BUILDER ────────────────────────────────
+// Each chain: title (trigger/scenario), correct sequence of steps,
+// two imposter steps that look plausible but don't belong, and the
+// framework tag.
+// ── MACHINE 2: CHAIN BUILDER ────────────────────────────────
+// Each chain: title (trigger/scenario), correct sequence of steps,
+// two imposter steps that look plausible but don't belong, and the
+// framework tag.
+var CHAINS = [
+  { id: 1, framework: "Market Power",
+    trigger: "A merger creates a dominant firm in a weakly contestable market",
+    steps: [
+      "Market concentration rises after the merger",
+      "The merged firm gains greater pricing power",
+      "Price rises above marginal cost (P > MC)",
+      "Allocative inefficiency results as output is restricted",
+      "Consumer surplus falls; deadweight welfare loss emerges",
+      "Persistent supernormal profits accrue to the firm"
+    ],
+    imposters: [
+      "Marginal revenue equals marginal cost at the competitive quantity",
+      "Firms experience diseconomies of scale as they grow"
+    ] },
+  { id: 2, framework: "Externalities",
+    trigger: "Untaxed industrial emissions create a negative production externality",
+    steps: [
+      "Firms ignore external costs when setting output",
+      "Marginal private cost lies below marginal social cost",
+      "Market output exceeds the socially optimal quantity",
+      "Deadweight welfare loss arises from over-production",
+      "A Pigouvian tax could internalise the external cost"
+    ],
+    imposters: [
+      "Consumers underconsume the good relative to the social optimum",
+      "A subsidy would shift the supply curve rightward"
+    ] },
+  { id: 3, framework: "Contestability",
+    trigger: "Firms in a market earn persistent supernormal profits despite no formal monopoly",
+    steps: [
+      "High barriers to entry deter potential entrants",
+      "The credible threat of entry is weak",
+      "Incumbents face little pressure to cut prices",
+      "Prices remain above the competitive level (P > MC)",
+      "Allocative inefficiency and welfare loss persist",
+      "Sustained profits may lead to X-inefficiency over time"
+    ],
+    imposters: [
+      "Hit-and-run entry competes profits away quickly",
+      "Firms set price equal to average cost through limit pricing"
+    ] },
+  { id: 4, framework: "Business Pressure",
+    trigger: "A firm in a competitive market faces a sharp rise in energy costs",
+    steps: [
+      "Marginal and average cost curves shift upwards",
+      "Profit margins are squeezed at the existing price",
+      "If demand is elastic, firms cannot pass costs on fully",
+      "Profits fall and investment may be cut",
+      "If price falls below average variable cost, the firm shuts down"
+    ],
+    imposters: [
+      "Long-run average cost falls as output expands",
+      "Firms raise prices and revenue always rises"
+    ] },
+  { id: 5, framework: "Labour Market",
+    trigger: "A dominant employer in a rural area sets wages",
+    steps: [
+      "The firm acts as a monopsony buyer of labour",
+      "Marginal cost of labour lies above the labour supply curve",
+      "The firm hires where MCL = MRPL",
+      "Wage is set below the competitive level",
+      "Employment is lower than in a competitive market",
+      "Workers capture a smaller share of productivity gains"
+    ],
+    imposters: [
+      "Trade union bargaining raises wages above the competitive level",
+      "Labour supply is perfectly inelastic at all wage rates"
+    ] },
+  { id: 6, framework: "Government Intervention",
+    trigger: "The government imposes an indirect tax on a good with negative externalities",
+    steps: [
+      "The supply curve shifts leftward as MPC rises",
+      "Equilibrium price rises and quantity falls",
+      "The extent of the fall depends on price elasticity of demand",
+      "Overconsumption is reduced toward the social optimum",
+      "Welfare loss from the externality is reduced",
+      "Tax revenue may fund further correction or compensation"
+    ],
+    imposters: [
+      "The supply curve shifts rightward as firms produce more",
+      "Demand becomes more elastic as a result of the tax"
+    ] },
+  { id: 7, framework: "Behavioural Issues",
+    trigger: "Consumers fail to switch energy providers despite cheaper options",
+    steps: [
+      "Switching involves perceived hassle and uncertainty",
+      "Consumers display inertia and remain with existing suppliers",
+      "Firms gain customer lock-in",
+      "Demand becomes less price elastic",
+      "Weak competitive pressure allows prices to stay high",
+      "Consumer surplus is lower than in a frictionless market"
+    ],
+    imposters: [
+      "Consumers respond rapidly to small price differences",
+      "Perfect information leads to allocative efficiency"
+    ] },
+  { id: 8, framework: "Efficiency & Welfare",
+    trigger: "A natural monopoly operates in a market with very high fixed costs",
+    steps: [
+      "One firm can supply the entire market at lower AC than multiple firms",
+      "Average cost falls continuously as output rises",
+      "Pricing at MC would require a subsidy to cover fixed costs",
+      "Pricing at AC produces allocative inefficiency (P > MC)",
+      "Regulation can reduce prices but may weaken investment incentives"
+    ],
+    imposters: [
+      "Multiple competing firms each achieve productive efficiency",
+      "Marginal cost rises sharply with output in this industry"
+    ] },
+  { id: 9, framework: "Market Power",
+    trigger: "A firm in a concentrated market engages in second-degree price discrimination",
+    steps: [
+      "The firm separates consumers by willingness to pay",
+      "Different prices are charged to different groups",
+      "Consumer surplus is transferred to producer surplus",
+      "Total output may rise if previously priced-out consumers now buy",
+      "Deadweight loss may fall if output rises",
+      "Welfare effect depends on whether total surplus increases"
+    ],
+    imposters: [
+      "All consumers are charged the same profit-maximising price",
+      "Marginal revenue equals price in all submarkets"
+    ] },
+  { id: 10, framework: "Externalities",
+    trigger: "A government considers subsidising childhood vaccination",
+    steps: [
+      "Vaccination generates external benefits (herd immunity)",
+      "Marginal social benefit exceeds marginal private benefit",
+      "The market underconsumes at the private equilibrium",
+      "A subsidy lowers the effective price for consumers",
+      "Quantity demanded rises toward the social optimum",
+      "Welfare rises as the external benefit is internalised"
+    ],
+    imposters: [
+      "A tax would be more appropriate for a positive externality",
+      "Private benefits already exceed social benefits"
+    ] },
+  { id: 11, framework: "Contestability",
+    trigger: "A digital platform with strong network effects dominates its market",
+    steps: [
+      "High fixed and sunk costs make entry risky",
+      "Network effects reinforce the incumbent's advantage",
+      "Economies of scale lower the incumbent's average costs",
+      "Potential entrants face an uphill battle to gain users",
+      "Supernormal profits persist despite theoretically free entry",
+      "Market power endures even without formal legal barriers"
+    ],
+    imposters: [
+      "Consumers switch rapidly between competing platforms",
+      "Low barriers lead to hit-and-run entry in the long run"
+    ] },
+  { id: 12, framework: "Labour Market",
+    trigger: "The introduction of AI translation software affects the market for human translators",
+    steps: [
+      "Capital substitutes for labour in routine translation tasks",
+      "The marginal revenue product of translators falls",
+      "Labour demand shifts leftward",
+      "Equilibrium wages and employment decline in the short run",
+      "Skill-biased adjustment favours specialised translators over time",
+      "Long-run adjustment depends on retraining and occupational mobility"
+    ],
+    imposters: [
+      "Labour supply becomes perfectly elastic in the long run",
+      "MRP rises as technology replaces workers"
+    ] },
+  { id: 13, framework: "Business Pressure",
+    trigger: "A chain of high-street retailers expands rapidly across the country",
+    steps: [
+      "Output expands and the firm moves down its LRAC curve",
+      "Internal economies of scale lower average costs",
+      "Lower unit costs allow competitive pricing or higher margins",
+      "Beyond the minimum efficient scale, coordination becomes harder",
+      "Diseconomies of scale emerge and average costs rise",
+      "Competitive position weakens at very large scale"
+    ],
+    imposters: [
+      "Marginal cost is constant at all levels of output",
+      "LRAC rises monotonically from the first unit of output"
+    ] },
+  { id: 14, framework: "Behavioural Issues",
+    trigger: "Government introduces auto-enrolment into workplace pensions",
+    steps: [
+      "Workers exhibit present bias and under-save for retirement",
+      "Default settings strongly influence behaviour",
+      "Auto-enrolment changes the default to participation",
+      "Participation rates rise substantially without coercion",
+      "Long-run saving and welfare improve",
+      "Consumer sovereignty is preserved as opting out remains possible"
+    ],
+    imposters: [
+      "Consumers respond rationally to tax incentives alone",
+      "Information campaigns are always more effective than nudges"
+    ] },
+  { id: 15, framework: "Government Intervention",
+    trigger: "A minimum wage is introduced in a competitive labour market",
+    steps: [
+      "The wage floor is set above the market equilibrium",
+      "Quantity of labour supplied rises; quantity demanded falls",
+      "Excess supply of labour creates unemployment",
+      "Those still employed receive higher incomes",
+      "Net welfare effect depends on elasticity of labour demand",
+      "In a monopsony market the employment effect may be reversed"
+    ],
+    imposters: [
+      "The supply of labour falls as wages rise",
+      "A maximum wage set above equilibrium causes shortages"
+    ] }
+];
+
+
+// ── MACHINE 3: DIAGRAM SPRINT ──────────────────────────────
+// Each diagram has: prompt (what to draw), key labels students must include,
+// and an explanation of what the diagram shows.
+var DIAGRAMS = [{ id: 1, framework: "Market Power",
+    title: "Monopoly: Deadweight Loss",
+    prompt: "Draw a standard monopoly diagram showing the firm's profit-maximising choice and the resulting welfare loss compared to a competitive outcome.",
+    labels: ["AR (=D)", "MR", "AC", "MC", "Profit-max quantity (Q₁)", "Profit-max price (P₁)", "Allocative loss triangle (DWL)", "Supernormal profit area"],
+    explain: "The monopolist sets MR = MC to maximise profit, producing Q₁ and charging P₁. Because P > MC at this output, there is allocative inefficiency. The deadweight loss triangle shows the welfare sacrificed relative to the competitive output where P = MC. Supernormal profit is shown as the rectangle between AR and AC at Q₁.",
+    examTip: "Always show the DWL triangle explicitly and state P > MC in your analysis." },
+  { id: 2, framework: "Externalities",
+    title: "Negative Production Externality",
+    prompt: "Draw the classic diagram for a market where production generates external costs (e.g. pollution). Show the welfare loss from overproduction.",
+    labels: ["MPC (= private supply)", "MSC", "MPB = MSB (demand)", "Free market quantity (Qf)", "Social optimum (Qs)", "Deadweight welfare loss triangle"],
+    explain: "MPC lies below MSC because firms ignore pollution costs. The market equilibrium is where MPC = MPB, giving overproduction at Qf. The social optimum is at Qs where MSC = MSB. The triangle between MPC and MSC from Qs to Qf represents the deadweight welfare loss.",
+    examTip: "Clearly shade the welfare loss triangle and note that the size of the triangle is what a Pigouvian tax aims to eliminate." },
+  { id: 3, framework: "Externalities",
+    title: "Positive Consumption Externality",
+    prompt: "Draw the diagram for a good where consumption generates external benefits (e.g. vaccination). Show underconsumption and the resulting welfare loss.",
+    labels: ["MPC = MSC (supply)", "MPB", "MSB", "Free market quantity (Qf)", "Social optimum (Qs)", "Deadweight welfare loss triangle"],
+    explain: "MPB lies below MSB because consumers ignore external benefits (e.g. herd immunity). The market underconsumes at Qf; the social optimum is Qs where MSB = MSC. The welfare loss triangle sits between MPB and MSB from Qf to Qs.",
+    examTip: "A subsidy equal to the external benefit would shift MPB up to MSB and reach the social optimum." },
+  { id: 4, framework: "Labour Market",
+    title: "Monopsony Labour Market",
+    prompt: "Draw a monopsony labour market diagram showing wage suppression and reduced employment compared to a competitive outcome.",
+    labels: ["Supply of labour (S = ACL)", "MCL (above S)", "D = MRPL", "Monopsony wage (Wm)", "Monopsony employment (Qm)", "Competitive wage (Wc)", "Competitive employment (Qc)"],
+    explain: "A monopsony employer faces the upward-sloping labour supply curve but its marginal cost of labour (MCL) lies above it, because hiring one more worker raises the wage for all workers. The firm hires where MCL = MRPL, giving quantity Qm, and pays the wage on the supply curve at that quantity (Wm). Both wage and employment are below the competitive levels.",
+    examTip: "Crucially, show MCL as a separate, steeper line above the supply curve." },
+  { id: 5, framework: "Government Intervention",
+    title: "Minimum Wage in a Competitive Market",
+    prompt: "Draw a competitive labour market with a minimum wage set above equilibrium. Show the resulting unemployment.",
+    labels: ["Supply of labour", "Demand for labour (MRPL)", "Equilibrium wage (We)", "Minimum wage (Wmin)", "Labour demanded at Wmin (QD)", "Labour supplied at Wmin (QS)", "Excess supply (unemployment)"],
+    explain: "At Wmin > We, more workers want to supply labour (QS) than firms wish to hire (QD). The gap QS – QD is involuntary unemployment. Those who remain employed earn a higher wage, but employment is below the pre-intervention level in a competitive market.",
+    examTip: "Pair this with a monopsony diagram showing the opposite result for a powerful evaluation." },
+  { id: 6, framework: "Government Intervention",
+    title: "Minimum Wage in a Monopsony Market",
+    prompt: "Draw a monopsony labour market with a minimum wage set between Wm and MRPL. Show why both wage AND employment can rise.",
+    labels: ["S = ACL", "MCL", "D = MRPL", "Monopsony wage (Wm)", "Minimum wage (Wmin)", "Employment rises from Qm to Q'"],
+    explain: "When a minimum wage is set above the monopsony wage but below the MRPL, the MCL becomes flat at Wmin up to the supply curve. The firm now hires where Wmin meets MRPL, which is at a higher level than before. Wages rise AND employment rises — the opposite of the competitive case.",
+    examTip: "This is the key counter-intuitive result. Always pair it with the competitive market case for top-band evaluation." },
+  { id: 7, framework: "Market Power",
+    title: "Price Discrimination (Second Degree)",
+    prompt: "Draw a diagram showing a firm charging different prices to different blocks of consumers, capturing additional consumer surplus.",
+    labels: ["AR (=D)", "MR", "MC", "First price (P₁)", "Second price (P₂)", "Third price (P₃)", "Extra consumer surplus captured"],
+    explain: "By charging progressively lower prices to successive blocks of consumers, the firm captures consumer surplus that would otherwise be lost. Total output typically rises above the single-price monopoly output, and deadweight loss may fall — though equity concerns rise because some consumers now pay more.",
+    examTip: "Distinguish second-degree (by quantity) from third-degree (by group) in your written analysis." },
+  { id: 8, framework: "Business Pressure",
+    title: "LRAC: Economies and Diseconomies of Scale",
+    prompt: "Draw a long-run average cost curve showing economies, minimum efficient scale, and diseconomies of scale.",
+    labels: ["LRAC", "Output", "Cost", "Economies of scale region", "Minimum efficient scale (MES)", "Diseconomies of scale region"],
+    explain: "As output rises, LRAC falls initially due to internal economies (bulk buying, specialisation, technical gains). At the minimum efficient scale the curve is at its lowest point. Beyond this, coordination and managerial costs cause diseconomies — LRAC rises again.",
+    examTip: "Identifying where a firm sits on this curve is essential for judging whether mergers or expansion will reduce average costs." },
+  { id: 9, framework: "Business Pressure",
+    title: "Shutdown Point",
+    prompt: "Draw a short-run cost diagram showing AVC and AC, and illustrate the shutdown decision when price falls below AVC.",
+    labels: ["MC", "AC", "AVC", "Price level A (P > AVC)", "Price level B (P < AVC)", "Shutdown point"],
+    explain: "A firm continues operating in the short run as long as price covers AVC — at price A, revenue covers variable costs and contributes to fixed costs. If price falls below AVC (price B), the firm cannot even cover its variable costs and should shut down in the short run.",
+    examTip: "Emphasise this is a short-run decision; in the long run firms exit if P < AC." },
+  { id: 10, framework: "Contestability",
+    title: "Contestable Market: Limit Pricing",
+    prompt: "Draw a diagram showing a firm in a contestable market keeping prices at average cost to deter entry, rather than profit-maximising.",
+    labels: ["MC", "AC", "AR (=D)", "MR", "Profit-max price would be higher", "Limit price (P ≈ AC)", "Limit quantity (higher than profit-max)"],
+    explain: "In a highly contestable market, the threat of hit-and-run entry disciplines incumbents. Rather than setting MR = MC for maximum profit, the firm sets price close to AC — earning normal profit only. Output is higher and prices are lower than in a standard monopoly.",
+    examTip: "Contestability matters more than firm numbers — even a single firm can behave competitively if entry is easy." },
+  { id: 11, framework: "Efficiency & Welfare",
+    title: "Natural Monopoly",
+    prompt: "Draw a natural monopoly diagram showing the firm's AC curve falling continuously, and the trade-off between MC pricing and AC pricing.",
+    labels: ["AR (=D)", "MR", "MC (below AC)", "AC (falling)", "MC pricing point (requires subsidy)", "AC pricing point (P > MC)"],
+    explain: "When fixed costs dominate, AC falls continuously and lies above MC throughout. Pricing at MC achieves allocative efficiency but generates a loss (P < AC) requiring subsidy. Pricing at AC covers costs but sacrifices allocative efficiency (P > MC).",
+    examTip: "Classic regulated industry question — explain the cost-efficiency vs allocative-efficiency trade-off explicitly." },
+  { id: 12, framework: "Government Intervention",
+    title: "Indirect Tax Correcting a Negative Externality",
+    prompt: "Draw a market with a negative production externality, and show how a specific tax shifts supply to reach the social optimum.",
+    labels: ["MPC (original supply)", "MPC + tax (new supply)", "MSC", "Demand", "Original market quantity (Qf)", "Post-tax quantity (Qs)", "Tax revenue rectangle"],
+    explain: "A tax equal to the marginal external cost shifts the supply curve from MPC up to MPC + tax, which coincides with MSC. The new equilibrium is at the social optimum Qs. Price rises, quantity falls, the externality is internalised and welfare loss is eliminated.",
+    examTip: "Size the tax so MPC + tax = MSC — this is the textbook Pigouvian solution." },
+  { id: 13, framework: "Government Intervention",
+    title: "Subsidy Correcting a Positive Externality",
+    prompt: "Draw a market with a positive consumption externality, and show how a subsidy shifts demand (or effectively lowers price) to reach the social optimum.",
+    labels: ["Supply", "MPB (original demand)", "MSB", "Original quantity (Qf)", "Post-subsidy quantity (Qs)", "Subsidy cost rectangle"],
+    explain: "A per-unit subsidy equal to the marginal external benefit effectively raises the price producers receive while lowering the price consumers pay. Output expands from Qf to Qs, reaching the social optimum. The rectangle shows the fiscal cost to government.",
+    examTip: "A per-unit subsidy can be shown as either a rightward shift in supply or an upward shift in demand — pick one and be consistent." },
+  { id: 14, framework: "Behavioural Issues",
+    title: "Behavioural Failure: Underconsumption Despite Private Benefit",
+    prompt: "Draw a diagram showing behavioural failure where consumers underconsume a good despite its benefits exceeding its costs (e.g. pension saving, exercise).",
+    labels: ["Supply (MPC)", "Perceived demand (D_actual)", "Rational demand (D_rational)", "Actual quantity (Q_actual)", "Welfare-maximising quantity (Q_rational)", "Welfare loss from behavioural failure"],
+    explain: "Bounded rationality, present bias or inertia cause consumers to systematically underestimate benefits or overweight present costs. The actual demand curve lies below the rational one, producing underconsumption relative to what would maximise the consumer's own long-run welfare.",
+    examTip: "Nudges (defaults, framing) can shift D_actual toward D_rational without restricting choice." },
+  { id: 16, framework: "Externalities",
+    title: "Public Goods and the Free-Rider Problem",
+    prompt: "Draw a 2×2 matrix classifying goods by excludability and rivalry, and locate a public good, private good, common good and club good.",
+    labels: ["Excludable", "Non-excludable", "Rivalrous", "Non-rivalrous", "Private goods", "Club goods", "Common goods", "Public goods"],
+    explain: "Public goods (non-excludable, non-rivalrous) suffer the free-rider problem — individuals can benefit without paying, so private markets cannot charge and underprovide. Common goods (non-excludable, rivalrous) suffer tragedy-of-the-commons depletion.",
+    examTip: "This matrix is the most efficient way to justify government provision of defence, streetlights, open-access databases etc." },
+  { id: 18, framework: "Behavioural Issues",
+    title: "Kinked Demand from Switching Costs",
+    prompt: "Draw a kinked demand curve showing how switching costs make demand inelastic at small price changes but elastic at larger ones.",
+    labels: ["P₀ (current price)", "Inelastic region (small price changes)", "Elastic region (large price changes)", "Switching threshold point"],
+    explain: "Within a 'comfort zone' around the current price, switching costs exceed savings and consumers stay put (inelastic demand). Once the price gap exceeds the hassle cost of switching, consumers leave en masse (elastic demand). Demand is kinked at the switching threshold.",
+    examTip: "This explains why small price rises often produce minimal exit but large ones trigger rapid defection." },
+  { id: 19, framework: "Labour Market",
+    title: "Wage Determination: Skilled vs Unskilled",
+    prompt: "Draw two labour market diagrams (skilled and unskilled) side by side, showing why wages differ and how inelastic skilled supply drives wage differentials.",
+    labels: ["S (skilled) — inelastic", "S (unskilled) — more elastic", "D = MRPL (skilled) — higher", "D = MRPL (unskilled) — lower", "Skilled wage (Ws)", "Unskilled wage (Wu)"],
+    explain: "Skilled labour has a steeper (more inelastic) supply curve because training takes time. Its MRPL is higher due to greater productivity. The equilibrium wage for skilled labour is much higher than for unskilled labour, widening the wage differential.",
+    examTip: "Wage differentials reflect productivity and supply elasticity; market power and labour immobility can amplify them." },
+  { id: 20, framework: "Government Intervention",
+    title: "Regulation: Output Limit (e.g. Emissions Cap)",
+    prompt: "Draw a negative externality diagram where a regulatory cap (rather than a tax) restricts output to the socially optimal level.",
+    labels: ["MPC", "MSC", "Demand = MSB", "Free market quantity (Qf)", "Regulated quantity cap (Qs)", "Price to consumers at Qs"],
+    explain: "Rather than using price to correct the externality, the regulator directly limits quantity to Qs — the socially optimal level. Price paid by consumers rises to the demand curve at Qs. The welfare loss triangle is eliminated without requiring accurate estimation of the marginal external cost.",
+    examTip: "Compare to a tax: regulation is simpler but less flexible; taxes allow firms to vary output based on marginal abatement costs." }
+];
+
+
+// ══════════════════════════════════════════════════════════════
+//  DIAGRAM IMAGE LIBRARY (base64 JPEGs)
+// ══════════════════════════════════════════════════════════════
+var DIAGRAM_IMGS = {};
+DIAGRAM_IMGS[1] = "";
+DIAGRAM_IMGS[2] = "";
+DIAGRAM_IMGS[3] = "";
+DIAGRAM_IMGS[4] = "";
+DIAGRAM_IMGS[5] = "";
+DIAGRAM_IMGS[6] = "";
+DIAGRAM_IMGS[7] = "";
+DIAGRAM_IMGS[8] = "";
+DIAGRAM_IMGS[9] = "";
+DIAGRAM_IMGS[10] = "";
+DIAGRAM_IMGS[11] = "";
+DIAGRAM_IMGS[12] = "";
+DIAGRAM_IMGS[13] = "";
+DIAGRAM_IMGS[14] = "";
+DIAGRAM_IMGS[16] = "";
+DIAGRAM_IMGS[18] = "";
+DIAGRAM_IMGS[19] = "";
+DIAGRAM_IMGS[20] = "";
+
+
+// ── MACHINE 4: WRONG BUT CONVINCING ───────────────────────
+// Each item: a question, three short answer extracts (~2-3 sentences each),
+// labels showing which is strong and what flaw each wrong one contains.
+// Flaw types: "absolute", "ignores elasticity", "wrong time horizon",
+// "confuses concepts", "unconditional assertion", "stops at analysis",
+// "ignores market structure", "correlation not causation"
+var TRIADS = [
+  { id: 1, framework: "Market Power",
+    question: "Evaluate whether a merger between two supermarkets will harm consumers.",
+    answers: [
+      { text: "The merger will definitely harm consumers. Fewer firms means higher prices and less choice. Market concentration always leads to worse outcomes for buyers and the merger should be blocked by regulators.",
+        verdict: "flawed", flaw: "Unconditional assertion",
+        why: "Uses \u2018always\u2019 and \u2018definitely\u2019 \u2014 neither is justified. Scale economies may reduce costs; a contestable market may discipline the merged firm. Top answers condition their conclusions." },
+      { text: "Whether consumers are harmed depends on contestability. If entry remains easy, scale economies may lower prices. If barriers are high and the market weakly contestable, the merged firm can raise prices with little competitive discipline.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it identifies contestability as the decisive variable, shows both outcomes are possible, and links economic mechanism to welfare. Conditional reasoning throughout." },
+      { text: "The merger will benefit everyone since bigger firms pass cost savings to consumers. Economies of scale always reduce prices and improve efficiency, so regulators should approve all mergers that create larger organisations.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Assumes scale savings are always passed on, which ignores that weakly contestable markets allow firms to pocket savings as profit. \u2018Always\u2019 is never defensible in evaluation." }
+    ] },
+  { id: 2, framework: "Externalities",
+    question: "Evaluate the use of a sugar tax to reduce childhood obesity.",
+    answers: [
+      { text: "Effectiveness depends on price elasticity of demand. Evidence from the UK sugar tax suggests producers reformulated products, but where demand is inelastic, consumption falls little and the tax mainly raises revenue that can fund other interventions.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies PED directly, acknowledges supply-side responses like reformulation, and offers a nuanced evaluation \u2014 the tax may work via a different channel than expected." },
+      { text: "A sugar tax will definitely reduce obesity because raising the price of sugary drinks cuts consumption through basic demand theory. Since price rises, quantity falls \u2014 this is a straightforward and effective policy tool.",
+        verdict: "flawed", flaw: "Ignores elasticity",
+        why: "Assumes demand falls significantly without considering elasticity. If demand for sugary drinks is inelastic due to habit or addiction, the price rise has little effect on consumption." },
+      { text: "A sugar tax is wrong because consumers should be free to choose what they eat and drink. Government has no business taxing food choices, and the tax is regressive, hitting poorer households harder than richer ones.",
+        verdict: "flawed", flaw: "Ignores externalities",
+        why: "Sidesteps the economics entirely. Obesity generates external costs that private choices ignore \u2014 that is the whole rationale for intervention. Freedom of choice doesn\u2019t address the market failure." }
+    ] },
+  { id: 3, framework: "Labour Market",
+    question: "Assess the likely impact of a rise in the National Living Wage on employment.",
+    answers: [
+      { text: "A rise in the NLW will reduce employment. When wages are forced above equilibrium, firms hire fewer workers and excess labour supply creates unemployment, as shown by the competitive labour market diagram.",
+        verdict: "flawed", flaw: "Ignores market structure",
+        why: "Only applies to competitive markets. In monopsony \u2014 common in low-skill sectors \u2014 a wage floor can raise both wages and employment up to the MRPL. Top answers always consider both cases." },
+      { text: "The effect depends on market structure. Competitive markets see unemployment when wages exceed equilibrium, but monopsony markets may see higher employment and wages together. UK evidence shows small employment effects, suggesting monopsony is widespread.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it distinguishes competitive and monopsony outcomes, anchors reasoning in MRPL, and uses real-world evidence. This is the structure examiners reward at the top band." },
+      { text: "The NLW will help workers who keep their jobs by boosting spending power and aggregate demand through a multiplier effect. Higher incomes will stimulate the wider economy, creating new jobs to offset any initial employment losses.",
+        verdict: "flawed", flaw: "Confuses concepts",
+        why: "Drifts into macroeconomics when the question asks about microeconomic employment effects. The multiplier is not a valid substitute for analysing labour demand elasticity." }
+    ] },
+  { id: 4, framework: "Contestability",
+    question: "To what extent does potential competition constrain firm behaviour in the UK banking market?",
+    answers: [
+      { text: "UK banks earn persistent supernormal profits and market shares have barely shifted in a decade. Regulatory compliance, capital requirements, and customer inertia are substantial barriers. Potential competition therefore exerts only a limited constraint on incumbents.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it cites concrete evidence of low contestability (persistent profits, stable shares), identifies specific barriers, and draws a measured conditional conclusion." },
+      { text: "The UK banking market is very competitive because there are several large banks and consumers can freely choose between them. Potential competition is strong as there is nothing stopping new banks from entering the market.",
+        verdict: "flawed", flaw: "Confuses concepts",
+        why: "Conflates actual competition between existing firms with contestability (threat of new entry). Barriers like regulatory compliance, brand trust, and switching costs make entry economically hard despite it being legally possible." },
+      { text: "The market is completely uncontestable because banks never face any new competition. Challenger banks have totally failed to enter and the incumbents face absolutely no competitive threat from potential new entrants whatsoever.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Overstates the case. Challenger banks (Monzo, Starling, Revolut) have entered but captured limited share \u2014 so the market is weakly contestable, not entirely uncontestable. \u2018Completely\u2019 and \u2018absolutely\u2019 are red flags." }
+    ] },
+  { id: 5, framework: "Behavioural Issues",
+    question: "Evaluate the effectiveness of nudges in reducing consumption of harmful goods.",
+    answers: [
+      { text: "Nudges are more effective than regulation because they respect consumer choice and have proven results. Auto-enrolment clearly shows they work across all contexts, so nudges should always replace traditional taxes and regulations as a superior policy.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Generalises from one success to all contexts. Nudges work well for one-off decisions exploiting inertia, but for addictive or habitual consumption, sustained price signals from taxes are typically more effective." },
+      { text: "Effectiveness depends on the type of bias being targeted. Nudges work well for one-off choices exploiting inertia \u2014 auto-enrolment is a strong example. For addictive or repeated consumption, taxes change ongoing incentives more effectively than default-setting nudges.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it matches the instrument to the specific bias type, distinguishes one-off from repeated decisions, and avoids claiming any single tool is universally superior." },
+      { text: "Nudges simply do not work because people always ignore them. Only regulation backed by legal penalties can reliably change behaviour, since humans are fundamentally resistant to indirect suggestion and always pursue their own immediate interests.",
+        verdict: "flawed", flaw: "Unconditional assertion",
+        why: "Contradicts strong empirical evidence on nudges. Auto-enrolment, calorie labelling, and organ donation defaults all show measurable effects. Using \u2018always\u2019 twice makes this answer indefensible." }
+    ] },
+  { id: 6, framework: "Government Intervention",
+    question: "Evaluate the likely effects of a subsidy for electric vehicles.",
+    answers: [
+      { text: "The subsidy will straightforwardly increase EV sales, helping the environment and reducing emissions. This is a clear case of government correcting a positive externality, and the policy will unambiguously improve social welfare for all consumers.",
+        verdict: "flawed", flaw: "Ignores additionality",
+        why: "Ignores how many buyers would have purchased without the subsidy (deadweight cost), and misses equity concerns \u2014 EV subsidies have historically benefited higher-income households most." },
+      { text: "A subsidy cannot be justified because it costs taxpayers money. Public funds spent on EV subsidies could be better used elsewhere, and government should not be picking winners in the car market through distortionary spending.",
+        verdict: "flawed", flaw: "Ignores externalities",
+        why: "Opportunity cost matters but the entire justification for the subsidy \u2014 internalising the positive externality from reduced emissions \u2014 is bypassed. All interventions have costs; the question is whether benefits exceed them." },
+      { text: "Whether welfare rises depends on the size of the external benefit and PED. If many buyers would have purchased anyway, the subsidy has high deadweight cost. Equity concerns also matter as EV subsidies tend to favour higher-income buyers.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies the externality framework, introduces additionality as a test of cost-effectiveness, and raises equity \u2014 all standard A-grade evaluation moves for Paper 1." }
+    ] },
+  { id: 7, framework: "Business Pressure",
+    question: "Assess whether rising energy costs will cause a large proportion of UK restaurants to close.",
+    answers: [
+      { text: "Restaurants will close because their costs have risen significantly and they simply cannot remain profitable. With margins already thin across the hospitality sector, the extra burden of energy bills will push many businesses past the point of viability.",
+        verdict: "flawed", flaw: "Unconditional assertion",
+        why: "Describes a plausible outcome without applying the economic framework. Doesn\u2019t distinguish P\u003CAVC (short-run shutdown) from P\u003CAC (long-run exit), or consider how pricing power varies by restaurant type." },
+      { text: "Whether restaurants close depends on whether price falls below AVC in the short run. Those with pricing power through strong brand or location can pass on costs to customers. Price-elastic, competitive segments face more closures as they cannot raise prices without losing sales.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies the shutdown framework explicitly, separates short from long run, and links survival to market position and demand elasticity." },
+      { text: "Restaurants will simply raise their prices to cover the higher energy bills and continue trading normally. Consumers enjoy eating out and will always pay more, so restaurants have nothing to worry about from rising input costs.",
+        verdict: "flawed", flaw: "Ignores elasticity",
+        why: "Assumes full cost pass-through without considering that elastic demand means higher prices cost sales. Competitive restaurants are price-takers and cannot unilaterally raise prices without losing customers." }
+    ] },
+  { id: 8, framework: "Efficiency & Welfare",
+    question: "Evaluate whether price discrimination by airlines improves welfare.",
+    answers: [
+      { text: "Price discrimination is simply unfair because some passengers pay far more than others for identical journeys. This redistribution from consumers to producers is harmful and exploitative, regardless of any claimed efficiency benefits.",
+        verdict: "flawed", flaw: "Confuses concepts",
+        why: "Conflates fairness with welfare. Economic welfare measures total surplus, not its distribution. Price discrimination can raise total output \u2014 serving passengers who would otherwise be priced out \u2014 increasing total welfare even if it feels inequitable." },
+      { text: "Whether welfare rises depends on output. Price discrimination transfers consumer surplus to producers, but if it enables previously priced-out passengers to fly, deadweight loss falls and total welfare may rise. The equity concern remains even if efficiency improves.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it separates efficiency from equity, identifies output expansion as the key welfare test, and acknowledges the distributional concern without letting it crowd out the economic analysis." },
+      { text: "Airlines benefit from price discrimination because it raises their revenue and profits significantly. These higher profits fund investment in new routes and better aircraft, ultimately benefiting consumers through improved services and network expansion.",
+        verdict: "flawed", flaw: "Correlation not causation",
+        why: "Assumes higher profits are invested in consumer-benefiting improvements without evidence. The question asks about welfare effects, not firm strategy. Profit reinvestment is speculative and doesn\u2019t address the welfare analysis." }
+    ] },
+  { id: 9, framework: "Labour Market",
+    question: "Assess the likely impact of automation on wage inequality.",
+    answers: [
+      { text: "Automation will reduce inequality because machines take over the unpleasant, difficult jobs while workers move to better, higher-paid roles. Everyone benefits from rising productivity, and wages will converge as the economy adapts to the new technology.",
+        verdict: "flawed", flaw: "Confuses concepts",
+        why: "Misunderstands the mechanism. Automation substitutes for routine labour, reducing MRP for those workers. It doesn\u2019t improve conditions for displaced workers \u2014 it typically eliminates their roles, widening wage gaps in the short run." },
+      { text: "Automation will definitely cause mass unemployment across all sectors as machines replace workers everywhere. Entire job categories will disappear permanently, wages will collapse, and inequality will become so extreme that social stability will be threatened.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Historically, automation has shifted the composition of employment rather than producing mass unemployment. Also drifts from the question (inequality) into unemployment. ‘Definitely’ and ‘everywhere’ are indefensible." },
+      { text: "Automation typically widens inequality in the short run by substituting for routine tasks while complementing high-skill work. Skill-biased technical change raises MRP for some and lowers it for others. Long-run effects depend on retraining speed and whether new roles emerge at scale.",
+        verdict: "strong", flaw: null,
+        why: "Historically, automation has shifted the composition of employment rather than producing mass unemployment. Also drifts from the question (inequality) into unemployment. \u2018Definitely\u2019 and \u2018everywhere\u2019 are indefensible." }
+    ] },
+  { id: 10, framework: "Contestability",
+    question: "Discuss whether digital platforms with strong network effects can ever be considered contestable.",
+    answers: [
+      { text: "Digital platforms are highly contestable because anyone with coding skills can build a competing service. Low technical barriers mean new firms can enter at minimal cost and compete with incumbents, keeping prices low and behaviour disciplined by the constant threat of entry.",
+        verdict: "flawed", flaw: "Confuses concepts",
+        why: "Conflates technical ease of building a product with economic contestability. Network effects mean users flock to whoever has the most users already \u2014 a new entrant cannot easily match the incumbent\u2019s value proposition, regardless of build cost." },
+      { text: "Platforms with strong network effects have very limited contestability. Although legal entry barriers may be low, network economies and high sunk costs create powerful economic barriers. Even well-funded challengers struggle to reach critical mass against incumbents with established user bases.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it distinguishes legal from economic barriers, explains the network-effect mechanism that prevents entry, and reaches a measured conclusion supported by the theory." },
+      { text: "Digital platforms are simply monopolies and are therefore completely uncontestable. Because they have such large user bases and brand recognition, no new competitor could ever enter these markets and they should all be nationalised or broken up immediately.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Uses \u2018completely\u2019 and \u2018ever\u2019 without justification. Some platform markets do see successful entry over time (TikTok disrupted Facebook among younger users). The policy conclusion doesn\u2019t follow from the contestability analysis." }
+    ] },
+  { id: 11, framework: "Market Power",
+    question: "Evaluate whether supernormal profits in the pharmaceutical industry are economically justified.",
+    answers: [
+      { text: "Supernormal profits are necessary because they fund R&D for new drugs. Without the prospect of high returns, firms would not invest billions in risky research. Patents protect these profits deliberately, and the system has produced major medical breakthroughs.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Correctly identifies the R&D rationale but overstates it. Evidence varies on how much profit is actually reinvested versus returned to shareholders. Strategic patent extension is common. The answer doesn\u2019t acknowledge the allocative inefficiency cost." },
+      { text: "The justification depends on whether dynamic gains outweigh static losses. Patents enable supernormal profits to fund R&D, generating major innovations. But post-patent generic competition should erode profits \u2014 persistent profits may indicate strategic behaviour rather than genuine innovation.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies the dynamic vs static efficiency trade-off, uses patent expiry as an empirical test, and avoids unconditional endorsement or dismissal of high profits." },
+      { text: "Supernormal profits are always bad because they prove firms are exploiting market power at the expense of consumers. Pharmaceutical companies should be forced to lower drug prices immediately, and their patents should be abolished to promote competition and access.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Ignores the R&D incentive entirely. Removing all patents would likely devastate pharmaceutical innovation. \u2018Always bad\u2019 and \u2018immediately\u2019 are indefensible given the trade-off between static and dynamic efficiency." }
+    ] },
+  { id: 12, framework: "Government Intervention",
+    question: "Assess the effectiveness of carbon taxes in reducing emissions.",
+    answers: [
+      { text: "Effectiveness depends on PED and long-run adjustment. Inelastic short-run demand limits behaviour change but raises revenue for green investment. Carbon leakage is a genuine risk if other countries do not follow suit, reducing the global environmental benefit.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies PED to both effectiveness and revenue, acknowledges the long-run vs short-run distinction, and introduces carbon leakage as a real-world limitation not captured by simple diagrams." },
+      { text: "Carbon taxes fully solve the emissions problem by raising the cost of pollution. Once the price signal is in place, firms and consumers will automatically switch to cleaner alternatives, and emissions will fall to the socially optimal level without any further government action.",
+        verdict: "flawed", flaw: "Ignores elasticity",
+        why: "Ignores that demand for many carbon-intensive goods is inelastic in the short run (petrol, heating). A tax raises revenue without greatly changing behaviour until long-run capital adjustment (EVs, insulation) makes substitution possible." },
+      { text: "Carbon taxes are deeply unfair and therefore should not be used. They hit the poorest hardest since low-income households spend a larger share of income on energy and fuel, making this a regressive policy that increases inequality rather than solving climate change.",
+        verdict: "flawed", flaw: "Confuses concepts",
+        why: "Distributional concerns are legitimate but don\u2019t determine whether the tax reduces emissions \u2014 which is what the question asks. Revenue recycling (dividend payments, energy bill rebates) can address the equity issue without abandoning the policy." }
+    ] },
+  { id: 13, framework: "Externalities",
+    question: "Evaluate the case for government provision of flood defences.",
+    answers: [
+      { text: "The government must provide flood defences because it is an essential public service that protects lives and property. Private firms will never provide enough because it is too expensive, so the state must step in and fund it fully through general taxation.",
+        verdict: "flawed", flaw: "Stops at analysis",
+        why: "Doesn\u2019t apply any economic framework. \u2018Essential service\u2019 and \u2018too expensive\u2019 are assertions, not reasoning. The public goods analysis \u2014 non-excludability creating a free-rider problem \u2014 is the explanation examiners expect." },
+      { text: "Flood defences are largely non-excludable and non-rivalrous, creating a classic free-rider problem. Private markets underprovide because firms cannot charge those who benefit. Government provision is justified, though efficient provision still requires accurate cost-benefit estimation.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies the public goods framework correctly, identifies the free-rider mechanism as the cause of market failure, and acknowledges that public provision still requires efficient design." },
+      { text: "Private markets should provide flood defences since they are more efficient than government. Competition between private firms would lower costs and improve quality. Government provision always leads to waste, inefficiency, and higher costs for taxpayers.",
+        verdict: "flawed", flaw: "Ignores market failure",
+        why: "Ignores the specific reason private provision fails: non-excludability means no firm can charge free-riders, making profitable private provision impossible regardless of efficiency. \u2018Always\u2019 leads to waste is also indefensible." }
+    ] },
+  { id: 14, framework: "Behavioural Issues",
+    question: "Discuss why many consumers overpay for their mobile phone contracts.",
+    answers: [
+      { text: "Consumers overpay because mobile companies are monopolies that set unfairly high prices. Only nationalisation or heavy-handed price controls will solve this problem, since the market is too concentrated to self-correct through normal competitive forces.",
+        verdict: "flawed", flaw: "Wrong framework",
+        why: "The UK mobile market has multiple competing firms. The real issue is behavioural \u2014 switching costs and information gaps \u2014 not structural monopoly. The proposed remedy doesn\u2019t match the actual market failure." },
+      { text: "Consumers simply lack basic financial literacy. If people were better educated about comparing tariffs, they would switch to cheaper providers and the problem would disappear. Schools should teach contract comparison as a life skill.",
+        verdict: "flawed", flaw: "Confuses concepts",
+        why: "Attributes the problem to individual deficiency rather than market design. Information asymmetries and switching costs are structural features that affect even financially literate consumers. This misses the behavioural economics framework entirely." },
+      { text: "Switching involves hassle and uncertainty that consumers systematically overweight. Complex tariffs create information gaps making comparison difficult. Inertia and default bias together produce low PED, allowing firms to sustain prices above competitive levels.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it identifies the specific behavioural mechanisms (switching costs, complexity, inertia), connects them to low PED, and explains why firms can sustain high margins despite multiple competitors existing." }
+    ] },
+  { id: 15, framework: "Market Power",
+    question: "Evaluate the view that oligopolistic markets always produce inefficient outcomes.",
+    answers: [
+      { text: "Oligopolies always produce bad outcomes because firms collude and charge monopoly prices. Consumers always suffer from higher prices, reduced choice, and deliberate restrictions on output whenever a market is dominated by a small number of large firms.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Uses \u2018always\u2019 twice without justification. Non-collusive oligopoly with strong non-price competition (technology, product quality) can deliver dynamic efficiency. Contestability often matters more than firm numbers." },
+      { text: "Outcomes depend on contestability, rivalry type, and whether firms collude. Collusive oligopolies produce monopoly-like inefficiency, but highly contestable oligopolies with strong non-price rivalry (aviation, tech) can generate competitive outcomes and significant dynamic efficiency gains.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it directly challenges the \u2018always\u2019 claim with conditions, identifies the decisive variables (contestability and rivalry type), and uses concrete sectors as illustrations." },
+      { text: "Oligopolies are efficient because large firms generate economies of scale and fund R&D investment. The few dominant firms in most sectors have delivered technological progress, lower unit costs, and better products, proving that concentrated markets consistently outperform competitive ones.",
+        verdict: "flawed", flaw: "Correlation not causation",
+        why: "Conflates size with efficiency and assumes innovation in concentrated sectors is caused by concentration rather than other factors. Dominant firms may also sustain high prices using barriers \u2014 the answer ignores allocative inefficiency entirely." }
+    ] }
+];
+
+var FLAW_DESCRIPTIONS = {
+  "Unconditional assertion": "States a conclusion without specifying the conditions that make it true. Top-band answers always condition on elasticity, market structure, time horizon or similar.",
+  "Ignores elasticity": "Discusses price or quantity changes without considering how responsive demand or supply is. PED is almost always decisive in Paper 1 questions.",
+  "Ignores market structure": "Applies a competitive-market result to a monopsony, oligopoly or monopolistic market without checking whether the framework transfers.",
+  "Ignores externalities": "Skips the reason for intervention by treating the market as if social and private costs coincide.",
+  "Ignores market failure": "Dismisses government action without identifying the specific failure (missing market, externality, asymmetric information) that justifies it.",
+  "Absolute": "Uses 'always', 'never', or 'definitely' where economic reasoning requires 'depends on'.",
+  "Stops at analysis": "Describes a mechanism without linking it to the welfare or policy question actually asked.",
+  "Confuses concepts": "Uses two related terms (efficiency vs fairness, contestability vs competition, monopoly vs market power) interchangeably when the distinction matters.",
+  "Correlation not causation": "Observes that two things occur together (size and efficiency, dominance and innovation) and infers a causal link without justification.",
+  "Ignores additionality": "Treats all affected behaviour as caused by the policy, ignoring what would have happened anyway.",
+  "Wrong framework": "Applies the wrong lens — e.g. treating a behavioural problem as a structural one, or vice versa.",
+  "Wrong time horizon": "Confuses short-run and long-run effects, or applies one when the other is relevant."
+};
+
+
+// ══════════════════════════════════════════════════════════════
+//  UTILITIES
+// ══════════════════════════════════════════════════════════════
+function shuffle(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=a[i]; a[i]=a[j]; a[j]=t;
+  }
+  return a;
+}
+function render(html){
+  document.getElementById('root').innerHTML=html;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function pct(num,den){return den>0?Math.round(num/den*100):0;}
+
+// ══════════════════════════════════════════════════════════════
+//  HUB
+// ══════════════════════════════════════════════════════════════
+function goHub(){
+  document.getElementById('homeBtn').style.display='none';
+  // Reset any active timers
+  if(window._timerID){clearInterval(window._timerID);window._timerID=null;}
+  render(
+    '<div class="hub-hero">'
+    +'<div class="hub-eyebrow">Train like an economist</div>'
+    +'<h1>The Economics Gym</h1>'
+    +'<div class="tagline">Three machines. Seven frameworks. Real skills.</div>'
+    +'<p class="intro">Short, focused drills to build the skills Edexcel Paper 1 actually tests &mdash; analytical chains, visual precision, and top-band evaluation. Each machine takes 3&ndash;8 minutes. Choose one and start.</p>'
+    +'</div>'
+    +'<div class="mgrid">'
+    +'<div class="mcard" style="--machine-colour:var(--gold)" onclick="goChain()">'
+    +'<div class="mc-icon">&#128279;</div>'
+    +'<div class="mc-num">Machine 1</div>'
+    +'<div class="mc-title">Chain Builder</div>'
+    +'<div class="mc-build">Builds: analysis</div>'
+    +'<div class="mc-desc">You are given a trigger and a shuffled set of steps &mdash; including two imposter steps that don&#39;t belong. Build the correct causal chain.</div>'
+    +'<div class="mc-meta"><span>15 chains</span><span>No timer</span><span>~8 min</span></div>'
+    +'</div>'
+    +'<div class="mcard" style="--machine-colour:var(--green)" onclick="goDiagram()">'
+    +'<div class="mc-icon">&#127919;</div>'
+    +'<div class="mc-num">Machine 2</div>'
+    +'<div class="mc-title">Diagram Sprint</div>'
+    +'<div class="mc-build">Builds: precision</div>'
+    +'<div class="mc-desc">A diagram prompt appears. Ninety seconds to sketch and label on paper. Then reveal the model answer &mdash; labels, explanation, exam tip.</div>'
+    +'<div class="mc-meta"><span>20 diagrams</span><span>90s each</span><span>~10 min</span></div>'
+    +'</div>'
+    +'<div class="mcard" style="--machine-colour:var(--purple)" onclick="goWBC()">'
+    +'<div class="mc-icon">&#9878;</div>'
+    +'<div class="mc-num">Machine 3</div>'
+    +'<div class="mc-title">Wrong but Convincing</div>'
+    +'<div class="mc-build">Builds: top-band evaluation</div>'
+    +'<div class="mc-desc">Three answers to a question. One is strong. Two are plausible but flawed. Spot the strong one &mdash; then learn exactly why the others seduce.</div>'
+    +'<div class="mc-meta"><span>15 questions</span><span>No timer</span><span>~8 min</span></div>'
+    +'</div>'
+    +'</div>'
+    +'<div class="hub-foot"><p>No accounts &middot; No tracking &middot; Session resets when you close the tab</p></div>'
+  );
+}
+
+// ══════════════════════════════════════════════════════════════
+//  MACHINE 2 — CHAIN BUILDER
+// ══════════════════════════════════════════════════════════════
+var C={i:0, score:0, chains:[], placed:[], pool:[], submitted:false};
+
+function goChain(){
+  document.getElementById('homeBtn').style.display='inline-block';
+  C={i:0, score:0, chains:shuffle(CHAINS), placed:[], pool:[], submitted:false};
+  drawChain();
+}
+
+function drawChain(){
+  if(C.i >= C.chains.length){ return chainSummary(); }
+  var ch = C.chains[C.i];
+  // Build pool: all correct steps + imposters, shuffled
+  var allSteps = ch.steps.concat(ch.imposters).map(function(txt,idx){
+    return { txt: txt, isImposter: idx >= ch.steps.length, origIdx: idx };
+  });
+  C.pool = shuffle(allSteps);
+  C.placed = [];
+  C.submitted = false;
+
+  renderChainState(ch);
+}
+
+function renderChainState(ch){
+  var poolHTML = C.pool.map(function(step,i){
+    return '<div class="chain-step" onclick="chainPick('+i+')">'
+      +'<span class="chain-step-num">+</span>'
+      +'<span class="chain-step-txt">'+step.txt+'</span>'
+      +'</div>';
+  }).join('') || '<div style="color:var(--mut);opacity:.6;font-size:.8rem;text-align:center;padding:1.5rem 0">All steps placed.</div>';
+
+  var placedHTML = C.placed.map(function(step,i){
+    return '<div class="chain-step ordered" onclick="chainUnpick('+i+')">'
+      +'<span class="chain-step-num">'+(i+1)+'</span>'
+      +'<span class="chain-step-txt">'+step.txt+'</span>'
+      +'</div>';
+  }).join('') || '<div style="color:var(--mut);opacity:.6;font-size:.8rem;text-align:center;padding:1.5rem 0">Tap steps from the left to place them here, in order.</div>';
+
+  render(
+    '<div class="card">'
+    +'<div class="sess-header">'
+    +'<div><div class="sess-title">Chain Builder</div><div class="sess-subtitle">'+ch.framework+' &middot; order the steps, skip the imposters</div></div>'
+    +'<div class="sess-counter">Chain '+(C.i+1)+' / '+C.chains.length+'<div class="sess-score">'+C.score+' pts</div></div>'
+    +'</div>'
+    +'<div class="sess-progress"><div class="sess-pfill" style="width:'+pct(C.i,C.chains.length)+'%"></div></div>'
+    +'<div class="cb">'
+    +'<div class="chain-trigger"><div class="chain-trigger-lbl">&#128204; Trigger</div><p>'+ch.trigger+'</p></div>'
+    +'<div class="chain-instr">Tap steps from the <strong>Available</strong> column to add them to <strong>Your Chain</strong>. Two of the available steps are <strong>imposters</strong> that don&#39;t belong in the chain &mdash; leave them behind. Tap a placed step to remove it.</div>'
+    +'<div class="chain-columns">'
+    +'<div class="chain-col"><div class="chain-col-title">Available steps</div>'+poolHTML+'</div>'
+    +'<div class="chain-col active"><div class="chain-col-title">Your chain (top to bottom)</div>'+placedHTML+'</div>'
+    +'</div>'
+    +'<div class="chain-submit"><button class="btn bg" onclick="chainSubmit()">Submit Chain &rarr;</button></div>'
+    +'<div id="chainResult"></div>'
+    +'</div></div>'
+  );
+}
+
+function chainPick(i){
+  if(C.submitted)return;
+  var step = C.pool.splice(i,1)[0];
+  C.placed.push(step);
+  renderChainState(C.chains[C.i]);
+}
+function chainUnpick(i){
+  if(C.submitted)return;
+  var step = C.placed.splice(i,1)[0];
+  C.pool.push(step);
+  renderChainState(C.chains[C.i]);
+}
+
+function chainSubmit(){
+  if(C.submitted)return;
+  C.submitted = true;
+  var ch = C.chains[C.i];
+  // Score: +5 per correct step in correct position, -2 per imposter placed
+  var correctSteps = ch.steps; // the correct sequence
+  var earned = 0;
+  var details = [];
+
+  for(var i=0; i<C.placed.length; i++){
+    var step = C.placed[i];
+    if(step.isImposter){
+      earned -= 2;
+      details.push({ok:false, txt:step.txt, reason:'Imposter &mdash; this step does not belong in the chain.'});
+    } else if(correctSteps[i] === step.txt){
+      earned += 5;
+      details.push({ok:true, txt:step.txt, reason:'Correctly placed at position '+(i+1)+'.'});
+    } else {
+      // Right step but wrong position
+      var correctPos = correctSteps.indexOf(step.txt);
+      details.push({ok:false, txt:step.txt, reason:'Right step, wrong position &mdash; belongs at position '+(correctPos+1)+'.'});
+    }
+  }
+  // Bonus: if all correct steps placed in right order and no imposters
+  var perfect = (C.placed.length === correctSteps.length)
+    && C.placed.every(function(s,i){return !s.isImposter && correctSteps[i]===s.txt;});
+  if(perfect) earned += 5; // completion bonus
+  earned = Math.max(0, earned);
+  C.score += earned;
+
+  // Build result HTML
+  var correctChainHTML = correctSteps.map(function(txt,i){
+    return '<li><strong>Step '+(i+1)+':</strong> '+txt+'</li>';
+  }).join('');
+
+  var resHTML = '<div class="chain-result '+(perfect?'ok':'bad')+' show">'
+    +'<div class="chain-result-title">'+(perfect ? '&#10003; Perfect chain!' : '&#9432; Review the correct chain below')+' &middot; '+earned+' pts</div>'
+    +'<p style="font-size:.82rem;color:var(--mut);margin-bottom:.55rem;line-height:1.7"><strong style="color:var(--txt)">The correct sequence for this trigger:</strong></p>'
+    +'<ol>'+correctChainHTML+'</ol>'
+    +'<p style="font-size:.8rem;color:var(--mut);line-height:1.7;margin-top:.6rem">'
+    +'<strong style="color:var(--goldl)">The two imposters:</strong> '+ch.imposters.map(function(t){return '&ldquo;'+t+'&rdquo;';}).join(' and ')+' &mdash; these sound economic but don&#39;t belong in this specific chain.'
+    +'</p>'
+    +'<div class="mt center"><button class="btn bg" onclick="chainNext()">Next Chain &rarr;</button></div>'
+    +'</div>';
+  document.getElementById('chainResult').innerHTML = resHTML;
+  document.querySelector('.sess-score').textContent = C.score+' pts';
+  window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+}
+
+function chainNext(){
+  C.i++;
+  drawChain();
+}
+
+function chainSummary(){
+  var max = C.chains.length * 35; // 5 per 6 steps + 5 completion bonus = max 35
+  var p = pct(C.score, max);
+  render(
+    '<div class="card"><div class="cb">'
+    +'<div class="summary-hero">'
+    +'<div class="summary-eye">Chain Builder &middot; Complete</div>'
+    +'<div class="summary-title">Session Results</div>'
+    +'<div class="summary-num">'+C.score+'</div>'
+    +'<div class="summary-max">points</div>'
+    +'<div class="summary-pct">'+C.chains.length+' chains attempted &middot; '+p+'%</div>'
+    +'</div>'
+    +'<div class="summary-btns">'
+    +'<button class="btn bg" onclick="goChain()">&#8635; Play Again</button>'
+    +'<button class="btn bs" onclick="goHub()">&larr; Back to Hub</button>'
+    +'</div></div></div>'
+  );
+}
+
+// ══════════════════════════════════════════════════════════════
+//  MACHINE 3 — DIAGRAM SPRINT
+// ══════════════════════════════════════════════════════════════
+var D={i:0, diagrams:[], nailed:0, nearly:0, missed:0, timeLeft:0, revealed:false};
+
+function goDiagram(){
+  document.getElementById('homeBtn').style.display='inline-block';
+  D={i:0, diagrams:shuffle(DIAGRAMS), nailed:0, nearly:0, missed:0, timeLeft:0, revealed:false};
+  drawDiagram();
+}
+
+function drawDiagram(){
+  if(D.i >= D.diagrams.length){ return diagramSummary(); }
+  var d = D.diagrams[D.i];
+  D.revealed = false;
+
+  render(
+    '<div class="card">'
+    +'<div class="sess-header">'
+    +'<div><div class="sess-title">Diagram Sprint</div><div class="sess-subtitle">90 seconds to sketch &middot; self-rate after reveal</div></div>'
+    +'<div class="sess-counter">Diagram '+(D.i+1)+' / '+D.diagrams.length+'</div>'
+    +'</div>'
+    +'<div class="sess-progress"><div class="sess-pfill" style="width:'+pct(D.i,D.diagrams.length)+'%"></div></div>'
+    +'<div class="cb">'
+    +'<div class="diag-prompt">'
+    +'<div class="diag-framework">'+d.framework+'</div>'
+    +'<div class="diag-title">'+d.title+'</div>'
+    +'<div class="diag-prompt-text">'+d.prompt+'</div>'
+    +'</div>'
+    +'<div class="diag-instr"><strong>&#9999; Sketch on paper.</strong> Aim to draw the axes, all curves, the key points, and the labels. When 90 seconds is up (or when you&#39;re ready), click <strong>Reveal</strong> to see the model answer and self-assess.</div>'
+    +'<div class="diag-timer">'
+    +'<div class="diag-timer-circle" id="dtc"><div class="diag-timer-num" id="dtn">90</div></div>'
+    +'</div>'
+    +'<div class="diag-btn-row"><button class="btn bg" id="drbtn" onclick="diagramReveal()">Reveal Answer &rarr;</button></div>'
+    +'<div class="diag-reveal" id="dreveal"></div>'
+    +'</div></div>'
+  );
+  startDiagramTimer();
+}
+
+function startDiagramTimer(){
+  D.timeLeft = 90;
+  var tnum = document.getElementById('dtn');
+  var tcirc = document.getElementById('dtc');
+  if(window._timerID)clearInterval(window._timerID);
+  var tick = function(){
+    D.timeLeft--;
+    if(tnum) tnum.textContent = D.timeLeft;
+    if(tcirc){
+      var deg = (90-D.timeLeft)/90 * 360;
+      tcirc.style.background = 'conic-gradient(var(--gold) '+deg+'deg, var(--bdr) '+deg+'deg)';
+    }
+    if(D.timeLeft <= 0){
+      clearInterval(window._timerID); window._timerID=null;
+      if(!D.revealed) diagramReveal();
+    }
+  };
+  window._timerID = setInterval(tick,1000);
+}
+
+function diagramReveal(){
+  if(D.revealed)return;
+  D.revealed = true;
+  if(window._timerID){clearInterval(window._timerID);window._timerID=null;}
+  var d = D.diagrams[D.i];
+
+  var labelsHTML = d.labels.map(function(l){
+    return '<div class="diag-label-chip">'+l+'</div>';
+  }).join('');
+
+  var imgSrc = DIAGRAM_IMGS[d.id] || '';
+  var revealHTML =
+    (imgSrc ? '<div class="diag-svg-box"><img src="'+imgSrc+'" style="width:100%;max-width:520px;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.3)" alt="'+d.title+'"></div>' : '')
+    +'<div class="diag-labels-box">'
+    +'<div class="diag-labels-title">&#128218; Labels you should have included</div>'
+    +'<div class="diag-labels-grid">'+labelsHTML+'</div>'
+    +'</div>'
+    +'<div class="diag-explain"><p><strong style="color:var(--goldl)">What the diagram shows:</strong> '+d.explain+'</p></div>'
+    +'<div class="diag-tip"><strong>&#127942; Exam tip:</strong> '+d.examTip+'</div>'
+    +'<div class="diag-selfrate">'
+    +'<div class="diag-selfrate-q">How did your sketch compare?</div>'
+    +'<div class="diag-rate-btns">'
+    +'<button class="diag-rate-btn rate-nailed" onclick="diagramRate(\'nailed\')">&#10003; Nailed it</button>'
+    +'<button class="diag-rate-btn rate-nearly" onclick="diagramRate(\'nearly\')">~ Nearly</button>'
+    +'<button class="diag-rate-btn rate-missed" onclick="diagramRate(\'missed\')">&#10007; Missed it</button>'
+    +'</div></div>';
+
+  var rev = document.getElementById('dreveal');
+  rev.innerHTML = revealHTML;
+  rev.classList.add('show');
+  document.getElementById('drbtn').style.display='none';
+  window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+}
+
+function diagramRate(r){
+  D[r]++;
+  D.i++;
+  drawDiagram();
+}
+
+function diagramSummary(){
+  render(
+    '<div class="card"><div class="cb">'
+    +'<div class="summary-hero">'
+    +'<div class="summary-eye">Diagram Sprint &middot; Complete</div>'
+    +'<div class="summary-title">Session Results</div>'
+    +'<div class="summary-num">'+D.nailed+'</div>'
+    +'<div class="summary-max">nailed of '+D.diagrams.length+'</div>'
+    +'<div class="summary-pct">Self-assessed: '+pct(D.nailed,D.diagrams.length)+'% confident</div>'
+    +'</div>'
+    +'<div class="summary-break">'
+    +'<div class="summary-stat"><div class="summary-stat-num" style="color:var(--green)">'+D.nailed+'</div><div class="summary-stat-lbl">&#10003; Nailed it</div></div>'
+    +'<div class="summary-stat"><div class="summary-stat-num" style="color:var(--orange)">'+D.nearly+'</div><div class="summary-stat-lbl">~ Nearly</div></div>'
+    +'<div class="summary-stat"><div class="summary-stat-num" style="color:var(--red)">'+D.missed+'</div><div class="summary-stat-lbl">&#10007; Missed</div></div>'
+    +'</div>'
+    +'<p style="text-align:center;font-size:.82rem;color:var(--mut);opacity:.75;max-width:480px;margin:0 auto 1rem;line-height:1.7">Focus your next revision on the diagrams you rated &ldquo;Missed it&rdquo;. Drawing them fresh on paper twice more is worth far more than looking at model answers.</p>'
+    +'<div class="summary-btns">'
+    +'<button class="btn bg" onclick="goDiagram()">&#8635; Play Again</button>'
+    +'<button class="btn bs" onclick="goHub()">&larr; Back to Hub</button>'
+    +'</div></div></div>'
+  );
+}
+
+// ══════════════════════════════════════════════════════════════
+//  MACHINE 4 — WRONG BUT CONVINCING
+// ══════════════════════════════════════════════════════════════
+var W={i:0, score:0, correct:0, triads:[], answered:false};
+
+function goWBC(){
+  document.getElementById('homeBtn').style.display='inline-block';
+  W={i:0, score:0, correct:0, triads:shuffle(TRIADS), answered:false};
+  drawWBC();
+}
+
+function drawWBC(){
+  if(W.i >= W.triads.length){ return wbcSummary(); }
+  var t = W.triads[W.i];
+  W.answered = false;
+
+  // Shuffle answer display order (store indices)
+  var order = shuffle([0,1,2]);
+
+  var ansHTML = order.map(function(origIdx, displayIdx){
+    var a = t.answers[origIdx];
+    var letter = String.fromCharCode(65+displayIdx);
+    return '<div class="wbc-answer" data-orig="'+origIdx+'" onclick="wbcPick('+origIdx+')">'
+      +'<div class="wbc-answer-label"><span>Answer '+letter+'</span><span class="wbc-answer-verdict"></span></div>'
+      +'<div class="wbc-answer-text">'+a.text+'</div>'
+      +'<div class="wbc-answer-why"></div>'
+      +'<div class="wbc-flaw-box"></div>'
+      +'</div>';
+  }).join('');
+
+  render(
+    '<div class="card">'
+    +'<div class="sess-header">'
+    +'<div><div class="sess-title">Wrong but Convincing</div><div class="sess-subtitle">'+t.framework+' &middot; identify the strong answer</div></div>'
+    +'<div class="sess-counter">Question '+(W.i+1)+' / '+W.triads.length+'<div class="sess-score">'+W.score+' pts</div></div>'
+    +'</div>'
+    +'<div class="sess-progress"><div class="sess-pfill" style="width:'+pct(W.i,W.triads.length)+'%"></div></div>'
+    +'<div class="cb">'
+    +'<div class="wbc-question"><div class="wbc-q-lbl">&#128221; Question</div><p>'+t.question+'</p></div>'
+    +'<div class="wbc-instr">Below are three possible answers. One is genuinely strong. Two are plausible but flawed. <strong>Tap the one you think is strongest.</strong></div>'
+    +'<div class="wbc-answers">'+ansHTML+'</div>'
+    +'<div class="mt center"><button class="btn bg" id="wbcNext" onclick="wbcNext()" style="display:none">Next &rarr;</button></div>'
+    +'</div></div>'
+  );
+}
+
+function wbcPick(origIdx){
+  if(W.answered) return;
+  W.answered = true;
+  var t = W.triads[W.i];
+  var chosen = t.answers[origIdx];
+  var isStrong = (chosen.verdict === 'strong');
+  var earned = isStrong ? 10 : 0;
+  if(isStrong) W.correct++;
+  W.score += earned;
+
+  // Reveal all three
+  document.querySelectorAll('.wbc-answer').forEach(function(el){
+    el.classList.add('locked');
+    el.onclick = null;
+    var oi = parseInt(el.getAttribute('data-orig'));
+    var a = t.answers[oi];
+    el.classList.add('revealed');
+    if(a.verdict === 'strong'){
+      el.classList.add('revealed-strong');
+      el.querySelector('.wbc-answer-verdict').textContent = '&#10003; Strong';
+      el.querySelector('.wbc-answer-verdict').innerHTML = '&#10003; Strong';
+    } else {
+      el.classList.add('revealed-flawed');
+      el.querySelector('.wbc-answer-verdict').innerHTML = '&#10007; Flawed';
+    }
+    el.querySelector('.wbc-answer-why').innerHTML = '<strong>'+(a.verdict==='strong'?'Why this is strong:':'Why this is flawed:')+'</strong> '+a.why;
+    if(a.flaw){
+      el.querySelector('.wbc-flaw-box').innerHTML =
+        '<div class="wbc-flaw-name">&#9432; Flaw type: '+a.flaw+'</div>'
+        +'<div class="wbc-flaw-desc">'+(FLAW_DESCRIPTIONS[a.flaw]||'')+'</div>';
+    }
+  });
+
+  document.getElementById('wbcNext').style.display = 'inline-block';
+  document.querySelector('.sess-score').textContent = W.score+' pts';
+  window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+}
+
+function wbcNext(){
+  W.i++;
+  drawWBC();
+}
+
+function wbcSummary(){
+  var max = W.triads.length * 10;
+  var p = pct(W.score, max);
+  render(
+    '<div class="card"><div class="cb">'
+    +'<div class="summary-hero">'
+    +'<div class="summary-eye">Wrong but Convincing &middot; Complete</div>'
+    +'<div class="summary-title">Session Results</div>'
+    +'<div class="summary-num">'+W.score+'</div>'
+    +'<div class="summary-max">points &middot; max '+max+'</div>'
+    +'<div class="summary-pct">'+W.correct+' correct out of '+W.triads.length+' &middot; '+p+'%</div>'
+    +'</div>'
+    +'<div class="summary-break">'
+    +'<div class="summary-stat"><div class="summary-stat-num">'+W.correct+'</div><div class="summary-stat-lbl">Strong picks</div></div>'
+    +'<div class="summary-stat"><div class="summary-stat-num">'+(W.triads.length-W.correct)+'</div><div class="summary-stat-lbl">Missed</div></div>'
+    +'<div class="summary-stat"><div class="summary-stat-num">'+p+'%</div><div class="summary-stat-lbl">Overall</div></div>'
+    +'</div>'
+    +'<p style="text-align:center;font-size:.82rem;color:var(--mut);opacity:.75;max-width:480px;margin:0 auto 1rem;line-height:1.7">Look back at the flaw types you missed. Naming the flaw (unconditional, ignores elasticity, confuses concepts) is the first step to not making it yourself.</p>'
+    +'<div class="summary-btns">'
+    +'<button class="btn bg" onclick="goWBC()">&#8635; Play Again</button>'
+    +'<button class="btn bs" onclick="goHub()">&larr; Back to Hub</button>'
+    +'</div></div></div>'
+  );
+}
+
+// BOOT — support direct deep-link via URL hash
+(function(){
+  var hash = window.location.hash.replace('#','');
+  if(hash === 'chain')   { goChain();   }
+  else if(hash === 'diagram') { goDiagram(); }
+  else if(hash === 'wbc')     { goWBC();    }
+  else                        { goHub();    }
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
 <script src="../assets/js/auth.js"></script>
 <script>Auth.requireStudent('../login');</script>
 </body>
