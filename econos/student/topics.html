@@ -67,7 +67,7 @@
         <div style="font-size:0.75rem;color:var(--text-muted);" id="topics-sub">Loading…</div>
       </div>
       <div class="header-actions">
-        <a href="settings.html"><div class="user-avatar" id="header-avatar">?</div></a>
+        <a href="settings"><div class="user-avatar" id="header-avatar">?</div></a>
       </div>
     </header>
 
@@ -202,7 +202,7 @@ function renderCard(topic, color) {
     : `<span class="stage-pill" style="background:var(--bg-subtle);color:var(--text-muted);">Not started</span>`;
 
   const firstSubId = subs.length ? subs[0].id : '';
-  const href = firstSubId ? `learn.html?subtopic=${firstSubId}` : '#';
+  const href = firstSubId ? `learn?subtopic=${firstSubId}` : '#';
   const ctaLabel = status === 'mastered' ? 'Review →' : status === 'in-progress' ? 'Continue →' : 'Start →';
 
   return `<div class="topic-card" onclick="window.location.href='${href}'">
@@ -235,7 +235,7 @@ function renderCard(topic, color) {
 }
 
 async function init() {
-  const auth = await Auth.requireStudent('../login.html');
+  const auth = await Auth.requireStudent();
   if (!auth) return;
   const { session, profile } = auth;
   const userId = session.user.id;
