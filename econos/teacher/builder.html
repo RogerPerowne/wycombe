@@ -64,7 +64,7 @@
         <div style="font-size:0.75rem;color:var(--text-muted);">Create a new assignment for your class</div>
       </div>
       <div class="header-actions">
-        <a href="dashboard.html" class="btn btn-ghost btn-sm">← Back to dashboard</a>
+        <a href="dashboard" class="btn btn-ghost btn-sm">← Back to dashboard</a>
         <div class="user-avatar" id="header-avatar">?</div>
       </div>
     </header>
@@ -165,7 +165,7 @@
             <h2>Assignment published!</h2>
             <p id="success-msg">Students in your class will now see this assignment on their dashboard.</p>
             <div style="display:flex;gap:0.75rem;justify-content:center;">
-              <a href="dashboard.html" class="btn btn-ghost btn-lg">Back to dashboard</a>
+              <a href="dashboard" class="btn btn-ghost btn-lg">Back to dashboard</a>
               <button onclick="startOver()" class="btn btn-primary btn-lg">Create another</button>
             </div>
           </div>
@@ -190,7 +190,7 @@ const TYPE_OPTIONS = [
 ];
 
 async function init() {
-  const auth = await Auth.requireTeacher('../login.html');
+  const auth = await Auth.requireTeacher();
   if (!auth) return;
   const { session, profile } = auth;
   userId = session.user.id;
@@ -225,7 +225,7 @@ function buildStepIndicator() {
     return `
       ${i > 0 ? `<div class="step-line ${isDone?'done':''}></div>` : ''}
       <div style="display:flex;flex-direction:column;align-items:center;">
-        <div class="step-dot ${isActive?'active':isDone?'done':''}">${isDone?'✓':idx}</div>
+        <div class="step-dot ${isActive?'active':isDone?'done':'}">${isDone?'✓':idx}</div>
         <div class="step-label">${lbl}</div>
       </div>`;
   }).join('');
