@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Trade Room — Wycombe Abbey Economics</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2744;--navyd:#0f1729;--gold:#c9a84c;--goldl:#e2c47a;--green:#4caf80;--red:#e05060;--orange:#e0933a;--blue:#4a7fb5;--bluel:#6fa8d8;--sol:#e67e22;--soll:#f39c12;--nor:#3498db;--norl:#5dade2;--txt:#fff;--mut:#dde3f0;--bdr:#2e3f60;--pan:#1e2e4a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navyd);color:var(--txt);font-family:'Nunito','Segoe UI',sans-serif;font-size:16px;min-height:100vh}
+header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);border-bottom:2px solid var(--gold);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:72px;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.hl{display:flex;align-items:center;gap:.9rem}
+.hlogo{height:48px;width:48px;object-fit:contain;border-radius:4px}
+.hsch{font-family:'Cormorant Garamond',serif;font-size:.92rem;font-weight:600;color:var(--goldl);line-height:1.2}
+.htit{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700}
+.hsub{font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.hbdg{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:.26rem .82rem;border-radius:3px;background:rgba(201,168,76,.08)}
+.pbar{background:var(--navy);border-bottom:1px solid var(--bdr);padding:.48rem 2rem;display:none;align-items:center;gap:1.1rem}
+.psteps{display:flex;gap:.42rem;flex:1}
+.ps{flex:1;height:5px;border-radius:3px;background:var(--bdr);transition:background .4s}
+.ps.done{background:var(--green)}.ps.act{background:var(--gold)}
+.psc{font-family:'IBM Plex Mono',monospace;font-size:.66rem;color:var(--gold);white-space:nowrap}
+.app{max-width:1080px;margin:0 auto;padding:1.3rem 1.6rem}
+.card{background:var(--pan);border:1px solid var(--bdr);border-radius:10px;overflow:hidden;position:relative;margin-bottom:1.3rem}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue))}
+.cb{padding:1.5rem}
+.chip{display:inline-flex;align-items:center;gap:.32rem;font-family:'IBM Plex Mono',monospace;font-size:.66rem;font-weight:600;padding:.18rem .58rem;border-radius:20px;letter-spacing:.04em}
+.cs{background:rgba(230,126,34,.15);border:1px solid rgba(230,126,34,.4);color:var(--soll)}
+.cn{background:rgba(52,152,219,.15);border:1px solid rgba(52,152,219,.4);color:var(--norl)}
+/* INTRO */
+.ihero{text-align:center;padding:2rem 1rem 1.6rem}
+.ilogo{width:76px;height:76px;object-fit:contain;margin:0 auto 1rem;display:block;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+.ihero h1{font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:700;line-height:1.15;margin-bottom:.28rem}
+.isub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.98rem;color:var(--goldl);margin-bottom:1.5rem}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:600px;margin:0 auto 1.5rem}
+.cbox{border-radius:9px;padding:1.1rem;text-align:left}
+.cbs{background:rgba(230,126,34,.08);border:1px solid rgba(230,126,34,.3)}
+.cbn{background:rgba(52,152,219,.08);border:1px solid rgba(52,152,219,.3)}
+.cflag{font-size:1.9rem;margin-bottom:.4rem}
+.cname{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;margin-bottom:.28rem}
+.cdesc{font-size:.8rem;line-height:1.6;color:var(--mut)}
+.smap{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;max-width:660px;margin:0 auto 1.5rem}
+.smi{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:7px;padding:.72rem .6rem;text-align:center}
+.smn{font-family:'IBM Plex Mono',monospace;font-size:.56rem;color:var(--gold);margin-bottom:.2rem}
+.smt{font-size:.73rem;line-height:1.4;color:var(--mut)}
+/* STAGE LAYOUT */
+.smeta{display:flex;align-items:center;gap:.62rem;margin-bottom:.72rem;flex-wrap:wrap}
+.sbdg{font-family:'IBM Plex Mono',monospace;font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);color:var(--gold);padding:.17rem .6rem;border-radius:3px}
+.stit{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:700;line-height:1.2;margin-bottom:.42rem}
+.brief{background:rgba(255,255,255,.03);border-left:3px solid var(--gold);padding:.88rem 1.1rem;border-radius:0 6px 6px 0;margin-bottom:1.15rem}
+.blbl{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:.42rem}
+.brief p{font-size:.84rem;line-height:1.75;color:var(--mut);margin-bottom:.42rem}
+.brief p:last-child{margin-bottom:0}.brief p strong{color:var(--txt)}
+/* TABLE */
+table.pt{width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;margin-bottom:1.1rem}
+.pt th{background:rgba(255,255,255,.05);padding:.58rem .82rem;text-align:left;font-size:.63rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);border-bottom:2px solid var(--bdr)}
+.pt td{padding:.62rem .82rem;border-bottom:1px solid var(--bdr);font-size:.84rem}
+.pt tr:last-child td{border-bottom:none}
+.pt .sr td:first-child{color:var(--soll);font-weight:600}
+.pt .nr td:first-child{color:var(--norl);font-weight:600}
+.pt .val{color:var(--goldl);font-weight:500}
+/* CALC EXERCISE */
+.cex{background:rgba(26,39,68,.7);border:1px solid rgba(201,168,76,.3);border-radius:9px;padding:1.15rem;margin-bottom:1.1rem}
+.celbl{font-family:'IBM Plex Mono',monospace;font-size:.57rem;text-transform:uppercase;letter-spacing:.11em;color:var(--gold);margin-bottom:.75rem}
+.csteps{display:flex;flex-direction:column;gap:.65rem}
+.cstep{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:7px;padding:.78rem .88rem}
+.cq{font-size:.83rem;color:var(--mut);margin-bottom:.42rem;line-height:1.65}.cq strong{color:var(--txt)}
+.inrow{display:flex;align-items:center;gap:.58rem;flex-wrap:wrap}
+.ni{background:rgba(255,255,255,.08);border:1px solid var(--bdr);border-radius:5px;color:var(--txt);font-family:'IBM Plex Mono',monospace;font-size:.9rem;padding:.38rem .58rem;width:88px;text-align:center;outline:none;transition:border-color .2s}
+.ni:focus{border-color:var(--gold)}.ni.ok{border-color:var(--green);background:rgba(76,175,128,.1)}.ni.bad{border-color:var(--red)}
+.nu{font-size:.76rem;color:var(--mut)}
+.chkb{font-family:'IBM Plex Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;background:rgba(201,168,76,.14);border:1px solid rgba(201,168,76,.38);color:var(--gold);padding:.34rem .78rem;border-radius:4px;cursor:pointer;transition:all .2s}
+.chkb:hover{background:rgba(201,168,76,.24)}.chkb:disabled{opacity:.38;cursor:default}
+.fb{font-size:.78rem;margin-top:.38rem;line-height:1.6;display:none}.fb.show{display:block}
+.fbok{color:var(--green)}.fbno{color:var(--red)}.fbex{color:var(--mut)}
+/* MCQ */
+.mopts{display:flex;flex-direction:column;gap:.4rem;margin-top:.46rem}
+.mo{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:6px;padding:.62rem .82rem;cursor:pointer;transition:all .2s;font-size:.82rem;line-height:1.5}
+.mo:hover:not(.locked){border-color:var(--gold);background:rgba(201,168,76,.07)}
+.mo.locked{cursor:default}
+.mo.mok{border-color:var(--green)!important;background:rgba(76,175,128,.1)!important;color:var(--green)!important}
+.mo.mbad{border-color:var(--red)!important;background:rgba(224,80,96,.08)!important;color:var(--red)!important}
+.mo.mrev{border-color:var(--green)!important;background:rgba(76,175,128,.05)!important}
+/* REVEAL BOX */
+.rv{display:none;background:rgba(74,127,181,.07);border:1px solid rgba(74,127,181,.28);border-radius:7px;padding:.88rem 1rem;margin-top:.82rem}
+.rv.show{display:block;animation:fu .3s ease}
+@keyframes fu{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.rlbl{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.09em;color:var(--bluel);margin-bottom:.38rem}
+.rtxt{font-size:.82rem;line-height:1.72;color:var(--mut)}.rtxt strong{color:var(--txt)}
+.etags{display:flex;flex-wrap:wrap;gap:.28rem;margin-top:.52rem}
+.etag{font-family:'IBM Plex Mono',monospace;font-size:.52rem;background:rgba(74,127,181,.1);border:1px solid rgba(74,127,181,.3);color:var(--bluel);padding:.11rem .38rem;border-radius:3px}
+/* RICO */
+.rico{background:linear-gradient(135deg,rgba(26,39,68,.9),rgba(15,23,41,.95));border:1px solid rgba(201,168,76,.38);border-radius:9px;padding:1.05rem;margin-bottom:1.05rem;display:flex;gap:.85rem;align-items:flex-start}
+.rport{font-size:2.4rem;flex-shrink:0}
+.rtxt2{font-size:.8rem;line-height:1.72;color:var(--mut)}.rtxt2 strong{color:var(--goldl)}
+.rcite{font-family:'IBM Plex Mono',monospace;font-size:.56rem;color:var(--mut);margin-top:.28rem;opacity:.6}
+/* SCENARIO PANELS */
+.sp{background:rgba(139,26,46,.07);border:1px solid rgba(224,80,96,.25);border-radius:9px;padding:1.05rem;margin-bottom:.85rem}
+.splbl{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.11em;color:var(--red);margin-bottom:.44rem}
+.sptxt{font-size:.82rem;line-height:1.72;color:var(--mut)}.sptxt strong{color:var(--txt)}
+.shdg{font-family:'IBM Plex Mono',monospace;font-size:.63rem;text-transform:uppercase;letter-spacing:.09em;color:var(--gold);margin:.85rem 0 .52rem}
+/* COURTROOM */
+.wcard{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:9px;padding:1.05rem;margin-bottom:.8rem;transition:border-color .3s}
+.wcard.done{border-color:rgba(74,127,181,.45)}
+.whdr{display:flex;align-items:center;gap:.75rem;margin-bottom:.65rem}
+.wav{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.wname{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:700}
+.wrole{font-family:'IBM Plex Mono',monospace;font-size:.55rem;color:var(--mut);letter-spacing:.04em}
+.wstmt{font-size:.82rem;line-height:1.72;color:var(--mut);margin-bottom:.7rem;padding:.82rem;background:rgba(255,255,255,.03);border-radius:5px;border-left:3px solid var(--blue)}.wstmt strong{color:var(--txt)}
+.vog{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-bottom:.55rem}
+.vo{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:6px;padding:.56rem .68rem;cursor:pointer;transition:all .2s;font-size:.76rem;text-align:center;line-height:1.4}
+.vo:hover:not(.locked){border-color:var(--gold);background:rgba(201,168,76,.07)}
+.vo.locked{cursor:default}
+.vo.vok{border-color:var(--green)!important;background:rgba(76,175,128,.12)!important;color:var(--green)!important}
+.vo.vcl{border-color:var(--gold)!important;background:rgba(201,168,76,.1)!important;color:var(--goldl)!important}
+.vo.vbd{border-color:var(--red)!important;background:rgba(224,80,96,.08)!important;color:var(--red)!important}
+.vo.vrv{border-color:var(--green)!important;background:rgba(76,175,128,.05)!important}
+.vexp{display:none;font-size:.8rem;line-height:1.7;color:var(--mut);padding:.75rem;background:rgba(74,127,181,.06);border:1px solid rgba(74,127,181,.25);border-radius:6px}
+.vexp.show{display:block;animation:fu .3s ease}.vexp strong{color:var(--txt)}
+/* PPF */
+.ppfg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem;margin-bottom:.85rem}
+.ppfw{text-align:center}
+.ppft{font-size:.74rem;color:var(--mut);margin-bottom:.3rem}
+canvas.ppfc{border-radius:6px;background:rgba(255,255,255,.03);border:1px solid var(--bdr);display:block;margin:0 auto}
+/* DIVIDER */
+.dv{height:1px;background:var(--bdr);margin:1.05rem 0}
+/* BUTTONS */
+.btn{padding:.75rem 1.1rem;border:none;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-weight:600}
+.bg{background:linear-gradient(135deg,#b8922a,var(--gold));color:var(--navyd)}
+.bg:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(201,168,76,.35)}
+.brow{display:flex;gap:.7rem;margin-top:.95rem;flex-wrap:wrap}
+.bfull{width:100%}
+/* RESULTS */
+.strio{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1.05rem}
+.sbox{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:8px;padding:.85rem;text-align:center}
+.sval{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;line-height:1;margin-bottom:.18rem}
+.slbl{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.07em;color:var(--mut)}
+.srlist{display:flex;flex-direction:column;gap:.48rem;margin-bottom:1.2rem}
+.sri{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:7px;padding:.7rem .9rem;display:grid;grid-template-columns:auto 1fr auto;gap:.62rem;align-items:center}
+.srs{font-family:'IBM Plex Mono',monospace;font-size:.57rem;color:var(--gold);white-space:nowrap}
+.srt{font-size:.8rem;color:var(--mut)}
+.ssc{font-family:'IBM Plex Mono',monospace;font-size:.66rem;padding:.14rem .44rem;border-radius:3px}
+.pg{background:rgba(76,175,128,.2);color:var(--green);border:1px solid var(--green)}
+.pb{background:rgba(74,127,181,.2);color:var(--bluel);border:1px solid var(--bluel)}
+.po{background:rgba(224,147,58,.2);color:var(--orange);border:1px solid var(--orange)}
+.pr{background:rgba(224,80,96,.2);color:var(--red);border:1px solid var(--red)}
+/* AI BOX */
+.aibox{background:rgba(26,39,68,.6);border:1px solid rgba(201,168,76,.3);border-radius:10px;padding:1.2rem;margin-bottom:1.05rem}
+.aihdr{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;padding-bottom:.58rem;border-bottom:1px solid var(--bdr)}
+.aiico{width:26px;height:26px;background:linear-gradient(135deg,var(--gold),#b8922a);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--navyd);flex-shrink:0}
+.aitit{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700}
+.aisub{font-family:'IBM Plex Mono',monospace;font-size:.52rem;color:var(--mut);letter-spacing:.06em}
+.abody p{font-size:.83rem;line-height:1.8;color:var(--mut);margin-bottom:.58rem}.abody p:last-child{margin-bottom:0}.abody strong{color:var(--txt)}
+.spin{width:15px;height:15px;border:2px solid var(--bdr);border-top-color:var(--gold);border-radius:50%;animation:sp .8s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* HINT BUTTON */
+.hint-wrap{margin-top:.45rem;}
+.hint-btn{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;background:transparent;border:1px dashed rgba(201,168,76,.4);color:rgba(201,168,76,.65);padding:.3rem .72rem;border-radius:4px;cursor:pointer;transition:all .2s;}
+.hint-btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.06);}
+.hint-btn:disabled{opacity:.35;cursor:default;}
+.hint-warn{display:none;font-size:.76rem;color:var(--orange);margin-top:.38rem;background:rgba(224,147,58,.08);border:1px solid rgba(224,147,58,.25);border-radius:5px;padding:.5rem .75rem;line-height:1.55;}
+.hint-warn.show{display:block;animation:fu .25s ease;}
+.hint-confirm-row{display:flex;gap:.5rem;margin-top:.42rem;flex-wrap:wrap;}
+.hint-confirm-btn{font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.06em;padding:.28rem .68rem;border-radius:4px;cursor:pointer;transition:all .2s;}
+.hint-yes{background:rgba(224,147,58,.18);border:1px solid rgba(224,147,58,.45);color:var(--orange);}
+.hint-yes:hover{background:rgba(224,147,58,.28);}
+.hint-no{background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);}
+.hint-no:hover{background:rgba(255,255,255,.1);}
+.hint-content{display:none;font-size:.78rem;color:var(--mut);margin-top:.42rem;background:rgba(74,127,181,.07);border:1px solid rgba(74,127,181,.25);border-radius:5px;padding:.55rem .78rem;line-height:1.6;}
+.hint-content.show{display:block;animation:fu .25s ease;}
+.hint-penalty{font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--red);margin-left:.4rem;opacity:.8;}
+
+@media(max-width:720px){.ppfg{grid-template-columns:1fr}.cgrid{grid-template-columns:1fr}.smap{grid-template-columns:1fr 1fr}.strio{grid-template-columns:1fr}.vog{grid-template-columns:1fr}}
+
+.hub-btn{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.3rem .75rem;border-radius:4px;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-block}
+.hub-btn:hover{background:rgba(255,255,255,.12);color:var(--txt)}
+
+/* econOS topbar */
+.sim-topbar{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9999;font-family:'Inter',system-ui,sans-serif;box-shadow:0 1px 3px rgba(15,23,42,.04)}
+.sim-topbar-left{display:flex;align-items:center;gap:.75rem}
+.sim-logo{display:flex;align-items:center;gap:.4rem;text-decoration:none}
+.sim-logo-dots{display:flex;align-items:flex-end;gap:2px}
+.sd1{display:block;width:7px;height:7px;border-radius:50%;background:#22C55E}
+.sd2{display:block;width:9px;height:9px;border-radius:50%;background:#F59E0B}
+.sd3{display:block;width:11px;height:11px;border-radius:50%;background:#2563EB}
+.sim-logo-word{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;font-family:'Inter',sans-serif}
+.sim-econ{color:#0F172A}.sim-os{color:#2563EB}
+.sim-divider{width:1px;height:20px;background:#E2E8F0;margin:0 .25rem}
+.sim-page-name{font-size:.8rem;font-weight:600;color:#64748B;font-family:'Inter',sans-serif}
+.sim-back-btn{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;font-weight:600;color:#475569;text-decoration:none;padding:.4rem .75rem;border-radius:8px;border:1px solid #E2E8F0;background:#F8FAFC;transition:all .12s;font-family:'Inter',sans-serif}
+.sim-back-btn:hover{background:#F1F5F9;color:#0F172A;border-color:#CBD5E1}
+</style>
+</head>
+<body>
+<nav class="sim-topbar">
+  <div class="sim-topbar-left">
+    <a href="/" class="sim-logo">
+      <div class="sim-logo-dots"><span class="sd1"></span><span class="sd2"></span><span class="sd3"></span></div>
+      <span class="sim-logo-word"><span class="sim-econ">econ</span><span class="sim-os">OS</span></span>
+    </a>
+    <span class="sim-divider"></span>
+    <span class="sim-page-name">The Trade Room</span>
+  </div>
+  <div>
+    <a href="../dashboard" class="sim-back-btn">&#8592; Dashboard</a>
+  </div>
+</nav>
+<header>
+  <div class="hl">
+    <img class="hlogo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display='none'">
+    <div>
+      <div class="hsch">Wycombe Abbey</div>
+      <div class="htit">The Trade Room</div>
+      <div class="hsub">A-Level Economics &middot; Paper 2 &middot; Comparative Advantage &amp; International Trade</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:.6rem">
+    <a href="index.html" style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.28rem .72rem;border-radius:4px;text-decoration:none;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.color='var(--mut)'">&#8592; Home</a>
+    <span class="hbdg">Trade Negotiator Simulation</span>
+  </div>
+</header>
+<div class="pbar" id="pbar">
+  <div class="psteps" id="psteps"></div>
+  <div class="psc" id="psc"></div>
+</div>
+<div class="app" id="root"></div>
+
+<script>
+// ── API KEY ──────────────────────────────────────────────
+var API_KEY = 'YOUR_OPENAI_KEY_HERE';
+
+// ── STATE ──────────────────────────────────────────────
+var G={stage:0,sc:{calc:0,reason:0,crit:0},mx:{calc:0,reason:0,crit:0},ss:[],sl:[],wa:{},hints:0};
+// Per-stage counters
+var s1n=0, s2oc=0, s3oc=0, s3tot=false,
+    s4={a1:false,a2:false,b1:false,c1:false}, s5n=0;
+
+var SNAMES=['Absolute Advantage','Comparative Advantage','Dynamic Change','Real-World Disruptions','Limitations'];
+
+function tot(){return G.sc.calc+G.sc.reason+G.sc.crit;}
+function maxT(){return G.mx.calc+G.mx.reason+G.mx.crit;}
+
+function prog(){
+  document.getElementById('psteps').innerHTML=SNAMES.map(function(n,i){
+    return '<div class="ps '+(i<G.stage-1?'done':i===G.stage-1?'act':'')+'" title="'+n+'"></div>';
+  }).join('');
+  document.getElementById('psc').textContent='Score: '+tot()+' / '+maxT();
+}
+
+function page(h){document.getElementById('root').innerHTML=h;window.scrollTo({top:0,behavior:'smooth'});}
+
+// Lock all .mo children of a selector
+function lockMO(sel){
+  document.querySelectorAll(sel+' .mo').forEach(function(o){
+    o.classList.add('locked'); o.onclick=null;
+  });
+}
+// Lock all .vo children
+function lockVO(sel){
+  document.querySelectorAll(sel+' .vo').forEach(function(o){
+    o.classList.add('locked'); o.onclick=null;
+  });
+}
+function showFB(id,ok,msg){
+  var el=document.getElementById(id);
+  if(!el)return;
+  el.innerHTML='<span class="'+(ok?'fbok':'fbno')+'">'+(ok?'&#10003; Correct!':'&#10007; Not quite.')+'</span> <span class="fbex">'+msg+'</span>';
+  el.classList.add('show');
+}
+function showRV(id){var el=document.getElementById(id);if(el)el.classList.add('show');}
+
+// ── HINT SYSTEM ───────────────────────────────────────
+// hintId: unique id prefix, hintText: the hint content
+function initHint(hintId, hintText){
+  // Called after page() renders — attaches button behaviour
+  var btn   = document.getElementById('hbtn_'+hintId);
+  var warn  = document.getElementById('hwarn_'+hintId);
+  var cont  = document.getElementById('hcont_'+hintId);
+  if(!btn) return;
+  btn.onclick = function(){
+    warn.classList.add('show');
+    btn.disabled = true;
+  };
+  document.getElementById('hyes_'+hintId).onclick = function(){
+    // Deduct 10 points from calc score (floor at 0)
+    G.sc.calc = Math.max(0, G.sc.calc - 10);
+    G.hints++;
+    warn.classList.remove('show');
+    cont.classList.add('show');
+    // Show penalty tag on the button area
+    var pen = document.getElementById('hpen_'+hintId);
+    if(pen) pen.style.display='inline';
+    prog();
+  };
+  document.getElementById('hno_'+hintId).onclick = function(){
+    warn.classList.remove('show');
+    btn.disabled = false;
+  };
+}
+
+// Build the hint HTML block for a given id and text
+function hintHTML(hintId, hintText){
+  return '<div class="hint-wrap">'
+    +'<button class="hint-btn" id="hbtn_'+hintId+'">&#128161; Show Hint'
+    +'<span class="hint-penalty" id="hpen_'+hintId+'" style="display:none">&minus;10 pts used</span>'
+    +'</button>'
+    +'<div class="hint-warn" id="hwarn_'+hintId+'">'
+    +'<strong style="color:var(--orange)">&#9888; Penalty Warning</strong><br>'
+    +'Using this hint will deduct <strong>10 points</strong> from your score. '
+    +'Try the calculation yourself first &mdash; you can always attempt an answer before asking for help.'
+    +'<div class="hint-confirm-row">'
+    +'<button class="hint-confirm-btn hint-yes" id="hyes_'+hintId+'">Yes, show the hint (&minus;10 pts)</button>'
+    +'<button class="hint-confirm-btn hint-no" id="hno_'+hintId+'">No, I&#39;ll try myself</button>'
+    +'</div></div>'
+    +'<div class="hint-content" id="hcont_'+hintId+'">&#128161; '+hintText+'</div>'
+    +'</div>';
+}
+
+
+// ── INTRO ─────────────────────────────────────────────
+function goIntro(){
+  G.stage=0; document.getElementById('pbar').style.display='none';
+  page('<div class="card"><div class="ihero">'
+    +'<img class="ilogo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display=\'none\'">'
+    +'<h1>Welcome to The Trade Room</h1>'
+    +'<div class="isub">You are a trade negotiator at the UN Trade Council. Five challenges await.</div>'
+    +'<div class="cgrid">'
+    +'<div class="cbox cbs"><div class="cflag">&#127749;</div><div class="cname" style="color:var(--soll)">Solara</div><div class="cdesc">A sun-drenched agricultural nation with fertile plains. Currency: the <strong>Sol (&sect;)</strong>.</div></div>'
+    +'<div class="cbox cbn"><div class="cflag">&#127961;</div><div class="cname" style="color:var(--norl)">Norvik</div><div class="cdesc">A cool, industrialised nation with a strong manufacturing tradition. Currency: the <strong>Krone (Kr)</strong>.</div></div>'
+    +'</div>'
+    +'<div class="smap">'
+    +'<div class="smi"><div class="smn">Stage 1</div><div class="smt">Absolute Advantage</div></div>'
+    +'<div class="smi"><div class="smn">Stage 2</div><div class="smt">Comparative Advantage &amp; PPF</div></div>'
+    +'<div class="smi"><div class="smn">Stage 3</div><div class="smt">Dynamic Change</div></div>'
+    +'<div class="smi"><div class="smn">Stage 4</div><div class="smt">Real-World Disruptions</div></div>'
+    +'<div class="smi"><div class="smn">Stage 5</div><div class="smt">Limitations Courtroom</div></div>'
+    +'</div>'
+    +'<div class="brief" style="max-width:560px;margin:0 auto 1.5rem;text-align:left"><div class="blbl">&#128203; Your Mission</div>'
+    +'<p>Work through <strong>five escalating challenges</strong> &mdash; calculate opportunity costs, make trade decisions, analyse real-world disruptions, and judge in a courtroom where Ricardo\'s theory is challenged. Three scores track your progress.</p></div>'
+    +'<button class="btn bg" style="padding:.9rem 2.6rem;font-size:.8rem" onclick="goS1()">Begin as Trade Negotiator &#8594;</button>'
+    +'</div></div>');
+}
+
+// ── STAGE 1 ───────────────────────────────────────────
+// All explanations in lookup table — no string splitting ever
+var S1 = {
+  q1:{ correct:'A', opts:['A','B','C'],
+       expl:{A:'Correct! Solara produces 10 oranges per worker vs Norvik\'s 4 &mdash; more than twice as productive.',
+             B:'Solara produces 10 oranges per worker, Norvik only 4. Solara has absolute advantage in oranges.',
+             C:'Solara: 10, Norvik: 4 &mdash; not equal.'} },
+  q2:{ correct:'A', opts:['A','B','C'],
+       expl:{A:'Correct! Solara produces 6 clothing per worker vs Norvik\'s 2 &mdash; three times as productive.',
+             B:'Solara produces 6 clothing per worker, Norvik only 2. Solara leads in clothing too.',
+             C:'Solara: 6, Norvik: 2 &mdash; not equal.'} },
+  q3:{ correct:'B', opts:['A','B','C'],
+       expl:{A:'This seems logical &mdash; but it is wrong! Even when Solara has absolute advantage in both goods, comparative advantage (Stage 2) shows why trade still benefits both countries.',
+             B:'Excellent! Even when one country leads in everything, trade can still benefit both. The key is comparative advantage &mdash; who gives up less to produce each good. Stage 2 reveals why.',
+             C:'Good instinct to pause &mdash; but the answer is yes. Comparative advantage (Stage 2) shows why trade benefits both countries even when Solara leads in everything.'} }
+};
+
+function goS1(){
+  G.stage=1; G.mx.reason+=20;
+  document.getElementById('pbar').style.display='flex'; prog();
+  page('<div class="card"><div class="cb">'
+    +'<div class="smeta"><span class="sbdg">Stage 1 / 5</span><span class="chip cs">&#127749; Solara</span><span class="chip cn">&#127961; Norvik</span></div>'
+    +'<div class="stit">Absolute Advantage</div>'
+    +'<div class="brief"><div class="blbl">&#128194; Trade Council Briefing</div>'
+    +'<p>Solara and Norvik produce <strong>oranges</strong> and <strong>clothing</strong> in complete isolation. Economists have measured output <strong>per worker per day</strong>. Study the table and answer all three questions.</p></div>'
+    +'<table class="pt"><thead><tr><th>Country</th><th>&#127818; Oranges (units/worker/day)</th><th>&#128248; Clothing (units/worker/day)</th></tr></thead>'
+    +'<tbody><tr class="sr"><td>&#127749; Solara</td><td class="val">10</td><td class="val">6</td></tr>'
+    +'<tr class="nr"><td>&#127961; Norvik</td><td class="val">4</td><td class="val">2</td></tr></tbody></table>'
+    +'<p style="font-size:.82rem;color:var(--mut);line-height:1.7;margin-bottom:1.05rem"><strong style="color:var(--txt)">Absolute advantage</strong>: a country produces more of a good using the same resources. Solara is more productive at <em>both</em> goods &mdash; yet trade may still benefit both countries.</p>'
+    +'<div class="cex"><div class="celbl">&#10067; Answer all three questions</div><div class="csteps">'
+
+    +'<div class="cstep"><div class="cq">Q1: Which country has <strong>absolute advantage in oranges</strong>?</div>'
+    +'<div class="mopts" id="q1o">'
+    +'<div class="mo" onclick="s1ans(\'q1\',\'A\')">&#127749; Solara</div>'
+    +'<div class="mo" onclick="s1ans(\'q1\',\'B\')">&#127961; Norvik</div>'
+    +'<div class="mo" onclick="s1ans(\'q1\',\'C\')">Neither &mdash; they are equal</div>'
+    +'</div><div class="fb" id="q1fb"></div></div>'
+
+    +'<div class="cstep"><div class="cq">Q2: Which country has <strong>absolute advantage in clothing</strong>?</div>'
+    +'<div class="mopts" id="q2o">'
+    +'<div class="mo" onclick="s1ans(\'q2\',\'A\')">&#127749; Solara</div>'
+    +'<div class="mo" onclick="s1ans(\'q2\',\'B\')">&#127961; Norvik</div>'
+    +'<div class="mo" onclick="s1ans(\'q2\',\'C\')">Neither &mdash; they are equal</div>'
+    +'</div><div class="fb" id="q2fb"></div></div>'
+
+    +'<div class="cstep"><div class="cq">Q3: Solara has absolute advantage in <em>both</em> goods. Should they bother trading at all?</div>'
+    +'<div class="mopts" id="q3o">'
+    +'<div class="mo" onclick="s1ans(\'q3\',\'A\')">No &mdash; Solara leads in everything, so trade is pointless</div>'
+    +'<div class="mo" onclick="s1ans(\'q3\',\'B\')">Yes &mdash; trade could still benefit both countries</div>'
+    +'<div class="mo" onclick="s1ans(\'q3\',\'C\')">Uncertain &mdash; I need more information</div>'
+    +'</div><div class="fb" id="q3fb"></div></div>'
+
+    +'</div></div>'
+    +'<div class="rv" id="s1rv"><div class="rlbl">&#128218; Key Concept: Absolute Advantage</div>'
+    +'<div class="rtxt"><strong>Absolute advantage</strong>: a country produces more of a good using the same resources. Solara has it in both goods.<br><br>'
+    +'Ricardo\'s crucial insight (1817): <strong>absolute advantage is not the basis for trade decisions</strong>. Even a country less productive at everything can gain from trade &mdash; as long as there are differences in <em>relative</em> costs. That is comparative advantage.'
+    +'<div class="etags"><span class="etag">Absolute Advantage</span><span class="etag">Specialisation</span><span class="etag">Basis for Trade</span></div></div></div>'
+    +'<div class="brow"><button class="btn bg" id="s1btn" style="display:none" onclick="goS2()">Proceed to Stage 2 &#8594;</button></div>'
+    +'</div></div>');
+}
+
+function s1ans(qid, chosen){
+  var q=S1[qid];
+  lockMO('#'+qid+'o');
+  var ok=(chosen===q.correct);
+  // Mark options
+  document.querySelectorAll('#'+qid+'o .mo').forEach(function(el,i){
+    var key=q.opts[i];
+    if(key===q.correct) el.classList.add(ok&&chosen===key?'mok':'mrev');
+    if(key===chosen&&!ok) el.classList.add('mbad');
+  });
+  showFB(qid+'fb', ok, q.expl[chosen]);
+  if(ok) G.sc.reason += (qid==='q1'?8:qid==='q2'?6:6);
+  s1n++;
+  if(s1n>=3){
+    showRV('s1rv');
+    document.getElementById('s1btn').style.display='inline-block';
+    G.ss.push(Math.round(G.sc.reason/G.mx.reason*100));
+    G.sl.push('Stage 1: Absolute Advantage');
+  }
+  prog();
+}
+
+// ── STAGE 2 ───────────────────────────────────────────
+// OC answers, explanations all in data — no string in onclick
+var OCA={
+  oc1:{ans:4/12, disp:'0.33', expl:'Solara produces 12 oranges or 4 clothing per worker. 4 &divide; 12 = 0.33 clothing. This is Solara\'s opportunity cost of oranges.'},
+  oc2:{ans:1,    disp:'1',    expl:'Norvik produces 6 oranges or 6 clothing per worker. 6 &divide; 6 = 1 clothing. Norvik\'s opportunity cost of oranges is exactly 1 clothing unit.'},
+  oc3:{ans:3,    disp:'3',    expl:'1 clothing costs Solara 12 &divide; 4 = 3 oranges. Solara gives up a lot of oranges to produce clothing &mdash; a high opportunity cost.'},
+  oc4:{ans:1,    disp:'1',    expl:'1 clothing costs Norvik 6 &divide; 6 = 1 orange. Much lower than Solara\'s 3 &mdash; Norvik has comparative advantage in clothing.'}
+};
+
+function goS2(){
+  G.stage=2; G.mx.calc+=50; G.mx.reason+=20; prog();
+  page('<div class="card"><div class="cb">'
+    +'<div class="smeta"><span class="sbdg">Stage 2 / 5</span><span class="chip cs">&#127749; Solara</span><span class="chip cn">&#127961; Norvik</span></div>'
+    +'<div class="stit">Comparative Advantage</div>'
+    +'<div class="rico"><div class="rport">&#127913;</div><div>'
+    +'<div class="rtxt2"><strong>David Ricardo (1772&ndash;1823)</strong> was a British economist who transformed trade theory. In his 1817 masterwork <em>Principles of Political Economy and Taxation</em>, he proved something counter-intuitive: even if one country is better at producing <em>everything</em>, both countries gain from specialisation and trade &mdash; as long as each focuses on the good where it has a <strong>lower opportunity cost</strong>.</div>'
+    +'<div class="rcite">Ricardo, D. (1817). Principles of Political Economy and Taxation. John Murray, London.</div>'
+    +'</div></div>'
+    +'<div class="brief"><div class="blbl">&#128194; Updated Production Data</div>'
+    +'<p>Each country has <strong>100 workers</strong>. Solara still leads in oranges absolutely &mdash; but <em>comparative advantage</em> depends on opportunity cost, not absolute output.</p></div>'
+    +'<table class="pt"><thead><tr><th>Country</th><th>&#127818; Oranges (per worker/day)</th><th>&#128248; Clothing (per worker/day)</th><th>Workers</th></tr></thead>'
+    +'<tbody><tr class="sr"><td>&#127749; Solara</td><td class="val">12</td><td class="val">4</td><td class="val">100</td></tr>'
+    +'<tr class="nr"><td>&#127961; Norvik</td><td class="val">6</td><td class="val">6</td><td class="val">100</td></tr></tbody></table>'
+
+    +'<div class="cex"><div class="celbl">&#129518; Step 1 &mdash; Calculate All Four Opportunity Costs</div><div class="csteps">'
+    +'<div class="cstep"><div class="cq">For <span class="chip cs" style="font-size:.62rem">&#127749; Solara</span> &mdash; to produce <strong>1 more orange</strong>, how many clothing units are given up?</div>'+hintHTML('oc1','Solara produces 12 oranges <em>or</em> 4 clothing per worker. So 1 orange costs 4&divide;12 clothing.')
+    +'<div class="inrow"><span class="nu">1 orange costs Solara</span><input class="ni" id="oc1i" type="number" step="0.01" min="0" placeholder="?"><span class="nu">clothing</span><button class="chkb" id="oc1b" onclick="chkOC(\'oc1\')">Check &rarr;</button></div>'
+    +'<div class="fb" id="oc1fb"></div></div>'
+
+    +'<div class="cstep"><div class="cq">For <span class="chip cn" style="font-size:.62rem">&#127961; Norvik</span> &mdash; to produce <strong>1 more orange</strong>, how many clothing units are given up?</div>'+hintHTML('oc2','Norvik produces 6 oranges <em>or</em> 6 clothing per worker. So 1 orange costs 6&divide;6 = 1 clothing.')
+    +'<div class="inrow"><span class="nu">1 orange costs Norvik</span><input class="ni" id="oc2i" type="number" step="0.01" min="0" placeholder="?"><span class="nu">clothing</span><button class="chkb" id="oc2b" onclick="chkOC(\'oc2\')">Check &rarr;</button></div>'
+    +'<div class="fb" id="oc2fb"></div></div>'
+
+    +'<div class="cstep"><div class="cq">For <span class="chip cs" style="font-size:.62rem">&#127749; Solara</span> &mdash; to produce <strong>1 more clothing unit</strong>, how many oranges are given up?</div>'+hintHTML('oc3','Take the reciprocal of Solara\'s OC of oranges &mdash; or simply calculate 12&divide;4 directly.')+'<div class="inrow"><span class="nu">1 clothing costs Solara</span><input class="ni" id="oc3i" type="number" step="0.01" min="0" placeholder="?"><span class="nu">oranges</span><button class="chkb" id="oc3b" onclick="chkOC(\'oc3\')">Check &rarr;</button></div>'
+    +'<div class="fb" id="oc3fb"></div></div>'
+
+    +'<div class="cstep"><div class="cq">For <span class="chip cn" style="font-size:.62rem">&#127961; Norvik</span> &mdash; to produce <strong>1 more clothing unit</strong>, how many oranges are given up?</div>'+hintHTML('oc4','Norvik produces 6 oranges <em>or</em> 6 clothing per worker: 6&divide;6 = 1 orange per clothing unit.')
+    +'<div class="inrow"><span class="nu">1 clothing costs Norvik</span><input class="ni" id="oc4i" type="number" step="0.01" min="0" placeholder="?"><span class="nu">oranges</span><button class="chkb" id="oc4b" onclick="chkOC(\'oc4\')">Check &rarr;</button></div>'
+    +'<div class="fb" id="oc4fb"></div></div>'
+
+    +'<div class="cstep" id="q5step" style="display:none">'
+    +'<div class="cq">Q5: Who has <strong>comparative advantage in oranges</strong>? (The country with the <em>lower</em> opportunity cost of oranges.)</div>'
+    +'<div class="mopts" id="q5o">'
+    +'<div class="mo" onclick="s2q5(\'A\')">&#127749; Solara &mdash; OC of oranges = 0.33 clothing</div>'
+    +'<div class="mo" onclick="s2q5(\'B\')">&#127961; Norvik &mdash; OC of oranges = 1.0 clothing</div>'
+    +'</div><div class="fb" id="q5fb"></div></div>'
+    +'</div></div>'
+
+    +'<div class="rv" id="ocsumrv"><div class="rlbl">&#128202; Opportunity Cost Summary</div><div class="rtxt">'
+    +'<table class="pt" style="margin:.42rem 0"><thead><tr><th>Country</th><th>OC of 1 Orange</th><th>OC of 1 Clothing</th><th>Comp. Advantage</th></tr></thead>'
+    +'<tbody><tr class="sr"><td>&#127749; Solara</td><td class="val">0.33 clothing &larr; lower</td><td class="val">3 oranges</td><td style="color:var(--soll);font-weight:600">&#127818; Oranges</td></tr>'
+    +'<tr class="nr"><td>&#127961; Norvik</td><td class="val">1.0 clothing</td><td class="val">1 orange &larr; lower</td><td style="color:var(--norl);font-weight:600">&#128248; Clothing</td></tr></tbody></table>'
+    +'<strong>Ricardo\'s conclusion:</strong> Solara specialises in oranges; Norvik in clothing. Global output rises.'
+    +'<div class="etags"><span class="etag">Comparative Advantage</span><span class="etag">Opportunity Cost</span><span class="etag">Ricardo</span><span class="etag">Specialisation</span></div>'
+    +'</div></div>'
+
+    +'<div id="ppfsec" style="display:none"><div class="dv"></div>'
+    +'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.09em;color:var(--bluel);margin-bottom:.62rem">&#128200; Production Possibility Frontiers</div>'
+    +'<div class="ppfg">'
+    +'<div class="ppfw"><div class="ppft" style="color:var(--soll)">&#127749; Solara\'s PPF</div><canvas class="ppfc" id="ppfS" width="230" height="185"></canvas></div>'
+    +'<div class="ppfw"><div class="ppft" style="color:var(--norl)">&#127961; Norvik\'s PPF</div><canvas class="ppfc" id="ppfN" width="230" height="185"></canvas></div>'
+    +'<div class="ppfw"><div class="ppft" style="color:var(--goldl)">&#127757; Combined &mdash; Gain from Trade</div><canvas class="ppfc" id="ppfC" width="230" height="185"></canvas></div>'
+    +'</div>'
+    +'<p style="font-size:.74rem;color:var(--mut);text-align:center;margin-bottom:.85rem">The gold line shows the combined frontier after specialisation &mdash; both countries can consume beyond their individual PPFs.</p>'
+
+    +'<div class="cex" style="margin-top:0"><div class="celbl">&#129518; Step 2 &mdash; Calculate Gains from Specialisation</div><div class="csteps">'
+    +'<div class="cstep"><div class="cq"><strong>Before specialisation</strong> &mdash; each country splits 50 workers on each good:<br>'
+    +'<span style="font-size:.78rem;color:var(--mut)">Solara: 50&times;12 + 50&times;4 = 600 oranges + 200 clothing &nbsp;|&nbsp; Norvik: 50&times;6 + 50&times;6 = 300 oranges + 300 clothing</span></div>'
+    +'<div class="inrow" style="gap:.82rem;flex-wrap:wrap">'
+    +'<span class="nu">Total world oranges:</span><input class="ni" id="t1o" type="number" placeholder="?" style="width:78px">'
+    +'<span class="nu">Total world clothing:</span><input class="ni" id="t1c" type="number" placeholder="?" style="width:78px">'
+    +'<button class="chkb" id="t1b" onclick="chkT1()">Check &rarr;</button>'
+    +'</div><div class="fb" id="t1fb"></div></div>'
+    +'<div class="cstep" id="t2step" style="display:none">'
+    +'<div class="cq"><strong>After specialisation</strong> &mdash; Solara: all 100 workers on oranges; Norvik: all 100 on clothing.</div>'
+    +'<div class="inrow" style="gap:.82rem;flex-wrap:wrap">'
+    +'<span class="nu">Total world oranges:</span><input class="ni" id="t2o" type="number" placeholder="?" style="width:78px">'
+    +'<span class="nu">Total world clothing:</span><input class="ni" id="t2c" type="number" placeholder="?" style="width:78px">'
+    +'<button class="chkb" id="t2b" onclick="chkT2()">Check &rarr;</button>'
+    +'</div><div class="fb" id="t2fb"></div></div>'
+    +'</div></div></div>'
+
+    +'<div class="rv" id="s2rv"><div class="rlbl">&#128218; The Gain from Trade</div><div class="rtxt">'
+    +'<strong>Before specialisation:</strong> 900 oranges + 500 clothing globally.<br>'
+    +'<strong>After specialisation:</strong> 1,200 oranges + 600 clothing &mdash; <strong>+300 oranges and +100 clothing from the same resources</strong>.<br><br>'
+    +'As long as the <strong>terms of trade</strong> fall between 0.33 and 1 clothing per orange, both countries gain. This is the fundamental case for international trade.'
+    +'<div class="etags"><span class="etag">Gains from Trade</span><span class="etag">Terms of Trade</span><span class="etag">PPF</span><span class="etag">Specialisation &amp; Global Output</span></div></div></div>'
+    +'<div class="brow"><button class="btn bg" id="s2btn" style="display:none" onclick="goS3()">Proceed to Stage 3 &#8594;</button></div>'
+    +'</div></div>');
+  setTimeout(function(){ ['oc1','oc2','oc3','oc4'].forEach(initHint); },50);
+}
+
+// Init hints after S2 renders
+function initS2Hints(){
+  ['oc1','oc2','oc3','oc4'].forEach(function(id){initHint(id,OCA[id]?OCA[id].expl:'');});
+}
+
+function chkOC(id){
+  var inp=document.getElementById(id+'i');
+  var btn=document.getElementById(id+'b');
+  var val=parseFloat(inp.value);
+  var d=OCA[id];
+  var ok=!isNaN(val)&&Math.abs(val-d.ans)<=0.07;
+  inp.disabled=true; btn.disabled=true;
+  inp.classList.add(ok?'ok':'bad');
+  var hb=document.getElementById('hbtn_'+id);if(hb)hb.disabled=true;
+  var hw=document.getElementById('hwarn_'+id);if(hw)hw.classList.remove('show');
+  G.sc.calc+=ok?10:4;
+  showFB(id+'fb', ok, (ok?'':('Answer: '+d.disp+'. '))+d.expl);
+  s2oc++;
+  if(s2oc>=4) document.getElementById('q5step').style.display='block';
+  prog();
+}
+
+function s2q5(chosen){
+  lockMO('#q5o');
+  var ok=(chosen==='A');
+  document.querySelectorAll('#q5o .mo').forEach(function(el,i){
+    var key=['A','B'][i];
+    if(key==='A') el.classList.add(ok?'mok':'mrev');
+    if(key==='B'&&!ok) el.classList.add('mbad');
+  });
+  if(ok){
+    showFB('q5fb',true,'Solara\'s OC = 0.33 clothing per orange vs Norvik\'s 1.0. Solara gives up far less clothing to produce oranges &mdash; it has comparative advantage in oranges.');
+    G.sc.reason+=10;
+  } else {
+    showFB('q5fb',false,'Compare: Solara\'s OC = 0.33 clothing per orange, Norvik\'s OC = 1.0. The lower opportunity cost is Solara\'s &mdash; so Solara has comparative advantage in oranges.');
+  }
+  showRV('ocsumrv');
+  document.getElementById('ppfsec').style.display='block';
+  setTimeout(drawPPFs,250);
+  prog();
+}
+
+function chkT1(){
+  var o=parseInt(document.getElementById('t1o').value);
+  var c=parseInt(document.getElementById('t1c').value);
+  document.getElementById('t1o').disabled=true; document.getElementById('t1c').disabled=true;
+  document.getElementById('t1b').disabled=true;
+  var ok=(o===900&&c===500);
+  document.getElementById('t1o').classList.add(o===900?'ok':'bad');
+  document.getElementById('t1c').classList.add(c===500?'ok':'bad');
+  if(ok){showFB('t1fb',true,'900 oranges + 500 clothing. Now calculate post-specialisation output.');G.sc.calc+=5;}
+  else showFB('t1fb',false,'Solara: 50&times;12+50&times;4=600+200. Norvik: 50&times;6+50&times;6=300+300. Total: 900 oranges + 500 clothing.');
+  document.getElementById('t2step').style.display='block'; prog();
+}
+
+function chkT2(){
+  var o=parseInt(document.getElementById('t2o').value);
+  var c=parseInt(document.getElementById('t2c').value);
+  document.getElementById('t2o').disabled=true; document.getElementById('t2c').disabled=true;
+  document.getElementById('t2b').disabled=true;
+  var ok=(o===1200&&c===600);
+  document.getElementById('t2o').classList.add(o===1200?'ok':'bad');
+  document.getElementById('t2c').classList.add(c===600?'ok':'bad');
+  if(ok){showFB('t2fb',true,'1,200 oranges + 600 clothing &mdash; +300 oranges and +100 clothing from the same resources. This is the gain from trade!');G.sc.calc+=5;}
+  else showFB('t2fb',false,'Solara: 100&times;12=1,200 oranges. Norvik: 100&times;6=600 clothing. Total: 1,200 oranges + 600 clothing.');
+  showRV('s2rv');
+  document.getElementById('s2btn').style.display='inline-block';
+  G.ss.push(Math.round((G.sc.calc+G.sc.reason)/Math.max(1,G.mx.calc+G.mx.reason)*100));
+  G.sl.push('Stage 2: Comparative Advantage'); prog();
+}
+
+// PPF drawing
+function drawLine(id,maxO,maxC,hexCol,sC,sO,sLbl){
+  var cv=document.getElementById(id); if(!cv)return;
+  var ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  var P={t:20,r:14,b:34,l:40}; var iW=W-P.l-P.r,iH=H-P.t-P.b;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(255,255,255,.3)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(P.l,P.t); ctx.lineTo(P.l,P.t+iH); ctx.lineTo(P.l+iW,P.t+iH); ctx.stroke();
+  var X=function(c){return P.l+(c/maxC)*iW;}, Y=function(o){return P.t+iH-(o/maxO)*iH;};
+  ctx.beginPath(); ctx.moveTo(X(0),Y(maxO)); ctx.lineTo(X(maxC),Y(0));
+  ctx.strokeStyle=hexCol; ctx.lineWidth=2.5; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(X(0),Y(maxO)); ctx.lineTo(X(maxC),Y(0)); ctx.lineTo(X(0),Y(0)); ctx.closePath();
+  var rgb=hexCol==='#e67e22'?'230,126,34':'52,152,219';
+  var gr=ctx.createLinearGradient(P.l,P.t,P.l+iW,P.t+iH);
+  gr.addColorStop(0,'rgba('+rgb+',.18)'); gr.addColorStop(1,'rgba('+rgb+',0)');
+  ctx.fillStyle=gr; ctx.fill();
+  if(sC!==null){
+    ctx.beginPath(); ctx.arc(X(sC),Y(sO),4,0,Math.PI*2);
+    ctx.fillStyle=hexCol; ctx.fill(); ctx.strokeStyle='white'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.85)'; ctx.font='bold 8px IBM Plex Mono'; ctx.textAlign='center';
+    ctx.fillText(sLbl,X(sC),Y(sO)-8);
+  }
+  ctx.fillStyle='rgba(221,227,240,.45)'; ctx.font='8px IBM Plex Mono';
+  ctx.textAlign='right'; ctx.fillText(maxO,P.l-3,P.t+4); ctx.fillText('0',P.l-3,P.t+iH+4);
+  ctx.textAlign='center'; ctx.fillText(maxC,P.l+iW,P.t+iH+12);
+  ctx.fillText('Clothing',P.l+iW/2,H-1);
+  ctx.save(); ctx.translate(9,P.t+iH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Oranges',0,0); ctx.restore();
+}
+
+function drawCombined(){
+  var cv=document.getElementById('ppfC'); if(!cv)return;
+  var ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  var P={t:20,r:14,b:34,l:40}; var iW=W-P.l-P.r,iH=H-P.t-P.b;
+  var mO=1200,mC=600;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(255,255,255,.3)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(P.l,P.t); ctx.lineTo(P.l,P.t+iH); ctx.lineTo(P.l+iW,P.t+iH); ctx.stroke();
+  var X=function(c){return P.l+(c/mC)*iW;}, Y=function(o){return P.t+iH-(o/mO)*iH;};
+  // Before-trade kinked frontier (dashed)
+  ctx.beginPath(); ctx.setLineDash([4,4]); ctx.strokeStyle='rgba(255,255,255,.2)'; ctx.lineWidth=1.5;
+  ctx.moveTo(X(0),Y(900)); ctx.lineTo(X(400),Y(300)); ctx.lineTo(X(1000),Y(0));
+  ctx.stroke(); ctx.setLineDash([]);
+  // After-trade gold frontier
+  ctx.beginPath(); ctx.moveTo(X(0),Y(1200)); ctx.lineTo(X(600),Y(0));
+  ctx.strokeStyle='#c9a84c'; ctx.lineWidth=2.5; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(X(0),Y(1200)); ctx.lineTo(X(600),Y(0)); ctx.lineTo(X(0),Y(0)); ctx.closePath();
+  var gr=ctx.createLinearGradient(P.l,P.t,P.l+iW,P.t+iH);
+  gr.addColorStop(0,'rgba(201,168,76,.2)'); gr.addColorStop(1,'rgba(201,168,76,0)');
+  ctx.fillStyle=gr; ctx.fill();
+  ctx.font='bold 8px IBM Plex Mono'; ctx.textAlign='left';
+  ctx.fillStyle='rgba(201,168,76,.9)'; ctx.fillText('After specialisation',X(5),Y(1080));
+  ctx.fillStyle='rgba(255,255,255,.28)'; ctx.fillText('Before trade',X(5),Y(800));
+  ctx.fillStyle='rgba(221,227,240,.45)'; ctx.font='8px IBM Plex Mono';
+  ctx.textAlign='right'; ctx.fillText(mO,P.l-3,P.t+4); ctx.fillText('0',P.l-3,P.t+iH+4);
+  ctx.textAlign='center'; ctx.fillText(mC,P.l+iW,P.t+iH+12);
+  ctx.fillText('Clothing',P.l+iW/2,H-1);
+  ctx.save(); ctx.translate(9,P.t+iH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Oranges',0,0); ctx.restore();
+}
+
+function drawPPFs(){
+  drawLine('ppfS',1200,400,'#e67e22',0,1200,'Specialise');
+  drawLine('ppfN',600,600,'#3498db',600,0,'Specialise');
+  drawCombined();
+}
+
+// ── STAGE 3 ───────────────────────────────────────────
+var DYN={
+  d1:{ans:4/18, disp:'0.22', expl:'4&divide;18 = 0.22 clothing. Solara\'s OC of oranges has fallen (was 0.33) &mdash; oranges are now even cheaper relative to clothing.'},
+  d2:{ans:10/6, disp:'1.67', expl:'10&divide;6 = 1.67 clothing. Norvik\'s OC of oranges has risen sharply (was 1.0) &mdash; Norvik\'s clothing productivity grew so much that oranges now cost far more to produce.'}
+};
+
+function goS3(){
+  G.stage=3; G.mx.calc+=30; G.mx.reason+=10; prog();
+  page('<div class="card"><div class="cb">'
+    +'<div class="smeta"><span class="sbdg">Stage 3 / 5</span><span class="chip cs">&#127749; Solara</span><span class="chip cn">&#127961; Norvik</span></div>'
+    +'<div class="stit">Comparative Advantage Is Dynamic</div>'
+    +'<div class="brief"><div class="blbl">&#128194; Five Years Later &mdash; The World Has Changed</div>'
+    +'<p><strong>Norvik invested in clothing automation</strong> &mdash; productivity up 67%. <strong>Solara found a new irrigation technique</strong> &mdash; orange output up 50%. Has comparative advantage shifted?</p>'
+    +'<p>This illustrates a crucial point: <strong>comparative advantage is not fixed</strong> &mdash; it evolves with technology, investment, and resource discovery.</p>'
+    +'<p><em>Real-world parallel: China shifted from basic textiles in the 1980s to electronics by the 2010s. South Korea built world-leading shipbuilding from almost nothing in 30 years.</em></p></div>'
+    +'<table class="pt"><thead><tr><th>Country</th><th>&#127818; Oranges (per worker/day)</th><th>&#128248; Clothing (per worker/day)</th><th>Change</th></tr></thead>'
+    +'<tbody><tr class="sr"><td>&#127749; Solara</td><td class="val">18</td><td class="val">4</td><td style="color:var(--green);font-size:.77rem;font-family:\'IBM Plex Mono\',monospace">Oranges +50%</td></tr>'
+    +'<tr class="nr"><td>&#127961; Norvik</td><td class="val">6</td><td class="val">10</td><td style="color:var(--green);font-size:.77rem;font-family:\'IBM Plex Mono\',monospace">Clothing +67%</td></tr></tbody></table>'
+
+    +'<div class="cex"><div class="celbl">&#129518; Recalculate Opportunity Costs</div><div class="csteps">'
+    +'<div class="cstep"><div class="cq">New OC for <span class="chip cs" style="font-size:.62rem">&#127749; Solara</span>: 1 orange now costs how many clothing units?</div>'+hintHTML('d1','Solara now produces 18 oranges <em>or</em> 4 clothing per worker &mdash; so 1 orange costs 4&divide;18 clothing.')
+    +'<div class="inrow"><span class="nu">1 orange costs Solara</span><input class="ni" id="d1i" type="number" step="0.01" min="0" placeholder="?"><span class="nu">clothing</span><button class="chkb" id="d1b" onclick="chkDyn(\'d1\')">Check &rarr;</button></div>'
+    +'<div class="fb" id="d1fb"></div></div>'
+
+    +'<div class="cstep"><div class="cq">New OC for <span class="chip cn" style="font-size:.62rem">&#127961; Norvik</span>: 1 orange now costs how many clothing units?</div>'+hintHTML('d2','Norvik now produces 6 oranges <em>or</em> 10 clothing per worker &mdash; so 1 orange costs 10&divide;6 clothing.')
+    +'<div class="inrow"><span class="nu">1 orange costs Norvik</span><input class="ni" id="d2i" type="number" step="0.01" min="0" placeholder="?"><span class="nu">clothing</span><button class="chkb" id="d2b" onclick="chkDyn(\'d2\')">Check &rarr;</button></div>'
+    +'<div class="fb" id="d2fb"></div></div>'
+
+    +'<div class="cstep" id="d3step" style="display:none">'
+    +'<div class="cq"><strong>After full specialisation</strong> with new data &mdash; Solara: all 100 workers on oranges; Norvik: all 100 on clothing. New world output?</div>'
+    +'<div class="inrow" style="gap:.82rem;flex-wrap:wrap">'
+    +'<span class="nu">World oranges:</span><input class="ni" id="d3o" type="number" placeholder="?" style="width:78px">'
+    +'<span class="nu">World clothing:</span><input class="ni" id="d3c" type="number" placeholder="?" style="width:78px">'
+    +'<button class="chkb" id="d3b" onclick="chkD3()">Check &rarr;</button>'
+    +'</div><div class="fb" id="d3fb"></div></div>'
+
+    +'<div class="cstep" id="d4step" style="display:none">'
+    +'<div class="cq">Has the <strong>direction</strong> of comparative advantage changed? (Was: Solara&#8594;oranges, Norvik&#8594;clothing.)</div>'
+    +'<div class="mopts" id="d4o">'
+    +'<div class="mo" onclick="chkD4(\'A\')">No &mdash; same direction, but the advantage has widened</div>'
+    +'<div class="mo" onclick="chkD4(\'B\')">Yes &mdash; the new data reverses comparative advantage</div>'
+    +'<div class="mo" onclick="chkD4(\'C\')">No change at all &mdash; the shifts cancel out</div>'
+    +'</div><div class="fb" id="d4fb"></div></div>'
+    +'</div></div>'
+
+    +'<div class="rv" id="s3rv"><div class="rlbl">&#128218; Dynamic Comparative Advantage</div><div class="rtxt">'
+    +'<strong>New world output after specialisation:</strong> 1,800 oranges + 1,000 clothing &mdash; far more than the Stage 2 baseline of 1,200 + 600.<br><br>'
+    +'The advantage has <em>strengthened</em> here &mdash; but technology can reverse it entirely. South Korea, China, and India all shifted their comparative advantage through deliberate investment. Comparative advantage is not destiny.'
+    +'<div class="etags"><span class="etag">Dynamic Comparative Advantage</span><span class="etag">Technology &amp; Trade</span><span class="etag">Changing Trade Patterns</span></div></div></div>'
+    +'<div class="brow"><button class="btn bg" id="s3btn" style="display:none" onclick="goS4()">Proceed to Stage 4 &#8594;</button></div>'
+    +'</div></div>');
+  setTimeout(function(){ ['d1','d2'].forEach(initHint); },50);
+}
+
+function chkDyn(id){
+  var inp=document.getElementById(id+'i');
+  var btn=document.getElementById(id+'b');
+  var val=parseFloat(inp.value);
+  var d=DYN[id];
+  var ok=!isNaN(val)&&Math.abs(val-d.ans)<=0.08;
+  inp.disabled=true; btn.disabled=true;
+  inp.classList.add(ok?'ok':'bad');
+  var hb=document.getElementById('hbtn_'+id);if(hb)hb.disabled=true;
+  var hw=document.getElementById('hwarn_'+id);if(hw)hw.classList.remove('show');
+  G.sc.calc+=ok?10:4;
+  showFB(id+'fb', ok, (ok?'':('Answer: '+d.disp+'. '))+d.expl);
+  s3oc++;
+  if(s3oc>=2) document.getElementById('d3step').style.display='block';
+  prog();
+}
+
+function chkD3(){
+  var o=parseInt(document.getElementById('d3o').value);
+  var c=parseInt(document.getElementById('d3c').value);
+  document.getElementById('d3o').disabled=true; document.getElementById('d3c').disabled=true;
+  document.getElementById('d3b').disabled=true;
+  var ok=(o===1800&&c===1000);
+  document.getElementById('d3o').classList.add(o===1800?'ok':'bad');
+  document.getElementById('d3c').classList.add(c===1000?'ok':'bad');
+  if(ok){showFB('d3fb',true,'Solara: 100&times;18=1,800. Norvik: 100&times;10=1,000. A dramatic increase from Stage 2.');G.sc.calc+=10;}
+  else showFB('d3fb',false,'Solara: 100&times;18=1,800 oranges. Norvik: 100&times;10=1,000 clothing.');
+  s3tot=true;
+  document.getElementById('d4step').style.display='block'; prog();
+}
+
+function chkD4(chosen){
+  lockMO('#d4o');
+  var ok=(chosen==='A');
+  document.querySelectorAll('#d4o .mo').forEach(function(el,i){
+    var key=['A','B','C'][i];
+    if(key==='A') el.classList.add(ok?'mok':'mrev');
+    if(key===chosen&&!ok) el.classList.add('mbad');
+  });
+  var msg={
+    A:'Correct! Solara\'s OC of oranges is now 0.22 vs Norvik\'s 1.67 &mdash; same direction, but the gap has widened significantly.',
+    B:'The direction has not changed. Solara\'s OC (0.22) is still far lower than Norvik\'s (1.67). Same pattern of comparative advantage, just stronger.',
+    C:'The productivity changes have actually widened the gap. Solara\'s OC fell from 0.33 to 0.22; Norvik\'s rose from 1.0 to 1.67.'
+  };
+  showFB('d4fb', ok, msg[chosen]);
+  if(ok) G.sc.reason+=10;
+  showRV('s3rv');
+  document.getElementById('s3btn').style.display='inline-block';
+  G.ss.push(Math.round(G.sc.calc/Math.max(1,G.mx.calc)*100));
+  G.sl.push('Stage 3: Dynamic Change'); prog();
+}
+
+// ── STAGE 4 ───────────────────────────────────────────
+// All MCQ data in lookup — no string parsing
+var S4={
+  a1:{ correct:'A',
+       expl:{A:'Correct! Even though Norvik has the underlying comparative advantage in clothing, the 25% tariff makes Norvik clothing (&sect;12.50) more expensive than Vestia\'s (&sect;11). Solara switches to Vestia. This is the essence of <strong>trade diversion</strong>.',
+             B:'At &sect;12.50 (after tariff), Norvik clothing is more expensive than Vestia\'s &sect;11. Solara will switch to Vestia &mdash; the tariff overrides the underlying comparative advantage.'} },
+  a2:{ correct:'A',
+       expl:{A:'Correct! <strong>Trade diversion</strong>: trade shifts from the most efficient global producer (Norvik) to a less efficient bloc member (Vestia) due to tariff preferences. Global productive efficiency falls.',
+             B:'This is trade <em>diversion</em>, not creation. Trade creation occurs when a country shifts from expensive domestic production to cheaper bloc imports. Here, trade shifts from the cheapest global source (Norvik) to a less efficient bloc member (Vestia).'} },
+  b1:{ correct:'A',
+       expl:{A:'Correct! The gain from comparative advantage (&sect;2.67) is now less than the transport cost (&sect;3.20). Trade destroys value rather than creating it &mdash; Norvik should produce domestically until shipping costs fall.',
+             B:'Compare the numbers: the gain is &sect;2.67 per orange but shipping now costs &sect;3.20. The cost exceeds the gain &mdash; trade is now economically irrational for Norvik.'} },
+  c1:{ correct:'A',
+       expl:{A:'Correct! Even after 15% appreciation, &sect;11.50 is still cheaper than Solara\'s domestic production at &sect;13. The gains have narrowed from &sect;3.00 to &sect;1.50 per unit &mdash; but trade remains beneficial.',
+             B:'Although Norvik clothing is now more expensive (&sect;11.50 vs old &sect;10), it remains cheaper than Solara producing domestically (&sect;13). The gains have narrowed &mdash; but they still exist.'} }
+};
+
+function goS4(){
+  G.stage=4; G.mx.reason+=30; prog();
+  page('<div class="card"><div class="cb">'
+    +'<div class="smeta"><span class="sbdg">Stage 4 / 5</span><span class="chip cs">&#127749; Solara</span><span class="chip cn">&#127961; Norvik</span></div>'
+    +'<div class="stit">Real-World Disruptions</div>'
+    +'<div class="brief"><div class="blbl">&#128194; Emergency Briefing &mdash; Three Shocks Arrive Simultaneously</div>'
+    +'<p>Three disruptions have hit the Solara&ndash;Norvik trading relationship. Each challenges whether gains from comparative advantage still outweigh real-world costs. <strong>Answer all four questions to proceed.</strong></p></div>'
+
+    +'<div class="shdg">Disruption 4A &mdash; Trade Bloc</div>'
+    +'<div class="sp"><div class="splbl">&#9888; Political Shock</div><div class="sptxt">'
+    +'Solara joins the <strong>Southern Sunshine Trade Bloc (SSTB)</strong>. Norvik is not a member, so Solara imposes a <strong>25% tariff</strong> on Norvik clothing.<br><br>'
+    +'Norvik clothing: <strong>&sect;10/unit</strong> &rarr; after tariff: <strong>&sect;12.50/unit</strong>. Bloc member Vestia sells at <strong>&sect;11/unit</strong> tariff-free.</div></div>'
+    +'<div class="cex"><div class="celbl">&#10067; Trade Bloc Questions</div><div class="csteps">'
+    +'<div class="cstep"><div class="cq">4A-1: Who will Solara buy clothing from?</div>'
+    +'<div class="mopts" id="a1o">'
+    +'<div class="mo" onclick="s4ans(\'a1\',\'A\')">Vestia at &sect;11 (tariff-free bloc member)</div>'
+    +'<div class="mo" onclick="s4ans(\'a1\',\'B\')">Norvik at &sect;12.50 (despite the tariff)</div>'
+    +'</div><div class="fb" id="a1fb"></div></div>'
+    +'<div class="cstep" id="a2wrap" style="display:none"><div class="cq">4A-2: Is this outcome <strong>trade creation</strong> or <strong>trade diversion</strong>?</div>'
+    +'<div class="mopts" id="a2o">'
+    +'<div class="mo" onclick="s4ans(\'a2\',\'A\')">Trade diversion &mdash; inefficient globally</div>'
+    +'<div class="mo" onclick="s4ans(\'a2\',\'B\')">Trade creation &mdash; more efficient for Solara</div>'
+    +'</div><div class="fb" id="a2fb"></div></div>'
+    +'</div></div>'
+
+    +'<div class="dv"></div>'
+    +'<div class="shdg">Disruption 4B &mdash; Oil Crisis &amp; Transport Costs</div>'
+    +'<div class="sp"><div class="splbl">&#9888; Supply Shock</div><div class="sptxt">'
+    +'Conflict in the <strong>Gulf of Araxes</strong> sends shipping costs surging:<br><br>'
+    +'Old cost: <strong>&sect;0.50/orange</strong> &nbsp;&middot;&nbsp; New cost: <strong>&sect;3.20/orange</strong><br><br>'
+    +'Gain from Norvik importing oranges from Solara = &sect;6.67 &minus; &sect;4.00 = <strong>&sect;2.67 per orange</strong>.</div></div>'
+    +'<div class="cex"><div class="celbl">&#10067; Transport Cost Question</div><div class="csteps">'
+    +'<div class="cstep"><div class="cq">4B-1: The gain from comparative advantage is &sect;2.67/orange. Shipping now costs &sect;3.20/orange. Is trade still beneficial for Norvik?</div>'
+    +'<div class="mopts" id="b1o">'
+    +'<div class="mo" onclick="s4ans(\'b1\',\'A\')">No &mdash; shipping (&sect;3.20) now exceeds the gain (&sect;2.67)</div>'
+    +'<div class="mo" onclick="s4ans(\'b1\',\'B\')">Yes &mdash; comparative advantage still makes trade worthwhile</div>'
+    +'</div><div class="fb" id="b1fb"></div></div>'
+    +'</div></div>'
+
+    +'<div class="dv"></div>'
+    +'<div class="shdg">Disruption 4C &mdash; Exchange Rate Appreciation</div>'
+    +'<div class="sp"><div class="splbl">&#9888; Currency Shock</div><div class="sptxt">'
+    +'The <strong>Krone appreciates 15%</strong> against the Sol. Norvik clothing now costs 15% more in Sol terms.<br><br>'
+    +'Before: <strong>&sect;10/unit</strong> &nbsp;&middot;&nbsp; After: <strong>&sect;11.50/unit</strong><br>'
+    +'Solara domestic production: <strong>&sect;13/unit</strong>.</div></div>'
+    +'<div class="cex"><div class="celbl">&#10067; Exchange Rate Question</div><div class="csteps">'
+    +'<div class="cstep"><div class="cq">4C-1: Norvik clothing now costs &sect;11.50 vs Solara\'s domestic cost of &sect;13. Is it still worth importing?</div>'
+    +'<div class="mopts" id="c1o">'
+    +'<div class="mo" onclick="s4ans(\'c1\',\'A\')">Yes &mdash; &sect;11.50 is still cheaper than domestic at &sect;13</div>'
+    +'<div class="mo" onclick="s4ans(\'c1\',\'B\')">No &mdash; the appreciation makes trade uneconomical</div>'
+    +'</div><div class="fb" id="c1fb"></div></div>'
+    +'</div></div>'
+
+    +'<div class="rv" id="s4rv"><div class="rlbl">&#128218; Patterns of Trade &mdash; Key Insights</div><div class="rtxt">'
+    +'<strong>Trade creation vs diversion:</strong> Blocs create trade when shifting from expensive domestic to cheaper bloc imports; they divert it when shifting from the globally cheapest to a less efficient bloc member.<br><br>'
+    +'<strong>Transport costs:</strong> When shipping exceeds the comparative advantage gain (&sect;3.20 &gt; &sect;2.67), trade is economically irrational even where comparative advantage theoretically exists.<br><br>'
+    +'<strong>Exchange rates:</strong> Appreciation erodes competitiveness. As long as some comparative advantage remains after the price change, trade can still be beneficial &mdash; though gains narrow.'
+    +'<div class="etags"><span class="etag">Trade Creation</span><span class="etag">Trade Diversion</span><span class="etag">Transport Costs</span><span class="etag">Exchange Rate &amp; Trade</span><span class="etag">Trade Blocs</span></div></div></div>'
+    +'<div class="brow"><button class="btn bg" id="s4btn" style="display:none" onclick="goS5()">Proceed to Stage 5: The Limitations Courtroom &#8594;</button></div>'
+    +'</div></div>');
+}
+
+function s4ans(qid, chosen){
+  lockMO('#'+qid+'o');
+  var q=S4[qid];
+  var ok=(chosen===q.correct);
+  document.querySelectorAll('#'+qid+'o .mo').forEach(function(el,i){
+    var key=['A','B'][i];
+    if(key===q.correct) el.classList.add(ok&&chosen===key?'mok':'mrev');
+    if(key===chosen&&!ok) el.classList.add('mbad');
+  });
+  showFB(qid+'fb', ok, q.expl[chosen]);
+  if(ok) G.sc.reason+=5;
+  // Track per-question completion
+  s4[qid]=true;
+  if(qid==='a1') document.getElementById('a2wrap').style.display='block';
+  chkS4();
+  prog();
+}
+
+function chkS4(){
+  if(s4.a1&&s4.a2&&s4.b1&&s4.c1){
+    showRV('s4rv');
+    document.getElementById('s4btn').style.display='inline-block';
+    G.ss.push(Math.round(G.sc.reason/Math.max(1,G.mx.reason)*100));
+    G.sl.push('Stage 4: Real-World Disruptions');
+  }
+}
+
+// ── STAGE 5 ───────────────────────────────────────────
+var WIT=[
+  {id:'mills', av:'&#128105;&#8205;&#128204;', name:'Professor Mills', role:'Industrial Economics',
+   col:'rgba(74,127,181,.18)', lim:'Constant Returns to Scale',
+   stmt:'Solara\'s orange farms are approaching their <strong>optimal scale</strong>. Bringing inferior land into cultivation will push unit costs <em>up</em>, not down. Ricardo assumes <strong>constant returns to scale</strong>, but in practice firms experience diseconomies beyond the optimal point. Once costs rise, the case for further specialisation weakens.',
+   opts:['Destroys the case for trade','Significantly weakens it','Minor qualification only','Doesn\'t apply here'],
+   best:1, close:[2], bestPts:10, closePts:5,
+   expl:'<strong>Best: Significantly weakens it.</strong> Constant returns to scale is a real limitation &mdash; especially in agriculture where diminishing returns to land are well-documented. But comparative advantage may still exist with rising costs; it means there is an <em>optimal level</em> of specialisation, not complete specialisation. A key Edexcel evaluation point.'},
+  {id:'vasquez', av:'&#9875;', name:'Captain Vasquez', role:'International Shipping Federation',
+   col:'rgba(230,126,34,.15)', lim:'No Transport Costs',
+   stmt:'Shipping costs now stand at <strong>&sect;3.20 per orange</strong> &mdash; exceeding the &sect;2.67 comparative advantage gain. Ricardo assumes <strong>zero transport costs</strong>. As Stage 4 showed, this is not minor &mdash; in this scenario, it completely reverses the trade decision.',
+   opts:['Destroys the case for trade','Significantly weakens it','Minor qualification only','Doesn\'t apply here'],
+   best:1, close:[0], bestPts:10, closePts:5,
+   expl:'<strong>Best: Significantly weakens it</strong> (though "destroys the case" is defensible here where costs exceed gains). Transport costs must be weighed against comparative advantage gains. The theory doesn\'t fail &mdash; it must simply incorporate real shipping costs into the calculation.'},
+  {id:'chen', av:'&#127962;', name:'Ambassador Chen', role:'Trade Bloc Negotiator',
+   col:'rgba(139,26,46,.15)', lim:'No Trade Barriers',
+   stmt:'The theory assumes <strong>no tariffs or quotas</strong>. The 25% tariff in Stage 4 diverted trade from Norvik to less efficient Vestia. In reality, EU dairy tariffs can reach 30%; agricultural subsidies can effectively override comparative advantage entirely.',
+   opts:['Destroys the case for trade','Significantly weakens it','Minor qualification only','Doesn\'t apply here'],
+   best:1, close:[], bestPts:10, closePts:0,
+   expl:'<strong>Best: Significantly weakens it.</strong> Trade barriers are perhaps the most practically important limitation. Virtually all countries impose tariffs, and sectors like agriculture, steel, and textiles are often heavily protected. The theoretical case for free trade stands &mdash; but barriers frequently prevent comparative advantage from determining real trade patterns.'},
+  {id:'okafor', av:'&#128084;', name:'Dr Okafor', role:'Consumer Economics Institute',
+   col:'rgba(46,125,82,.15)', lim:'Homogeneous Goods',
+   stmt:'Ricardo assumes all clothing is identical. But consumers differentiate goods by quality, brand, and design &mdash; and may prefer Norvik clothing even at higher cost. This applies especially to manufactured goods and services. The <strong>homogeneous goods</strong> assumption describes commodities tolerably &mdash; but not most modern trade.',
+   opts:['Destroys the case for trade','Significantly weakens it','Minor qualification only','Doesn\'t apply here'],
+   best:2, close:[1], bestPts:10, closePts:5,
+   expl:'<strong>Best: Minor qualification only.</strong> Product differentiation often <em>increases</em> trade rather than reducing it &mdash; intra-industry trade (e.g., Germany and France both exporting and importing cars) is explained by scale economies and variety preferences. Differentiation does not weaken the gains from trade; it just means gains arise partly from variety, not only comparative advantage.'},
+  {id:'johansson', av:'&#127981;', name:'Minister Johansson', role:'Labour &amp; Employment Ministry',
+   col:'rgba(201,168,76,.1)', lim:'Factor Immobility',
+   stmt:'When Norvik specialises in clothing, the theory assumes orange-growing workers transition <em>seamlessly</em> to factories. In practice, <strong>labour is immobile</strong> geographically and occupationally. Retraining takes years; farms are rural, factories are urban. In the short run, specialisation creates <strong>structural unemployment</strong> in declining sectors.',
+   opts:['Destroys the case for trade','Significantly weakens it','Minor qualification only','Doesn\'t apply here'],
+   best:1, close:[2], bestPts:10, closePts:5,
+   expl:'<strong>Best: Significantly weakens it</strong> &mdash; particularly in the short run. The UK Midlands, the US Rust Belt, and former mining communities show that workers do not simply move from sunset to sunrise industries. Long-run gains may be real, but short-run adjustment costs are concentrated and politically significant. Active labour market policy is an essential complement to trade liberalisation.'}
+];
+
+function goS5(){
+  G.stage=5; G.mx.crit+=50; prog();
+  var whtml=WIT.map(function(w){
+    var vopts=w.opts.map(function(lbl,i){
+      return '<div class="vo" onclick="castV(\''+w.id+'\','+i+')">'+lbl+'</div>';
+    }).join('');
+    return '<div class="wcard" id="wc_'+w.id+'">'
+      +'<div class="whdr"><div class="wav" style="background:'+w.col+'">'+w.av+'</div>'
+      +'<div><div class="wname">'+w.name+'</div><div class="wrole">'+w.role+'</div></div>'
+      +'<div style="margin-left:auto"><span class="etag">'+w.lim+'</span></div></div>'
+      +'<div class="wstmt">'+w.stmt+'</div>'
+      +'<div class="vog" id="vog_'+w.id+'">'+vopts+'</div>'
+      +'<div class="vexp" id="ve_'+w.id+'"></div>'
+      +'</div>';
+  }).join('');
+
+  page('<div class="card"><div class="cb">'
+    +'<div class="smeta"><span class="sbdg">Stage 5 / 5</span></div>'
+    +'<div class="stit">The Limitations Courtroom</div>'
+    +'<div class="brief"><div class="blbl">&#127963; Courtroom Briefing</div>'
+    +'<p>Five expert witnesses challenge the assumptions of Ricardo\'s theory. As the presiding trade economist, assess each witness and deliver your verdict. Your verdict is scored against the Council\'s expert panel.</p></div>'
+    + whtml
+    +'<div class="rv" id="s5rv"><div class="rlbl">&#128218; Assumptions &amp; Limitations of Comparative Advantage</div><div class="rtxt">'
+    +'<strong>1. Constant returns to scale</strong> &mdash; costs often rise beyond an optimal production level.<br>'
+    +'<strong>2. No transport costs</strong> &mdash; shipping can negate trade gains, especially over long distances.<br>'
+    +'<strong>3. No trade barriers</strong> &mdash; tariffs, quotas and subsidies prevent comparative advantage from determining real trade patterns.<br>'
+    +'<strong>4. Homogeneous goods</strong> &mdash; most modern trade involves differentiated products; gains arise from variety and scale too.<br>'
+    +'<strong>5. Factor mobility</strong> &mdash; adjustment costs are real and politically significant.<br><br>'
+    +'None of these destroy the core insight: <em>countries gain from specialising where they have the lowest relative cost</em>. But they explain why real trade policy must go beyond Ricardo\'s model.'
+    +'<div class="etags"><span class="etag">Limitations of CA</span><span class="etag">Assumptions</span><span class="etag">Real-World Trade Policy</span><span class="etag">Edexcel Evaluation</span></div></div></div>'
+    +'<div class="brow"><button class="btn bg" id="s5btn" style="display:none" onclick="goResults()">View Final Assessment &#8594;</button></div>'
+    +'</div></div>');
+}
+
+function castV(wid, chosen){
+  lockVO('#vog_'+wid);
+  var w=WIT.find(function(x){return x.id===wid;});
+  var isOk=(chosen===w.best);
+  var isClose=(!isOk&&w.close.indexOf(chosen)!==-1);
+  var ptsEarned=isOk?w.bestPts:(isClose?w.closePts:0);
+  // Mark options
+  document.querySelectorAll('#vog_'+wid+' .vo').forEach(function(el,i){
+    if(i===w.best) el.classList.add(isOk?'vok':'vrv');
+    else if(i===chosen&&!isOk) el.classList.add(isClose?'vcl':'vbd');
+  });
+  var ve=document.getElementById('ve_'+wid);
+  var prefix=isOk?'<span style="color:var(--green)">&#10003; Correct verdict!</span>'
+    :isClose?'<span style="color:var(--goldl)">~ Partially correct.</span>'
+    :'<span style="color:var(--red)">&#10007; Not quite.</span>';
+  ve.innerHTML=prefix+' '+w.expl;
+  ve.classList.add('show');
+  G.wa[wid]={chosen:w.opts[chosen],correct:w.opts[w.best],pts:ptsEarned};
+  G.sc.crit+=ptsEarned;
+  document.getElementById('wc_'+wid).classList.add('done');
+  s5n++;
+  if(s5n>=WIT.length){
+    showRV('s5rv');
+    document.getElementById('s5btn').style.display='inline-block';
+    G.ss.push(Math.round(G.sc.crit/Math.max(1,G.mx.crit)*100));
+    G.sl.push('Stage 5: Limitations Courtroom');
+  }
+  prog();
+}
+
+// ── RESULTS ───────────────────────────────────────────
+function goResults(){
+  var cP=G.mx.calc>0?Math.round(G.sc.calc/G.mx.calc*100):0;
+  var rP=G.mx.reason>0?Math.round(G.sc.reason/G.mx.reason*100):0;
+  var crP=G.mx.crit>0?Math.round(G.sc.crit/G.mx.crit*100):0;
+  var ov=Math.round((cP+rP+crP)/3);
+  var rat,rc;
+  if(ov>=85){rat='Chief Trade Economist';rc='var(--green)';}
+  else if(ov>=70){rat='Senior Trade Negotiator';rc='var(--bluel)';}
+  else if(ov>=55){rat='Trade Analyst';rc='var(--goldl)';}
+  else if(ov>=40){rat='Junior Negotiator';rc='var(--orange)';}
+  else{rat='Trade Attach&#233; &mdash; Needs Development';rc='var(--red)';}
+
+  var shtml=G.sl.map(function(l,i){
+    var sc=G.ss[i]||0;
+    var cls=sc>=75?'pg':sc>=55?'pb':sc>=38?'po':'pr';
+    return '<div class="sri"><div class="srs">Stage '+(i+1)+'</div><div class="srt">'+l+'</div><span class="ssc '+cls+'">'+sc+'/100</span></div>';
+  }).join('');
+
+  page('<div class="card"><div class="cb">'
+    +'<div style="text-align:center;padding:1.3rem 0 .85rem">'
+    +'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.57rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-bottom:.62rem">UN Trade Council &mdash; Final Assessment</div>'
+    +'<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.85rem;font-weight:700;margin-bottom:.26rem">Trade Economist Report</div>'
+    +'<div style="font-family:\'Cormorant Garamond\',serif;font-size:1rem;font-style:italic;color:'+rc+';margin-bottom:1rem">Rating: '+rat+'</div>'
+    +'<div style="font-family:\'Cormorant Garamond\',serif;font-size:4.2rem;font-weight:700;color:var(--goldl);line-height:1">'+ov+'</div>'
+    +'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.62rem;color:var(--mut);margin-top:.22rem;margin-bottom:1.2rem">Overall Score / 100</div>'
+    +'</div>'
+    +'<div class="strio">'
+    +'<div class="sbox"><div class="sval" style="color:var(--goldl)">'+cP+'</div><div class="slbl">&#129518; Calculation Accuracy</div></div>'
+    +'<div class="sbox"><div class="sval" style="color:var(--bluel)">'+rP+'</div><div class="slbl">&#128161; Economic Reasoning</div></div>'
+    +'<div class="sbox"><div class="sval" style="color:var(--green)">'+crP+'</div><div class="slbl">&#128269; Critical Thinking</div></div>'
+    +'</div>'
+    +'<div class="aibox">'
+    +'<div class="aihdr"><div class="aiico">AI</div><div><div class="aitit">Personalised Tutor Feedback</div><div class="aisub">AI-generated &middot; Based on your performance across all five stages</div></div></div>'
+    +'<div id="aiFB"><div style="display:flex;align-items:center;gap:.62rem;padding:.42rem 0;color:var(--mut);font-size:.83rem"><div class="spin"></div> Analysing your performance&hellip;</div></div>'
+    +'</div>'
+    +'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.54rem;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);margin-bottom:.62rem">&#128197; Stage-by-Stage Review</div>'
+    +'<div class="srlist">'+shtml+'</div>'
+    +'<button class="btn bg bfull" onclick="restart()" style="margin-top:.32rem">&#8635; Restart The Trade Room</button>'
+    +'</div></div>');
+
+  getAI(ov,cP,rP,crP);
+}
+
+async function getAI(ov,cP,rP,crP){
+  var ws=Object.entries(G.wa).map(function(e){
+    return e[0]+': chose "'+e[1].chosen+'", correct "'+e[1].correct+'", scored '+e[1].pts+'/10';
+  }).join('\n');
+  var prompt='You are an A-Level Economics teacher at Wycombe Abbey. A student completed "The Trade Room" — an interactive simulation on comparative advantage and international trade.\n\n'
+    +'Performance: Calculation '+cP+'/100 · Reasoning '+rP+'/100 · Critical thinking '+crP+'/100 · Overall '+ov+'/100\n'
+    +'Hints used: '+G.hints+' (each cost 10 points from calculation score)\n\n'
+    +'Stage 5 courtroom verdicts:\n'+ws+'\n\n'
+    +'Write a personalised tutor assessment of approximately 280 words in three flowing paragraphs:\n'
+    +'1. What the student understood well — referencing specific concepts from the game.\n'
+    +'2. Areas to strengthen — referencing Edexcel Paper 2 topics.\n'
+    +'3. Exam preparation — 2-3 concrete revision suggestions mentioning Ricardo\'s model, opportunity cost calculations, and structuring evaluation in a 25-mark essay.\n\n'
+    +'Warm, professional teacher language. No bullet points. Do not open with I. Do not mention OpenAI or ChatGPT.';
+  try{
+    var res=await fetch('https://api.openai.com/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+API_KEY},
+      body:JSON.stringify({
+        model:'gpt-4o-mini',
+        max_tokens:900,
+        messages:[
+          {role:'system',content:'You are an experienced A-Level Economics teacher at Wycombe Abbey school.'},
+          {role:'user',content:prompt}
+        ]
+      })
+    });
+    var data=await res.json();
+    var text=(data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'';
+    var paras=text.split('\n').filter(function(p){return p.trim();});
+    document.getElementById('aiFB').innerHTML='<div class="abody">'+paras.map(function(p){return'<p>'+p+'</p>';}).join('')+'</div>';
+  }catch(e){
+    document.getElementById('aiFB').innerHTML='<div class="abody"><p>Your overall score of <strong>'+ov+'/100</strong> reflects '+(ov>=70?'a solid grasp of comparative advantage theory and its real-world applications.':'areas where further revision would strengthen your understanding — particularly opportunity cost calculations and the nuanced evaluation of Ricardo\'s assumptions.')+' Review your Edexcel Paper 2 notes on trade theory alongside this session.</p></div>';
+  }
+}
+
+function restart(){
+  G={stage:0,sc:{calc:0,reason:0,crit:0},mx:{calc:0,reason:0,crit:0},ss:[],sl:[],wa:{},hints:0};
+  s1n=0; s2oc=0; s3oc=0; s3tot=false;
+  s4={a1:false,a2:false,b1:false,c1:false}; s5n=0;
+  goIntro();
+}
+
+goIntro();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script>Auth.requireStudent('../login');</script>
+</body>
+</html>
