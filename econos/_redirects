@@ -1,0 +1,5 @@
+# Serve extensionless URLs from .html files (clean URLs)
+# The forced *.html → extensionless 301 has been removed to prevent
+# redirect loops and extra roundtrips on every internal navigation.
+# Internal links use clean URLs directly; this rule handles direct access.
+/*   /:splat.html   200

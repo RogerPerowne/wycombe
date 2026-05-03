@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>econOS – My Assignments</title>
+<link rel="stylesheet" href="../assets/css/econos.css">
+<style>
+.stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.75rem; }
+.stat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.25rem; box-shadow:var(--shadow-sm); }
+.stat-card .label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-muted); margin-bottom:0.375rem; }
+.stat-card .value { font-size:1.75rem; font-weight:900; color:var(--navy); letter-spacing:-0.03em; }
+.stat-card .sub   { font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; }
+.filter-tabs { display:flex; gap:0.5rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+.filter-tab { padding:0.375rem 0.875rem; border-radius:var(--r-full); font-size:0.8rem; font-weight:600; border:1.5px solid var(--border); background:var(--bg-card); color:var(--text-secondary); cursor:pointer; transition:all var(--t-fast); }
+.filter-tab.active { border-color:var(--land); background:var(--land-light); color:var(--land); }
+.assign-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.25rem 1.5rem; box-shadow:var(--shadow-sm); margin-bottom:1rem; display:flex; align-items:center; gap:1rem; transition:all var(--t-fast); }
+.assign-card:hover { box-shadow:var(--shadow-md); transform:translateY(-1px); }
+.assign-type-icon { width:44px; height:44px; border-radius:var(--r-md); display:flex; align-items:center; justify-content:center; font-size:1.25rem; flex-shrink:0; }
+.assign-body { flex:1; min-width:0; }
+.assign-body .title { font-size:0.9375rem; font-weight:700; color:var(--navy); margin-bottom:0.125rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.assign-body .meta  { font-size:0.775rem; color:var(--text-muted); }
+.assign-due { text-align:right; flex-shrink:0; }
+.assign-due .due-date { font-size:0.8rem; font-weight:600; color:var(--text-secondary); }
+.assign-due .due-date.urgent { color:#EF4444; }
+.assign-due .due-date.done   { color:var(--learn-dark); }
+.assign-actions { flex-shrink:0; }
+.empty-state { text-align:center; padding:3rem 1rem; }
+.empty-state .icon { font-size:3rem; margin-bottom:0.75rem; }
+.empty-state h3 { font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:0.375rem; }
+.empty-state p  { font-size:0.875rem; color:var(--text-muted); max-width:360px; margin:0 auto; }
+.skel { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+</style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/api.js"></script>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <header class="main-header">
+      <div class="header-title">
+        <div style="font-size:1.125rem;font-weight:700;color:var(--navy);">My Assignments</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);" id="assign-sub">Loading…</div>
+      </div>
+      <div class="header-actions">
+        <a href="settings"><div class="user-avatar" id="header-avatar">?</div></a>
+      </div>
+    </header>
+    <div class="page-body">
+      <div class="stats-row" id="stats-row">
+        <div class="stat-card"><div class="label">Due today</div><div class="value skel" style="height:40px;width:40px;"></div></div>
+        <div class="stat-card"><div class="label">Upcoming</div><div class="value skel" style="height:40px;width:40px;"></div></div>
+        <div class="stat-card"><div class="label">Completed</div><div class="value skel" style="height:40px;width:40px;"></div></div>
+        <div class="stat-card"><div class="label">Overdue</div><div class="value skel" style="height:40px;width:40px;"></div></div>
+      </div>
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="setFilter('all', this)">All</button>
+        <button class="filter-tab" onclick="setFilter('upcoming', this)">Upcoming</button>
+        <button class="filter-tab" onclick="setFilter('due-today', this)">Due today</button>
+        <button class="filter-tab" onclick="setFilter('completed', this)">Completed</button>
+        <button class="filter-tab" onclick="setFilter('overdue', this)">Overdue</button>
+      </div>
+      <div id="assign-list">
+        <div class="skel" style="height:74px;border-radius:var(--r-xl);margin-bottom:1rem;"></div>
+        <div class="skel" style="height:74px;border-radius:var(--r-xl);margin-bottom:1rem;"></div>
+        <div class="skel" style="height:74px;border-radius:var(--r-xl);"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/nav.js"></script>
+<script>
+let _allAssignments = [], _submissions = [], _currentFilter = 'all';
+const TYPE_ICONS = { learn:'📗', link:'🔗', land:'🎯', exam:'⏱', mixed:'📊' };
+const TYPE_BG    = { learn:'var(--learn-light)', link:'var(--link-light)', land:'var(--land-light)', exam:'#F3E8FF', mixed:'var(--bg-subtle)' };
+
+function setFilter(f, btn) {
+  _currentFilter = f;
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList();
+}
+
+function getStatus(a) {
+  if (_submissions.some(s => s.assignment_id === a.id)) return 'completed';
+  const diffDays = Math.floor((new Date(a.due_date) - new Date()) / 86400000);
+  if (diffDays < 0) return 'overdue';
+  if (diffDays === 0) return 'due-today';
+  return 'upcoming';
+}
+
+function renderList() {
+  const el = document.getElementById('assign-list');
+  let items = _currentFilter === 'all' ? _allAssignments : _allAssignments.filter(a => getStatus(a) === _currentFilter);
+  if (!items.length) {
+    el.innerHTML = `<div class="empty-state"><div class="icon">${_currentFilter === 'completed' ? '🏆' : '📋'}</div><h3>${_currentFilter === 'completed' ? 'No completed assignments yet' : 'No assignments here'}</h3><p>${_currentFilter === 'all' ? "Your teacher hasn't set any assignments yet." : 'Nothing to show for this filter.'}</p></div>`;
+    return;
+  }
+  el.innerHTML = items.map(a => {
+    const status = getStatus(a);
+    const icon = TYPE_ICONS[a.type] || '📋';
+    const bg   = TYPE_BG[a.type]   || 'var(--bg-subtle)';
+    const due  = API.formatDueDate(a.due_date);
+    const isUrgent = status === 'overdue' || status === 'due-today';
+    const isDone   = status === 'completed';
+    const teacher  = a.class?.teacher?.full_name ? ' · ' + a.class.teacher.full_name : '';
+    let pill = isDone ? '<span class="stage-pill pill-learn" style="font-size:0.65rem;">✓ Submitted</span>' : status === 'overdue' ? '<span class="stage-pill" style="background:#FEE2E2;color:#DC2626;font-size:0.65rem;">Overdue</span>' : status === 'due-today' ? '<span class="stage-pill pill-link" style="font-size:0.65rem;">Due today</span>' : '';
+    let actionBtn = !isDone && status !== 'overdue' ? `<a href="land" class="btn btn-primary btn-sm">Start →</a>` : !isDone ? `<a href="land" class="btn btn-danger btn-sm">Submit now</a>` : `<a href="land" class="btn btn-ghost btn-sm">Review</a>`;
+    return `<div class="assign-card"><div class="assign-type-icon" style="background:${bg};">${icon}</div><div class="assign-body"><div class="title">${a.title}</div><div class="meta">${a.class?.name || 'Unknown class'}${teacher}</div></div><div class="assign-due"><div class="due-date ${isUrgent?'urgent':''} ${isDone?'done':''}">${isDone ? '✓ Done' : (isUrgent?'⚠ ':'')+due}</div><div style="margin-top:0.25rem;">${pill}</div></div><div class="assign-actions">${actionBtn}</div></div>`;
+  }).join('');
+}
+
+async function init() {
+  const auth = await Auth.requireStudent();
+  if (!auth) return;
+  const { session, profile } = auth;
+  const userId = session.user.id;
+  const initials = (profile.full_name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  buildSidebar('assignments', 'student', { name: profile.full_name, initials, school: profile.school_name || '', yearGroup: profile.year_group || 'Year 12' });
+  document.getElementById('header-avatar').textContent = initials;
+  try {
+    const memberRes = await window._sb.from('class_memberships').select('class_id').eq('student_id', userId);
+    const classIds = memberRes.data?.map(r => r.class_id) || [];
+    const { data: allAssign } = classIds.length ? await window._sb.from('assignments').select('*, class:classes(id,name,teacher:profiles(full_name))').in('class_id', classIds) : { data: [] };
+    const { data: subs } = await window._sb.from('assignment_submissions').select('assignment_id').eq('student_id', userId);
+    _allAssignments = allAssign || [];
+    _submissions    = subs || [];
+    const today   = _allAssignments.filter(a => getStatus(a) === 'due-today').length;
+    const upcoming= _allAssignments.filter(a => getStatus(a) === 'upcoming').length;
+    const done    = _allAssignments.filter(a => getStatus(a) === 'completed').length;
+    const overdue = _allAssignments.filter(a => getStatus(a) === 'overdue').length;
+    document.getElementById('assign-sub').textContent = `${_allAssignments.length} assignment${_allAssignments.length !== 1 ? 's' : ''} total`;
+    document.getElementById('stats-row').innerHTML = `<div class="stat-card"><div class="label">Due today</div><div class="value" style="color:${today?'var(--link-dark)':'var(--navy)'}">${today}</div><div class="sub">${today ? "Don't forget!" : 'All clear'}</div></div><div class="stat-card"><div class="label">Upcoming</div><div class="value">${upcoming}</div><div class="sub">In the next 7 days</div></div><div class="stat-card"><div class="label">Completed</div><div class="value" style="color:var(--learn-dark)">${done}</div><div class="sub">Well done!</div></div><div class="stat-card"><div class="label">Overdue</div><div class="value" style="color:${overdue?'#EF4444':'var(--navy)'}">${overdue}</div><div class="sub">${overdue ? 'Needs attention' : 'None'}</div></div>`;
+    renderList();
+  } catch (err) {
+    console.error('[Assignments]', err);
+    document.getElementById('assign-list').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><h3>Error loading assignments</h3><p>Please refresh the page.</p></div>';
+  }
+}
+init();
+</script>
+</body>
+</html>

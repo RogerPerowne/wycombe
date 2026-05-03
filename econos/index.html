@@ -6,557 +6,324 @@
 <title>econOS – Master economics. Step by step.</title>
 <link rel="stylesheet" href="assets/css/econos.css">
 <style>
-/* ── HOMEPAGE SPECIFIC ── */
 body { background: #fff; }
+.container { max-width: 1440px; margin: 0 auto; padding: 0 2rem; }
 
-/* NAV */
-.nav {
+/* ── NAV ── */
+.site-nav {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(255,255,255,0.92);
+  background: rgba(255,255,255,0.95);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
 .nav-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
+  max-width: 1440px; margin: 0 auto; padding: 0 2rem;
+  height: 64px; display: flex; align-items: center; gap: 2rem;
 }
-.nav-links { display: flex; gap: 0.25rem; margin-left: auto; }
+.nav-logo { display: flex; align-items: flex-start; gap: 0.625rem; }
+.nav-logo-dots-svg { display:block; margin-top:2px; }
+.nav-logo-text { display: flex; flex-direction: column; }
+.nav-logo-wordmark {
+  font-size: 1.375rem; font-weight: 800; line-height: 1; letter-spacing: -0.02em; color: var(--navy);
+}
+.nav-logo-wordmark .os { color: var(--land); }
+.nav-logo-tagline {
+  font-size: 0.6875rem; font-weight: 500; color: var(--text-muted);
+  margin-top: 2px; letter-spacing: 0.01em;
+}
+.nav-links { display: flex; gap: 0.125rem; margin-left: auto; }
 .nav-link {
-  padding: 0.4rem 0.875rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  border-radius: var(--r-sm);
-  transition: all var(--t-fast);
+  padding: 0.375rem 0.875rem; font-size: 0.875rem; font-weight: 500;
+  color: var(--text-secondary); border-radius: var(--r-sm); transition: all var(--t-fast);
 }
 .nav-link:hover { background: var(--bg-subtle); color: var(--text-primary); }
-.nav-ctas { display: flex; align-items: center; gap: 0.625rem; margin-left: 1rem; }
+.nav-actions { display: flex; align-items: center; gap: 0.5rem; margin-left: 1.25rem; }
+.btn-nav-login {
+  padding: 0.4375rem 1rem; font-size: 0.875rem; font-weight: 600;
+  border: 1.5px solid var(--border); border-radius: var(--r-sm);
+  color: var(--text-primary); background: transparent; transition: all var(--t-fast);
+}
+.btn-nav-login:hover { border-color: var(--text-secondary); }
+.btn-nav-cta {
+  padding: 0.4375rem 1.125rem; font-size: 0.875rem; font-weight: 600;
+  background: var(--land); color: #fff; border-radius: var(--r-sm);
+  border: none; transition: all var(--t-fast);
+}
+.btn-nav-cta:hover { background: var(--land-dark); }
 
-/* HERO */
+/* ── HERO ── */
 .hero {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 5rem 2rem 4rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
+  max-width: 1440px; margin: 0 auto;
+  padding: 4.5rem 2rem 0;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3rem; align-items: stretch;
 }
-.hero-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--land-light);
-  color: var(--land);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.3rem 0.75rem;
-  border-radius: var(--r-full);
-  margin-bottom: 1.25rem;
+.hero-left { padding-top: 1.5rem; }
+.hero-h1 {
+  font-size: 3.375rem; font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.035em; color: var(--navy); margin-bottom: 1.125rem;
 }
-.hero h1 {
-  font-size: 3.25rem;
-  font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -0.03em;
-  color: var(--navy);
-  margin-bottom: 1.25rem;
-}
-.hero h1 .highlight-learn { color: var(--learn-dark); }
-.hero h1 .highlight-link  { color: var(--link-dark); }
-.hero h1 .highlight-land  { color: var(--land); }
+.hero-h1 .blue { color: var(--land); }
 .hero-sub {
-  font-size: 1.125rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-  margin-bottom: 2rem;
-  max-width: 440px;
+  font-size: 1.0625rem; color: var(--text-secondary);
+  line-height: 1.65; margin-bottom: 2rem; max-width: 420px;
 }
-.hero-ctas { display: flex; align-items: center; gap: 0.875rem; flex-wrap: wrap; }
+.hero-ctas { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.btn-hero-primary {
+  display: inline-flex; align-items: center; gap: 0.375rem;
+  padding: 0.75rem 1.5rem; font-size: 1rem; font-weight: 600;
+  background: var(--land); color: #fff; border-radius: var(--r-md);
+  border: none; transition: all var(--t-base);
+}
+.btn-hero-primary:hover { background: var(--land-dark); transform: translateY(-1px); }
+.btn-hero-ghost {
+  display: inline-flex; align-items: center; gap: 0.375rem;
+  padding: 0.75rem 0; font-size: 1rem; font-weight: 600;
+  color: var(--text-secondary); background: none; border: none;
+  transition: color var(--t-fast);
+}
+.btn-hero-ghost:hover { color: var(--text-primary); }
 .hero-trust {
-  margin-top: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  font-size: 0.8rem;
-  color: var(--text-muted);
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-top: 1.625rem; font-size: 0.8125rem; color: var(--text-muted);
 }
-.hero-trust .avatars { display: flex; }
-.hero-trust .avatar-sm {
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  background: var(--land);
-  border: 2px solid white;
-  margin-left: -6px;
-  font-size: 0.55rem;
-  font-weight: 700;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.hero-trust .avatar-sm:first-child { margin-left: 0; }
-.hero-trust .avatar-sm:nth-child(2) { background: var(--learn); }
-.hero-trust .avatar-sm:nth-child(3) { background: var(--link); color: var(--navy); }
-.hero-trust .avatar-sm:nth-child(4) { background: #7C3AED; }
-.hero-trust strong { color: var(--text-secondary); }
-
-/* HERO UI CARD */
-.hero-visual {
-  display: flex;
-  flex-direction: column;
-  gap: 0.875rem;
-}
-.ui-preview {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-xl);
-  overflow: hidden;
-}
-.ui-preview-header {
-  background: var(--bg-subtle);
-  border-bottom: 1px solid var(--border);
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.ui-preview-dots { display: flex; gap: 5px; }
-.ui-preview-dots span {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-}
-.ui-preview-dots .r { background: #FC615D; }
-.ui-preview-dots .y { background: #FDBC40; }
-.ui-preview-dots .g { background: #34CA4B; }
-.ui-preview-title {
-  flex: 1;
-  text-align: center;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-.ui-preview-body { padding: 1.25rem; }
-.ui-preview-body .trail { margin-bottom: 1rem; }
-.ui-chain-steps { display: flex; flex-direction: column; gap: 0.5rem; }
-.ui-chain-step {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding: 0.625rem 0.875rem;
-  background: var(--bg-subtle);
-  border-radius: var(--r-sm);
-  border: 1px solid var(--border);
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-}
-.ui-chain-step.active {
-  background: var(--learn-light);
-  border-color: var(--learn);
-  color: var(--learn-dark);
-  font-weight: 600;
-}
-.ui-chain-step .step-num {
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  background: var(--border);
-  font-size: 0.65rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.ui-chain-step.active .step-num {
-  background: var(--learn);
-  color: white;
-}
-.ui-chain-step .step-check {
-  margin-left: auto;
-  font-size: 0.7rem;
-  color: var(--learn-dark);
+.hero-trust-icon {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--learn-light); color: var(--learn-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; flex-shrink: 0;
 }
 
-.readiness-mini {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-md);
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+/* HERO RIGHT: photo + card */
+.hero-right { position: relative; overflow: hidden; min-height: 480px; padding-bottom: 0; }
+.hero-photo { position: absolute; inset: 0; }
+.hero-photo img {
+  width: 100%; height: 100%; display: block;
+  object-fit: cover; object-position: 50% 10%;
 }
-.readiness-donut {
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  background: conic-gradient(var(--learn) 0deg 172deg, var(--border) 172deg 360deg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  position: relative;
+.hero-photo-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #dce8f7 0%, #e4eef8 50%, #d0e5f5 100%);
+  color: var(--text-muted); font-size: 0.8rem;
 }
-.readiness-donut::after {
-  content: '';
-  position: absolute;
-  width: 36px; height: 36px;
-  background: var(--bg-card);
-  border-radius: 50%;
+.hero-progress-card {
+  position: absolute; bottom: 2rem; right: 1.5rem; z-index: 1;
+  background: #fff; border-radius: var(--r-xl);
+  box-shadow: 0 16px 48px rgba(15,23,42,0.12), 0 4px 12px rgba(15,23,42,0.06);
+  padding: 1.125rem 1.25rem; width: 280px;
 }
-.readiness-donut-label {
-  position: absolute;
-  z-index: 1;
-  font-size: 0.7rem;
-  font-weight: 800;
-  color: var(--navy);
+.hero-card-header {
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-bottom: 0.875rem;
 }
-.readiness-info h6 { font-size: 0.8rem; font-weight: 700; color: var(--navy); }
-.readiness-info p { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.375rem; }
-.mini-bars { display: flex; flex-direction: column; gap: 3px; }
-.mini-bar-row { display: flex; align-items: center; gap: 0.375rem; font-size: 0.65rem; color: var(--text-muted); }
-.mini-bar { height: 4px; border-radius: 2px; }
-
-.ai-feedback-mini {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-md);
-  padding: 0.875rem 1rem;
-  margin-left: 1.5rem;
+.hero-card-header-icon {
+  width: 28px; height: 28px; border-radius: var(--r-sm);
+  background: var(--land-light); color: var(--land);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.875rem;
 }
-.ai-feedback-mini .tag {
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--land);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+.hero-card-header-name {
+  font-size: 0.875rem; font-weight: 700; color: var(--navy);
+}
+.hero-card-progress-label {
+  display: flex; justify-content: space-between;
+  font-size: 0.75rem; font-weight: 500; color: var(--text-secondary);
   margin-bottom: 0.375rem;
 }
-.ai-feedback-mini p { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4; }
+.hero-card-progress-label span:last-child { font-weight: 700; color: var(--navy); }
+.hero-card-bar {
+  height: 8px; background: var(--bg-subtle); border-radius: 4px;
+  overflow: hidden; margin-bottom: 1rem;
+}
+.hero-card-bar-fill {
+  height: 100%; width: 67%; background: var(--land); border-radius: 4px;
+}
+.hero-card-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.5rem; }
+.hero-card-stat {
+  display: flex; flex-direction: column; gap: 0.25rem;
+  padding: 0.625rem 0.5rem; background: var(--bg-subtle);
+  border-radius: var(--r-sm); text-align: center;
+}
+.hero-card-stat-icon { font-size: 0.875rem; }
+.hero-card-stat-label { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; }
+.hero-card-stat-value {
+  font-size: 0.875rem; font-weight: 700; color: var(--navy); white-space: nowrap;
+}
 
-/* THREE STAGES SECTION */
-.stages-section {
-  background: var(--bg);
-  padding: 5rem 0;
+/* ── THREE PILLARS STRIP ── */
+.pillars-strip {
   border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  margin-top: 4rem;
 }
-.section-header { text-align: center; margin-bottom: 3rem; }
-.section-label {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 0.75rem;
+.pillars-inner {
+  max-width: 1440px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3,1fr);
 }
-.section-header h2 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.02em; color: var(--navy); }
-.section-header p { font-size: 1.0625rem; color: var(--text-secondary); margin-top: 0.75rem; max-width: 540px; margin-left: auto; margin-right: auto; }
+.pillar {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 2rem 2.5rem;
+  border-right: 1px solid var(--border);
+}
+.pillar:last-child { border-right: none; }
+.pillar-icon-wrap {
+  width: 44px; height: 44px; border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem; flex-shrink: 0;
+}
+.pillar.learn .pillar-icon-wrap { background: var(--learn-light); }
+.pillar.link  .pillar-icon-wrap { background: var(--link-light); }
+.pillar.land  .pillar-icon-wrap { background: var(--land-light); }
+.pillar-text h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem; }
+.pillar-text p  { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.55; }
 
-.stages-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
-.stage-card {
-  background: var(--bg-card);
-  border-radius: var(--r-xl);
-  border: 1px solid var(--border);
-  padding: 2rem;
-  box-shadow: var(--shadow-sm);
-  transition: all var(--t-base);
-  position: relative;
-  overflow: hidden;
+/* ── FEATURES SECTION ── */
+.features-section { background: #F8FAFC; padding: 5rem 0; }
+.features-layout {
+  display: grid; grid-template-columns: 1fr 2fr;
+  gap: 4rem; align-items: flex-start;
 }
-.stage-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-.stage-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 4px;
+.features-left h2 {
+  font-size: 1.875rem; font-weight: 800; letter-spacing: -0.025em;
+  color: var(--navy); margin-bottom: 0.875rem; line-height: 1.2;
 }
-.stage-card.learn::before { background: var(--learn); }
-.stage-card.link::before  { background: var(--link); }
-.stage-card.land::before  { background: var(--land); }
-.stage-icon-wrap {
-  width: 48px; height: 48px;
-  border-radius: var(--r-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.375rem;
-  margin-bottom: 1.25rem;
+.features-left p  { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 1.25rem; }
+.features-left-link {
+  font-size: 0.875rem; font-weight: 600; color: var(--land);
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  transition: gap var(--t-fast);
 }
-.stage-card.learn .stage-icon-wrap { background: var(--learn-light); }
-.stage-card.link  .stage-icon-wrap { background: var(--link-light); }
-.stage-card.land  .stage-icon-wrap { background: var(--land-light); }
-.stage-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.375rem; }
-.stage-card.learn h3 { color: var(--learn-dark); }
-.stage-card.link  h3 { color: var(--link-dark); }
-.stage-card.land  h3 { color: var(--land); }
-.stage-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem; }
-.stage-feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
-.stage-feature-list li {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-.stage-feature-list li .dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.stage-card.learn .dot { background: var(--learn); }
-.stage-card.link  .dot { background: var(--link); }
-.stage-card.land  .dot { background: var(--land); }
-
-/* FEATURES SECTION */
-.features-section { padding: 5rem 0; }
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
-  margin-top: 3rem;
-}
+.features-left-link:hover { gap: 0.5rem; }
+.features-cards { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
 .feature-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  transition: all var(--t-base);
+  background: #fff; border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 1.375rem;
+  box-shadow: var(--shadow-sm); transition: all var(--t-base);
 }
-.feature-card:hover { box-shadow: var(--shadow-md); border-color: var(--land-light); }
-.feature-icon {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+.feature-card:hover { box-shadow: var(--shadow-md); border-color: #BFDBFE; transform: translateY(-2px); }
+.feature-card-icon {
+  width: 40px; height: 40px; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.125rem; margin-bottom: 0.875rem;
 }
-.feature-card h4 { font-size: 0.9375rem; font-weight: 700; margin-bottom: 0.375rem; color: var(--navy); }
-.feature-card p  { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.55; }
+.feature-card:nth-child(1) .feature-card-icon { background: var(--learn-light); }
+.feature-card:nth-child(2) .feature-card-icon { background: var(--link-light); }
+.feature-card:nth-child(3) .feature-card-icon { background: var(--land-light); }
+.feature-card:nth-child(4) .feature-card-icon { background: #F3E8FF; }
+.feature-card h4 { font-size: 0.9375rem; font-weight: 700; color: var(--navy); margin-bottom: 0.375rem; }
+.feature-card p  { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 0.875rem; }
+.feature-card-link {
+  font-size: 0.8125rem; font-weight: 600; color: var(--land);
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  transition: gap var(--t-fast);
+}
+.feature-card-link:hover { gap: 0.5rem; }
 
-/* HOW IT WORKS */
-.how-section {
-  background: var(--navy);
-  padding: 5rem 0;
-  color: white;
+/* ── AUDIENCE SECTION ── */
+.audience-section { padding: 5rem 0; background: #fff; }
+.audience-header { text-align: center; margin-bottom: 3rem; }
+.audience-header h2 {
+  font-size: 2rem; font-weight: 800; letter-spacing: -0.025em;
+  color: var(--navy); margin-bottom: 0.625rem;
 }
-.how-section .section-header h2 { color: white; }
-.how-section .section-label { color: rgba(255,255,255,0.4); }
-.how-section .section-header p { color: rgba(255,255,255,0.6); }
-.how-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 3rem; position: relative; }
-.how-steps::before {
-  content: '';
-  position: absolute;
-  top: 24px;
-  left: calc(16.67% + 16px);
-  right: calc(16.67% + 16px);
-  height: 1px;
-  background: rgba(255,255,255,0.1);
+.audience-header p { font-size: 1rem; color: var(--text-secondary); }
+.audience-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.audience-card { border-radius: var(--r-xl); overflow: hidden; border: 1px solid var(--border); }
+.audience-photo-placeholder {
+  width: 100%; height: 200px;
+  display: flex; align-items: center; justify-content: center;
 }
-.how-step { text-align: center; }
-.how-step-num {
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.12);
-  color: white;
-  font-size: 1.125rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.25rem;
-  position: relative;
-  z-index: 1;
+.audience-photo-placeholder.students { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); }
+.audience-photo-placeholder.parents  { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); }
+.audience-photo-placeholder.teachers { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); }
+.audience-body { padding: 1.375rem; }
+.audience-label {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 1rem; font-weight: 700; color: var(--navy);
+  margin-bottom: 0.5rem;
 }
-.how-step-num.learn { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.3); color: var(--learn); }
-.how-step-num.link  { background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.3); color: var(--link); }
-.how-step-num.land  { background: rgba(37,99,235,0.15);  border-color: rgba(37,99,235,0.3);  color: #93C5FD; }
-.how-step h4 { font-size: 1.0625rem; font-weight: 700; margin-bottom: 0.5rem; }
-.how-step p  { font-size: 0.875rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+.audience-label-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.875rem;
+}
+.audience-card.students .audience-label-icon { background: var(--learn-light); }
+.audience-card.parents  .audience-label-icon { background: var(--link-light); }
+.audience-card.teachers .audience-label-icon { background: var(--land-light); }
+.audience-body p { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem; }
+.audience-cta {
+  font-size: 0.875rem; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  transition: gap var(--t-fast);
+}
+.audience-cta:hover { gap: 0.5rem; }
+.audience-card.students .audience-cta { color: var(--learn-dark); }
+.audience-card.parents  .audience-cta { color: var(--link-dark); }
+.audience-card.teachers .audience-cta { color: var(--land); }
 
-/* TEACHER SECTION */
-.teacher-section { padding: 5rem 0; }
-.teacher-split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-}
-.teacher-split .teacher-text h2 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; color: var(--navy); margin-bottom: 1rem; }
-.teacher-split .teacher-text p  { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; }
-.teacher-features { display: flex; flex-direction: column; gap: 1rem; }
-.teacher-feature {
-  display: flex;
-  gap: 0.875rem;
-  align-items: flex-start;
-}
-.teacher-feature-icon {
-  width: 36px; height: 36px;
-  border-radius: var(--r-sm);
-  background: var(--land-light);
-  color: var(--land);
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.teacher-feature h5 { font-size: 0.875rem; font-weight: 700; color: var(--navy); margin-bottom: 0.2rem; }
-.teacher-feature p  { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.55; }
-
-.teacher-card-stack { position: relative; }
-.teacher-dashboard-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-xl);
-  padding: 1.5rem;
-  overflow: hidden;
-}
-.teacher-dashboard-card .dash-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; }
-.teacher-dashboard-card h4 { font-size: 1rem; font-weight: 700; }
-.teacher-dashboard-card .dash-subtitle { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
-.class-rows { display: flex; flex-direction: column; gap: 0.625rem; }
-.class-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.625rem;
-  border-radius: var(--r-sm);
-  background: var(--bg-subtle);
-}
-.class-row .class-name { font-size: 0.8rem; font-weight: 600; flex: 1; }
-.class-row .class-score { font-size: 0.8rem; font-weight: 700; width: 36px; text-align: right; }
-.class-row-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
-.class-row-bar .f { height: 100%; border-radius: 3px; }
-.class-alert {
-  position: absolute;
-  bottom: -1rem; right: -1rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  padding: 0.75rem 1rem;
-  box-shadow: var(--shadow-lg);
-  font-size: 0.75rem;
-  max-width: 200px;
-}
-.class-alert .alert-label { font-weight: 700; color: #EF4444; font-size: 0.7rem; margin-bottom: 0.25rem; }
-.class-alert .alert-text { color: var(--text-secondary); }
-
-/* PRICING */
-.pricing-section { background: var(--bg); padding: 5rem 0; border-top: 1px solid var(--border); }
-.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3rem; max-width: 900px; margin-left: auto; margin-right: auto; }
-.pricing-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  padding: 2rem;
-  box-shadow: var(--shadow-sm);
-  position: relative;
-}
-.pricing-card.featured {
-  border-color: var(--land);
-  box-shadow: 0 0 0 1px var(--land), var(--shadow-lg);
-}
-.pricing-badge {
-  position: absolute;
-  top: -12px; left: 50%;
-  transform: translateX(-50%);
-  background: var(--land);
-  color: white;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 0.25rem 0.75rem;
-  border-radius: var(--r-full);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.pricing-plan { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 0.375rem; }
-.pricing-price { font-size: 2.5rem; font-weight: 800; color: var(--navy); line-height: 1; }
-.pricing-price span { font-size: 1rem; font-weight: 500; color: var(--text-muted); }
-.pricing-desc { font-size: 0.8rem; color: var(--text-secondary); margin: 0.5rem 0 1.5rem; }
-.pricing-features { list-style: none; display: flex; flex-direction: column; gap: 0.625rem; margin-bottom: 1.75rem; }
-.pricing-features li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--text-secondary); }
-.pricing-features li .check { color: var(--learn-dark); font-weight: 700; }
-.pricing-features li .cross { color: var(--text-muted); }
-
-/* CTA BANNER */
-.cta-section {
-  background: linear-gradient(135deg, var(--navy) 0%, #1E3A8A 100%);
-  padding: 5rem 0;
-  text-align: center;
-  color: white;
-}
-.cta-section h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
-.cta-section p { font-size: 1.125rem; color: rgba(255,255,255,0.65); margin-bottom: 2rem; }
-
-/* FOOTER */
-footer {
-  background: var(--navy);
-  color: rgba(255,255,255,0.5);
-  padding: 2.5rem 0;
-  border-top: 1px solid rgba(255,255,255,0.05);
+/* ── FOOTER ── */
+.site-footer {
+  background: var(--navy); padding: 2rem 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
 }
 .footer-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
+  max-width: 1440px; margin: 0 auto; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
 }
-.footer-logo .logo-wordmark { font-size: 1.125rem; }
-.footer-logo .logo-wordmark .econ { color: rgba(255,255,255,0.7); }
+.footer-logo-text { font-size: 1rem; font-weight: 800; color: rgba(255,255,255,0.8); }
+.footer-logo-text .os { color: #93C5FD; }
+.footer-tagline { font-size: 0.7rem; color: rgba(255,255,255,0.35); margin-top: 2px; }
 .footer-links { display: flex; gap: 1.5rem; }
 .footer-links a { font-size: 0.8rem; color: rgba(255,255,255,0.4); transition: color var(--t-fast); }
 .footer-links a:hover { color: rgba(255,255,255,0.7); }
-.footer-copy { font-size: 0.75rem; }
+.footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
 
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .features-cards { grid-template-columns: repeat(2,1fr); }
+}
 @media (max-width: 768px) {
-  .hero { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
-  .hero h1 { font-size: 2.25rem; }
-  .hero-visual { display: none; }
-  .stages-grid, .features-grid, .how-steps, .pricing-grid { grid-template-columns: 1fr; }
-  .teacher-split { grid-template-columns: 1fr; }
+  .hero { grid-template-columns: 1fr; padding: 3rem 1.5rem 0; gap: 2rem; }
+  .hero-h1 { font-size: 2.5rem; }
+  .hero-right { display: none; }
+  .pillars-inner { grid-template-columns: 1fr; }
+  .pillar { border-right: none; border-bottom: 1px solid var(--border); padding: 1.5rem; }
+  .pillar:last-child { border-bottom: none; }
+  .features-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .features-cards { grid-template-columns: 1fr 1fr; }
+  .audience-cards { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .pillars-strip { margin-top: 3rem; }
 }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav class="nav">
+<nav class="site-nav">
   <div class="nav-inner">
-    <!-- Logo -->
-    <a href="index.html" style="display:flex;align-items:center;gap:0.5rem;">
-      <div class="logo-dots">
-        <span class="d1"></span><span class="d2"></span><span class="d3"></span>
+    <a href="index.html" class="nav-logo">
+      <svg class="nav-logo-dots-svg" width="52" height="16" viewBox="0 0 52 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="5" y1="8" x2="43" y2="8" stroke="#CBD5E1" stroke-width="1.5"/><circle cx="5" cy="8" r="4.5" fill="#22C55E"/><circle cx="22" cy="8" r="5.5" fill="#F59E0B"/><circle cx="43" cy="8" r="7.5" fill="#2563EB"/></svg>
+      <div class="nav-logo-text">
+        <div class="nav-logo-wordmark">econ<span class="os">OS</span></div>
+        <div class="nav-logo-tagline"><span style="color:#16A34A;font-weight:600">Learn it.</span> <span style="color:#EA580C;font-weight:600">Link it.</span> <span style="color:#2563EB;font-weight:600">Land it.</span></div>
       </div>
-      <div class="logo-wordmark"><span class="econ">econ</span><span class="os">OS</span></div>
     </a>
 
     <div class="nav-links">
-      <a href="#how" class="nav-link">How it works</a>
+      <a href="#how-it-works" class="nav-link">How it works</a>
       <a href="#features" class="nav-link">Features</a>
       <a href="#pricing" class="nav-link">Pricing</a>
-      <a href="#teachers" class="nav-link">For teachers</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#resources" class="nav-link">Resources</a>
     </div>
 
-    <div class="nav-ctas">
-      <a href="login.html" class="btn btn-ghost btn-sm">Sign in</a>
-      <a href="login.html?mode=signup" class="btn btn-primary btn-sm">Start free</a>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-nav-login">Log in</a>
+      <a href="login.html?mode=signup" class="btn-nav-cta">Get started</a>
     </div>
   </div>
 </nav>
@@ -566,439 +333,241 @@ footer {
   <div class="hero">
     <!-- Left -->
     <div class="hero-left">
-      <div class="hero-eyebrow">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="currentColor" opacity=".2"/><circle cx="6" cy="6" r="2.5" fill="currentColor"/></svg>
-        A-Level Economics · Structured Learning
-      </div>
-      <h1>Master economics.<br>Step by step.</h1>
-      <p class="hero-sub">econOS is a structured learning system that turns understanding into exam success. Build knowledge, connect ideas, and write answers with real confidence.</p>
+      <h1 class="hero-h1">Master economics.<br><span class="blue">Step by step.</span></h1>
+      <p class="hero-sub">The structured learning system that helps A-level students build understanding, write stronger essays and achieve their best marks.</p>
       <div class="hero-ctas">
-        <a href="login.html?mode=signup" class="btn btn-primary btn-xl">Start learning free →</a>
-        <a href="#how" class="btn btn-ghost btn-lg">See how it works</a>
+        <a href="login.html?mode=signup" class="btn-hero-primary">
+          Start learning
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#how-it-works" class="btn-hero-ghost">
+          See how it works
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
       <div class="hero-trust">
-        <div class="avatars">
-          <div class="avatar-sm">AJ</div>
-          <div class="avatar-sm">SL</div>
-          <div class="avatar-sm">MK</div>
-          <div class="avatar-sm">RB</div>
+        <div class="hero-trust-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L2 3v3.5C2 9.1 3.8 11 6 11s4-1.9 4-4.5V3L6 1z" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/><path d="M4 6l1.5 1.5L8 4.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <span>Trusted by <strong>2,400+ students</strong> across 18 schools</span>
+        Trusted by students, parents and teachers
       </div>
     </div>
 
-    <!-- Right: UI preview -->
-    <div class="hero-visual">
-      <div class="ui-preview">
-        <div class="ui-preview-header">
-          <div class="ui-preview-dots">
-            <span class="r"></span><span class="y"></span><span class="g"></span>
-          </div>
-          <div class="ui-preview-title">econOS · Link it · Transmission chains</div>
-        </div>
-        <div class="ui-preview-body">
-          <div style="margin-bottom:0.875rem;">
-            <div class="stage-trail trail" style="margin-bottom:0.75rem;">
-              <div class="stage-node">
-                <div class="stage-circle done">1</div>
-                <div class="stage-node-label" style="margin-right:0.25rem;">Learn it</div>
-              </div>
-              <div class="stage-trail-line done-learn"></div>
-              <div class="stage-node">
-                <div class="stage-circle active-link">2</div>
-                <div class="stage-node-label active-link" style="margin-right:0.25rem;">Link it</div>
-              </div>
-              <div class="stage-trail-line"></div>
-              <div class="stage-node">
-                <div class="stage-circle">3</div>
-                <div class="stage-node-label">Land it</div>
-              </div>
-            </div>
-            <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:0.375rem;">Build the chain of reasoning</div>
-            <div style="font-size:0.7rem;color:var(--text-muted);">Arrange the steps in the correct order</div>
-          </div>
-          <div class="ui-chain-steps">
-            <div class="ui-chain-step active">
-              <div class="step-num">1</div>
-              <span>Central bank raises interest rates</span>
-              <span class="step-check">✓</span>
-            </div>
-            <div class="ui-chain-step active">
-              <div class="step-num">2</div>
-              <span>Borrowing costs for households increase</span>
-              <span class="step-check">✓</span>
-            </div>
-            <div class="ui-chain-step" style="border-style:dashed;background:var(--link-light);border-color:var(--link);">
-              <div class="step-num" style="background:var(--link);color:var(--navy);">3</div>
-              <span style="color:var(--link-dark);font-weight:600;">Drop here…</span>
-            </div>
-            <div class="ui-chain-step">
-              <div class="step-num">?</div>
-              <span style="color:var(--text-muted);">Consumer spending falls</span>
-            </div>
-            <div class="ui-chain-step">
-              <div class="step-num">?</div>
-              <span style="color:var(--text-muted);">AD shifts left → lower inflation</span>
-            </div>
-          </div>
-          <div style="margin-top:1rem;display:flex;gap:0.5rem;">
-            <div class="btn btn-secondary btn-sm" style="pointer-events:none;">← Previous</div>
-            <div class="btn btn-link-stage btn-sm" style="pointer-events:none;margin-left:auto;">Check my chain →</div>
-          </div>
+    <!-- Right: photo + floating card -->
+    <div class="hero-right">
+      <div class="hero-photo">
+        <img src="https://zefasbqhksjjusbooqga.supabase.co/storage/v1/object/public/Assets/student-hero.png"
+             alt="Student studying economics"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="hero-photo-placeholder" style="display:none;">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" opacity="0.3">
+            <circle cx="32" cy="20" r="10" stroke="#0F172A" stroke-width="2.5"/>
+            <path d="M12 54c0-11 8.95-20 20-20s20 8.95 20 20" stroke="#0F172A" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
         </div>
       </div>
-
-      <div style="display:flex;gap:0.875rem;align-items:flex-start;">
-        <div class="readiness-mini" style="flex:1;">
-          <div class="readiness-donut">
-            <div class="readiness-donut-label">68%</div>
+      <div class="hero-progress-card">
+        <div class="hero-card-header">
+          <div class="hero-card-header-icon">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 12l4-4 3 3 5-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <div class="readiness-info">
-            <h6>Exam readiness</h6>
-            <p>3 weeks to your exam</p>
-            <div class="mini-bars">
-              <div class="mini-bar-row">
-                <div class="mini-bar fill-learn" style="width:72px;"></div>
-                <span>Learn 72%</span>
-              </div>
-              <div class="mini-bar-row">
-                <div class="mini-bar fill-link" style="width:56px;"></div>
-                <span>Link 61%</span>
-              </div>
-              <div class="mini-bar-row">
-                <div class="mini-bar fill-land" style="width:64px;"></div>
-                <span>Land 70%</span>
-              </div>
-            </div>
-          </div>
+          <span class="hero-card-header-name">Keep going, Alex</span>
         </div>
-
-        <div class="ai-feedback-mini">
-          <div class="tag">AI Feedback</div>
-          <p><strong style="color:var(--learn-dark);">Strong chain ✓</strong><br>Good use of AD model.<br>Add size/persistence for<br>full evaluation marks.</p>
+        <div class="hero-card-progress-label">
+          <span>Overall progress</span>
+          <span>67%</span>
+        </div>
+        <div class="hero-card-bar">
+          <div class="hero-card-bar-fill"></div>
+        </div>
+        <div class="hero-card-stats">
+          <div class="hero-card-stat">
+            <span class="hero-card-stat-icon">📗</span>
+            <span class="hero-card-stat-label">Topics</span>
+            <span class="hero-card-stat-value">24/36</span>
+          </div>
+          <div class="hero-card-stat">
+            <span class="hero-card-stat-icon">✏️</span>
+            <span class="hero-card-stat-label">Practice</span>
+            <span class="hero-card-stat-value">18/25</span>
+          </div>
+          <div class="hero-card-stat">
+            <span class="hero-card-stat-icon">📄</span>
+            <span class="hero-card-stat-label">Essays</span>
+            <span class="hero-card-stat-value">12/15</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- THREE STAGES -->
-<section class="stages-section" id="how">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-label">The econOS method</div>
-      <h2>Three stages. One system.</h2>
-      <p>Every topic in A-Level Economics follows the same clear progression. Build understanding, connect ideas, then write exam-ready answers.</p>
-    </div>
-
-    <div class="stages-grid">
-      <!-- Learn it -->
-      <div class="stage-card learn">
-        <div class="stage-icon-wrap">📗</div>
+<!-- THREE PILLARS STRIP -->
+<div class="pillars-strip">
+  <div class="pillars-inner">
+    <div class="pillar learn">
+      <div class="pillar-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      </div>
+      <div class="pillar-text">
         <h3>Learn it</h3>
-        <p>Build knowledge and understanding from the ground up. Clear explanations, key diagrams, and knowledge checks that actually stick.</p>
-        <ul class="stage-feature-list">
-          <li><span class="dot"></span>Structured topic cards</li>
-          <li><span class="dot"></span>Diagram walkthroughs</li>
-          <li><span class="dot"></span>Instant knowledge checks</li>
-          <li><span class="dot"></span>Keyword definitions</li>
-        </ul>
+        <p>Clear explanations that build strong foundations.</p>
       </div>
-
-      <!-- Link it -->
-      <div class="stage-card link">
-        <div class="stage-icon-wrap">🔗</div>
+    </div>
+    <div class="pillar link">
+      <div class="pillar-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+      </div>
+      <div class="pillar-text">
         <h3>Link it</h3>
-        <p>Connect ideas and build chains of economic reasoning. The chain builder teaches you to see how concepts flow together — and spot the gaps.</p>
-        <ul class="stage-feature-list">
-          <li><span class="dot"></span>Interactive chain builder</li>
-          <li><span class="dot"></span>Spot the imposter mechanic</li>
-          <li><span class="dot"></span>Cause-and-effect paths</li>
-          <li><span class="dot"></span>Instant chain feedback</li>
-        </ul>
+        <p>Connect ideas and concepts with confidence.</p>
       </div>
-
-      <!-- Land it -->
-      <div class="stage-card land">
-        <div class="stage-icon-wrap">🎯</div>
+    </div>
+    <div class="pillar land">
+      <div class="pillar-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      </div>
+      <div class="pillar-text">
         <h3>Land it</h3>
-        <p>Apply your reasoning and write exam-ready answers with impact. AI feedback shows you exactly where marks are won — and lost.</p>
-        <ul class="stage-feature-list">
-          <li><span class="dot"></span>Essay writing environment</li>
-          <li><span class="dot"></span>AI mark-scheme feedback</li>
-          <li><span class="dot"></span>AO breakdown scoring</li>
-          <li><span class="dot"></span>Model answer comparison</li>
-        </ul>
+        <p>Apply your knowledge and land the marks.</p>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- FEATURES -->
+<!-- FEATURES SECTION -->
 <section class="features-section" id="features">
   <div class="container">
-    <div class="section-header">
-      <div class="section-label">Everything you need</div>
-      <h2>Built for exam performance</h2>
-      <p>Every feature is designed to close the gap between what you know and what you can write under pressure.</p>
-    </div>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🗺️</div>
-        <h4>Topic Map</h4>
-        <p>See all topics at a glance. Track your progress through every area of the syllabus with clear status indicators.</p>
+    <div class="features-layout">
+      <div class="features-left">
+        <h2>Everything you need to succeed</h2>
+        <p>Expert content, smart practice and personalised feedback – all in one place.</p>
+        <a href="#" class="features-left-link">
+          Explore all features
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🎯</div>
-        <h4>Spot the Flaw Arena</h4>
-        <p>Identify the best exam answer and explain what's wrong with the others. Sharpens your evaluative thinking.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h4>Exam Mode</h4>
-        <p>Timed practice under realistic exam conditions. Smart question selection targets your weakest areas first.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🃏</div>
-        <h4>Flashcards</h4>
-        <p>Spaced repetition for key terms, definitions, and diagrams. Effortlessly move knowledge into long-term memory.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <h4>Progress Tracking</h4>
-        <p>Know exactly where you stand. Stage-by-stage readiness scores show you where to focus your revision time.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📋</div>
-        <h4>Assignments</h4>
-        <p>Complete teacher-set homework in a structured environment. All activity tracked and reported automatically.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🤖</div>
-        <h4>AI Feedback</h4>
-        <p>Every essay and chain attempt gets instant, specific feedback tied to the mark scheme — not generic comments.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔥</div>
-        <h4>Daily Streaks</h4>
-        <p>Build consistent study habits with daily streak tracking. Regular short sessions outperform last-minute cramming every time.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section class="how-section">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-label">Simple. Structured. Proven.</div>
-      <h2>How econOS works</h2>
-      <p>A three-stage learning cycle that mirrors how top exam answers are constructed.</p>
-    </div>
-    <div class="how-steps">
-      <div class="how-step">
-        <div class="how-step-num learn">1</div>
-        <h4>Learn the concept</h4>
-        <p>Read clear, concise explanations with key diagrams and terminology. Quick checks confirm your understanding before moving on.</p>
-      </div>
-      <div class="how-step">
-        <div class="how-step-num link">2</div>
-        <h4>Build the chain</h4>
-        <p>Use the interactive chain builder to connect causes and effects. The imposter mechanic forces you to think critically about each step.</p>
-      </div>
-      <div class="how-step">
-        <div class="how-step-num land">3</div>
-        <h4>Write with confidence</h4>
-        <p>Practise under exam conditions with AI feedback that tells you exactly what the examiner wants — and how close you are.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TEACHER SECTION -->
-<section class="teacher-section" id="teachers">
-  <div class="container">
-    <div class="teacher-split">
-      <div class="teacher-text">
-        <div class="section-label" style="display:block;margin-bottom:0.75rem;">For teachers</div>
-        <h2>Give your classes a structured revision system that actually works.</h2>
-        <p>Set assignments, monitor class progress, and identify exactly which students need support — all from one clean dashboard. No more chasing homework or guessing who's struggling.</p>
-        <div class="teacher-features">
-          <div class="teacher-feature">
-            <div class="teacher-feature-icon">📝</div>
-            <div>
-              <h5>Assignment builder</h5>
-              <p>Create structured homework in minutes. Choose topics, select Learn/Link/Land stages, and set a deadline.</p>
-            </div>
+      <div class="features-cards">
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
           </div>
-          <div class="teacher-feature">
-            <div class="teacher-feature-icon">📈</div>
-            <div>
-              <h5>Class insights</h5>
-              <p>See completion rates, average scores, and weakest topics across all your classes in real time.</p>
-            </div>
-          </div>
-          <div class="teacher-feature">
-            <div class="teacher-feature-icon">⚠️</div>
-            <div>
-              <h5>Early warning</h5>
-              <p>Students flagged as needing support are surfaced automatically — before they fall behind.</p>
-            </div>
-          </div>
+          <h4>Topic learning</h4>
+          <p>Concise lessons that make complex ideas simple.</p>
+          <a href="student/learn.html" class="feature-card-link">Learn more <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
-        <div style="margin-top:2rem;">
-          <a href="login.html?role=teacher" class="btn btn-primary btn-lg">Get started for free →</a>
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <h4>Practice questions</h4>
+          <p>Exam-style questions with step-by-step worked solutions.</p>
+          <a href="student/exam-mode.html" class="feature-card-link">Learn more <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
-      </div>
-
-      <div class="teacher-card-stack">
-        <div class="teacher-dashboard-card">
-          <div class="dash-header">
-            <div>
-              <h4>Class overview</h4>
-              <div class="dash-subtitle">Week ending 26 Apr 2024</div>
-            </div>
-            <a href="teacher/dashboard.html" class="btn btn-ghost btn-sm">View all</a>
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           </div>
-          <div class="class-rows">
-            <div class="class-row">
-              <span class="class-name">Year 12 Eco (A)</span>
-              <div class="class-row-bar"><div class="f fill-learn" style="width:82%;"></div></div>
-              <span class="class-score" style="color:var(--learn-dark);">82%</span>
-            </div>
-            <div class="class-row">
-              <span class="class-name">Year 12 Eco (B)</span>
-              <div class="class-row-bar"><div class="f fill-link" style="width:75%;"></div></div>
-              <span class="class-score" style="color:var(--link-dark);">75%</span>
-            </div>
-            <div class="class-row">
-              <span class="class-name">Year 13 Eco (A)</span>
-              <div class="class-row-bar"><div class="f fill-land" style="width:80%;"></div></div>
-              <span class="class-score" style="color:var(--land);">80%</span>
-            </div>
-            <div class="class-row">
-              <span class="class-name">Year 13 Eco (B)</span>
-              <div class="class-row-bar"><div class="f fill-learn" style="width:74%;"></div></div>
-              <span class="class-score" style="color:var(--learn-dark);">74%</span>
-            </div>
-          </div>
-          <div style="margin-top:1rem;border-top:1px solid var(--border);padding-top:0.875rem;display:flex;gap:1.5rem;">
-            <div>
-              <div class="metric-label" style="font-size:0.65rem;">Students</div>
-              <div style="font-size:1.125rem;font-weight:800;color:var(--navy);">112</div>
-            </div>
-            <div>
-              <div class="metric-label" style="font-size:0.65rem;">Active this week</div>
-              <div style="font-size:1.125rem;font-weight:800;color:var(--learn-dark);">94%</div>
-            </div>
-            <div>
-              <div class="metric-label" style="font-size:0.65rem;">Need support</div>
-              <div style="font-size:1.125rem;font-weight:800;color:#EF4444;">17</div>
-            </div>
-          </div>
+          <h4>Essay practice</h4>
+          <p>Plan, write and refine essays with expert feedback.</p>
+          <a href="student/land.html" class="feature-card-link">Learn more <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
-        <div class="class-alert">
-          <div class="alert-label">⚠ Needs attention</div>
-          <div class="alert-text">3 students in Yr 13 (B) haven't started this week's assignment</div>
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h4>Progress tracking</h4>
+          <p>See your progress and focus on what matters most.</p>
+          <a href="student/dashboard.html" class="feature-card-link">Learn more <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
-<section class="pricing-section" id="pricing">
+<!-- BUILT FOR EVERYONE -->
+<section class="audience-section">
   <div class="container">
-    <div class="section-header">
-      <div class="section-label">Pricing</div>
-      <h2>Simple, transparent pricing</h2>
-      <p>For individual students and whole departments. No hidden fees.</p>
+    <div class="audience-header">
+      <h2>Built for everyone in the learning journey</h2>
+      <p>Students, parents and teachers – all working towards better results.</p>
     </div>
+    <div class="audience-cards">
 
-    <div class="pricing-grid">
-      <div class="pricing-card">
-        <div class="pricing-plan">Student Free</div>
-        <div class="pricing-price">£0<span>/month</span></div>
-        <div class="pricing-desc">Everything you need to get started.</div>
-        <ul class="pricing-features">
-          <li><span class="check">✓</span> 3 topics per theme</li>
-          <li><span class="check">✓</span> Learn it + Link it</li>
-          <li><span class="check">✓</span> Basic progress tracking</li>
-          <li><span class="check">✓</span> 5 essay submissions/month</li>
-          <li><span class="cross">–</span> <span style="color:var(--text-muted);">Exam Mode Pro</span></li>
-          <li><span class="cross">–</span> <span style="color:var(--text-muted);">Advanced analytics</span></li>
-        </ul>
-        <a href="login.html?mode=signup" class="btn btn-secondary" style="width:100%;">Start free</a>
+      <div class="audience-card students">
+        <div class="audience-photo-placeholder students">
+          <svg width="72" height="72" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="26" r="14" stroke="#16A34A" stroke-width="2.5"/><path d="M14 70c0-14.36 11.64-26 26-26s26 11.64 26 26" stroke="#16A34A" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="audience-body">
+          <div class="audience-label">
+            <div class="audience-label-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#16A34A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.31 2.69-6 6-6s6 2.69 6 6"/></svg>
+            </div>
+            For students
+          </div>
+          <p>Learn smarter, stay organised and achieve your goals.</p>
+          <a href="login.html?mode=signup" class="audience-cta">
+            Get started
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
       </div>
 
-      <div class="pricing-card featured">
-        <div class="pricing-badge">Most popular</div>
-        <div class="pricing-plan">Student Pro</div>
-        <div class="pricing-price">£8<span>/month</span></div>
-        <div class="pricing-desc">Full access for serious revision.</div>
-        <ul class="pricing-features">
-          <li><span class="check">✓</span> All topics, all themes</li>
-          <li><span class="check">✓</span> Learn + Link + Land it</li>
-          <li><span class="check">✓</span> Unlimited essay submissions</li>
-          <li><span class="check">✓</span> Exam Mode + Spot the Flaw</li>
-          <li><span class="check">✓</span> Full progress analytics</li>
-          <li><span class="check">✓</span> Priority AI feedback</li>
-        </ul>
-        <a href="login.html?mode=signup&plan=pro" class="btn btn-primary" style="width:100%;">Get Student Pro</a>
+      <div class="audience-card parents">
+        <div class="audience-photo-placeholder parents">
+          <svg width="72" height="72" viewBox="0 0 80 80" fill="none"><circle cx="30" cy="24" r="11" stroke="#D97706" stroke-width="2.5"/><circle cx="54" cy="20" r="9" stroke="#D97706" stroke-width="2.5"/><path d="M8 68c0-12.15 9.85-22 22-22s22 9.85 22 22" stroke="#D97706" stroke-width="2.5" stroke-linecap="round"/><path d="M46 68c0-7.18 5.37-13.11 12.5-13.84" stroke="#D97706" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="audience-body">
+          <div class="audience-label">
+            <div class="audience-label-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#D97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11 14v-1.33A2.67 2.67 0 008.33 10H4a2.67 2.67 0 00-2.67 2.67V14"/><circle cx="6.17" cy="5.5" r="2.5"/><path d="M14 14v-1.33a2.67 2.67 0 00-2-2.58"/><path d="M10.67 3.09a2.5 2.5 0 010 4.84"/></svg>
+            </div>
+            For parents
+          </div>
+          <p>Support with confidence and see real progress every step of the way.</p>
+          <a href="login.html?mode=signup&role=parent" class="audience-cta">
+            Learn more
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
       </div>
 
-      <div class="pricing-card">
-        <div class="pricing-plan">School</div>
-        <div class="pricing-price">£4<span>/student</span></div>
-        <div class="pricing-desc">For departments. Minimum 20 students.</div>
-        <ul class="pricing-features">
-          <li><span class="check">✓</span> Everything in Student Pro</li>
-          <li><span class="check">✓</span> Teacher dashboard</li>
-          <li><span class="check">✓</span> Assignment builder</li>
-          <li><span class="check">✓</span> Class + school analytics</li>
-          <li><span class="check">✓</span> Onboarding support</li>
-          <li><span class="check">✓</span> Dedicated account manager</li>
-        </ul>
-        <a href="#" class="btn btn-ghost" style="width:100%;">Talk to us</a>
+      <div class="audience-card teachers">
+        <div class="audience-photo-placeholder teachers">
+          <svg width="72" height="72" viewBox="0 0 80 80" fill="none"><rect x="8" y="12" width="64" height="40" rx="4" stroke="#2563EB" stroke-width="2.5"/><path d="M28 68h24M40 52v16" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="audience-body">
+          <div class="audience-label">
+            <div class="audience-label-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#2563EB" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="2" width="14" height="10" rx="1.5"/><path d="M5 14h6M8 12v2"/></svg>
+            </div>
+            For teachers
+          </div>
+          <p>Powerful resources and insights to save time and improve outcomes.</p>
+          <a href="login.html?mode=signup&role=teacher" class="audience-cta">
+            Learn more
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- CTA BANNER -->
-<section class="cta-section">
-  <div class="container">
-    <h2>Ready to master economics?</h2>
-    <p>Join thousands of students building the clarity and confidence to perform in every exam.</p>
-    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-      <a href="login.html?mode=signup" class="btn btn-primary btn-xl" style="background:white;color:var(--land);">Start learning free →</a>
-      <a href="student/dashboard.html" class="btn btn-ghost btn-xl" style="border-color:rgba(255,255,255,0.3);color:white;">View demo</a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer class="site-footer">
   <div class="footer-inner">
-    <div class="footer-logo">
-      <div style="display:flex;align-items:center;gap:0.5rem;">
-        <div class="logo-dots">
-          <span class="d1"></span><span class="d2"></span><span class="d3"></span>
-        </div>
-        <div class="logo-wordmark"><span class="econ">econ</span><span class="os">OS</span></div>
-      </div>
-      <div style="font-size:0.7rem;margin-top:0.25rem;color:rgba(255,255,255,0.3);">
-        <span style="color:var(--learn);">Learn it.</span> <span style="color:var(--link);">Link it.</span> <span style="color:#93C5FD;">Land it.</span>
-      </div>
+    <div>
+      <div class="footer-logo-text">econ<span class="os">OS</span></div>
+      <div class="footer-tagline">Learn it. Link it. Land it.</div>
     </div>
     <div class="footer-links">
       <a href="#">Privacy</a>
       <a href="#">Terms</a>
       <a href="#">Contact</a>
-      <a href="#">Help centre</a>
     </div>
-    <div class="footer-copy">© 2024 econOS. All rights reserved.</div>
+    <div class="footer-copy">&copy; 2025 econOS. All rights reserved.</div>
   </div>
 </footer>
 

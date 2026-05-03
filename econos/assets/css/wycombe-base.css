@@ -1,0 +1,143 @@
+/* ═══════════════════════════════════════════════════════════════
+   Wycombe Abbey Economics · Base Styles
+   CSS variables, resets, header, and shared utility classes.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --navy:   #1a2744;
+  --navyd:  #0f1729;
+  --gold:   #c9a84c;
+  --goldl:  #e2c47a;
+  --green:  #4caf80;
+  --red:    #e05060;
+  --orange: #e0933a;
+  --blue:   #4a7fb5;
+  --bluel:  #6fa8d8;
+  --teal:   #2a9d8f;
+  --purple: #9775b5;
+  --coral:  #e07a5f;
+  --amber:  #d4a72c;
+  --txt:    #fff;
+  --mut:    #dde3f0;
+  --bdr:    #2e3f60;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--navyd);
+  color: var(--txt);
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  font-size: 16px;
+  min-height: 100vh;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pop {
+  0%   { transform: scale(.9); opacity: 0; }
+  70%  { transform: scale(1.04); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes errSlide {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up { animation: fadeUp .35s ease both; }
+
+/* ── Header ──────────────────────────────────────────────────── */
+header {
+  background: linear-gradient(135deg, var(--navyd), var(--navy) 60%, #1e3060);
+  border-bottom: 2px solid var(--gold);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 4px 20px rgba(0,0,0,.5);
+}
+
+.hl    { display: flex; align-items: center; gap: .9rem; }
+.hlogo { height: 48px; width: 48px; object-fit: contain; border-radius: 4px; }
+.htit  { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; font-weight: 700; color: var(--txt); }
+.hsub  { font-family: 'IBM Plex Mono', monospace; font-size: .52rem; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); opacity: .7; }
+
+.hbdg {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .56rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  border: 1px solid var(--blue);
+  color: var(--bluel);
+  padding: .24rem .78rem;
+  border-radius: 3px;
+  background: rgba(74,127,181,.08);
+}
+
+.hnav { display: flex; align-items: center; gap: .6rem; }
+
+.hbtn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .58rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--bdr);
+  color: var(--mut);
+  padding: .28rem .72rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .2s;
+  display: inline-block;
+}
+.hbtn:hover { background: rgba(255,255,255,.1); color: var(--txt); }
+
+/* ── Layout ──────────────────────────────────────────────────── */
+.app { max-width: 900px; margin: 0 auto; padding: 1.6rem 1.8rem; }
+
+@media (max-width: 650px) {
+  header { padding: 0 1rem; height: 64px; }
+  .hbdg  { display: none; }
+  .app   { padding: 1rem; }
+}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.btn {
+  padding: .75rem 1.3rem;
+  border: none;
+  border-radius: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .2s;
+  font-weight: 600;
+}
+.b-blue { background: linear-gradient(135deg, var(--blue), var(--bluel)); color: var(--navyd); }
+.b-blue:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(74,127,181,.4); }
+.b-sec  { background: rgba(255,255,255,.06); border: 1px solid var(--bdr); color: var(--mut); text-decoration: none; display: inline-block; }
+.b-sec:hover { background: rgba(255,255,255,.12); color: var(--txt); }
+.b-submit { background: rgba(201,168,76,.12); border: 1px solid rgba(201,168,76,.4); color: var(--goldl); padding: .65rem 1.2rem; }
+.b-submit:hover:not(:disabled) { background: rgba(201,168,76,.2); }
+.b-submit:disabled { opacity: .3; cursor: default; }
+
+/* ── Form error (animated) ───────────────────────────────────── */
+.form-err {
+  font-size: .78rem;
+  color: var(--red);
+  min-height: 1.2em;
+  animation: errSlide .25s ease both;
+}
+.form-err:empty { animation: none; }

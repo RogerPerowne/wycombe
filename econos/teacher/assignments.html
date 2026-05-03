@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>econOS – Assignments</title>
+<link rel="stylesheet" href="../assets/css/econos.css">
+<style>
+.stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.75rem; }
+.stat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.25rem; box-shadow:var(--shadow-sm); }
+.stat-card .label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-muted); margin-bottom:0.375rem; }
+.stat-card .value { font-size:1.75rem; font-weight:900; color:var(--navy); letter-spacing:-0.03em; }
+.stat-card .sub   { font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; }
+.class-tab { display:flex; gap:0.5rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+.class-tab-btn { padding:0.375rem 0.875rem; border-radius:var(--r-full); font-size:0.8rem; font-weight:600; border:1.5px solid var(--border); background:var(--bg-card); color:var(--text-secondary); cursor:pointer; transition:all var(--t-fast); }
+.class-tab-btn.active { border-color:var(--land); background:var(--land-light); color:var(--land); }
+.main-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.5rem; box-shadow:var(--shadow-sm); }
+.main-card .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; }
+.main-card h3 { font-size:1.0625rem; font-weight:700; color:var(--navy); }
+.assign-table { width:100%; border-collapse:collapse; }
+.assign-table th { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); padding:0.5rem 0.75rem; text-align:left; border-bottom:1.5px solid var(--border); }
+.assign-table td { padding:0.875rem 0.75rem; font-size:0.875rem; color:var(--navy); border-bottom:1px solid var(--border); vertical-align:middle; }
+.assign-table tr:last-child td { border-bottom:none; }
+.assign-table tr:hover td { background:var(--bg-subtle); }
+.submission-bar { display:flex; align-items:center; gap:0.5rem; }
+.submission-bar .bar { width:80px; height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.submission-bar .bar .fill { height:100%; border-radius:3px; background:var(--land); }
+.action-btns { display:flex; gap:0.375rem; }
+.empty-state { text-align:center; padding:3rem 1rem; }
+.empty-state .icon { font-size:3rem; margin-bottom:0.75rem; }
+.empty-state h3 { font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:0.375rem; }
+.empty-state p  { font-size:0.875rem; color:var(--text-muted); }
+.skel { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+</style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/api.js"></script>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <header class="main-header">
+      <div class="header-title">
+        <div style="font-size:1.125rem;font-weight:700;color:var(--navy);">Assignments</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);" id="assign-sub">Manage your class assignments</div>
+      </div>
+      <div class="header-actions">
+        <a href="builder" class="btn btn-primary btn-sm">+ New assignment</a>
+        <a href="settings"><div class="user-avatar" id="header-avatar">?</div></a>
+      </div>
+    </header>
+    <div class="page-body">
+      <div class="stats-row" id="stats-row">
+        <div class="stat-card"><div class="label">Total</div><div class="value skel" style="height:40px;width:40px;"></div></div>
+        <div class="stat-card"><div class="label">Active</div><div class="value skel" style="height:40px;width:40px;"></div></div>
+        <div class="stat-card"><div class="label">Avg completion</div><div class="value skel" style="height:40px;width:60px;"></div></div>
+        <div class="stat-card"><div class="label">Due this week</div><div class="value skel" style="height:40px;width:40px;"></div></div>
+      </div>
+      <div class="class-tab" id="class-tabs"><div class="skel" style="height:32px;width:200px;border-radius:var(--r-full);"></div></div>
+      <div class="main-card">
+        <div class="card-header"><h3 id="table-heading">Assignments</h3><a href="builder" class="btn btn-primary btn-sm">+ New</a></div>
+        <div id="assign-table-wrap"><div class="skel" style="height:200px;border-radius:var(--r-md);"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../assets/js/nav.js"></script>
+<script>
+let _classes = [], _currentClassId = null, _userId = null;
+const TYPE_ICONS = { learn:'📗', link:'🔗', land:'🎯', exam:'⏱', mixed:'📊' };
+const TYPE_COLORS = { learn:'pill-learn', link:'pill-link', land:'pill-land', mixed:'pill-mixed' };
+
+async function init() {
+  const auth = await Auth.requireTeacher();
+  if (!auth) return;
+  const { session, profile } = auth;
+  _userId = session.user.id;
+  const initials = (profile.full_name||'T').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  buildSidebar('assignments', 'teacher', { name: profile.full_name, initials, school: profile.school_name||'' });
+  document.getElementById('header-avatar').textContent = initials;
+  try {
+    _classes = await API.getTeacherClasses(_userId);
+    if (!_classes.length) { renderNoClasses(); return; }
+    document.getElementById('class-tabs').innerHTML = _classes.map((c, i) => `<button class="class-tab-btn ${i===0?'active':''}" onclick="selectClass('${c.id}',this)">${c.name}</button>`).join('');
+    _currentClassId = _classes[0].id;
+    await loadClass(_currentClassId);
+  } catch (err) { console.error('[Assignments]', err); }
+}
+
+async function selectClass(classId, btn) {
+  document.querySelectorAll('.class-tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); _currentClassId = classId;
+  document.getElementById('assign-table-wrap').innerHTML = '<div class="skel" style="height:200px;border-radius:var(--r-md);"></div>';
+  await loadClass(classId);
+}
+
+async function loadClass(classId) {
+  const cls = _classes.find(c => c.id === classId);
+  document.getElementById('table-heading').textContent = cls ? cls.name + ' — Assignments' : 'Assignments';
+  try {
+    const [assignments, students] = await Promise.all([API.getClassAssignments(classId), API.getClassStudents(classId)]);
+    renderStats(assignments, students.length);
+    renderTable(assignments, students.length);
+  } catch (err) { console.error('[Assignments] loadClass:', err); }
+}
+
+function renderStats(assignments, studentCount) {
+  const now = new Date(), weekMs = 7 * 86400000;
+  const active   = assignments.filter(a => new Date(a.due_date) >= now).length;
+  const thisWeek = assignments.filter(a => { const d = new Date(a.due_date) - now; return d >= 0 && d <= weekMs; }).length;
+  const totalSubs = assignments.reduce((s, a) => s + (a.assignment_submissions?.length || 0), 0);
+  const avgPct = assignments.length * studentCount ? Math.round((totalSubs / (assignments.length * studentCount)) * 100) : 0;
+  document.getElementById('stats-row').innerHTML = `<div class="stat-card"><div class="label">Total</div><div class="value">${assignments.length}</div><div class="sub">All time</div></div><div class="stat-card"><div class="label">Active</div><div class="value">${active}</div><div class="sub">Not yet due</div></div><div class="stat-card"><div class="label">Avg completion</div><div class="value">${avgPct}%</div><div class="sub">Across all students</div></div><div class="stat-card"><div class="label">Due this week</div><div class="value">${thisWeek}</div><div class="sub">Next 7 days</div></div>`;
+  document.getElementById('assign-sub').textContent = `${assignments.length} assignment${assignments.length!==1?'s':''} · ${studentCount} student${studentCount!==1?'s':''}`;
+}
+
+function renderTable(assignments, studentCount) {
+  const el = document.getElementById('assign-table-wrap');
+  if (!assignments.length) { el.innerHTML = `<div class="empty-state"><div class="icon">📋</div><h3>No assignments yet</h3><p>Create your first assignment for this class.</p><a href="builder" class="btn btn-primary" style="margin-top:1rem;">+ Create assignment</a></div>`; return; }
+  el.innerHTML = `<table class="assign-table"><thead><tr><th>Assignment</th><th>Type</th><th>Due date</th><th>Submissions</th><th>Actions</th></tr></thead><tbody>${assignments.map(a => {
+    const icon = TYPE_ICONS[a.type]||'📋', pillCls = TYPE_COLORS[a.type]||'pill-mixed';
+    const due = API.formatDueDate(a.due_date), isOverdue = new Date(a.due_date) < new Date();
+    const submitted = (a.assignment_submissions||[]).length, pct = studentCount ? Math.round((submitted/studentCount)*100) : 0;
+    return `<tr><td><div style="font-weight:600;">${a.title}</div><div style="font-size:0.75rem;color:var(--text-muted);">${a.topic_name||''}</div></td><td><span class="stage-pill ${pillCls}">${icon} ${a.type||'mixed'}</span></td><td><span style="font-weight:600;${isOverdue?'color:#EF4444;':''}">  ${isOverdue?'⚠ ':''}${due}</span></td><td><div class="submission-bar"><div class="bar"><div class="fill" style="width:${pct}%;"></div></div><span style="font-size:0.75rem;font-weight:700;color:var(--text-secondary);">${submitted}/${studentCount}</span></div></td><td><div class="action-btns"><button class="btn btn-ghost btn-sm" onclick="viewAssignment('${a.id}')">View</button><button class="btn btn-danger btn-sm" onclick="deleteAssignment('${a.id}')">Delete</button></div></td></tr>`;
+  }).join('')}</tbody></table>`;
+}
+
+function renderNoClasses() {
+  document.getElementById('stats-row').innerHTML = `<div class="stat-card" style="grid-column:1/-1;text-align:center;padding:2rem;"><div style="font-size:2rem;margin-bottom:0.75rem;">🏫</div><h3 style="color:var(--navy);">No classes yet</h3><p style="color:var(--text-muted);font-size:0.875rem;">Create a class first, then set assignments.</p></div>`;
+  document.getElementById('class-tabs').innerHTML = ''; document.getElementById('assign-table-wrap').innerHTML = '';
+}
+
+function viewAssignment(id) { window.location.href = `builder?id=${id}`; }
+
+async function deleteAssignment(id) {
+  if (!confirm('Delete this assignment? This cannot be undone.')) return;
+  const { error } = await window._sb.from('assignments').delete().eq('id', id);
+  if (error) { alert('Could not delete: ' + error.message); return; }
+  await loadClass(_currentClassId);
+}
+
+init();
+</script>
+</body>
+</html>

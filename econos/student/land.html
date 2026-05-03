@@ -3,500 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>econOS – Land it</title>
+<title>econOS – Land It</title>
 <link rel="stylesheet" href="../assets/css/econos.css">
 <style>
-/* LAND IT – SPLIT SCREEN */
-.land-layout {
-  display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: 1.25rem;
-  height: calc(100vh - var(--header-h) - 2.5rem);
-  min-height: 600px;
-}
-.land-left { display: flex; flex-direction: column; gap: 1.25rem; overflow-y: auto; }
-.land-right { display: flex; flex-direction: column; gap: 1.25rem; overflow-y: auto; }
+.land-layout { display:grid; grid-template-columns:1fr 300px; gap:1.75rem; height:calc(100vh - 72px - 3rem); }
+.essay-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); display:flex; flex-direction:column; overflow:hidden; box-shadow:var(--shadow-sm); }
+.essay-header { padding:1.25rem 1.5rem; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+.essay-header .question { font-size:0.9375rem; font-weight:700; color:var(--navy); line-height:1.45; flex:1; }
+.essay-header .question .marks { font-size:0.75rem; font-weight:600; color:var(--text-muted); margin-top:0.25rem; }
+.essay-toolbar { display:flex; align-items:center; gap:0.5rem; padding:0.625rem 1rem; border-bottom:1px solid var(--border); background:var(--bg-subtle); flex-wrap:wrap; }
+.essay-toolbar-btn { padding:0.25rem 0.625rem; border:1px solid var(--border); border-radius:var(--r-sm); font-size:0.75rem; font-weight:600; background:var(--bg-card); color:var(--text-secondary); cursor:pointer; transition:all var(--t-fast); }
+.essay-toolbar-btn:hover { border-color:var(--land); color:var(--land); }
+.essay-toolbar-sep { width:1px; height:18px; background:var(--border); }
+.essay-area { flex:1; padding:1.5rem; font-size:0.9375rem; line-height:1.8; color:var(--text-primary); border:none; outline:none; resize:none; font-family:inherit; background:var(--bg-card); }
+.essay-area::placeholder { color:var(--text-muted); }
+.essay-footer { padding:0.875rem 1.5rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; background:var(--bg-subtle); }
+.word-count { font-size:0.75rem; color:var(--text-muted); }
+.word-count .count { font-weight:700; color:var(--navy); }
 
-/* QUESTION CARD */
-.question-panel {
-  background: linear-gradient(135deg, var(--land-light) 0%, #EFF6FF 100%);
-  border: 1.5px solid var(--land);
-  border-radius: var(--r-xl);
-  padding: 1.5rem;
-  flex-shrink: 0;
-}
-.question-panel .q-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--land); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.375rem; }
-.question-panel .marks { background: var(--land); color: white; font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: var(--r-full); }
-.question-panel .q-text { font-size: 1.0625rem; font-weight: 700; color: var(--navy); line-height: 1.45; margin-bottom: 0.75rem; }
-.question-panel .q-hints { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-.question-panel .hint-chip {
-  font-size: 0.725rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-full);
-  padding: 0.25rem 0.625rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
+.feedback-col { display:flex; flex-direction:column; gap:1rem; overflow-y:auto; }
+.feedback-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.25rem; box-shadow:var(--shadow-sm); }
+.feedback-card h4 { font-size:0.875rem; font-weight:700; color:var(--navy); margin-bottom:0.875rem; display:flex; align-items:center; gap:0.5rem; }
+.mark-scheme-item { padding:0.5rem 0; border-bottom:1px solid var(--border); font-size:0.8rem; }
+.mark-scheme-item:last-child { border-bottom:none; }
+.mark-scheme-item .criterion { font-weight:600; color:var(--navy); margin-bottom:0.2rem; }
+.mark-scheme-item .desc { color:var(--text-secondary); line-height:1.5; }
+.checklist-item { display:flex; align-items:flex-start; gap:0.5rem; padding:0.375rem 0; font-size:0.8rem; color:var(--text-primary); line-height:1.4; }
+.checklist-item input[type=checkbox] { margin-top:2px; accent-color:var(--land); flex-shrink:0; }
+.essay-structure-btn { width:100%; text-align:left; padding:0.625rem 0.875rem; border:1px solid var(--border); border-radius:var(--r-sm); background:var(--bg-subtle); font-size:0.8rem; cursor:pointer; transition:all var(--t-fast); margin-bottom:0.375rem; }
+.essay-structure-btn:hover { border-color:var(--land); background:var(--land-light); }
+.save-status { font-size:0.7rem; color:var(--text-muted); font-style:italic; }
 
-/* WRITING AREA */
-.writing-panel {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-  min-height: 400px;
-}
-.writing-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.625rem 1rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-subtle);
-}
-.write-tab {
-  padding: 0.375rem 0.75rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  border-radius: var(--r-sm);
-  border: none;
-  cursor: pointer;
-  transition: all var(--t-fast);
-  background: transparent;
-  color: var(--text-secondary);
-}
-.write-tab.active { background: var(--land); color: white; }
-.write-tab:not(.active):hover { background: var(--bg-subtle); color: var(--text-primary); }
-.toolbar-divider { width: 1px; height: 20px; background: var(--border); margin: 0 0.25rem; }
-.word-count-display {
-  margin-left: auto;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-.word-count-display.warn { color: var(--link-dark); }
-.word-count-display.good { color: var(--learn-dark); }
-
-.essay-textarea {
-  flex: 1;
-  border: none;
-  resize: none;
-  padding: 1.5rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  line-height: 1.75;
-  color: var(--text-primary);
-  background: transparent;
-  outline: none;
-}
-.essay-textarea::placeholder { color: var(--text-muted); }
-
-.writing-footer {
-  padding: 0.875rem 1.25rem;
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--bg-subtle);
-}
-.autosave { font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.375rem; }
-.autosave.saving { color: var(--link-dark); }
-.autosave.saved  { color: var(--learn-dark); }
-
-/* PLAN / NOTES TABS */
-.plan-area {
-  flex: 1;
-  padding: 1.25rem;
-  overflow-y: auto;
-}
-.plan-point {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.625rem;
-  padding: 0.5rem;
-  border-radius: var(--r-sm);
-}
-.plan-point:hover { background: var(--bg-subtle); }
-.plan-point .bullet {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--land);
-  margin-top: 6px;
-  flex-shrink: 0;
-}
-.plan-point .plan-text { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.55; }
-.plan-point .plan-text strong { color: var(--navy); }
-
-/* RIGHT: AI FEEDBACK PANEL */
-.feedback-panel {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-}
-.feedback-header {
-  padding: 1rem 1.25rem;
-  background: var(--bg-subtle);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.feedback-header h3 { font-size: 0.9375rem; font-weight: 700; color: var(--navy); }
-.feedback-header .status {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-.feedback-body { padding: 1.25rem; overflow-y: auto; }
-
-/* OVERALL ASSESSMENT */
-.assessment-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.875rem 1rem;
-  border-radius: var(--r-md);
-  margin-bottom: 1.25rem;
-}
-.assessment-banner.strong { background: var(--learn-light); border: 1px solid var(--learn); }
-.assessment-banner.develop { background: var(--link-light); border: 1px solid var(--link); }
-.assessment-banner .ass-label { font-size: 0.875rem; font-weight: 700; color: var(--navy); }
-.assessment-banner .ass-sub { font-size: 0.775rem; color: var(--text-secondary); margin-top: 0.125rem; }
-.assessment-badge {
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.25rem 0.625rem;
-  border-radius: var(--r-full);
-}
-.badge-strong  { background: var(--learn); color: white; }
-.badge-develop { background: var(--link); color: var(--navy); }
-.badge-improve { background: var(--land); color: white; }
-
-/* SCORE BREAKDOWN */
-.score-breakdown {
-  margin-bottom: 1.25rem;
-}
-.score-breakdown h5 { font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.7rem; }
-.breakdown-row {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border);
-}
-.breakdown-row:last-child { border-bottom: none; }
-.breakdown-label { font-size: 0.8rem; font-weight: 600; color: var(--navy); flex: 1; }
-.breakdown-bar-wrap { flex: 0 0 80px; }
-.breakdown-bar { height: 6px; background: var(--bg-subtle); border-radius: 3px; overflow: hidden; }
-.breakdown-bar .f { height: 100%; border-radius: 3px; }
-.breakdown-score { font-size: 0.8rem; font-weight: 800; min-width: 36px; text-align: right; }
-
-/* FEEDBACK POINTS */
-.feedback-points { margin-bottom: 1.25rem; }
-.feedback-points h5 { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.625rem; }
-.fb-point {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px dashed var(--border);
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  line-height: 1.55;
-}
-.fb-point:last-child { border-bottom: none; }
-.fb-icon { flex-shrink: 0; margin-top: 1px; }
-
-/* IMPROVE BANNER */
-.improve-banner {
-  background: #F3E8FF;
-  border: 1px solid #DDD6FE;
-  border-radius: var(--r-md);
-  padding: 1rem;
-  margin-bottom: 1.25rem;
-}
-.improve-banner h5 { font-size: 0.8rem; font-weight: 700; color: #7C3AED; margin-bottom: 0.375rem; display: flex; align-items: center; gap: 0.375rem; }
-.improve-banner p { font-size: 0.775rem; color: #4C1D95; line-height: 1.55; }
-
-/* WAITING STATE */
-.feedback-waiting {
-  text-align: center;
-  padding: 2.5rem 1.5rem;
-  color: var(--text-muted);
-}
-.feedback-waiting .pulse {
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  background: var(--land-light);
-  margin: 0 auto 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.375rem;
-  animation: pulse 2s ease infinite;
-}
-@keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.1);opacity:0.7} }
-.feedback-waiting h4 { font-size: 0.9375rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.375rem; }
-.feedback-waiting p  { font-size: 0.8rem; }
-
-/* CHAR COUNTER RING */
-.progress-ring-wrap {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  width: 32px;
-  height: 32px;
-}
-.progress-ring-wrap svg { transform: rotate(-90deg); }
-.progress-ring-wrap .ring-label {
-  position: absolute;
-  font-size: 0.55rem;
-  font-weight: 800;
-  color: var(--navy);
-}
-
-@media (max-width: 1024px) { .land-layout { grid-template-columns: 1fr; height:auto; } }
+.skel { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 </style>
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/api.js"></script>
+
 <div class="app-layout">
   <aside class="sidebar" id="sidebar"></aside>
-
-  <div class="main-content" style="display:flex;flex-direction:column;overflow:hidden;">
+  <div class="main-content" style="padding-bottom:0;">
     <header class="main-header">
       <div class="header-title">
-        <a href="link.html" style="display:flex;align-items:center;gap:0.375rem;font-size:0.8rem;font-weight:600;color:var(--text-secondary);text-decoration:none;">
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-          Back to Link it
-        </a>
-      </div>
-      <div style="flex:1;text-align:center;">
-        <div class="stage-trail" style="justify-content:center;">
-          <div class="stage-node">
-            <div class="stage-circle done">✓</div>
-            <span class="stage-node-label" style="margin-right:0.375rem;opacity:0.6;">Learn it</span>
-          </div>
-          <div class="stage-trail-line done-learn"></div>
-          <div class="stage-node">
-            <div class="stage-circle done">✓</div>
-            <span class="stage-node-label" style="margin-right:0.375rem;opacity:0.6;">Link it</span>
-          </div>
-          <div class="stage-trail-line done-link"></div>
-          <div class="stage-node">
-            <div class="stage-circle active-land">3</div>
-            <span class="stage-node-label active-land">Land it</span>
-          </div>
-        </div>
+        <div style="font-size:1.125rem;font-weight:700;color:var(--navy);">Land It</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);" id="land-meta-header">Essay practice</div>
       </div>
       <div class="header-actions">
-        <button class="btn btn-secondary btn-sm" onclick="saveDraft()">Save draft</button>
-        <button class="btn btn-primary btn-sm" onclick="submitEssay()">Check my answer →</button>
+        <div class="save-status" id="save-status">Not saved</div>
+        <div class="streak-badge"><span class="flame">🔥</span><span id="header-streak">—</span></div>
+        <div class="user-avatar" id="header-avatar">?</div>
       </div>
     </header>
-
-    <div class="page-body" style="flex:1;overflow:hidden;padding-bottom:0;">
+    <div class="page-body" style="height:calc(100vh - 72px);padding-top:1.5rem;">
       <div class="land-layout">
-        <!-- LEFT: WRITING -->
-        <div class="land-left">
-          <!-- QUESTION -->
-          <div class="question-panel">
-            <div class="q-label">
-              🎯 Land it · Monetary policy
-              <span class="marks">25 marks</span>
+        <!-- ESSAY EDITOR -->
+        <div class="essay-card">
+          <div class="essay-header">
+            <div class="question">
+              <div id="essay-question"><div class="skel" style="height:20px;width:90%;margin-bottom:0.375rem;"></div><div class="skel" style="height:20px;width:60%;"></div></div>
+              <div class="marks" id="essay-marks"></div>
             </div>
-            <div class="q-text">Evaluate the effectiveness of monetary policy as a tool for controlling inflation in the UK. (25)</div>
-            <div class="q-hints">
-              <div class="hint-chip">📋 Define monetary policy</div>
-              <div class="hint-chip">🔗 Use transmission mechanism</div>
-              <div class="hint-chip">⚖️ Evaluate limitations</div>
-              <div class="hint-chip">📊 Reference AD/AS diagram</div>
-            </div>
+            <button onclick="changeQuestion()" class="btn btn-ghost btn-sm" style="flex-shrink:0;">Change question</button>
           </div>
-
-          <!-- WRITING PANEL -->
-          <div class="writing-panel">
-            <div class="writing-toolbar">
-              <button class="write-tab active" onclick="switchTab(this,'write')">Write</button>
-              <button class="write-tab" onclick="switchTab(this,'plan')">Plan</button>
-              <button class="write-tab" onclick="switchTab(this,'notes')">Notes</button>
-              <div class="toolbar-divider"></div>
-              <span id="wordCount" class="word-count-display">0 words</span>
-              <div style="margin-left:0.5rem;" id="progressRing">
-                <div class="progress-ring-wrap">
-                  <svg width="32" height="32" viewBox="0 0 32 32">
-                    <circle cx="16" cy="16" r="12" fill="none" stroke="#E2E8F0" stroke-width="3"/>
-                    <circle cx="16" cy="16" r="12" fill="none" stroke="#2563EB" stroke-width="3"
-                      stroke-dasharray="75.4" stroke-dashoffset="75.4" id="progressCircle"
-                      stroke-linecap="round"/>
-                  </svg>
-                  <span class="ring-label" id="ringLabel">0</span>
-                </div>
-              </div>
-            </div>
-
-            <div id="writePanel" style="flex:1;display:flex;flex-direction:column;">
-              <textarea
-                class="essay-textarea"
-                id="essayText"
-                placeholder="Begin your answer here…&#10;&#10;Tip: Start with a clear definition of monetary policy, then work through the transmission mechanism before evaluating its effectiveness and limitations."
-                oninput="updateWordCount()"
-              ></textarea>
-            </div>
-
-            <div id="planPanel" style="flex:1;display:none;">
-              <div class="plan-area">
-                <div style="font-size:0.75rem;font-weight:700;color:var(--text-secondary);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.06em;">Suggested essay structure</div>
-                <div class="plan-point">
-                  <div class="bullet"></div>
-                  <div class="plan-text"><strong>Introduction (2–3 sentences):</strong> Define monetary policy. State that it is the use of interest rates and other tools by the Bank of England to achieve macroeconomic objectives, primarily 2% CPI inflation.</div>
-                </div>
-                <div class="plan-point">
-                  <div class="bullet"></div>
-                  <div class="plan-text"><strong>How it works (4–5 sentences):</strong> Explain the transmission mechanism — rate rise → higher borrowing costs → lower C and I → AD shifts left → demand-pull inflation falls. Reference the AD/AS diagram.</div>
-                </div>
-                <div class="plan-point">
-                  <div class="bullet"></div>
-                  <div class="plan-text"><strong>Strengths (3–4 sentences):</strong> Independent Bank = no political interference. Quick to implement (meets every 6 weeks). Proven track record 1997–2020 at ~2%.</div>
-                </div>
-                <div class="plan-point">
-                  <div class="bullet"></div>
-                  <div class="plan-text"><strong>Limitations (4–5 sentences):</strong> Time lags of 12–24 months. Zero lower bound problem. Doesn't address cost-push inflation. Distributional effects on mortgage holders.</div>
-                </div>
-                <div class="plan-point">
-                  <div class="bullet"></div>
-                  <div class="plan-text"><strong>Conclusion (2–3 sentences):</strong> Overall, monetary policy is effective for demand-pull inflation in normal conditions but has limitations in severe recessions or supply-side shocks. Its effectiveness depends on the cause of inflation and the state of the economy.</div>
-                </div>
-              </div>
-            </div>
-
-            <div id="notesPanel" style="flex:1;display:none;">
-              <textarea class="essay-textarea" placeholder="Your personal notes, key terms, and reminders…&#10;&#10;• MPC sets base rate every 6 weeks&#10;• Time lag: 12–24 months&#10;• 2008: rates cut to 0.5%, QE introduced&#10;• 2022: fastest hiking cycle in 30 years"></textarea>
-            </div>
-
-            <div class="writing-footer">
-              <div class="autosave saved" id="autosaveStatus">
-                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
-                Saved automatically
-              </div>
-              <div style="display:flex;gap:0.625rem;">
-                <button class="btn btn-ghost btn-sm" onclick="saveDraft()">Save draft</button>
-                <button class="btn btn-primary btn-sm" onclick="submitEssay()">Check my answer →</button>
-              </div>
+          <div class="essay-toolbar">
+            <button class="essay-toolbar-btn" onclick="insertPhrase('To begin with, ')">Intro starter</button>
+            <button class="essay-toolbar-btn" onclick="insertPhrase('Furthermore, ')">Furthermore</button>
+            <button class="essay-toolbar-btn" onclick="insertPhrase('However, it could be argued that ')">Counter-argument</button>
+            <div class="essay-toolbar-sep"></div>
+            <button class="essay-toolbar-btn" onclick="insertPhrase('The diagram shows that ')">Diagram ref</button>
+            <button class="essay-toolbar-btn" onclick="insertPhrase('In conclusion, ')">Conclusion</button>
+          </div>
+          <textarea id="essay-text" class="essay-area" placeholder="Begin your answer here…" oninput="onTextChange()" spellcheck="true"></textarea>
+          <div class="essay-footer">
+            <div class="word-count">Words: <span class="count" id="word-count">0</span></div>
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <button onclick="saveDraft()" class="btn btn-ghost btn-sm">💾 Save draft</button>
+              <button onclick="submitEssay()" class="btn btn-primary" id="submit-btn">Submit for feedback →</button>
             </div>
           </div>
         </div>
 
-        <!-- RIGHT: FEEDBACK -->
-        <div class="land-right">
-          <div class="feedback-panel" style="flex:1;">
-            <div class="feedback-header">
-              <h3>Feedback</h3>
-              <div class="status" id="feedbackStatus">
-                <div class="status-dot grey"></div>
-                Start writing to unlock
-              </div>
+        <!-- FEEDBACK SIDEBAR -->
+        <div class="feedback-col">
+          <div class="feedback-card">
+            <h4>🎯 Mark scheme guidance</h4>
+            <div id="mark-scheme-list">
+              <div class="mark-scheme-item"><div class="criterion">Knowledge and understanding</div><div class="desc">Define key terms accurately; show command of economic theory.</div></div>
+              <div class="mark-scheme-item"><div class="criterion">Application</div><div class="desc">Use the context given in the question; apply theory to real-world examples.</div></div>
+              <div class="mark-scheme-item"><div class="criterion">Analysis</div><div class="desc">Build logical chains of reasoning using economic concepts.</div></div>
+              <div class="mark-scheme-item"><div class="criterion">Evaluation</div><div class="desc">Weigh up arguments; consider limitations, conditions, and counter-arguments. Reach a justified conclusion.</div></div>
             </div>
+          </div>
 
-            <!-- WAITING STATE -->
-            <div id="feedbackWaiting" class="feedback-body">
-              <div class="feedback-waiting">
-                <div class="pulse">🎯</div>
-                <h4>Ready when you are</h4>
-                <p>Write your answer, then click "Check my answer" to get instant AI feedback with mark-scheme scoring.</p>
-              </div>
+          <div class="feedback-card">
+            <h4>📋 Essay checklist</h4>
+            <div id="checklist">
+              <label class="checklist-item"><input type="checkbox"> Defined all key economic terms</label>
+              <label class="checklist-item"><input type="checkbox"> Applied a relevant diagram</label>
+              <label class="checklist-item"><input type="checkbox"> Built clear chains of reasoning (if → then)</label>
+              <label class="checklist-item"><input type="checkbox"> Considered a counter-argument</label>
+              <label class="checklist-item"><input type="checkbox"> Used real-world examples or data</label>
+              <label class="checklist-item"><input type="checkbox"> Written a justified conclusion</label>
+              <label class="checklist-item"><input type="checkbox"> Reached the recommended word count (600–900)</label>
             </div>
+          </div>
 
-            <!-- FEEDBACK STATE (shown after submit) -->
-            <div id="feedbackContent" class="feedback-body" style="display:none;">
-              <!-- OVERALL -->
-              <div class="assessment-banner strong">
-                <div>
-                  <div class="ass-label">Overall assessment</div>
-                  <div class="ass-sub">You have a clear chain and good analysis. Improve evaluation to reach the next level.</div>
-                </div>
-                <span class="assessment-badge badge-strong">Strong</span>
-              </div>
+          <div class="feedback-card">
+            <h4>✍️ Sentence starters</h4>
+            <button class="essay-structure-btn" onclick="insertPhrase('A key concept here is ')">A key concept here is…</button>
+            <button class="essay-structure-btn" onclick="insertPhrase('This is because ')">This is because…</button>
+            <button class="essay-structure-btn" onclick="insertPhrase('As a result, aggregate demand will ')">As a result, AD will…</button>
+            <button class="essay-structure-btn" onclick="insertPhrase('However, this depends on ')">However, this depends on…</button>
+            <button class="essay-structure-btn" onclick="insertPhrase('In the long run, ')">In the long run…</button>
+            <button class="essay-structure-btn" onclick="insertPhrase('On balance, I would argue that ')">On balance, I argue that…</button>
+          </div>
 
-              <!-- IMPROVE -->
-              <div class="improve-banner">
-                <h5>💡 Improve further</h5>
-                <p>Add evaluation of the size and persistence of the impact, and consider policies that could reduce the effect. Reference the 2022–2023 rate hiking cycle as a real-world example.</p>
-              </div>
-
-              <!-- BREAKDOWN -->
-              <div class="score-breakdown">
-                <h5>Mark breakdown (for this answer)</h5>
-                <div class="breakdown-row">
-                  <div class="breakdown-label">AO1 Knowledge</div>
-                  <div class="breakdown-bar-wrap">
-                    <div class="breakdown-bar"><div class="f fill-learn" style="width:100%;"></div></div>
-                  </div>
-                  <div class="breakdown-score" style="color:var(--learn-dark);">3/3</div>
-                </div>
-                <div class="breakdown-row">
-                  <div class="breakdown-label">AO2 Application</div>
-                  <div class="breakdown-bar-wrap">
-                    <div class="breakdown-bar"><div class="f fill-land" style="width:100%;"></div></div>
-                  </div>
-                  <div class="breakdown-score" style="color:var(--land);">4/4</div>
-                </div>
-                <div class="breakdown-row">
-                  <div class="breakdown-label">AO3 Analysis</div>
-                  <div class="breakdown-bar-wrap">
-                    <div class="breakdown-bar"><div class="f fill-learn" style="width:100%;"></div></div>
-                  </div>
-                  <div class="breakdown-score" style="color:var(--learn-dark);">4/4</div>
-                </div>
-                <div class="breakdown-row">
-                  <div class="breakdown-label">AO4 Evaluation</div>
-                  <div class="breakdown-bar-wrap">
-                    <div class="breakdown-bar"><div class="f fill-link" style="width:75%;"></div></div>
-                  </div>
-                  <div class="breakdown-score" style="color:var(--link-dark);">3/4</div>
-                </div>
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border);">
-                  <span style="font-size:0.8rem;font-weight:700;color:var(--navy);">Total</span>
-                  <span style="font-size:1.125rem;font-weight:800;color:var(--learn-dark);">14/15</span>
-                </div>
-              </div>
-
-              <!-- STRENGTHS -->
-              <div class="feedback-points">
-                <h5>✅ Strengths</h5>
-                <div class="fb-point"><span class="fb-icon">✅</span><span>Clear definition of monetary policy with reference to the Bank of England's mandate.</span></div>
-                <div class="fb-point"><span class="fb-icon">✅</span><span>Strong transmission mechanism — you correctly traced rate rise → borrowing costs → AD shift.</span></div>
-                <div class="fb-point"><span class="fb-icon">✅</span><span>Good use of the AD/AS diagram — two equilibria shown and labelled correctly.</span></div>
-                <div class="fb-point"><span class="fb-icon">✅</span><span>Mentioned time lags as a key limitation — this is an A-grade evaluation point.</span></div>
-              </div>
-
-              <!-- IMPROVEMENTS -->
-              <div class="feedback-points">
-                <h5>⚡ To improve</h5>
-                <div class="fb-point"><span class="fb-icon">→</span><span>Add evaluation of the <strong>size</strong> of the effect — how much does a 1% rise in rates actually reduce spending?</span></div>
-                <div class="fb-point"><span class="fb-icon">→</span><span>Mention <strong>cost-push inflation</strong> — monetary policy can't fix supply-side shocks (e.g. energy prices).</span></div>
-                <div class="fb-point"><span class="fb-icon">→</span><span>Reference a real-world example: the 2022–2023 rate hiking cycle to fight post-COVID inflation.</span></div>
-              </div>
-
-              <!-- ACTIONS -->
-              <div style="display:flex;gap:0.625rem;margin-top:1rem;">
-                <button class="btn btn-secondary btn-sm" style="flex:1;" onclick="showModelAnswer()">View model answer</button>
-                <a href="spot-the-flaw.html" class="btn btn-primary btn-sm" style="flex:1;">Continue →</a>
-              </div>
-            </div>
+          <div class="feedback-card" id="progress-card">
+            <h4>📊 Your progress on this topic</h4>
+            ${['learn','link','land'].map(s => `
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+              <span style="font-size:0.7rem;font-weight:700;color:var(--text-muted);width:50px;text-transform:capitalize;">${s.charAt(0).toUpperCase()+s.slice(1)}</span>
+              <div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div id="prog-${s}" class="fill fill-${s}" style="height:100%;border-radius:3px;width:0%;transition:width 0.5s;"></div></div>
+              <span id="prog-${s}-pct" style="font-size:0.7rem;font-weight:700;">0%</span>
+            </div>`).join('')}
           </div>
         </div>
       </div>
@@ -506,65 +140,189 @@
 
 <script src="../assets/js/nav.js"></script>
 <script>
-buildSidebar('essay', 'student');
+let userId = null, currentEssayId = null, currentSubtopicId = null, currentMastery = null;
+let autoSaveTimer = null;
 
-let feedbackShown = false;
+const DEFAULT_QUESTIONS = [
+  { q: 'Evaluate the effectiveness of interest rate changes as a means of controlling inflation in the UK. (25 marks)', marks: 25 },
+  { q: 'Assess the view that fiscal policy is more effective than monetary policy in reducing unemployment. (25 marks)', marks: 25 },
+  { q: 'Evaluate the likely effects of a depreciation of sterling on the UK economy. (25 marks)', marks: 25 },
+  { q: 'To what extent do supply-side policies offer a better solution to long-term economic growth than demand-side policies? (25 marks)', marks: 25 },
+  { q: 'Assess whether a monopoly is always harmful to consumers and the wider economy. (25 marks)', marks: 25 },
+];
+let currentQuestion = DEFAULT_QUESTIONS[0];
 
-function updateWordCount() {
-  const text = document.getElementById('essayText').value;
-  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-  const el = document.getElementById('wordCount');
-  el.textContent = words + ' words';
-  el.className = 'word-count-display ' + (words < 100 ? '' : words < 300 ? 'warn' : 'good');
+async function init() {
+  const auth = await Auth.requireStudent();
+  if (!auth) return;
+  const { session, profile } = auth;
+  userId = session.user.id;
+  const initials = (profile.full_name||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  buildSidebar('essay', 'student', { name: profile.full_name, initials, school: profile.school_name||'', yearGroup: profile.year_group||'Year 12' });
+  document.getElementById('header-avatar').textContent = initials;
 
-  const max = 500;
-  const pct = Math.min(words / max, 1);
-  const circumference = 75.4;
-  const offset = circumference * (1 - pct);
-  document.getElementById('progressCircle').style.strokeDashoffset = offset;
-  document.getElementById('ringLabel').textContent = Math.round(pct * 100);
+  const params = new URLSearchParams(window.location.search);
+  const subtopicId  = params.get('subtopic');
+  const assignId    = params.get('assignment');
+  currentSubtopicId = subtopicId;
 
-  // Update status
-  if (words > 10 && !feedbackShown) {
-    document.getElementById('feedbackStatus').innerHTML = '<div class="status-dot amber"></div> Draft in progress…';
+  try {
+    const streakData = await API.getStreakData(userId);
+    document.getElementById('header-streak').textContent = streakData.streak + ' day streak';
+
+    if (subtopicId) {
+      const [mastery, subtopicData] = await Promise.all([
+        API.getSubtopicMastery(userId, subtopicId),
+        window._sb.from('subtopics').select('*, topic:topics(title)').eq('id', subtopicId).single()
+      ]);
+      currentMastery = mastery;
+      updateProgressBars(mastery);
+      const st = subtopicData.data;
+      if (st) {
+        document.getElementById('land-meta-header').textContent = st.topic?.title || 'Essay practice';
+        const qs = await window._sb.from('questions').select('*').eq('subtopic_id', subtopicId).eq('type','short_answer').limit(1);
+        if (!qs.data?.length) {
+          currentQuestion = { q: `Evaluate the factors that influence ${st.title.toLowerCase()} and assess their impact on the UK economy. (25 marks)`, marks: 25 };
+        }
+      }
+    }
+
+    const essays = await API.getStudentEssays(userId, 5);
+    const draft = essays.find(e => !e.submitted_at && (subtopicId ? e.subtopic_id === subtopicId : true));
+    if (draft) {
+      currentEssayId = draft.id;
+      document.getElementById('essay-text').value = draft.content || '';
+      if (draft.question) currentQuestion = { q: draft.question, marks: 25 };
+      updateWordCount();
+      setSaveStatus('Draft loaded');
+    }
+  } catch (err) {
+    console.error('[Land]', err);
   }
 
-  // Autosave
-  const status = document.getElementById('autosaveStatus');
-  status.className = 'autosave saving';
-  status.innerHTML = '<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Saving…';
-  clearTimeout(window._saveTimer);
-  window._saveTimer = setTimeout(() => {
-    status.className = 'autosave saved';
-    status.innerHTML = '<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Saved automatically';
-  }, 800);
+  setQuestion(currentQuestion);
 }
 
-function switchTab(btn, tab) {
-  document.querySelectorAll('.write-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('writePanel').style.display = tab === 'write' ? 'flex' : 'none';
-  document.getElementById('planPanel').style.display  = tab === 'plan'  ? 'block' : 'none';
-  document.getElementById('notesPanel').style.display = tab === 'notes' ? 'block' : 'none';
+function setQuestion(q) {
+  currentQuestion = q;
+  document.getElementById('essay-question').textContent = q.q;
+  document.getElementById('essay-marks').textContent = `(${q.marks} marks)`;
 }
 
-function submitEssay() {
-  feedbackShown = true;
-  document.getElementById('feedbackWaiting').style.display = 'none';
-  document.getElementById('feedbackContent').style.display = 'block';
-  document.getElementById('feedbackStatus').innerHTML = '<div class="status-dot green"></div> Feedback ready';
-  document.getElementById('feedbackContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
+function changeQuestion() {
+  const current = currentQuestion;
+  const others = DEFAULT_QUESTIONS.filter(q => q.q !== current.q);
+  setQuestion(others[Math.floor(Math.random() * others.length)]);
+  document.getElementById('essay-text').value = '';
+  updateWordCount();
+  currentEssayId = null;
+  setSaveStatus('New question — not saved');
 }
 
-function saveDraft() {
-  const status = document.getElementById('autosaveStatus');
-  status.className = 'autosave saved';
-  status.innerHTML = '<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Draft saved';
+function insertPhrase(phrase) {
+  const ta = document.getElementById('essay-text');
+  const start = ta.selectionStart;
+  const before = ta.value.substring(0, start);
+  const after  = ta.value.substring(ta.selectionEnd);
+  const insert = before.length > 0 && !before.endsWith(' ') && !before.endsWith('\n') ? ' ' + phrase : phrase;
+  ta.value = before + insert + after;
+  ta.selectionStart = ta.selectionEnd = start + insert.length;
+  ta.focus();
+  onTextChange();
 }
 
-function showModelAnswer() {
-  alert('Model answer feature coming soon — this will show an examiner-level response for comparison.');
+function updateWordCount() {
+  const text = document.getElementById('essay-text').value;
+  const wc = text.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById('word-count').textContent = wc;
+  const el = document.getElementById('word-count');
+  el.style.color = wc < 300 ? '#EF4444' : wc >= 600 ? 'var(--learn-dark)' : 'var(--navy)';
 }
+
+function setSaveStatus(msg) {
+  document.getElementById('save-status').textContent = msg;
+}
+
+function onTextChange() {
+  updateWordCount();
+  setSaveStatus('Unsaved changes…');
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(saveDraft, 8000);
+}
+
+async function saveDraft() {
+  if (!userId) return;
+  const content = document.getElementById('essay-text').value;
+  if (!content.trim()) return;
+  setSaveStatus('Saving…');
+  try {
+    const essay = await API.saveDraftEssay(userId, currentQuestion.q, content, currentSubtopicId, null);
+    currentEssayId = essay.id;
+    setSaveStatus('Saved ' + new Date().toLocaleTimeString());
+  } catch (err) {
+    console.error('[Land] save error:', err);
+    setSaveStatus('Save failed');
+  }
+}
+
+async function submitEssay() {
+  if (!userId) return;
+  const content = document.getElementById('essay-text').value;
+  const wc = content.trim().split(/\s+/).filter(Boolean).length;
+  if (wc < 100) { alert('Please write at least 100 words before submitting.'); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Submitting…';
+
+  try {
+    const essay = await API.saveDraftEssay(userId, currentQuestion.q, content, currentSubtopicId, null);
+    await API.submitEssay(essay.id, userId);
+    currentEssayId = essay.id;
+
+    if (currentSubtopicId) {
+      const newScore = Math.max(currentMastery?.land_score || 0, Math.min(90, Math.round(wc / 10)));
+      try {
+        const up = await API.upsertMastery(userId, currentSubtopicId, { land_score: newScore, attempts: (currentMastery?.attempts||0)+1 });
+        currentMastery = up;
+        updateProgressBars(up);
+      } catch(e) {}
+    }
+
+    Auth.recordActivity('essay', null, null, Math.min(wc, 25), 25, essay.id);
+
+    btn.textContent = '✅ Submitted!';
+    setSaveStatus('Submitted for review');
+
+    setTimeout(() => {
+      showSubmissionConfirmation(wc);
+    }, 800);
+  } catch (err) {
+    console.error('[Land] submit error:', err);
+    btn.disabled = false; btn.textContent = 'Submit for feedback →';
+    alert('Could not submit. Please try again.');
+  }
+}
+
+function showSubmissionConfirmation(wordCount) {
+  const btn = document.getElementById('submit-btn');
+  btn.outerHTML = `
+    <div style="background:var(--learn-light);border:1px solid var(--learn);border-radius:var(--r-md);padding:1rem;font-size:0.875rem;color:var(--learn-dark);font-weight:600;text-align:center;">
+      ✅ Essay submitted (${wordCount} words)! Your teacher will review it soon.
+      <div style="margin-top:0.5rem;">
+        <a href="dashboard" class="btn btn-ghost btn-sm">Back to dashboard</a>
+      </div>
+    </div>`;
+}
+
+function updateProgressBars(m) {
+  ['learn','link','land'].forEach(s => {
+    const pct = m?.[s+'_score'] || 0;
+    document.getElementById('prog-'+s).style.width = pct+'%';
+    document.getElementById('prog-'+s+'-pct').textContent = pct+'%';
+  });
+}
+
+init();
 </script>
 </body>
 </html>

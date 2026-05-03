@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>econOS – Learn Session</title>
+<link rel="stylesheet" href="assets/css/econos.css">
+<style>
+.session-layout { display:grid; grid-template-columns:1fr 280px; gap:1.75rem; align-items:start; }
+.session-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:2rem; box-shadow:var(--shadow-sm); }
+.session-stage-pill { display:inline-flex; align-items:center; gap:0.375rem; background:var(--learn-light); color:var(--learn-dark); font-size:0.7rem; font-weight:700; padding:0.25rem 0.625rem; border-radius:var(--r-full); margin-bottom:0.75rem; }
+.session-title { font-size:1.75rem; font-weight:800; color:var(--navy); letter-spacing:-0.03em; margin:0 0 0.75rem; }
+.session-subtitle { font-size:0.9375rem; color:var(--text-secondary); line-height:1.55; margin:0 0 1.75rem; }
+
+.session-what { background:var(--learn-light); border:1.5px solid var(--learn); border-radius:var(--r-md); padding:1.25rem 1.5rem; margin-bottom:1.25rem; display:flex; align-items:flex-start; gap:1.25rem; }
+.session-what-icon { width:40px; height:40px; background:white; border-radius:var(--r-sm); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--learn-dark); }
+.session-what-title { font-size:0.9375rem; font-weight:700; color:var(--learn-dark); margin:0 0 0.375rem; }
+.session-what-desc { font-size:0.875rem; color:var(--learn-dark); opacity:0.85; margin:0 0 0.75rem; line-height:1.5; }
+.session-outcomes { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.375rem; }
+.session-outcomes li { font-size:0.875rem; color:var(--learn-dark); display:flex; align-items:center; gap:0.5rem; }
+.outcome-check { width:18px; height:18px; background:var(--learn); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+.session-tip { background:#EFF6FF; border:1.5px solid #BFDBFE; border-radius:var(--r-md); padding:1rem 1.25rem; display:flex; align-items:flex-start; gap:0.875rem; margin-bottom:1.5rem; }
+.session-tip-icon { width:32px; height:32px; background:var(--link); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#fff; }
+.session-tip-label { font-size:0.875rem; font-weight:700; color:#1E40AF; margin:0 0 0.25rem; }
+.session-tip-text { font-size:0.875rem; color:#1E40AF; margin:0; line-height:1.55; }
+
+.action-bar { background:var(--bg-card); border:1.5px solid var(--border); border-radius:var(--r-xl); padding:1.25rem 1.75rem; display:flex; align-items:center; gap:1.5rem; margin-top:1.5rem; }
+.action-meta { display:flex; align-items:center; gap:0.625rem; flex:1; }
+.action-meta-icon { width:38px; height:38px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-secondary); flex-shrink:0; }
+.action-meta-label { font-size:0.75rem; color:var(--text-muted); margin:0 0 0.125rem; }
+.action-meta-value { font-size:0.875rem; font-weight:600; color:var(--navy); margin:0; }
+.action-sep { width:1px; height:40px; background:var(--border); flex-shrink:0; }
+
+.stages-list { display:flex; flex-direction:column; gap:0; }
+.stage-item { display:flex; align-items:flex-start; gap:0.75rem; position:relative; padding-bottom:1.5rem; }
+.stage-item:last-child { padding-bottom:0; }
+.stage-item::before { content:''; position:absolute; left:16px; top:33px; width:2px; background:var(--border); bottom:0; }
+.stage-item:last-child::before { display:none; }
+.stage-num { width:33px; height:33px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:0.875rem; font-weight:700; color:var(--text-muted); flex-shrink:0; background:#fff; z-index:1; }
+.stage-num.current { border-color:var(--learn); color:var(--learn); background:var(--learn-light); }
+.stage-content { padding-top:0.375rem; }
+.stage-name { font-size:0.9375rem; font-weight:700; color:var(--navy); margin:0 0 0.25rem; }
+.stage-name.current { color:var(--learn-dark); }
+.stage-desc { font-size:0.8125rem; color:var(--text-muted); margin:0 0 0.5rem; line-height:1.4; }
+.stage-badge-current { display:inline-flex; align-items:center; background:var(--learn-light); color:var(--learn-dark); font-size:0.75rem; font-weight:600; padding:0.1875rem 0.625rem; border-radius:6px; }
+.stage-lock { display:flex; align-items:center; gap:0.375rem; font-size:0.8125rem; color:var(--text-muted); }
+
+.skel { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+</style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/supabase-client.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/api.js"></script>
+
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <header class="main-header">
+      <div class="header-title">
+        <div style="font-size:1.125rem;font-weight:700;color:var(--navy);" id="header-title">Start Session</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);" id="header-sub">📗 Learn it</div>
+      </div>
+      <div class="header-actions">
+        <div class="streak-badge"><span class="flame">🔥</span><span id="header-streak">—</span></div>
+        <a href="student/settings.html"><div class="user-avatar" id="header-avatar">?</div></a>
+      </div>
+    </header>
+
+    <div class="page-body">
+      <div class="session-layout">
+        <div>
+          <div class="session-card" id="session-card">
+            <div class="skel" style="height:220px;border-radius:var(--r-md);"></div>
+          </div>
+          <div class="action-bar" id="action-bar" style="display:none;">
+            <div class="action-meta">
+              <div class="action-meta-icon">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              </div>
+              <div><p class="action-meta-label">Estimated time</p><p class="action-meta-value" id="est-time">15–20 min</p></div>
+            </div>
+            <div class="action-sep"></div>
+            <div class="action-meta">
+              <div class="action-meta-icon">
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div><p class="action-meta-label">Your goal</p><p class="action-meta-value">Understand the key concepts</p></div>
+            </div>
+            <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:0.375rem;">
+              <button class="btn btn-primary btn-lg" onclick="startSession()" id="start-btn">Start session →</button>
+              <span style="font-size:0.75rem;color:var(--text-muted);">Press Enter to begin</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sticky-right">
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-xl);padding:1.5rem;box-shadow:var(--shadow-sm);">
+            <div style="font-size:0.9375rem;font-weight:700;color:var(--navy);margin-bottom:1.25rem;">Your sessions</div>
+            <div class="stages-list" id="stages-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/nav.js"></script>
+<script>
+let _subtopicId = null;
+
+const TICK = `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const LOCK = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
+
+async function init() {
+  const auth = await Auth.requireStudent('login.html');
+  if (!auth) return;
+  const { session, profile } = auth;
+  const userId = session.user.id;
+  const initials = (profile.full_name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  buildSidebar('learn', 'student', { name: profile.full_name, initials, school: profile.school_name || '', yearGroup: profile.year_group || 'Year 12' }, 'student/');
+  document.getElementById('header-avatar').textContent = initials;
+
+  const p = new URLSearchParams(location.search);
+  _subtopicId = p.get('subtopic');
+
+  try {
+    const streakData = await API.getStreakData(userId);
+    document.getElementById('header-streak').textContent = streakData.streak + ' day streak';
+  } catch(e) {}
+
+  renderStages('learn');
+
+  if (_subtopicId) {
+    try {
+      const { data: st } = await window._sb.from('subtopics')
+        .select('title, estimated_minutes, topic:topics(title)')
+        .eq('id', _subtopicId).single();
+      if (st) {
+        document.getElementById('header-title').textContent = st.title;
+        document.getElementById('header-sub').textContent = `📗 Learn it · ${st.topic?.title || ''}`;
+        if (st.estimated_minutes) document.getElementById('est-time').textContent = st.estimated_minutes + ' min';
+        renderSessionCard(st);
+      }
+    } catch(e) {
+      renderSessionCard(null);
+    }
+  } else {
+    renderSessionCard(null);
+  }
+
+  document.getElementById('action-bar').style.display = 'flex';
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') startSession(); });
+}
+
+function renderSessionCard(st) {
+  const title = st?.title || 'Learn It Session';
+  const topicTitle = st?.topic?.title || '';
+  document.getElementById('session-card').innerHTML = `
+    <div class="session-stage-pill">📗 Learn it</div>
+    <h1 class="session-title">${title}</h1>
+    <p class="session-subtitle">${topicTitle ? topicTitle + ' · ' : ''}Build your foundational understanding of this topic through guided content.</p>
+    <div class="session-what">
+      <div class="session-what-icon">
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <div>
+        <div class="session-what-title">What you'll do</div>
+        <div class="session-what-desc">Read through structured content, test your recall with short questions, then answer a multiple-choice quiz.</div>
+        <ul class="session-outcomes">
+          <li><span class="outcome-check">${TICK}</span>Read key concept cards</li>
+          <li><span class="outcome-check">${TICK}</span>Answer recall questions</li>
+          <li><span class="outcome-check">${TICK}</span>Complete a short quiz</li>
+        </ul>
+      </div>
+    </div>
+    <div class="session-tip">
+      <div class="session-tip-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div>
+        <div class="session-tip-label">Tip</div>
+        <p class="session-tip-text">Read each card actively — try to summarise the key idea in your own words before moving on.</p>
+      </div>
+    </div>`;
+}
+
+function renderStages(current) {
+  const stages = [
+    { id:'learn', label:'📗 Learn it', desc:'Build your understanding', emoji:'📗' },
+    { id:'link',  label:'🔗 Link it',  desc:'Connect and reason', emoji:'🔗' },
+    { id:'land',  label:'🎯 Land it',  desc:'Write extended answers', emoji:'🎯' },
+  ];
+  const idx = stages.findIndex(s => s.id === current);
+  document.getElementById('stages-list').innerHTML = stages.map((s, i) => {
+    const isCurrent = i === idx;
+    const isDone = i < idx;
+    return `<div class="stage-item">
+      <div class="stage-num ${isCurrent?'current':''}">${isDone ? TICK : (i+1)}</div>
+      <div class="stage-content">
+        <div class="stage-name${isCurrent?' current':''}">` + s.label + `</div>
+        <div class="stage-desc">` + s.desc + `</div>
+        ${isCurrent ? '<span class="stage-badge-current">Current</span>' : `<span class="stage-lock">${LOCK} Locked</span>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function startSession() {
+  const href = _subtopicId ? `student/learn?subtopic=${_subtopicId}` : 'student/topics.html';
+  window.location.href = href;
+}
+
+init();
+</script>
+</body>
+</html>

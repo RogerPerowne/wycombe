@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>econOS – Learn Cards</title>
+<link rel="stylesheet" href="assets/css/econos.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F172A; }
+
+.learn-shell { display: flex; min-height: 100vh; max-width: 1480px; margin: 0 auto; background: #F8FAFC; border-left: 1px solid #E2E8F0; border-right: 1px solid #E2E8F0; }
+
+/* ── SIDEBAR ── */
+.dash-sidebar { width: 232px; min-width: 232px; background: #fff; border-right: 1px solid #E2E8F0; display: flex; flex-direction: column; position: sticky; top: 0; align-self: flex-start; height: 100vh; z-index: 20; overflow-y: auto; }
+.db-logo { padding: 1.375rem 1.25rem 1rem; border-bottom: 1px solid #F1F5F9; flex-shrink: 0; }
+.db-logo-graph { width: 36px; height: 28px; margin-bottom: 5px; display: block; }
+.db-logo-wordmark { font-size: 1.375rem; font-weight: 800; letter-spacing: -0.03em; color: #0F172A; }
+.db-logo-wordmark .os { color: #2563EB; }
+.db-logo-tagline { font-size: 0.75rem; font-weight: 500; margin-top: 2px; }
+.tl { color: #16A34A; } .tli { color: #EA580C; } .tla { color: #2563EB; }
+.db-nav { flex: 1; padding: 0.625rem; display: flex; flex-direction: column; gap: 0.125rem; }
+.nav-item { display: flex; align-items: center; gap: 0.625rem; padding: 0.5625rem 0.75rem; border-radius: 8px; font-size: 0.875rem; font-weight: 500; color: #475569; cursor: pointer; transition: background 0.12s, color 0.12s; text-decoration: none; }
+.nav-item:hover { background: #F8FAFC; color: #0F172A; }
+.nav-item.active { background: #EFF6FF; color: #2563EB; font-weight: 600; }
+.nav-icon { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.db-sidebar-footer { padding: 0.875rem 0.75rem; border-top: 1px solid #F1F5F9; flex-shrink: 0; }
+.streak-card { background: #F8FAFC; border-radius: 12px; padding: 0.875rem 1rem; display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.625rem; }
+.streak-num { font-size: 1.25rem; font-weight: 800; color: #0F172A; }
+.streak-label { font-size: 0.75rem; font-weight: 700; color: #0F172A; line-height: 1.2; }
+.streak-sub { font-size: 0.6875rem; color: #64748B; }
+.user-pill { display: flex; align-items: center; gap: 0.625rem; padding: 0.5rem 0.75rem; border-radius: 10px; cursor: pointer; }
+.user-pill:hover { background: #F8FAFC; }
+.user-avatar { width: 32px; height: 32px; border-radius: 50%; background: #2563EB; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+.user-info-name { font-size: 0.8125rem; font-weight: 600; color: #0F172A; }
+.user-info-role { font-size: 0.75rem; color: #64748B; }
+
+/* ── BODY ── */
+.learn-body { flex: 1; display: flex; flex-direction: column; min-height: 100vh; min-width: 0; }
+
+/* ── TOPBAR ── */
+.learn-topbar { background: #fff; border-bottom: 1px solid #E2E8F0; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; position: sticky; top: 0; z-index: 10; }
+.topbar-breadcrumb { display: flex; flex-direction: column; }
+.topbar-bread-top { font-size: 0.75rem; font-weight: 600; color: #16A34A; }
+.topbar-bread-title { font-size: 0.9375rem; font-weight: 700; color: #0F172A; }
+.topbar-left-btn { display: flex; align-items: center; gap: 0.375rem; font-size: 0.875rem; font-weight: 500; color: #475569; text-decoration: none; padding: 0.375rem 0.5rem; border-radius: 6px; margin-right: 0.75rem; }
+.topbar-left-btn:hover { background: #F8FAFC; color: #0F172A; }
+.topbar-left { display: flex; align-items: center; }
+.topbar-right { display: flex; align-items: center; gap: 0.875rem; }
+.streak-badge { display: flex; align-items: center; gap: 0.375rem; font-size: 0.875rem; font-weight: 600; color: #0F172A; }
+.topbar-avatar { width: 36px; height: 36px; border-radius: 50%; background: #2563EB; display: flex; align-items: center; justify-content: center; font-size: 0.8125rem; font-weight: 700; color: #fff; cursor: pointer; }
+
+/* ── PROGRESS BAR ── */
+.progress-bar-row { display: flex; align-items: center; gap: 1rem; padding: 0.875rem 2rem 0.875rem 2.5rem; background: #fff; border-bottom: 1px solid #F1F5F9; }
+.progress-label { font-size: 0.875rem; font-weight: 500; color: #475569; white-space: nowrap; }
+.progress-track { flex: 1; height: 8px; background: #E2E8F0; border-radius: 99px; overflow: visible; position: relative; }
+.progress-fill { height: 100%; background: #16A34A; border-radius: 99px; transition: width 0.4s ease; }
+.progress-dot { position: absolute; right: -4px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; border-radius: 50%; background: #16A34A; border: 2.5px solid #fff; box-shadow: 0 0 0 2px #16A34A; }
+.progress-pct { font-size: 0.875rem; font-weight: 700; color: #0F172A; white-space: nowrap; min-width: 3rem; text-align: right; }
+.btn-exit { display: flex; align-items: center; gap: 0.375rem; font-size: 0.8125rem; font-weight: 600; color: #475569; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 0.375rem 0.875rem; cursor: pointer; font-family: inherit; white-space: nowrap; }
+.btn-exit:hover { background: #F1F5F9; }
+
+/* ── CONTENT ROW ── */
+.learn-content-row { display: flex; flex: 1; align-items: flex-start; }
+.learn-main { flex: 1; padding: 2rem 2rem 3rem 2.5rem; min-width: 0; }
+
+/* ── CARD SHELL ── */
+.lcard { background: #fff; border: 1.5px solid #E2E8F0; border-radius: 16px; padding: 2rem 2rem 1.75rem; margin-bottom: 0; }
+.lcard-label { font-size: 0.8125rem; font-weight: 700; color: #16A34A; letter-spacing: 0.02em; margin-bottom: 0.625rem; }
+.lcard-title { font-size: 1.875rem; font-weight: 800; color: #0F172A; letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 0.625rem; }
+.lcard-subtitle { font-size: 0.9375rem; color: #64748B; line-height: 1.55; margin: 0 0 1.5rem; }
+
+/* ── BASIC CARD ── */
+.basic-hero { display: flex; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.5rem; }
+.basic-def { flex: 1; }
+.basic-visual { flex-shrink: 0; width: 200px; }
+.basket-svg-wrap { position: relative; }
+.price-compare { position: absolute; right: -8px; top: 8px; background: #fff; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 0.625rem 0.75rem; font-size: 0.8125rem; }
+.price-row { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 0.25rem; }
+.price-row:last-child { margin-bottom: 0; }
+.price-year { color: #64748B; font-weight: 500; }
+.price-val { font-weight: 700; color: #0F172A; }
+.price-up { color: #16A34A; font-size: 1rem; }
+.visual-caption { text-align: center; margin-top: 0.75rem; }
+.caption-pill { display: inline-block; background: #F0FDF4; color: #16A34A; font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.875rem; border-radius: 99px; border: 1px solid #BBF7D0; }
+
+.takeaway-box { background: #F0FDF4; border: 1.5px solid #BBF7D0; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 0.875rem; }
+.takeaway-icon { width: 36px; height: 36px; background: #DCFCE7; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #16A34A; }
+.takeaway-label { font-size: 0.875rem; font-weight: 700; color: #16A34A; margin: 0 0 0.25rem; }
+.takeaway-text { font-size: 0.875rem; color: #166534; margin: 0; line-height: 1.5; }
+
+.why-matters-title { font-size: 1rem; font-weight: 700; color: #0F172A; margin: 0 0 0.875rem; }
+.why-matters-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.875rem; }
+.why-item { background: #F8FAFC; border-radius: 10px; padding: 0.875rem; }
+.why-item-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.625rem; }
+.why-item-title { font-size: 0.875rem; font-weight: 700; color: #0F172A; margin: 0 0 0.25rem; }
+.why-item-text { font-size: 0.8125rem; color: #64748B; margin: 0; line-height: 1.4; }
+
+/* ── COMPARISON CARD ── */
+.key-idea-box { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: flex-start; gap: 0.75rem; }
+.key-idea-icon { width: 28px; height: 28px; background: #DCFCE7; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #16A34A; }
+.key-idea-label { font-size: 0.8125rem; font-weight: 700; color: #0F172A; margin: 0 0 0.25rem; }
+.key-idea-text { font-size: 0.8125rem; color: #475569; margin: 0; line-height: 1.5; }
+.comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+.comp-col { border-radius: 12px; border: 1.5px solid; padding: 1.25rem; }
+.comp-col-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+.comp-col-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+.comp-col-title { font-size: 0.9375rem; font-weight: 700; }
+.comp-field { margin-bottom: 0.75rem; }
+.comp-field-label { font-size: 0.8125rem; font-weight: 700; margin-bottom: 0.25rem; }
+.comp-field-text { font-size: 0.875rem; color: #475569; line-height: 1.45; margin: 0; }
+.comp-example-box { border-radius: 8px; padding: 0.625rem 0.75rem; font-size: 0.8125rem; line-height: 1.4; }
+
+/* ── MECHANISM CARD ── */
+.chain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+.chain-col { border-radius: 12px; border: 1.5px solid; padding: 1.25rem; }
+.chain-col-title { font-size: 0.9375rem; font-weight: 700; margin: 0 0 0.875rem; }
+.chain-steps { display: flex; flex-direction: column; gap: 0; }
+.chain-step { display: flex; gap: 0.75rem; position: relative; padding-bottom: 1rem; }
+.chain-step:last-child { padding-bottom: 0; }
+.chain-step::before { content: ''; position: absolute; left: 14px; top: 30px; bottom: 0; width: 2px; background: #E2E8F0; }
+.chain-step:last-child::before { display: none; }
+.chain-step-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0; z-index: 1; }
+.chain-step-text { font-size: 0.8125rem; color: #334155; line-height: 1.5; padding-top: 0.375rem; }
+.key-point-box { background: #F0FDF4; border: 1.5px solid #BBF7D0; border-radius: 12px; padding: 1rem 1.25rem; }
+.key-point-label { font-size: 0.8125rem; font-weight: 700; color: #166534; margin: 0 0 0.25rem; }
+.key-point-text { font-size: 0.875rem; color: #166534; margin: 0; line-height: 1.5; }
+
+/* ── IMPACTS CARD ── */
+.exam-skill-box { display: flex; align-items: flex-start; gap: 0.875rem; background: #FFFBEB; border: 1.5px solid #FCD34D; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; float: right; width: 280px; margin-left: 1.5rem; }
+.exam-skill-icon { width: 28px; height: 28px; background: #FEF3C7; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.exam-skill-label { font-size: 0.8125rem; font-weight: 700; color: #92400E; margin: 0 0 0.25rem; }
+.exam-skill-text { font-size: 0.8125rem; color: #92400E; margin: 0; line-height: 1.4; }
+.impacts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.25rem; clear: both; }
+.impact-col { border-radius: 12px; border: 1.5px solid; padding: 1rem; }
+.impact-col-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+.impact-col-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.impact-col-title { font-size: 0.9375rem; font-weight: 700; }
+.impact-col ul { margin: 0; padding: 0 0 0 1rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.impact-col li { font-size: 0.8125rem; color: #475569; line-height: 1.4; }
+.winners-losers-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.wl-box { border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: flex-start; gap: 0.75rem; }
+.wl-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.wl-title { font-size: 0.9375rem; font-weight: 700; margin: 0 0 0.375rem; }
+.wl-item { font-size: 0.8125rem; line-height: 1.4; }
+.wl-who { font-weight: 700; }
+.wl-why { color: #166534; }
+.example-box { display: flex; align-items: flex-start; gap: 0.75rem; background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.example-icon { width: 30px; height: 30px; background: #2563EB; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; }
+.example-label { font-size: 0.8125rem; font-weight: 700; color: #1E40AF; margin: 0 0 0.25rem; }
+.example-text { font-size: 0.8125rem; color: #1E40AF; margin: 0; line-height: 1.5; }
+
+/* ── SUMMARY CARD ── */
+.summary-sections { display: grid; grid-template-columns: 1fr 2fr 2fr; gap: 1rem; margin-bottom: 1.25rem; }
+.summary-section { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 1rem; }
+.summary-section-num { font-size: 0.9375rem; font-weight: 700; color: #64748B; margin-bottom: 0.375rem; }
+.summary-section-title { font-size: 0.875rem; font-weight: 700; color: #0F172A; margin-bottom: 0.625rem; }
+.summary-section ul { margin: 0; padding: 0 0 0 1rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.summary-section li { font-size: 0.8125rem; color: #475569; line-height: 1.4; }
+.summary-cols { display: grid; gap: 0.5rem; }
+.summary-cols.cols-2 { grid-template-columns: 1fr 1fr; }
+.summary-cols.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.summary-mini-col { background: #fff; border-radius: 8px; padding: 0.5rem 0.625rem; }
+.summary-mini-head { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.125rem; }
+.summary-mini-text { font-size: 0.75rem; color: #64748B; }
+.flow-section { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+.flow-section-title { font-size: 0.875rem; font-weight: 700; color: #0F172A; margin: 0 0 1rem; }
+.flow-diagram { display: flex; align-items: center; gap: 0; }
+.flow-box { text-align: center; flex: 1; padding: 0.875rem 0.5rem; border-radius: 10px; }
+.flow-box-label { font-size: 0.8125rem; font-weight: 700; white-space: pre-line; line-height: 1.3; margin-bottom: 0.375rem; }
+.flow-box-sub { font-size: 0.6875rem; color: #64748B; }
+.flow-arrow { color: #94A3B8; font-size: 1.25rem; padding: 0 0.25rem; flex-shrink: 0; }
+.remember-box { background: #EFF6FF; border: 1.5px solid #BFDBFE; border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem; }
+.remember-icon { width: 28px; height: 28px; background: #DBEAFE; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #2563EB; }
+.remember-label { font-size: 0.8125rem; font-weight: 700; color: #1E40AF; margin: 0 0 0.25rem; }
+.remember-text { font-size: 0.875rem; color: #1E40AF; margin: 0; line-height: 1.5; font-style: italic; }
+.wl-summary-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+
+/* ── THINK PROMPT ── */
+.think-prompt { display: flex; align-items: center; gap: 0.625rem; background: #FFFBEB; border: 1.5px solid #FCD34D; border-radius: 10px; padding: 0.875rem 1rem; margin-top: 1.25rem; }
+.think-icon { width: 24px; height: 24px; flex-shrink: 0; color: #D97706; }
+.think-label { font-size: 0.875rem; font-weight: 700; color: #92400E; margin-right: 0.375rem; }
+.think-text { font-size: 0.875rem; color: #92400E; }
+
+/* ── CARD NAV ── */
+.card-nav { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2.5rem 1.5rem; border-top: 1px solid #F1F5F9; background: #fff; }
+.btn-nav { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; font-weight: 600; color: #475569; background: #fff; border: 1.5px solid #E2E8F0; border-radius: 10px; padding: 0.75rem 1.25rem; cursor: pointer; font-family: inherit; transition: all 0.12s; }
+.btn-nav:hover:not(:disabled) { background: #F8FAFC; border-color: #CBD5E1; color: #0F172A; }
+.btn-nav:disabled { opacity: 0.35; cursor: default; }
+.btn-nav-primary { background: #2563EB; color: #fff; border-color: #2563EB; }
+.btn-nav-primary:hover:not(:disabled) { background: #1D4ED8; border-color: #1D4ED8; color: #fff; }
+.card-counter { font-size: 0.9375rem; font-weight: 500; color: #64748B; }
+
+/* ── RIGHT PANEL ── */
+.learn-right { width: 280px; min-width: 280px; background: #fff; border-left: 1px solid #E2E8F0; padding: 1.5rem 1.25rem; position: sticky; top: 56px; max-height: calc(100vh - 56px); overflow-y: auto; }
+.right-heading { font-size: 0.9375rem; font-weight: 700; color: #0F172A; margin: 0 0 0.25rem; }
+.right-subhead { font-size: 0.8125rem; color: #64748B; margin: 0 0 1rem; }
+.step-dots { display: flex; align-items: center; gap: 0; margin-bottom: 1.25rem; }
+.step-dot { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #E2E8F0; display: flex; align-items: center; justify-content: center; font-size: 0.8125rem; font-weight: 700; color: #94A3B8; background: #fff; flex-shrink: 0; transition: all 0.2s; }
+.step-dot.active { border-color: #2563EB; background: #2563EB; color: #fff; }
+.step-dot.done { border-color: #16A34A; background: #16A34A; color: #fff; }
+.step-line { flex: 1; height: 2px; background: #E2E8F0; }
+.step-line.done { background: #16A34A; }
+.right-cards-title { font-size: 0.8125rem; font-weight: 700; color: #0F172A; margin: 0 0 0.625rem; }
+.right-cards-list { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1.25rem; }
+.right-card-item { display: flex; align-items: center; gap: 0.625rem; padding: 0.5rem 0.625rem; border-radius: 8px; cursor: pointer; transition: background 0.1s; }
+.right-card-item:hover { background: #F8FAFC; }
+.right-card-item.active { background: #F0FDF4; }
+.right-card-num { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #E2E8F0; display: flex; align-items: center; justify-content: center; font-size: 0.6875rem; font-weight: 700; color: #94A3B8; flex-shrink: 0; }
+.right-card-num.active { border-color: #16A34A; background: #16A34A; color: #fff; }
+.right-card-num.done { border-color: #16A34A; background: #16A34A; color: #fff; }
+.right-card-label { font-size: 0.8125rem; color: #64748B; flex: 1; }
+.right-card-label.active { font-weight: 700; color: #16A34A; }
+.right-card-badge { font-size: 0.6875rem; font-weight: 600; background: #DCFCE7; color: #16A34A; padding: 0.125rem 0.5rem; border-radius: 6px; }
+.right-card-check { color: #16A34A; flex-shrink: 0; }
+.right-tip-card { border-radius: 12px; padding: 1rem; border: 1.5px solid; }
+.right-tip-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.right-tip-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.right-tip-label { font-size: 0.8125rem; font-weight: 700; }
+.right-tip-text { font-size: 0.8125rem; line-height: 1.5; margin: 0; }
+.right-tip-sub { font-size: 0.8125rem; margin: 0.25rem 0 0; }
+.right-tip-link { font-size: 0.8125rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 0.5rem; }
+
+/* ── LOADING ── */
+.learn-loading { display: flex; align-items: center; justify-content: center; height: 100vh; color: #94A3B8; font-size: 0.9375rem; }
+</style>
+</head>
+<body>
+<div id="loadingScreen" class="learn-loading">Loading…</div>
+<div class="learn-shell" id="learnShell" style="display:none">
+
+  <!-- SIDEBAR -->
+  <aside class="dash-sidebar">
+    <div class="db-logo">
+      <svg class="db-logo-graph" viewBox="0 0 48 36" fill="none"><circle cx="6" cy="28" r="5" fill="#22C55E"/><circle cx="24" cy="16" r="6" fill="#F59E0B"/><circle cx="42" cy="6" r="7" fill="#2563EB"/><line x1="10.5" y1="25.5" x2="19" y2="19" stroke="#CBD5E1" stroke-width="1.5"/><line x1="29" y1="13" x2="36" y2="9" stroke="#CBD5E1" stroke-width="1.5"/></svg>
+      <div class="db-logo-wordmark">econ<span class="os">OS</span></div>
+      <div class="db-logo-tagline"><span class="tl">Learn it.</span> <span class="tli">Link it.</span> <span class="tla">Land it.</span></div>
+    </div>
+    <nav class="db-nav">
+      <a class="nav-item" href="dashboard.html"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Home</a>
+      <a class="nav-item active" href="#"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>My topics</a>
+      <a class="nav-item" href="#"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>Progress</a>
+      <a class="nav-item" href="#"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></span>Exam practice</a>
+      <a class="nav-item" href="#"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>Study planner</a>
+      <a class="nav-item" href="#"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Messages</a>
+      <a class="nav-item" href="#"><span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41M1 12h2M21 12h2M12 1v2M12 21v2"/></svg></span>Settings</a>
+    </nav>
+    <div class="db-sidebar-footer">
+      <div class="streak-card">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#EA580C"><path d="M12 2C8.5 7 6 9.5 6 14a6 6 0 0 0 12 0c0-4.5-2.5-7-6-12z"/></svg>
+        <div>
+          <div class="streak-num" id="sidebarStreak">1</div>
+          <div class="streak-label">Day streak</div>
+          <div class="streak-sub">Keep it going!</div>
+        </div>
+      </div>
+      <div class="user-pill">
+        <div class="user-avatar" id="sidebarAvatar">AB</div>
+        <div>
+          <div class="user-info-name" id="sidebarName">Alex Brown</div>
+          <div class="user-info-role">A-Level Economics</div>
+        </div>
+        <svg style="margin-left:auto;color:#94A3B8" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+  </aside>
+
+  <!-- BODY -->
+  <div class="learn-body">
+    <!-- TOPBAR -->
+    <header class="learn-topbar">
+      <div class="topbar-left">
+        <a class="topbar-left-btn" id="backLink" href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </a>
+        <div class="topbar-breadcrumb">
+          <div class="topbar-bread-top" id="breadTop"></div>
+          <div class="topbar-bread-title" id="breadTitle"></div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <span class="streak-badge">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#EA580C"><path d="M12 2C8.5 7 6 9.5 6 14a6 6 0 0 0 12 0c0-4.5-2.5-7-6-12z"/></svg>
+          <span id="topStreak">1</span> day streak
+        </span>
+        <div class="topbar-avatar" id="topAvatar">AB</div>
+        <svg style="color:#94A3B8;cursor:pointer" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </header>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-bar-row">
+      <span class="progress-label">Overall progress</span>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        <div class="progress-dot" id="progressDot" style="left:0%"></div>
+      </div>
+      <span class="progress-pct" id="progressPct">0%</span>
+      <button class="btn-exit" onclick="exitSession()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Exit session
+      </button>
+    </div>
+
+    <!-- CONTENT ROW -->
+    <div class="learn-content-row">
+      <main class="learn-main">
+        <div class="lcard" id="cardContent"></div>
+        <!-- CARD NAVIGATION -->
+        <div class="card-nav">
+          <button class="btn-nav" id="btnPrev" onclick="navigate(-1)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Previous
+          </button>
+          <span class="card-counter" id="cardCounter">Card 1 of 5</span>
+          <button class="btn-nav btn-nav-primary" id="btnNext" onclick="navigate(1)">
+            Next card
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+          </button>
+        </div>
+      </main>
+
+      <!-- RIGHT PANEL -->
+      <aside class="learn-right" id="rightPanel"></aside>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/topics-data.js"></script>
+<script>
+/* ── ICONS ── */
+const IC = {
+  check: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  bulb: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 1 5 11.9V17H7v-3.1A7 7 0 0 1 12 2z"/></svg>`,
+  star: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  grad: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
+  book: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+  arrow: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`,
+  coin: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+  chart: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  globe: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  trendUp: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+  settings: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41M1 12h2M21 12h2M12 1v2M12 21v2"/></svg>`,
+  people: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  briefcase: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
+  arrowUp: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+  arrowDown: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>`,
+};
+
+const BASKET_SVG = `<svg viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+  <rect x="30" y="60" width="140" height="80" rx="10" fill="#16A34A"/>
+  <ellipse cx="100" cy="60" rx="70" ry="12" fill="#15803D"/>
+  <path d="M50 60 Q60 20 100 15 Q140 20 150 60" stroke="#15803D" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <circle cx="80" cy="50" r="16" fill="#7C3AED"/>
+  <circle cx="80" cy="50" r="10" fill="#8B5CF6"/>
+  <circle cx="110" cy="46" r="14" fill="#EA580C"/>
+  <circle cx="110" cy="46" r="9" fill="#F97316"/>
+  <rect x="60" y="55" width="18" height="28" rx="4" fill="#FCD34D"/>
+  <rect x="63" y="52" width="6" height="8" rx="2" fill="#16A34A"/>
+  <rect x="88" y="58" width="20" height="26" rx="3" fill="#FBBF24"/>
+  <line x1="30" y1="85" x2="170" y2="85" stroke="#15803D" stroke-width="2" opacity="0.5"/>
+  <line x1="30" y1="105" x2="170" y2="105" stroke="#15803D" stroke-width="2" opacity="0.5"/>
+</svg>`;
+
+/* ── STATE ── */
+let currentCard = 0;
+let topic = null;
+let completedCards = new Set();
+
+function params() {
+  const p = new URLSearchParams(location.search);
+  return { tid: p.get('topic') || 'inflation', card: parseInt(p.get('card') || '1') };
+}
+
+/* ── CARD RENDERERS ── */
+function renderBasic(c) {
+  return `
+    <div class="lcard-label">Learn: Card 1 of ${topic.cards.length}</div>
+    <div class="basic-hero">
+      <div class="basic-def">
+        <h2 class="lcard-title">${c.title}</h2>
+        <p class="lcard-subtitle">${c.definition}</p>
+      </div>
+      <div class="basic-visual">
+        <div class="basket-svg-wrap">
+          ${BASKET_SVG}
+          <div class="price-compare">
+            <div class="price-row"><span class="price-year">2023</span><span class="price-val">£10.00</span></div>
+            <div class="price-row"><span class="price-year">2024</span><span class="price-val">£11.00 <span class="price-up">↑</span></span></div>
+          </div>
+        </div>
+        <div class="visual-caption"><span class="caption-pill">Prices increasing over time</span></div>
+      </div>
+    </div>
+    <div class="takeaway-box">
+      <div class="takeaway-icon">${IC.bulb}</div>
+      <div>
+        <div class="takeaway-label">Key takeaway</div>
+        <p class="takeaway-text">${c.keyTakeaway}</p>
+      </div>
+    </div>
+    <div class="why-matters-title">Why does it matter?</div>
+    <div class="why-matters-grid">
+      ${c.whyMatters.map(w => `
+        <div class="why-item">
+          <div class="why-item-icon" style="background:${w.bg};color:${w.color}">${IC.coin}</div>
+          <div class="why-item-title">${w.title}</div>
+          <p class="why-item-text">${w.text}</p>
+        </div>`).join('')}
+    </div>`;
+}
+
+function renderComparison(c) {
+  function col(d) {
+    return `<div class="comp-col" style="background:${d.bg};border-color:${d.borderColor}">
+      <div class="comp-col-header">
+        <div class="comp-col-icon" style="background:${d.color}22;color:${d.color}">${d.color === '#16A34A' ? IC.trendUp : IC.settings}</div>
+        <div class="comp-col-title" style="color:${d.color}">${d.title}</div>
+      </div>
+      <div class="comp-field">
+        <div class="comp-field-label" style="color:${d.color}">Caused by:</div>
+        <p class="comp-field-text">${d.causedBy}</p>
+      </div>
+      <div class="comp-field">
+        <div class="comp-field-label" style="color:${d.color}">Mechanism:</div>
+        <p class="comp-field-text">${d.mechanism}</p>
+      </div>
+      <div class="comp-example-box" style="background:${d.color}11">
+        <span style="font-weight:700;color:${d.color}">Example:</span> <span style="font-size:0.8125rem;color:#475569">${d.example}</span>
+      </div>
+    </div>`;
+  }
+  return `
+    <div class="lcard-label">Learn: Card 2 of ${topic.cards.length}</div>
+    <h2 class="lcard-title">${c.title}</h2>
+    <p class="lcard-subtitle">${c.intro}</p>
+    <div class="key-idea-box">
+      <div class="key-idea-icon">${IC.bulb}</div>
+      <div>
+        <div class="key-idea-label">Key idea</div>
+        <p class="key-idea-text">${c.keyIdea}</p>
+      </div>
+    </div>
+    <div class="comparison-grid">${col(c.leftCol)}${col(c.rightCol)}</div>
+    ${thinkPrompt(c.thinkPrompt)}`;
+}
+
+function renderMechanism(c) {
+  function chain(title, steps, color) {
+    return `<div class="chain-col" style="background:${color}11;border-color:${color}44">
+      <div class="chain-col-title" style="color:${color}">${title}</div>
+      <div class="chain-steps">
+        ${steps.map((s, i) => `
+          <div class="chain-step">
+            <div class="chain-step-num" style="background:${color}">${i + 1}</div>
+            <div class="chain-step-text">${s}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }
+  return `
+    <div class="lcard-label">Learn: Card 3 of ${topic.cards.length}</div>
+    <h2 class="lcard-title">${c.title}</h2>
+    <p class="lcard-subtitle">${c.intro}</p>
+    <div class="chain-grid">
+      ${chain('Demand-pull chain', c.demandPullSteps, '#16A34A')}
+      ${chain('Cost-push chain', c.costPushSteps, '#2563EB')}
+    </div>
+    <div class="key-point-box">
+      <div class="key-point-label">Key point</div>
+      <p class="key-point-text">${c.keyPoint}</p>
+    </div>
+    ${thinkPrompt(c.thinkPrompt)}`;
+}
+
+function renderImpacts(c) {
+  return `
+    <div class="lcard-label">Learn: Card 4 of ${topic.cards.length}</div>
+    <h2 class="lcard-title">${c.title}</h2>
+    <p class="lcard-subtitle">${c.intro}</p>
+    <div class="exam-skill-box">
+      <div class="exam-skill-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#D97706"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div>
+        <div class="exam-skill-label">Exam skill: Evaluation</div>
+        <p class="exam-skill-text">${c.examSkill}</p>
+      </div>
+    </div>
+    <div class="impacts-grid">
+      ${c.groups.map(g => `
+        <div class="impact-col" style="background:${g.bg};border-color:${g.borderColor}">
+          <div class="impact-col-header">
+            <div class="impact-col-icon" style="background:${g.color}22;color:${g.color}">${IC[g.title === 'Consumers' ? 'people' : g.title === 'Firms' ? 'briefcase' : 'globe']}</div>
+            <div class="impact-col-title" style="color:${g.color}">${g.title}</div>
+          </div>
+          <ul>${g.points.map(p => `<li>${p}</li>`).join('')}</ul>
+        </div>`).join('')}
+    </div>
+    <div class="winners-losers-row">
+      <div class="wl-box" style="background:#F0FDF4;border:1.5px solid #BBF7D0">
+        <div class="wl-icon" style="background:#DCFCE7;color:#16A34A">${IC.arrowUp}</div>
+        <div>
+          <div class="wl-title" style="color:#16A34A">Winners</div>
+          ${c.winners.map(w => `<div class="wl-item"><span class="wl-who" style="color:#166534">${w.who}</span><br><span class="wl-why">${w.why}</span></div>`).join('')}
+        </div>
+      </div>
+      <div class="wl-box" style="background:#FEF2F2;border:1.5px solid #FECACA">
+        <div class="wl-icon" style="background:#FEE2E2;color:#DC2626">${IC.arrowDown}</div>
+        <div>
+          <div class="wl-title" style="color:#DC2626">Losers</div>
+          ${c.losers.map(l => `<div class="wl-item" style="color:#991B1B">• ${l}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="example-box">
+      <div class="example-icon">${IC.chart}</div>
+      <div>
+        <div class="example-label">Example</div>
+        <p class="example-text">${c.example}</p>
+      </div>
+    </div>
+    ${thinkPrompt(c.thinkPrompt)}`;
+}
+
+function renderSummary(c) {
+  function renderSection(s) {
+    if (s.bullets) return `
+      <div class="summary-section">
+        <div class="summary-section-num">${s.num}.</div>
+        <div class="summary-section-title">${s.title}</div>
+        <ul>${s.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      </div>`;
+    const isTwo = s.cols.length === 2;
+    return `
+      <div class="summary-section">
+        <div class="summary-section-num">${s.num}.</div>
+        <div class="summary-section-title">${s.title}</div>
+        <div class="summary-cols ${isTwo ? 'cols-2' : 'cols-3'}">
+          ${s.cols.map(col => `
+            <div class="summary-mini-col" style="border:1.5px solid #E2E8F0">
+              <div class="summary-mini-head" style="color:${isTwo ? (s.cols.indexOf(col)===0?'#16A34A':'#2563EB') : '#0F172A'}">${col.heading}</div>
+              <div class="summary-mini-text">${col.text}</div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }
+  return `
+    <div class="lcard-label">Learn: Card 5 of ${topic.cards.length}</div>
+    <h2 class="lcard-title">${c.title}</h2>
+    <p class="lcard-subtitle">${c.subtitle}</p>
+    <div class="summary-sections">${c.sections.map(renderSection).join('')}</div>
+    <div class="flow-section">
+      <div class="flow-section-title">4. How inflation happens (the big picture)</div>
+      <div class="flow-diagram">
+        ${c.flowSteps.map((s, i) => `
+          ${i > 0 ? '<div class="flow-arrow">→</div>' : ''}
+          <div class="flow-box" style="background:${s.bg}">
+            <div class="flow-box-label" style="color:${s.color}">${s.label}</div>
+            <div class="flow-box-sub">${s.sub}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="wl-summary-row">
+      <div class="wl-box" style="background:#F0FDF4;border:1.5px solid #BBF7D0">
+        <div class="wl-icon" style="background:#DCFCE7;color:#16A34A">${IC.arrowUp}</div>
+        <div>
+          <div class="wl-title" style="color:#16A34A">Winners</div>
+          ${c.winners.map(w => `<div style="font-size:0.8125rem;color:#166534">• ${w}</div>`).join('')}
+        </div>
+      </div>
+      <div class="wl-box" style="background:#FEF2F2;border:1.5px solid #FECACA">
+        <div class="wl-icon" style="background:#FEE2E2;color:#DC2626">${IC.arrowDown}</div>
+        <div>
+          <div class="wl-title" style="color:#DC2626">Losers</div>
+          ${c.losers.map(l => `<div style="font-size:0.8125rem;color:#991B1B">• ${l}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="remember-box">
+      <div class="remember-icon">${IC.bulb}</div>
+      <div>
+        <div class="remember-label">If you remember one thing…</div>
+        <p class="remember-text">${c.rememberOne}</p>
+      </div>
+    </div>`;
+}
+
+function thinkPrompt(text) {
+  return `<div class="think-prompt">
+    <svg class="think-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 1 5 11.9V17H7v-3.1A7 7 0 0 1 12 2z"/></svg>
+    <span class="think-label">Think</span>
+    <span class="think-text">${text}</span>
+  </div>`;
+}
+
+function renderCard(idx) {
+  const c = topic.cards[idx];
+  const renderers = { basic: renderBasic, comparison: renderComparison, mechanism: renderMechanism, impacts: renderImpacts, summary: renderSummary };
+  return (renderers[c.type] || renderBasic)(c);
+}
+
+/* ── RIGHT PANEL ── */
+function stepForCard(idx) {
+  if (idx <= 2) return 0;
+  if (idx === 3) return 1;
+  return 2;
+}
+
+function renderRight(idx) {
+  const c = topic.cards[idx];
+  const total = topic.cards.length;
+  const step = stepForCard(idx);
+  const stepLabels = ['Core understanding', 'Application', 'Summary'];
+
+  const dots = [0, 1, 2].map(i => {
+    let cls = '';
+    if (i < step || (i === step && completedCards.has(idx))) cls = 'done';
+    else if (i === step) cls = 'active';
+    return { cls, label: stepLabels[i] };
+  });
+
+  const dotsHtml = dots.map((d, i) => `
+    ${i > 0 ? `<div class="step-line${d.cls === 'done' || (i <= step && step > 0) ? ' done' : ''}"></div>` : ''}
+    <div class="step-dot ${d.cls}">${d.cls === 'done' ? IC.check : i + 1}</div>`).join('');
+
+  const cardsHtml = topic.cards.map((card, i) => {
+    const isDone = completedCards.has(i);
+    const isActive = i === idx;
+    return `<div class="right-card-item${isActive ? ' active' : ''}" onclick="jumpTo(${i})">
+      <div class="right-card-num${isActive ? ' active' : isDone ? ' done' : ''}">${isDone ? IC.check : i + 1}</div>
+      <div class="right-card-label${isActive ? ' active' : ''}">${card.title}</div>
+      ${isActive ? '<span class="right-card-badge">Current</span>' : ''}
+      ${isDone && !isActive ? `<span class="right-card-check">${IC.check}</span>` : ''}
+    </div>`;
+  }).join('');
+
+  const tip = c.sideTip;
+  let tipHtml = '';
+  if (tip.type === 'complete') {
+    tipHtml = `<div class="right-tip-card" style="background:#F0FDF4;border-color:#BBF7D0">
+      <div class="right-tip-header">
+        <div class="right-tip-icon" style="background:#DCFCE7;color:#16A34A">${IC.check}</div>
+        <div class="right-tip-label" style="color:#16A34A">${tip.label}</div>
+      </div>
+    </div>
+    <div class="right-tip-card" style="background:#F5F3FF;border-color:#DDD6FE;margin-top:0.75rem">
+      <div class="right-tip-header">
+        <div class="right-tip-icon" style="background:#EDE9FE;color:#7C3AED">${IC.grad}</div>
+        <div class="right-tip-label" style="color:#7C3AED">What's next?</div>
+      </div>
+      <div style="font-size:0.9375rem;font-weight:700;color:#0F172A;margin-bottom:0.25rem">Quick check</div>
+      <p class="right-tip-text" style="color:#64748B">Test your understanding with 10 exam-style questions.</p>
+      <a href="learn-quiz.html?topic=${params().tid}" class="right-tip-link" style="color:#7C3AED">Go to quick check ${IC.arrow}</a>
+    </div>`;
+  } else if (tip.type === 'next') {
+    tipHtml = `<div class="right-tip-card" style="background:${tip.bg};border-color:${tip.color}44">
+      <div class="right-tip-header">
+        <div class="right-tip-icon" style="background:${tip.color}22;color:${tip.color}">${IC.book}</div>
+        <div class="right-tip-label" style="color:${tip.color}">${tip.label}</div>
+      </div>
+      <div style="font-size:0.875rem;font-weight:700;color:#0F172A;margin-bottom:0.25rem">${tip.title}</div>
+      <p class="right-tip-text" style="color:#64748B">${tip.text}</p>
+      <a href="#" class="right-tip-link" style="color:${tip.color}">${IC.arrow}</a>
+    </div>`;
+  } else {
+    const iconMap = { focus: IC.star, exam: IC.grad };
+    tipHtml = `<div class="right-tip-card" style="background:${tip.bg};border-color:${tip.color}44">
+      <div class="right-tip-header">
+        <div class="right-tip-icon" style="background:${tip.color}22;color:${tip.color}">${iconMap[tip.type] || IC.star}</div>
+        <div class="right-tip-label" style="color:${tip.color}">${tip.label}</div>
+      </div>
+      <p class="right-tip-text" style="color:${tip.color}cc">${tip.text}</p>
+    </div>`;
+  }
+
+  document.getElementById('rightPanel').innerHTML = `
+    <div class="right-heading">Session progress</div>
+    <div class="right-subhead">Step ${step + 1} of 3: ${stepLabels[step]}</div>
+    <div class="step-dots">${dotsHtml}</div>
+    <div class="right-cards-title">Cards</div>
+    <div class="right-cards-list">${cardsHtml}</div>
+    <div class="right-divider" style="height:1px;background:#F1F5F9;margin-bottom:0.875rem"></div>
+    ${tipHtml}`;
+}
+
+/* ── NAVIGATION ── */
+function updateProgress(idx) {
+  const pct = Math.round((idx / topic.cards.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressDot').style.left = `calc(${pct}% - 8px)`;
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('cardCounter').textContent = `Card ${idx + 1} of ${topic.cards.length}`;
+
+  const btnPrev = document.getElementById('btnPrev');
+  const btnNext = document.getElementById('btnNext');
+  btnPrev.disabled = idx === 0;
+
+  if (idx === topic.cards.length - 1) {
+    btnNext.innerHTML = `Start quick check <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>`;
+    btnNext.onclick = () => { window.location.href = `learn-quiz.html?topic=${params().tid}`; };
+  } else {
+    btnNext.innerHTML = `Next card <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>`;
+    btnNext.onclick = () => navigate(1);
+  }
+}
+
+function showCard(idx) {
+  completedCards.add(currentCard);
+  currentCard = idx;
+  document.getElementById('cardContent').innerHTML = renderCard(idx);
+  updateProgress(idx);
+  renderRight(idx);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function navigate(dir) {
+  const next = currentCard + dir;
+  if (next < 0 || next >= topic.cards.length) return;
+  showCard(next);
+}
+
+function jumpTo(idx) { showCard(idx); }
+
+function exitSession() { window.location.href = `learn-session.html?topic=${params().tid}`; }
+
+/* ── INIT ── */
+(async function init() {
+  const { createClient } = supabase;
+  const sb = createClient(window.ECONOS_CONFIG.supabaseUrl, window.ECONOS_CONFIG.supabaseAnonKey);
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+
+  const user = session.user;
+  const name = user.user_metadata?.full_name || user.email || 'Student';
+  const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+  const streak = parseInt(localStorage.getItem('econosStreak') || '1');
+
+  ['topAvatar','sidebarAvatar'].forEach(id => document.getElementById(id).textContent = initials);
+  ['topStreak','sidebarStreak'].forEach(id => document.getElementById(id).textContent = streak);
+  document.getElementById('sidebarName').textContent = name;
+
+  const { tid, card } = params();
+  topic = window.ECONOS_TOPICS[tid];
+  if (!topic) return;
+
+  document.title = `econOS – ${topic.title}`;
+  document.getElementById('breadTop').textContent = topic.sessionLabel;
+  document.getElementById('breadTitle').textContent = topic.title;
+  document.getElementById('backLink').href = `learn-session.html?topic=${tid}`;
+  document.getElementById('backLink').title = 'Back to session overview';
+
+  currentCard = Math.max(0, Math.min(card - 1, topic.cards.length - 1));
+  showCard(currentCard);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigate(-1);
+  });
+
+  document.getElementById('loadingScreen').style.display = 'none';
+  document.getElementById('learnShell').style.display = 'flex';
+})();
+</script>
+</body>
+</html>

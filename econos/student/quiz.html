@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="wa-root" content="">
+<title>Quiz — econOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/wycombe-base.css">
+<link rel="stylesheet" href="../assets/css/wycombe-quiz.css">
+<style>
+/* econOS integration topbar */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+.sim-topbar{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9999;font-family:'Inter',system-ui,sans-serif;box-shadow:0 1px 3px rgba(15,23,42,.04)}
+.sim-topbar-left{display:flex;align-items:center;gap:.75rem}
+.sim-logo{display:flex;align-items:center;gap:.4rem;text-decoration:none}
+.sim-logo-dots{display:block}
+.sim-logo-word{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;font-family:'Inter',sans-serif}
+.sim-econ{color:#0F172A}.sim-os{color:#2563EB}
+.sim-divider{width:1px;height:20px;background:#E2E8F0;margin:0 .25rem}
+.sim-page-name{font-size:.8rem;font-weight:600;color:#64748B;font-family:'Inter',sans-serif}
+.sim-back-btn{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;font-weight:600;color:#475569;text-decoration:none;padding:.4rem .75rem;border-radius:8px;border:1px solid #E2E8F0;background:#F8FAFC;transition:all .12s;font-family:'Inter',sans-serif}
+.sim-back-btn:hover{background:#F1F5F9;color:#0F172A;border-color:#CBD5E1}
+</style>
+</head>
+<body>
+<!-- Script load order matters:
+     1. quiz-data.js     — provides QUIZZES, THEMES
+     2. WA shim          — provides window.WA used by quiz-engine.js
+     3. quiz-engine.js   — provides bootQuiz(), references WA
+     4. econOS auth      — handles session auth -->
+<script src="../assets/js/quiz-data.js"></script>
+<script>
+window.WA = {
+  isLoggedIn: function() { return true; },
+  saveScore: function(id, score, total) { return Promise.resolve({ ok: true }); }
+};
+</script>
+<script src="../assets/js/quiz-engine.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  Universal Quiz Runner
+// ───────────────────────────────────────────────────────────────
+//  Reads ?topic=XYZ from the URL, looks up question data in the
+//  QUIZZES object (defined in quiz-data.js), then boots the quiz
+//  engine. To add a new topic, just add an entry to quiz-data.js
+//  — no new HTML file needed.
+// ═══════════════════════════════════════════════════════════════
+
+(function(){
+  var params  = new URLSearchParams(window.location.search);
+  var topicId = params.get('topic');
+
+  if (!topicId || !QUIZZES[topicId]) {
+    document.body.innerHTML =
+      '<div style="max-width:640px;margin:80px auto;padding:32px;'
+      +'background:#1a2744;border:1px solid #2e3f60;border-radius:12px;'
+      +'color:#fff;font-family:Nunito,sans-serif;text-align:center">'
+      +'<h1 style="font-family:Cormorant Garamond,serif;color:#c9a84c;'
+      +'margin-bottom:16px">Quiz not found</h1>'
+      +'<p style="color:#c8d4ee;margin-bottom:24px">'
+      +(topicId
+        ? 'No quiz exists yet for topic <strong>'+topicId+'</strong>.'
+        : 'No topic was specified in the URL.')
+      +'</p>'
+      +'<p style="margin-bottom:24px">'
+      +'<a href="micro-quiz" '
+      +'style="color:#c9a84c;text-decoration:none;border:1px solid #c9a84c;'
+      +'padding:10px 20px;border-radius:6px;display:inline-block;margin-right:8px">'
+      +'&larr; Micro hub</a>'
+      +'<a href="macro-quiz" '
+      +'style="color:#c9a84c;text-decoration:none;border:1px solid #c9a84c;'
+      +'padding:10px 20px;border-radius:6px;display:inline-block">'
+      +'&larr; Macro hub</a></p>'
+      +'</div>';
+    return;
+  }
+
+  var quiz = QUIZZES[topicId];
+  quiz.questions.forEach(function(q, i){ q.n = i + 1; });
+
+  var hubUrl = (quiz.paper === 'macro') ? 'macro-quiz' : 'micro-quiz';
+  document.title = quiz.title + ' — econOS';
+
+  bootQuiz(quiz.questions, {
+    id:       topicId,
+    title:    quiz.title,
+    subtitle: quiz.subtitle,
+    badge:    quiz.badge,
+    hubUrl:   hubUrl,
+    homeUrl:  '../dashboard'
+  });
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script>Auth.requireStudent('../login');</script>
+</body>
+</html>

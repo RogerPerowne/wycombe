@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="wa-root" content="">
+<title>Macroeconomics Quiz — econOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/wycombe-base.css">
+<link rel="stylesheet" href="../assets/css/wycombe-dashboard.css">
+<style>
+/* econOS integration topbar */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+.sim-topbar{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9999;font-family:'Inter',system-ui,sans-serif;box-shadow:0 1px 3px rgba(15,23,42,.04)}
+.sim-topbar-left{display:flex;align-items:center;gap:.75rem}
+.sim-logo{display:flex;align-items:center;gap:.4rem;text-decoration:none}
+.sim-logo-dots{display:block}
+.sim-logo-word{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;font-family:'Inter',sans-serif}
+.sim-econ{color:#0F172A}.sim-os{color:#2563EB}
+.sim-divider{width:1px;height:20px;background:#E2E8F0;margin:0 .25rem}
+.sim-page-name{font-size:.8rem;font-weight:600;color:#64748B;font-family:'Inter',sans-serif}
+.sim-back-btn{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;font-weight:600;color:#475569;text-decoration:none;padding:.4rem .75rem;border-radius:8px;border:1px solid #E2E8F0;background:#F8FAFC;transition:all .12s;font-family:'Inter',sans-serif}
+.sim-back-btn:hover{background:#F1F5F9;color:#0F172A;border-color:#CBD5E1}
+</style>
+</head>
+<body>
+<nav class="sim-topbar">
+  <div class="sim-topbar-left">
+    <a href="/" class="sim-logo">
+      <svg class="sim-logo-dots" width="52" height="16" viewBox="0 0 52 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="5" y1="8" x2="43" y2="8" stroke="#CBD5E1" stroke-width="1.5"/><circle cx="5" cy="8" r="4.5" fill="#22C55E"/><circle cx="22" cy="8" r="5.5" fill="#F59E0B"/><circle cx="43" cy="8" r="7.5" fill="#2563EB"/></svg>
+      <span class="sim-logo-word"><span class="sim-econ">econ</span><span class="sim-os">OS</span></span>
+    </a>
+    <span class="sim-divider"></span>
+    <span class="sim-page-name">Macroeconomics Quiz</span>
+  </div>
+  <div>
+    <a href="../dashboard" class="sim-back-btn">← Dashboard</a>
+  </div>
+</nav>
+<div class="app" id="root"></div>
+
+<script src="../assets/js/quiz-data.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  Macroeconomics Hub — auto-renders from THEMES.macro
+// ═══════════════════════════════════════════════════════════════
+
+(function(){
+  var root   = document.getElementById('root');
+  var themes = THEMES.macro;
+
+  var html = ''
+    + '<div class="hub-hero">'
+    + '  <div class="hub-eyebrow" style="color:var(--teal)">Edexcel A-Level &middot; Paper 2</div>'
+    + '  <h1 class="hub-title">Macroeconomics</h1>'
+    + '  <div class="hub-tagline">Topic-by-topic revision quizzes &middot; Themes 2 &amp; 4</div>'
+    + '  <p class="hub-intro">Pick any topic to start a ten-question quiz. Each features a mix of formats — sorts, calculations, diagram interpretation, paragraph completion, multi-select, and more — with detailed feedback designed for A-level analysis and evaluation marks.</p>'
+    + '</div>';
+
+  themes.forEach(function(theme){
+    var available = theme.topics.filter(function(t){ return QUIZZES[t.id]; }).length;
+
+    html += ''
+      + '<div class="theme-section">'
+      + '  <div class="theme-header">'
+      + '    <span class="theme-tag" style="background:' + hexAlpha(theme.colour, 0.18) + ';color:' + theme.colour + ';border:1px solid ' + hexAlpha(theme.colour, 0.4) + '">' + theme.label + '</span>'
+      + '    <div>'
+      + '      <div class="theme-name">' + theme.name + '</div>'
+      + '      <div class="theme-sub">'  + theme.topics.length + ' topics &middot; ' + available + ' available</div>'
+      + '    </div>'
+      + '  </div>'
+      + '  <div class="topics-grid">';
+
+    theme.topics.forEach(function(topic, i){
+      var num  = String(i + 1).padStart(2, '0');
+      var quiz = QUIZZES[topic.id];
+
+      if (quiz) {
+        html += ''
+          + '<div class="topic-card" onclick="startQuiz(\'' + topic.id + '\')" style="--tc:' + theme.colour + '">'
+          + '  <div class="topic-n">Topic ' + num + '</div>'
+          + '  <div class="topic-name">'    + topic.name + '</div>'
+          + '  <div class="topic-meta">'    + quiz.questions.length + ' questions &middot; Click to start</div>'
+          + '  <div class="topic-arrow">&rarr;</div>'
+          + '</div>';
+      } else {
+        html += ''
+          + '<div class="topic-card soon" style="--tc:' + theme.colour + '">'
+          + '  <div class="topic-n">Topic ' + num + '</div>'
+          + '  <div class="topic-name">'    + topic.name + '</div>'
+          + '  <div class="topic-meta">Coming soon</div>'
+          + '</div>';
+      }
+    });
+
+    html += '  </div></div>';
+  });
+
+  root.innerHTML = html;
+
+  window.startQuiz = function(topicId) {
+    window.location.href = 'quiz?topic=' + topicId;
+  };
+
+  function hexAlpha(hex, alpha){
+    hex = hex.replace('#', '');
+    var r = parseInt(hex.substr(0,2), 16);
+    var g = parseInt(hex.substr(2,2), 16);
+    var b = parseInt(hex.substr(4,2), 16);
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+  }
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script>Auth.requireStudent('../login');</script>
+</body>
+</html>

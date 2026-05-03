@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savana — The Development Challenge · Wycombe Abbey Economics</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --wa-navy:#1a2744; --wa-navy-deep:#0f1729; --wa-gold:#c9a84c; --wa-gold-light:#e2c47a;
+  --wa-green:#2e7d52; --wa-green-light:#4caf80; --wa-red:#8b1a2e; --wa-red-light:#e05060;
+  --wa-orange:#c06a1a; --wa-orange-light:#e0933a; --wa-blue:#4a7fb5;
+  --text:#ffffff; --muted:#dde3f0; --border:#2e3f60; --panel:#1e2e4a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--wa-navy-deep);color:var(--text);font-family:'Aptos','Nunito','Segoe UI',sans-serif;font-size:17px;min-height:100vh;overflow-x:hidden}
+
+/* HEADER */
+header{background:linear-gradient(135deg,var(--wa-navy-deep),var(--wa-navy) 60%,#1e3060);border-bottom:2px solid var(--wa-gold);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:78px;position:sticky;top:0;z-index:300;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+.hdr-l{display:flex;align-items:center;gap:1rem}
+.hdr-logo{height:54px;width:54px;object-fit:contain;border-radius:4px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+.hdr-school{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--wa-gold-light);line-height:1.2}
+.hdr-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;line-height:1.2}
+.hdr-sub{font-family:'IBM Plex Mono',monospace;font-size:.59rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-top:.1rem}
+.hdr-badge{font-family:'IBM Plex Mono',monospace;font-size:.61rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--wa-gold);color:var(--wa-gold);padding:.3rem .9rem;border-radius:3px;background:rgba(201,168,76,.08)}
+
+/* YEAR BAR */
+.year-bar{background:var(--wa-navy);border-bottom:1px solid var(--border);padding:.55rem 2rem;display:none;align-items:center;gap:1.2rem}
+.yr-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);white-space:nowrap}
+.yr-dots{display:flex;gap:.35rem;flex:1}
+.ydot{flex:1;height:5px;border-radius:3px;background:var(--border);transition:background .4s}
+.ydot.done{background:var(--wa-green-light)}.ydot.cur{background:var(--wa-gold)}
+.yr-score{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--wa-gold);white-space:nowrap}
+
+/* LAYOUT */
+.app{max-width:1380px;margin:0 auto;padding:1.5rem 2rem;display:grid;grid-template-columns:1fr 320px;gap:1.5rem;align-items:start}
+
+/* CARDS */
+.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;position:relative}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--wa-gold),var(--wa-blue))}
+.cb{padding:1.8rem}
+
+/* INTRO */
+.intro-wrap{text-align:center;padding:2.5rem 2rem}
+.intro-logo{width:88px;height:88px;object-fit:contain;margin:0 auto 1.4rem;filter:drop-shadow(0 4px 14px rgba(0,0,0,.5))}
+.intro-wrap h1{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;line-height:1.15;margin-bottom:.35rem}
+.intro-italic{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--wa-gold-light);margin-bottom:1.8rem}
+
+.savana-profile{display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:700px;margin:0 auto 1.8rem;text-align:left}
+.sp-box{background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.22);border-radius:8px;padding:1.1rem 1.2rem}
+.sp-title{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--wa-gold);margin-bottom:.5rem}
+.sp-box p{font-size:.84rem;line-height:1.62;color:var(--muted)}
+.sp-stats{display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem}
+.sp-stat{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:.7rem}
+.sp-stat-label{color:var(--muted)}.sp-stat-val{color:var(--wa-gold-light);font-weight:600}
+
+.intro-brief{max-width:640px;margin:0 auto 1.8rem;text-align:left;background:rgba(255,255,255,.03);border-left:3px solid var(--wa-gold);padding:1.1rem 1.3rem;border-radius:0 6px 6px 0;font-size:.9rem;line-height:1.75;color:var(--muted)}
+.intro-brief p{margin-bottom:.55rem}.intro-brief p:last-child{margin-bottom:0}
+.intro-brief p strong{color:var(--text)}
+
+/* TURN */
+.turn-meta{display:flex;align-items:center;gap:.7rem;margin-bottom:.8rem;flex-wrap:wrap}
+.t-badge{font-family:'IBM Plex Mono',monospace;font-size:.61rem;letter-spacing:.11em;text-transform:uppercase;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);color:var(--wa-gold);padding:.2rem .7rem;border-radius:3px}
+.t-year{font-family:'IBM Plex Mono',monospace;font-size:.67rem;color:var(--muted)}
+.crisis-badge{font-family:'IBM Plex Mono',monospace;font-size:.61rem;background:rgba(224,80,96,.15);border:1px solid rgba(224,80,96,.4);color:var(--wa-red-light);padding:.2rem .7rem;border-radius:3px;letter-spacing:.08em;text-transform:uppercase;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+.turn-title{font-family:'Cormorant Garamond',serif;font-size:1.95rem;font-weight:700;line-height:1.2;margin-bottom:.5rem}
+
+.sit-box{background:rgba(255,255,255,.03);border-left:3px solid var(--wa-gold);padding:1.1rem 1.3rem;border-radius:0 6px 6px 0;margin-bottom:1.4rem}
+.sit-label{font-family:'IBM Plex Mono',monospace;font-size:.59rem;text-transform:uppercase;letter-spacing:.13em;color:var(--wa-gold);margin-bottom:.5rem}
+.sit-box p{font-size:.9rem;line-height:1.75;color:var(--muted);margin-bottom:.55rem}
+.sit-box p:last-child{margin-bottom:0}
+.sit-box p strong{color:var(--text)}
+
+/* TAX PANEL */
+.tax-panel{background:rgba(74,127,181,.08);border:1px solid rgba(74,127,181,.3);border-radius:9px;padding:1.3rem;margin-bottom:1.2rem}
+.tax-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.9rem;gap:1rem;flex-wrap:wrap}
+.tax-label{font-family:'IBM Plex Mono',monospace;font-size:.61rem;text-transform:uppercase;letter-spacing:.12em;color:var(--wa-blue)}
+.tax-summary{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--muted);text-align:right}
+.tax-summary strong{color:var(--wa-gold-light);font-size:.85rem}
+.tax-row{display:flex;align-items:center;gap:1rem}
+.tax-slider{flex:1;-webkit-appearance:none;appearance:none;height:7px;border-radius:4px;background:linear-gradient(90deg,var(--wa-green-light),var(--wa-orange-light),var(--wa-red-light));outline:none;cursor:pointer}
+.tax-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--wa-gold-light);border:3px solid var(--wa-navy-deep);box-shadow:0 0 10px rgba(201,168,76,.5);cursor:pointer}
+.tax-pct{font-family:'IBM Plex Mono',monospace;font-size:1.2rem;font-weight:600;color:var(--wa-gold-light);min-width:42px;text-align:right}
+.tax-note{font-size:.78rem;color:var(--muted);line-height:1.55;margin-top:.7rem}
+.tax-note strong{color:var(--text)}
+
+/* BUDGET */
+.budget-panel{background:rgba(26,39,68,.7);border:1px solid rgba(201,168,76,.3);border-radius:9px;padding:1.4rem;margin-bottom:1.2rem}
+.budget-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.budget-label{font-family:'IBM Plex Mono',monospace;font-size:.61rem;text-transform:uppercase;letter-spacing:.12em;color:var(--wa-gold)}
+.budget-avail{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--muted)}
+.budget-avail strong{color:var(--wa-gold-light);font-size:.92rem}
+.budget-unspent{font-family:'IBM Plex Mono',monospace;font-size:.72rem}
+
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.cat-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:7px;padding:.9rem 1rem;transition:border-color .2s}
+.cat-item:hover{border-color:rgba(201,168,76,.4)}
+.cat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem}
+.cat-name{font-size:.88rem;font-weight:600}
+.cat-icon{font-size:1.1rem}
+.cat-concept{font-family:'IBM Plex Mono',monospace;font-size:.57rem;text-transform:uppercase;letter-spacing:.06em;color:var(--wa-blue);margin-bottom:.45rem}
+.cat-desc{font-size:.75rem;color:var(--muted);line-height:1.5;margin-bottom:.55rem}
+.cat-controls{display:flex;align-items:center;gap:.5rem}
+.c-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1;flex-shrink:0}
+.c-btn:hover{background:var(--wa-gold);color:var(--wa-navy-deep);border-color:var(--wa-gold)}
+.c-val{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--wa-gold-light);min-width:68px;text-align:center}
+.c-pct{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--muted);min-width:36px}
+
+/* SPECIAL DECISION */
+.special-panel{background:rgba(139,26,46,.08);border:1px solid rgba(224,80,96,.3);border-radius:9px;padding:1.3rem;margin-bottom:1.2rem}
+.sp-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--wa-red-light);margin-bottom:.6rem}
+.sp-prompt{font-size:.9rem;color:var(--muted);line-height:1.65;margin-bottom:.9rem}
+.sp-opts{display:flex;flex-direction:column;gap:.6rem}
+.sp-opt{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:7px;padding:.9rem 1rem;cursor:pointer;transition:all .2s}
+.sp-opt:hover{border-color:var(--wa-gold);background:rgba(201,168,76,.08)}
+.sp-opt.chosen{border-color:var(--wa-gold);background:rgba(201,168,76,.12)}
+.sp-opt-title{font-size:.9rem;font-weight:600;margin-bottom:.25rem}
+.sp-opt-desc{font-size:.78rem;color:var(--muted);line-height:1.5}
+
+/* BUTTONS */
+.btn{padding:.85rem 1.2rem;border:none;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-weight:500}
+.btn-gold{background:linear-gradient(135deg,#b8922a,var(--wa-gold));color:var(--wa-navy-deep);font-weight:700}
+.btn-gold:hover{background:linear-gradient(135deg,var(--wa-gold),var(--wa-gold-light));transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,.35)}
+.btn-gold:disabled{opacity:.38;cursor:default;transform:none;box-shadow:none}
+.btn-full{width:100%}
+
+/* OUTCOME */
+.outcome-panel{display:none;margin-top:1.2rem;border:1px solid var(--border);border-radius:10px;overflow:hidden;animation:fadeUp .4s ease}
+.outcome-panel.vis{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.op-hdr{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+.op-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700}
+.score-pill{font-family:'IBM Plex Mono',monospace;font-size:.65rem;padding:.28rem .8rem;border-radius:4px;text-transform:uppercase;letter-spacing:.08em}
+.p-great{background:rgba(46,125,82,.2);color:var(--wa-green-light);border:1px solid var(--wa-green-light)}
+.p-good{background:rgba(74,127,181,.2);color:var(--wa-blue);border:1px solid var(--wa-blue)}
+.p-ok{background:rgba(192,106,26,.2);color:var(--wa-orange-light);border:1px solid var(--wa-orange-light)}
+.p-bad{background:rgba(224,80,96,.2);color:var(--wa-red-light);border:1px solid var(--wa-red-light)}
+.op-body{padding:1.4rem 1.5rem}
+
+.outcome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1.2rem}
+.og-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:.75rem .9rem}
+.og-label{font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.2rem}
+.og-val{font-size:.92rem;font-weight:500}
+.up-good{color:var(--wa-green-light)}.dn-good{color:var(--wa-green-light)}
+.up-bad{color:var(--wa-red-light)}.dn-bad{color:var(--wa-red-light)}
+.neutral-col{color:var(--wa-gold-light)}
+
+.score-breakdown{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-bottom:1.2rem}
+.sb-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:.65rem .6rem;text-align:center}
+.sb-label{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.3rem;line-height:1.3}
+.sb-score{font-family:'IBM Plex Mono',monospace;font-size:1rem;font-weight:600}
+.sb-wt{font-family:'IBM Plex Mono',monospace;font-size:.55rem;color:var(--muted);margin-top:.15rem}
+
+.event-box{background:rgba(139,26,46,.07);border:1px solid rgba(139,26,46,.3);border-radius:7px;padding:1rem 1.1rem;margin-bottom:1rem}
+.event-label{font-family:'IBM Plex Mono',monospace;font-size:.59rem;text-transform:uppercase;letter-spacing:.1em;color:var(--wa-red-light);margin-bottom:.4rem}
+.pos-event-box{background:rgba(46,125,82,.07);border:1px solid rgba(46,125,82,.3);border-radius:7px;padding:1rem 1.1rem;margin-bottom:1rem}
+.pos-event-label{font-family:'IBM Plex Mono',monospace;font-size:.59rem;text-transform:uppercase;letter-spacing:.1em;color:var(--wa-green-light);margin-bottom:.4rem}
+.event-text{font-size:.88rem;line-height:1.65;color:var(--muted)}
+
+.lesson-box{background:rgba(74,127,181,.07);border:1px solid rgba(74,127,181,.28);border-radius:7px;padding:1rem 1.1rem;margin-bottom:1rem}
+.lesson-label{font-family:'IBM Plex Mono',monospace;font-size:.59rem;text-transform:uppercase;letter-spacing:.1em;color:var(--wa-blue);margin-bottom:.4rem}
+.lesson-text{font-size:.87rem;line-height:1.72;color:var(--muted)}
+.lesson-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+.ltag{font-family:'IBM Plex Mono',monospace;font-size:.57rem;background:rgba(74,127,181,.1);border:1px solid rgba(74,127,181,.3);color:var(--wa-blue);padding:.15rem .45rem;border-radius:3px}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:1.2rem}
+.sc{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:1.2rem;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--wa-gold),var(--wa-blue))}
+.sc-title{font-family:'IBM Plex Mono',monospace;font-size:.59rem;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin-bottom:.9rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+
+/* DASHBOARD */
+.dash-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;margin-bottom:.05rem}
+.dash-yr{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--wa-gold);margin-bottom:.8rem}
+.dash-stats{display:flex;flex-direction:column;gap:.55rem}
+.ds-row{display:flex;align-items:center;gap:.5rem}
+.ds-lbl{font-size:.77rem;color:var(--muted);width:95px;flex-shrink:0}
+.ds-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.ds-fill{height:100%;border-radius:3px;transition:width .8s ease,background .5s}
+.ds-val{font-family:'IBM Plex Mono',monospace;font-size:.67rem;width:52px;text-align:right}
+
+.lorenz-wrap{margin-top:.9rem}
+.lorenz-lbl{font-family:'IBM Plex Mono',monospace;font-size:.57rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.4rem}
+canvas.lc{width:100%;border-radius:5px;background:rgba(255,255,255,.03);border:1px solid var(--border);display:block}
+
+.debt-section{margin-top:.8rem}
+.debt-row{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:.65rem;margin-bottom:.3rem}
+.debt-track{height:10px;background:var(--border);border-radius:5px;overflow:hidden}
+.debt-fill{height:100%;border-radius:5px;transition:width .8s ease,background .5s}
+
+.copper-section{margin-top:.8rem;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:.7rem .8rem}
+.copper-row{display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:.67rem}
+.copper-price{font-size:.95rem;font-weight:600}
+
+/* HISTORY */
+.history-log{display:flex;flex-direction:column;gap:.4rem;max-height:240px;overflow-y:auto}
+.hl-item{background:rgba(255,255,255,.03);border-left:3px solid var(--border);padding:.5rem .7rem;border-radius:0 5px 5px 0;font-size:.77rem;line-height:1.45}
+.hl-item.pos{border-left-color:var(--wa-green-light)}
+.hl-item.neg{border-left-color:var(--wa-red-light)}
+.hl-item.neu{border-left-color:var(--wa-gold)}
+.hl-yr{font-family:'IBM Plex Mono',monospace;font-size:.57rem;color:var(--muted);display:block;margin-bottom:.12rem}
+
+/* CRISIS MODAL */
+.crisis-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:500;display:none;align-items:center;justify-content:center;padding:2rem;backdrop-filter:blur(4px)}
+.crisis-overlay.on{display:flex}
+.crisis-modal{background:var(--panel);border:2px solid var(--wa-red-light);border-radius:12px;max-width:560px;width:100%;padding:2rem;animation:fadeUp .35s ease;box-shadow:0 0 60px rgba(224,80,96,.3)}
+.cm-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--wa-red-light);margin-bottom:.25rem}
+.cm-sub{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--wa-red-light);opacity:.7;margin-bottom:1rem}
+.crisis-modal p{font-size:.9rem;line-height:1.75;color:var(--muted);margin-bottom:.75rem}
+.crisis-modal p strong{color:var(--text)}
+.crisis-modal p:last-of-type{margin-bottom:0}
+
+/* RESULTS */
+.res-screen{display:none}
+.res-hero{text-align:center;margin-bottom:2rem}
+.res-country{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--wa-gold-light);margin-bottom:.3rem}
+.res-headline{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:700;margin-bottom:.4rem}
+.res-score{font-family:'Cormorant Garamond',serif;font-size:5.5rem;font-weight:700;color:var(--wa-gold-light);line-height:1}
+.res-grade{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;margin:.4rem 0 1.5rem}
+
+.final-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.5rem}
+.fg-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:.9rem;text-align:center}
+.fg-lbl{font-family:'IBM Plex Mono',monospace;font-size:.57rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.3rem;line-height:1.3}
+.fg-val{font-family:'IBM Plex Mono',monospace;font-size:1.2rem;font-weight:500}
+.fg-sub{font-size:.67rem;color:var(--muted);margin-top:.2rem;font-family:'IBM Plex Mono',monospace}
+
+.ai-box{background:rgba(26,39,68,.6);border:1px solid rgba(201,168,76,.3);border-radius:10px;padding:1.5rem;margin-bottom:1.3rem}
+.ai-hdr{display:flex;align-items:center;gap:.7rem;margin-bottom:.9rem;padding-bottom:.7rem;border-bottom:1px solid var(--border)}
+.ai-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--wa-gold),#b8922a);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:var(--wa-navy-deep);flex-shrink:0}
+.ai-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700}
+.ai-sub{font-family:'IBM Plex Mono',monospace;font-size:.57rem;color:var(--muted);letter-spacing:.07em}
+.ai-body p{font-size:.9rem;line-height:1.8;color:var(--muted);margin-bottom:.7rem}
+.ai-body p:last-child{margin-bottom:0}
+.ai-body p strong{color:var(--text)}
+.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--wa-gold);border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.tl-review{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.5rem}
+.tl-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:7px;padding:.85rem 1.1rem;display:grid;grid-template-columns:56px 1fr auto;gap:.8rem;align-items:start}
+.tl-yr{font-family:'IBM Plex Mono',monospace;font-size:.64rem;color:var(--wa-gold);padding-top:.1rem}
+.tl-text{font-size:.83rem;color:var(--muted);line-height:1.45}
+.tl-score{font-family:'IBM Plex Mono',monospace;font-size:.7rem;padding:.2rem .5rem;border-radius:3px;white-space:nowrap}
+
+/* THEORY SIDEBAR */
+.theory-item{margin-bottom:.85rem;padding-bottom:.85rem;border-bottom:1px solid var(--border)}
+.theory-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.theory-name{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--wa-blue);margin-bottom:.3rem}
+.theory-text{font-size:.8rem;line-height:1.6;color:var(--muted)}
+
+@media(max-width:960px){.app{grid-template-columns:1fr}.cat-grid{grid-template-columns:1fr}.outcome-grid{grid-template-columns:1fr 1fr}.score-breakdown{grid-template-columns:repeat(3,1fr)}.final-grid{grid-template-columns:1fr 1fr}.savana-profile{grid-template-columns:1fr}}
+
+/* econOS topbar */
+.sim-topbar{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9999;font-family:'Inter',system-ui,sans-serif;box-shadow:0 1px 3px rgba(15,23,42,.04)}
+.sim-topbar-left{display:flex;align-items:center;gap:.75rem}
+.sim-logo{display:flex;align-items:center;gap:.4rem;text-decoration:none}
+.sim-logo-dots{display:block}
+.sim-logo-word{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;font-family:'Inter',sans-serif}
+.sim-econ{color:#0F172A}.sim-os{color:#2563EB}
+.sim-divider{width:1px;height:20px;background:#E2E8F0;margin:0 .25rem}
+.sim-page-name{font-size:.8rem;font-weight:600;color:#64748B;font-family:'Inter',sans-serif}
+.sim-back-btn{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;font-weight:600;color:#475569;text-decoration:none;padding:.4rem .75rem;border-radius:8px;border:1px solid #E2E8F0;background:#F8FAFC;transition:all .12s;font-family:'Inter',sans-serif}
+.sim-back-btn:hover{background:#F1F5F9;color:#0F172A;border-color:#CBD5E1}
+</style>
+</head>
+<body>
+<nav class="sim-topbar">
+  <div class="sim-topbar-left">
+    <a href="/" class="sim-logo">
+      <svg class="sim-logo-dots" width="52" height="16" viewBox="0 0 52 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="5" y1="8" x2="43" y2="8" stroke="#CBD5E1" stroke-width="1.5"/><circle cx="5" cy="8" r="4.5" fill="#22C55E"/><circle cx="22" cy="8" r="5.5" fill="#F59E0B"/><circle cx="43" cy="8" r="7.5" fill="#2563EB"/></svg>
+      <span class="sim-logo-word"><span class="sim-econ">econ</span><span class="sim-os">OS</span></span>
+    </a>
+    <span class="sim-divider"></span>
+    <span class="sim-page-name">Savana Development Simulator</span>
+  </div>
+  <div>
+    <a href="../dashboard" class="sim-back-btn">&#8592; Dashboard</a>
+  </div>
+</nav>
+
+<header>
+  <div class="hdr-l">
+    <img class="hdr-logo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display='none'">
+    <div>
+      <div class="hdr-school">Wycombe Abbey</div>
+      <div class="hdr-title">Savana — The Development Challenge</div>
+      <div class="hdr-sub">A-Level Economics · Paper 2 · Development, Growth & Trade</div>
+    </div>
+  </div>
+  <div class="hdr-badge">Presidential Simulation</div>
+</header>
+
+<div class="year-bar" id="yearBar">
+  <div class="yr-label">Progress</div>
+  <div class="yr-dots" id="yearDots"></div>
+  <div class="yr-score" id="yearScore"></div>
+</div>
+
+<!-- CRISIS MODAL -->
+<div class="crisis-overlay" id="crisisOverlay">
+  <div class="crisis-modal">
+    <div class="cm-title" id="cm-title"></div>
+    <div class="cm-sub">Unexpected Shock — Savana</div>
+    <p id="cm-body"></p>
+    <p id="cm-impact" style="font-size:.82rem;background:rgba(224,80,96,.07);border:1px solid rgba(224,80,96,.25);border-radius:6px;padding:.7rem .9rem;"></p>
+    <button class="btn btn-gold btn-full" onclick="dismissCrisis()" style="margin-top:1.1rem">Acknowledge & Continue →</button>
+  </div>
+</div>
+
+<div class="app">
+<div id="mainCol">
+
+<!-- INTRO -->
+<div class="card" id="introCard">
+  <div class="intro-wrap">
+    <img class="intro-logo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display='none'">
+    <h1>President of Savana</h1>
+    <div class="intro-italic">A landlocked sub-Saharan nation. Ten years. Can you break the poverty trap?</div>
+
+    <div class="savana-profile">
+      <div class="sp-box">
+        <div class="sp-title">🌍 Country Profile</div>
+        <p>Savana is a landlocked nation of 18 million people in sub-Saharan Africa. It is heavily dependent on copper exports, whose price is set by global markets you cannot control. A 1990s IMF structural adjustment programme left deep debt and a gutted public sector.</p>
+      </div>
+      <div class="sp-box">
+        <div class="sp-title">📊 Baseline Statistics (Year 0)</div>
+        <div class="sp-stats">
+          <div class="sp-stat"><span class="sp-stat-label">GDP</span><span class="sp-stat-val">$4.2bn</span></div>
+          <div class="sp-stat"><span class="sp-stat-label">GDP per capita</span><span class="sp-stat-val">$233</span></div>
+          <div class="sp-stat"><span class="sp-stat-label">HDI</span><span class="sp-stat-val">0.420</span></div>
+          <div class="sp-stat"><span class="sp-stat-label">Gini coefficient</span><span class="sp-stat-val">62.0</span></div>
+          <div class="sp-stat"><span class="sp-stat-label">Debt / GDP</span><span class="sp-stat-val">68%</span></div>
+          <div class="sp-stat"><span class="sp-stat-label">Copper price</span><span class="sp-stat-val">$6,200/t</span></div>
+        </div>
+      </div>
+      <div class="sp-box">
+        <div class="sp-title">⚙️ How It Works</div>
+        <p>Each year you set a <strong>tax rate</strong> (which determines your government budget) then allocate that budget across <strong>8 fixed investment categories</strong>. You also face one <strong>special decision</strong> unique to that year. Random shocks will hit — you cannot predict them, only prepare.</p>
+      </div>
+      <div class="sp-box">
+        <div class="sp-title">🏆 How You Are Scored</div>
+        <p>Each year is scored on five <strong>outcomes</strong> — not inputs. HDI improvement (30%), GDP growth (20%), inequality reduction (20%), debt sustainability (15%), and political stability (15%). Time lags mean education investment pays off slowly; debt neglect compounds painfully.</p>
+      </div>
+    </div>
+
+    <div class="intro-brief">
+      <p>You have won the election on a platform of change. Your people are poor. <strong>67% lack reliable electricity</strong>. Secondary school completion is below 28%. Life expectancy is 58. The infant mortality rate is among the highest on the continent.</p>
+      <p>You inherit a government that collects only 16% of GDP in taxes — not enough to fund the transformation your country desperately needs. But raise taxes too high and you deter the private investment that creates jobs. This is the first of many trade-offs you will face.</p>
+      <p>The IMF is watching. The World Bank is watching. Your people are watching. You have ten years.</p>
+    </div>
+
+    <button class="btn btn-gold" onclick="startGame()" style="padding:1rem 3rem;font-size:.85rem;border-radius:6px">Begin Your Presidency →</button>
+  </div>
+</div>
+
+<!-- TURN CARD -->
+<div class="card" id="turnCard" style="display:none">
+  <div class="cb" id="turnBody"></div>
+</div>
+
+<!-- RESULTS -->
+<div class="card res-screen" id="resultsCard">
+  <div class="cb">
+    <div class="res-hero">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:.61rem;letter-spacing:.14em;text-transform:uppercase;color:var(--wa-gold);margin-bottom:.8rem">Presidential Term Complete · Savana Development Report</div>
+      <div class="res-country">🌍 Savana</div>
+      <div class="res-headline" id="resHeadline"></div>
+      <div class="res-score" id="resScore"></div>
+      <div class="res-grade" id="resGrade"></div>
+    </div>
+    <div class="final-grid" id="finalGrid"></div>
+    <div class="ai-box">
+      <div class="ai-hdr">
+        <div class="ai-icon">AI</div>
+        <div>
+          <div class="ai-title">Presidential Assessment — Tutor Feedback</div>
+          <div class="ai-sub">AI-generated · Based on your 10-year policy record in Savana</div>
+        </div>
+      </div>
+      <div id="aiFeedbackBody"><div style="display:flex;align-items:center;gap:.7rem;padding:.5rem 0;color:var(--muted);font-size:.88rem"><div class="spinner"></div> Analysing your presidency…</div></div>
+    </div>
+    <div class="sc-title" style="margin-bottom:.8rem">📅 Year-by-Year Review</div>
+    <div class="tl-review" id="tlReview"></div>
+    <button class="btn btn-gold btn-full" onclick="restartGame()">↺ Start New Presidency</button>
+  </div>
+</div>
+
+</div><!-- /mainCol -->
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+
+  <div class="sc" id="dashCard" style="display:none">
+    <div class="sc-title">🌍 Savana Dashboard</div>
+    <div class="dash-name">🌍 Savana</div>
+    <div class="dash-yr" id="dashYr">Baseline</div>
+    <div class="dash-stats" id="dashStats"></div>
+    <div class="lorenz-wrap">
+      <div class="lorenz-lbl">Lorenz Curve — Inequality (Gini: <span id="giniVal">62.0</span>)</div>
+      <canvas class="lc" id="lorenzCanvas" width="280" height="150"></canvas>
+    </div>
+    <div class="debt-section">
+      <div class="debt-row"><span style="color:var(--muted);font-size:.7rem">Debt / GDP</span><span id="debtVal" style="color:var(--wa-gold-light);font-family:'IBM Plex Mono',monospace;font-size:.7rem"></span></div>
+      <div class="debt-track"><div class="debt-fill" id="debtFill"></div></div>
+    </div>
+    <div class="copper-section" style="margin-top:.8rem">
+      <div class="copper-row">
+        <span style="color:var(--muted)">🪙 Copper price</span>
+        <span class="copper-price" id="copperPrice">$6,200/t</span>
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--muted);margin-top:.25rem" id="copperChange"></div>
+    </div>
+  </div>
+
+  <div class="sc" id="histCard" style="display:none">
+    <div class="sc-title">📋 Decision Log</div>
+    <div class="history-log" id="histLog"></div>
+  </div>
+
+  <div class="sc" id="chartsCard" style="display:none">
+    <div class="sc-title">📈 Progress Charts</div>
+    <div style="display:flex;flex-direction:column;gap:.9rem">
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--wa-gold);margin-bottom:.35rem">GDP per Capita ($)</div>
+        <canvas id="chartGDP" width="280" height="110" style="width:100%;border-radius:5px;background:rgba(255,255,255,.03);border:1px solid var(--border);display:block"></canvas>
+      </div>
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--wa-blue);margin-bottom:.35rem">HDI Score</div>
+        <canvas id="chartHDI" width="280" height="110" style="width:100%;border-radius:5px;background:rgba(255,255,255,.03);border:1px solid var(--border);display:block"></canvas>
+      </div>
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--wa-orange-light);margin-bottom:.35rem">Gini Coefficient (lower = better)</div>
+        <canvas id="chartGini" width="280" height="110" style="width:100%;border-radius:5px;background:rgba(255,255,255,.03);border:1px solid var(--border);display:block"></canvas>
+      </div>
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--wa-red-light);margin-bottom:.35rem">Debt / GDP (%)</div>
+        <canvas id="chartDebt" width="280" height="110" style="width:100%;border-radius:5px;background:rgba(255,255,255,.03);border:1px solid var(--border);display:block"></canvas>
+      </div>
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.08em;color:var(--wa-green-light);margin-bottom:.35rem">Political Stability (%)</div>
+        <canvas id="chartStab" width="280" height="110" style="width:100%;border-radius:5px;background:rgba(255,255,255,.03);border:1px solid var(--border);display:block"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="sc-title">📚 Key Concepts</div>
+    <div class="theory-item">
+      <div class="theory-name">Harrod-Domar Model</div>
+      <div class="theory-text">Growth = savings rate ÷ capital-output ratio. Low income → low savings → low investment → poverty trap. FDI and aid plug the gap — but require absorptive capacity (skills, institutions).</div>
+    </div>
+    <div class="theory-item">
+      <div class="theory-name">Lewis Dual-Sector Model</div>
+      <div class="theory-text">Agricultural surplus labour shifts to industry, raising productivity. Requires infrastructure and investment in manufacturing capacity to absorb the labour productively.</div>
+    </div>
+    <div class="theory-item">
+      <div class="theory-name">Institutions (Acemoglu)</div>
+      <div class="theory-text">Inclusive institutions (property rights, rule of law, anti-corruption) attract investment and enable broad-based growth. Extractive institutions concentrate gains among elites.</div>
+    </div>
+    <div class="theory-item">
+      <div class="theory-name">Laffer Curve & Tax</div>
+      <div class="theory-text">There is an optimal tax rate beyond which revenue falls as activity is deterred. Low-income economies often under-tax — but very high rates deter FDI and private enterprise.</div>
+    </div>
+    <div class="theory-item">
+      <div class="theory-name">Debt Sustainability</div>
+      <div class="theory-text">Debt is manageable when growth (g) exceeds the interest rate (r). Above 80% debt/GDP, lenders demand risk premiums that crowd out development spending.</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  ECONOMIC MODEL — SAVANA
+// ═══════════════════════════════════════════════════
+
+// STARTING STATE
+const BASE = {
+  gdp: 4200,        // $m
+  gdpPC: 233,       // $/person
+  pop: 18,          // millions
+  hdi: 0.420,
+  gini: 62.0,
+  debt: 68.0,       // % of GDP
+  stability: 52,    // 0-100
+  taxRate: 16,      // % of GDP
+  copperPrice: 6200,// $/tonne
+  copperRevShare: 0.28, // copper as share of exports
+  educStock: 0,     // accumulated education investment (time-lag model)
+  infraStock: 0,    // accumulated infrastructure
+  institStock: 0,   // accumulated institutional quality
+  safetyStock: 0,   // accumulated safety net
+  debtPressure: 0,  // years above 80% debt
+  yearsNeglectedHealth: 0,
+  yearsNeglectedSafety: 0,
+};
+
+// 8 FIXED INVESTMENT CATEGORIES
+const CATEGORIES = [
+  { id:'infra',   icon:'🏗️', name:'Infrastructure',        concept:'LRAS · Harrod-Domar · Productivity',     desc:'Roads, electricity grid, ports. Raises LRAS and reduces firms\' costs. Slow to build, transformative at scale.' },
+  { id:'edu',     icon:'📚', name:'Education',              concept:'Human Capital · Endogenous Growth',       desc:'Schools, teacher training, curriculum. Payoff is delayed 3-4 years but compounds strongly. The single highest long-run return.' },
+  { id:'health',  icon:'🏥', name:'Healthcare',             concept:'HDI · Capability Approach · Sen',         desc:'Clinics, clean water, vaccination. Large immediate HDI gains. A healthy workforce is also more productive.' },
+  { id:'instit',  icon:'⚖️', name:'Institutions',          concept:'Acemoglu · FDI Attraction · Rule of Law', desc:'Anti-corruption agencies, courts, property rights. Attracts higher-quality FDI. Slow payoff but the foundation of everything.' },
+  { id:'agri',    icon:'🌾', name:'Agriculture & Rural',   concept:'Lewis Model · Food Security · Poverty',   desc:'Irrigation, fertiliser subsidies, rural cooperatives. Supports the Lewis labour transition. Directly reduces rural poverty.' },
+  { id:'trade',   icon:'🚢', name:'Trade & Export',        concept:'Comparative Advantage · Current Account', desc:'Port upgrades, export agencies, trade agreement implementation. Diversifies away from copper dependency.' },
+  { id:'safety',  icon:'🛡️', name:'Social Safety Net',    concept:'Gini · Absolute Poverty · Redistribution',desc:'Cash transfers to the poorest 30%. Fastest route to Gini reduction and political stability. Does not directly raise GDP.' },
+  { id:'debt',    icon:'💰', name:'Debt Repayment',        concept:'Debt Sustainability · r-g Differential',  desc:'Pay down IMF and sovereign debt. Frees future fiscal space and lowers interest burden. No short-run growth benefit.' },
+];
+
+// SCORING WEIGHTS
+const SCORE_WEIGHTS = { hdi:30, gdp:20, gini:20, debt:15, stability:15 };
+
+// ═══════════════════════════════════════════════════
+//  10-YEAR NARRATIVE
+// ═══════════════════════════════════════════════════
+const TURNS = [
+{
+  year:1, title:'The Inheritance',
+  situation:[
+    'You have won the election. The scale of the challenge is immediately clear: the Treasury reports that after debt interest payments, only <strong>$412m remains</strong> for all government spending — education, health, infrastructure, defence, everything.',
+    'The previous government borrowed heavily from the IMF in the 1990s under a structural adjustment programme that forced cuts to education and health. That legacy — a generation of under-investment in human capital — is your starting point.',
+    'Your first budget sets the tone for your entire presidency. A higher tax rate raises more money but may slow private sector activity. A lower rate leaves more in private hands but starves your schools and clinics. There is no free lunch.'
+  ],
+  specialDecision:{
+    label:'🏦 IMF Engagement Decision',
+    prompt:'The IMF has offered a $300m development loan at 4.5% interest — below market rate. Acceptance requires committing to fiscal deficit targets (spending no more than 3% of GDP above revenues). Do you accept?',
+    opts:[
+      {id:'accept_imf', title:'Accept the IMF loan', desc:'$300m added to your Year 1 budget. But deficit spending is capped. Debt rises by ~7% of GDP.',
+        effect:{gdpPCdelta:0, hdiDelta:0.005, giniDelta:0, debtDelta:7, stabDelta:2, budgetBonus:300}},
+      {id:'reject_imf', title:'Reject — maintain full policy independence', desc:'No extra funds. But no conditionality. You retain full fiscal flexibility for harder decisions ahead.',
+        effect:{gdpPCdelta:0, hdiDelta:0, giniDelta:0, debtDelta:0, stabDelta:3, budgetBonus:0}},
+    ]
+  },
+  fixedEvent:null,
+  randomEvents:[
+    {id:'wb_grant', prob:0.5, type:'pos', title:'World Bank Infrastructure Grant',
+      text:'The World Bank has approved a $150m infrastructure grant, drawn by your early fiscal discipline signals. Funds arrive mid-year, boosting infrastructure spending.',
+      condition: s => s.spend.debt >= 50,
+      effect:{gdpPCdelta:4, hdiDelta:0.004, giniDelta:0, debtDelta:-2, stabDelta:3}},
+    {id:'copper_strike', prob:0.25, type:'neg', title:'Copper Miners\' Strike',
+      text:'Industrial action at the main copper mines halts production for 6 weeks. Export revenues fall sharply. Growth takes an immediate hit.',
+      effect:{gdpPCdelta:-6, hdiDelta:0, giniDelta:1, debtDelta:2, stabDelta:-5}},
+  ],
+  lessonTitle:'The Savings Trap & Tax Policy',
+  lesson:'Harrod-Domar shows that growth requires investment, which requires savings — but poor economies cannot generate enough domestic savings. The tax rate determines government\'s capacity to invest where the private sector will not. However, the Laffer curve warns that very high tax rates can deter investment and reduce the tax base. Most low-income African economies are chronically under-taxed — not because high taxes would be wrong, but because institutional capacity to collect them is weak.',
+  concepts:['Harrod-Domar','Poverty Trap','Tax & Laffer Curve','IMF Conditionality','Savings Gap'],
+},
+{
+  year:2, title:'The Lewis Moment',
+  situation:[
+    'A Chinese construction company has completed the first section of a new arterial road — partly funded by last year\'s World Bank grant. For the first time, farmers in the eastern provinces can get produce to market before it spoils. <strong>Agricultural productivity is rising</strong>.',
+    'Lewis dual-sector theory predicts what should happen next: surplus agricultural workers move to towns seeking industrial work. You are seeing exactly this — urban migration has increased 40% in the past year. But there are not yet enough industrial jobs to absorb them. Shanty towns are growing.',
+    'A garment manufacturer from Bangladesh is proposing to open a factory employing 8,000 workers — but only if you offer a 7-year tax holiday on their profits. Your revenue minister is furious. Your labour minister is desperate for the jobs.'
+  ],
+  specialDecision:{
+    label:'🏭 Foreign Investment Decision',
+    prompt:'The garment factory would employ 8,000 workers — but on a 7-year tax holiday, you collect no corporate tax from them. Your negotiations team believes you can push back.',
+    opts:[
+      {id:'fdi_accept', title:'Accept on their terms — full 7-year tax holiday',
+        desc:'8,000 jobs immediately. Lewis transition begins. Zero corporate tax for 7 years. Wages set at legal minimum.',
+        effect:{gdpPCdelta:9, hdiDelta:0.006, giniDelta:3, debtDelta:1, stabDelta:3, budgetBonus:0}},
+      {id:'fdi_negotiate', title:'Negotiate — 4-year holiday, minimum wage + skills training',
+        desc:'Risk losing the deal (30% chance). If successful: 7,000 jobs, shorter tax holiday, mandatory skills programme.',
+        effect:{gdpPCdelta:7, hdiDelta:0.012, giniDelta:1, debtDelta:0, stabDelta:2, budgetBonus:0}, riskChance:0.3},
+      {id:'fdi_reject', title:'Reject — support domestic SMEs instead',
+        desc:'No foreign jobs. Domestic textile support programme. Slower Lewis transition. Less FDI dependency.',
+        effect:{gdpPCdelta:2, hdiDelta:0.006, giniDelta:-2, debtDelta:1, stabDelta:-2, budgetBonus:0}},
+    ]
+  },
+  fixedEvent:{type:'neg', title:'Drought in Eastern Provinces',
+    text:'A severe drought strikes the agricultural heartland. Crop yields fall 35%. Food prices spike 28% nationally. Rural poverty increases sharply. If you have invested in agricultural irrigation, the damage is reduced — but not eliminated.',
+    effect:{gdpPCdelta:-7, hdiDelta:-0.012, giniDelta:4, debtDelta:3, stabDelta:-8},
+    mitigatedBy:'agri', mitigationFactor:0.45},
+  randomEvents:[
+    {id:'remittances', prob:0.35, type:'pos', title:'Diaspora Remittance Surge',
+      text:'Savanese emigrants in Europe are sending record remittances — $180m this year, equivalent to 4.3% of GDP. This foreign currency inflow eases your balance of payments and directly supports the poorest households.',
+      effect:{gdpPCdelta:4, hdiDelta:0.006, giniDelta:-2, debtDelta:-1, stabDelta:3}},
+  ],
+  lessonTitle:'Lewis Dual-Sector Model & FDI Trade-offs',
+  lesson:'Lewis argued that development begins when surplus agricultural labour moves into higher-productivity industry. FDI can catalyse this — but the terms matter. Unconditional FDI with long tax holidays can create dependency, suppress wages (a monopsony dynamic), and generate little tax revenue. Negotiated FDI with training requirements and wage floors builds human capital while still creating jobs. This tension between attracting capital and protecting workers is central to development policy debates.',
+  concepts:['Lewis Model','FDI','Monopsony','Comparative Advantage','Tax Holidays'],
+},
+{
+  year:3, title:'The Debt Crossroads',
+  situation:[
+    'Growth is picking up — but global interest rates have risen sharply. Your debt servicing costs have increased by $38m per year, consuming budget that should fund development. The <strong>r-g differential</strong> (interest rate minus growth rate) has turned positive — the danger zone.',
+    'A creditor nation is offering to swap $500m of your debt for a 30-year operating concession on your main copper port. This "debt-for-equity" deal would immediately improve your balance sheet but permanently hand a strategic asset to a foreign power.',
+    'Simultaneously, your education minister brings good news: the first cohort of secondary school graduates — product of your Year 1 investment — are entering the workforce. Employers say they are vastly better prepared than previous cohorts. The time lag is beginning to pay off.'
+  ],
+  specialDecision:{
+    label:'🏛️ Debt-for-Equity Swap',
+    prompt:'The creditor nation needs your answer. The deal would cut your debt/GDP ratio by nearly 12 percentage points — but at the cost of port sovereignty for 30 years.',
+    opts:[
+      {id:'swap_accept', title:'Accept — take the debt relief',
+        desc:'Debt falls sharply. Immediate fiscal breathing room. Port revenues lost for 30 years. Critics call it a "debt trap".',
+        effect:{gdpPCdelta:0, hdiDelta:0.002, giniDelta:0, debtDelta:-12, stabDelta:-4, budgetBonus:0}},
+      {id:'swap_partial', title:'Partial deal — port concession for 15 years only',
+        desc:'Harder negotiation. Smaller debt relief but shorter sovereignty loss. A genuine compromise.',
+        effect:{gdpPCdelta:0, hdiDelta:0.001, giniDelta:0, debtDelta:-6, stabDelta:-1, budgetBonus:0}},
+      {id:'swap_reject', title:'Reject — seek IMF debt rescheduling instead',
+        desc:'No asset loss. IMF agrees to lower interest rates — but imposes 2 years of deficit limits. Slightly constrains spending.',
+        effect:{gdpPCdelta:-2, hdiDelta:0, giniDelta:0, debtDelta:-4, stabDelta:2, budgetBonus:0}},
+    ]
+  },
+  fixedEvent:null,
+  randomEvents:[
+    {id:'copper_crash', prob:0.4, type:'neg', title:'Copper Price Crash',
+      text:'Chinese industrial demand has slowed sharply. Copper prices fall 28% — from $6,200 to $4,464 per tonne. Your export revenues collapse. This is the resource curse made real: one price movement you cannot control wipes out a year of growth.',
+      copperChange:-28,
+      effect:{gdpPCdelta:-10, hdiDelta:-0.008, giniDelta:3, debtDelta:5, stabDelta:-6}},
+    {id:'copper_boom', prob:0.2, type:'pos', title:'Copper Price Surge',
+      text:'A global infrastructure boom — led by green energy transition demand — has pushed copper prices to record highs. Your export revenues surge. A rare windfall.',
+      copperChange:+22,
+      effect:{gdpPCdelta:12, hdiDelta:0.005, giniDelta:1, debtDelta:-4, stabDelta:5}},
+  ],
+  lessonTitle:'Debt Dynamics & the Resource Curse',
+  lesson:'The r-g model (Blanchard) shows debt is sustainable only when the economy grows faster than its borrowing costs. When r > g, debt spirals without intervention. Debt-for-equity swaps reduce the balance sheet number — but may not reduce the underlying burden if strategic asset revenues are lost. The copper price crash illustrates why commodity dependence is so dangerous: the "Dutch disease" and terms of trade volatility mean that resource-rich economies can paradoxically develop more slowly than resource-poor ones.',
+  concepts:['r-g Differential','Debt Sustainability','Resource Curse','Dutch Disease','Terms of Trade'],
+},
+{
+  year:4, title:'Trade Liberalisation or Protection?',
+  situation:[
+    'A regional trade bloc — the East African Economic Community — has invited Savana to join. Membership requires eliminating tariffs on manufactured goods within 5 years. Your economists are divided.',
+    'The case for joining: <strong>comparative advantage</strong> suggests Savana should specialise in what it does well (copper, agriculture, low-cost manufacturing) and import cheaply. Trade creates growth. The bloc\'s 400 million consumers are an enormous market.',
+    'The case against: your domestic manufacturing firms — many nurtured by your investment — cannot yet compete with cheaper imports from more industrialised bloc members. They are "infant industries". Premature exposure could destroy them before they achieve economies of scale.'
+  ],
+  specialDecision:{
+    label:'🌐 Trade Bloc Membership',
+    prompt:'The bloc deadline is this quarter. Your chief economist and industry minister are giving opposite advice.',
+    opts:[
+      {id:'join_full', title:'Join immediately — full tariff elimination',
+        desc:'Maximum market access. Comparative advantage realised. Short-run job losses in domestic manufacturing are likely.',
+        effect:{gdpPCdelta:8, hdiDelta:0.006, giniDelta:4, debtDelta:0, stabDelta:-3, budgetBonus:0}},
+      {id:'join_phased', title:'Join with 6-year phased tariff reduction',
+        desc:'Industries get time to adjust. Evidence-based: South Korea and Taiwan both used temporary protection. Balanced.',
+        effect:{gdpPCdelta:5, hdiDelta:0.008, giniDelta:1, debtDelta:0, stabDelta:2, budgetBonus:0}},
+      {id:'decline_bloc', title:'Decline for now — maintain tariff protection',
+        desc:'Infant industries protected. Slower growth. Risk of bilateral retaliation and isolation from regional integration.',
+        effect:{gdpPCdelta:1, hdiDelta:0.003, giniDelta:-1, debtDelta:0, stabDelta:0, budgetBonus:0}},
+    ]
+  },
+  fixedEvent:null,
+  randomEvents:[
+    {id:'political_unrest', prob:0.35, type:'neg', title:'Urban Political Unrest',
+      text:'Opposition groups organise mass protests in the capital, angry about rising urban inequality as manufacturing job losses hit. Three days of unrest damage investor confidence. Your safety net investment — if substantial — reduces the severity significantly.',
+      effect:{gdpPCdelta:-5, hdiDelta:0, giniDelta:0, debtDelta:2, stabDelta:-12},
+      mitigatedBy:'safety', mitigationFactor:0.5},
+    {id:'tourism', prob:0.3, type:'pos', title:'Tourism Sector Emerges',
+      text:'Your infrastructure improvements — roads, electricity, improved governance reputation — have attracted international tour operators. A small but growing tourism sector is diversifying export revenues for the first time.',
+      effect:{gdpPCdelta:5, hdiDelta:0.006, giniDelta:-1, debtDelta:-1, stabDelta:4}},
+  ],
+  lessonTitle:'Comparative Advantage & Infant Industry',
+  lesson:'Ricardo\'s comparative advantage predicts gains from specialisation and trade. But the infant industry argument (List, Hamilton) counters that newly industrialising nations need temporary protection to survive long enough to achieve economies of scale and learning-by-doing. The evidence from East Asian "Tigers" suggests that temporary, targeted protection followed by competitive exposure can work — but permanent protection breeds inefficiency. The distributional effects of trade liberalisation are crucial: aggregate gains may mask concentrated job losses among specific workers.',
+  concepts:['Comparative Advantage','Infant Industry','Trade Liberalisation','Distributional Effects','J-Curve'],
+},
+{
+  year:5, title:'The Middle Income Warning',
+  situation:[
+    'Halfway through your presidency, GDP per capita has grown significantly. But your economists deliver a sobering assessment: Savana may be approaching the <strong>middle income trap</strong>.',
+    'Your wages have risen enough to make you less competitive as a low-cost manufacturer. A neighbouring country is already undercutting you. Unless you shift to higher-skill, higher-value industries, growth will stall in Years 7-10 — exactly as happened to many Latin American economies in the 1980s.',
+    'A global technology firm is offering to build a regional data centre and software development hub in Savana — potentially employing 3,000 high-skilled workers. The condition: a world-class technical university, fast broadband, and strong intellectual property protection. This is your chance to transform your economic model.'
+  ],
+  specialDecision:{
+    label:'💻 Technology Investment Decision',
+    prompt:'The tech firm needs your answer. This is the inflection point of your presidency.',
+    opts:[
+      {id:'tech_full', title:'Meet all conditions — go all in on the tech hub',
+        desc:'Substantial fiscal cost for university and broadband. But if it succeeds, it breaks the middle income trap and transforms your export base.',
+        effect:{gdpPCdelta:7, hdiDelta:0.018, giniDelta:2, debtDelta:5, stabDelta:4, budgetBonus:0}},
+      {id:'tech_partial', title:'Negotiate — firm contributes 40% of university costs',
+        desc:'More fiscally responsible. Smaller immediate gain. University and broadband still built. Most pragmatic choice.',
+        effect:{gdpPCdelta:5, hdiDelta:0.013, giniDelta:1, debtDelta:3, stabDelta:3, budgetBonus:0}},
+      {id:'tech_decline', title:'Decline — invest in domestic SMEs instead',
+        desc:'No foreign tech dependency. Support locally-owned small businesses. More equitable but slower knowledge economy transition.',
+        effect:{gdpPCdelta:2, hdiDelta:0.008, giniDelta:-2, debtDelta:2, stabDelta:2, budgetBonus:0}},
+    ]
+  },
+  fixedEvent:null,
+  randomEvents:[
+    {id:'global_recession', prob:0.3, type:'neg', title:'Global Economic Slowdown',
+      text:'A financial crisis in advanced economies reduces global demand. Copper prices fall 18%. FDI commitments are deferred. Your fiscal buffers — if you have built them — are tested.',
+      effect:{gdpPCdelta:-8, hdiDelta:-0.008, giniDelta:2, debtDelta:5, stabDelta:-5}},
+    {id:'fdi_surge', prob:0.3, type:'pos', title:'FDI Confidence Surge',
+      text:'Your improving institutions and governance score — now ranked in the top quartile of sub-Saharan Africa — have triggered a wave of FDI interest. Three new manufacturing firms announce investments.',
+      mitigatedBy:'instit', mitigationFactor:-0.5,
+      effect:{gdpPCdelta:8, hdiDelta:0.008, giniDelta:0, debtDelta:-2, stabDelta:5}},
+  ],
+  lessonTitle:'Middle Income Trap & Endogenous Growth',
+  lesson:'The middle income trap describes how economies successful through cheap labour and capital accumulation often stall when wages rise enough to erode cost competitiveness — but before they have developed the human capital and innovation capacity to compete on quality. Romer\'s endogenous growth theory argues that knowledge, ideas and human capital are the true engines of long-run growth — unlike physical capital, ideas don\'t face diminishing returns. This is why education and R&D investment has outsized long-run returns, even when the short-run payoff appears small.',
+  concepts:['Middle Income Trap','Endogenous Growth','Human Capital','R&D','Innovation'],
+},
+{
+  year:6, title:'The Inequality Reckoning',
+  situation:[
+    'GDP has grown — but your Gini coefficient tells a troubling story. Growth has disproportionately benefited urban skilled workers and foreign investors. Rural Savana — still 48% of the population — feels left behind.',
+    'The UN Development Programme has cited Savana as a case study in "<strong>growth without development</strong>" — GDP rising while multidimensional poverty in rural areas barely moves. Your HDI has improved, but life expectancy and education gains are concentrated in cities.',
+    'A credible opposition politician is campaigning on a "growth for whom?" platform. Political stability is becoming fragile. You must now decide whether to prioritise redistribution — which may slow growth — or continue the growth-first model and trust that gains will eventually trickle down.'
+  ],
+  specialDecision:{
+    label:'⚖️ Redistribution vs Growth',
+    prompt:'Your chief economist and social affairs minister are giving you opposite advice. This is the defining philosophical question of your presidency.',
+    opts:[
+      {id:'growth_first', title:'Growth first — the tide will lift all boats',
+        desc:'Continue investment-led strategy. Faster GDP growth. Accept higher inequality now, redistribute later when the economy is larger.',
+        effect:{gdpPCdelta:6, hdiDelta:0.005, giniDelta:4, debtDelta:2, stabDelta:-5, budgetBonus:0}},
+      {id:'balanced', title:'Balanced — grow and redistribute simultaneously',
+        desc:'Modest growth sacrifice for meaningful inequality reduction. Politically sustainable. Most development economists now favour this approach.',
+        effect:{gdpPCdelta:3, hdiDelta:0.015, giniDelta:-4, debtDelta:3, stabDelta:4, budgetBonus:0}},
+      {id:'equality_first', title:'Equality first — radical redistribution now',
+        desc:'Largest inequality reduction. Strong political support from the poor majority. But may significantly deter private investment.',
+        effect:{gdpPCdelta:-1, hdiDelta:0.018, giniDelta:-8, debtDelta:4, stabDelta:6, budgetBonus:0}},
+    ]
+  },
+  fixedEvent:null,
+  randomEvents:[
+    {id:'corruption_scandal', prob:0.35, type:'neg', title:'Corruption Scandal',
+      text:'A major investigation reveals that 14% of infrastructure spending over the past 3 years was diverted by officials. International donors suspend $120m in aid. Your institutional investment — if substantial — reduces the severity as independent agencies respond quickly.',
+      effect:{gdpPCdelta:-4, hdiDelta:-0.006, giniDelta:2, debtDelta:3, stabDelta:-14},
+      mitigatedBy:'instit', mitigationFactor:0.55},
+    {id:'ngo_programme', prob:0.3, type:'pos', title:'Major NGO Health Programme',
+      text:'Attracted by your governance improvements, a major international health NGO launches a 3-year rural health programme worth $90m. Maternal mortality falls sharply in target areas.',
+      effect:{gdpPCdelta:1, hdiDelta:0.018, giniDelta:-3, debtDelta:0, stabDelta:5}},
+  ],
+  lessonTitle:'Growth vs Development — Kuznets & Sen',
+  lesson:'Kuznets proposed that inequality first rises then falls as economies develop — the inverted-U hypothesis. But this is not automatic: it requires active redistribution policy. Amartya Sen\'s capability approach argues that development should be measured by people\'s actual freedoms — health, education, political participation — not just income. Countries that redistributed early (South Korea, Taiwan, Botswana) tended to achieve more sustainable growth than those that did not (much of Latin America). The Lorenz curve and Gini coefficient capture distribution rather than just the level of wellbeing.',
+  concepts:['Kuznets Curve','Sen Capability Approach','Lorenz Curve','Gini Coefficient','Growth vs Development'],
+},
+{
+  year:7, title:'The Climate Shock',
+  situation:[
+    'A series of climate-related disasters has struck Savana. Erratic rainfall has reduced crop yields by 32% in the south. A flash flood destroyed road infrastructure worth 6% of GDP in three provinces.',
+    'You face a cruel dilemma. Savana has contributed almost nothing to global carbon emissions — yet you are among the most vulnerable. Advanced economies have offered a <strong>$600m green climate finance</strong> package — but only if you commit to a renewable energy pathway that rules out coal-fired power stations your industry says it urgently needs.',
+    'Coal would provide cheap, reliable power for rapid industrialisation. Renewables are cleaner and come with finance — but are more expensive upfront and less reliable for heavy industry. Your energy minister warns that without reliable electricity, your new tech hub and garment factories cannot operate competitively.'
+  ],
+  specialDecision:{
+    label:'🌱 Energy Strategy',
+    prompt:'The climate finance offer expires in 8 weeks. This decision shapes Savana\'s energy system for 30 years.',
+    opts:[
+      {id:'green_energy', title:'Accept climate finance — commit to renewables',
+        desc:'$600m inflow. Clean energy pathway. Slower industrial power ramp-up. International goodwill and future grant access.',
+        effect:{gdpPCdelta:3, hdiDelta:0.010, giniDelta:-1, debtDelta:-8, stabDelta:5, budgetBonus:0}},
+      {id:'mixed_energy', title:'Mixed — renewables for new capacity, gas for industry',
+        desc:'Partial climate finance ($350m). Enough reliable power for heavy industry. Pragmatic but imperfect environmentally.',
+        effect:{gdpPCdelta:5, hdiDelta:0.008, giniDelta:0, debtDelta:-4, stabDelta:3, budgetBonus:0}},
+      {id:'coal_energy', title:'Reject — build coal-fired power stations',
+        desc:'Maximum industrial power. Fastest growth. Lose all climate finance. Long-run environmental cost. Reputational damage with investors.',
+        effect:{gdpPCdelta:7, hdiDelta:0.003, giniDelta:1, debtDelta:3, stabDelta:-3, budgetBonus:0}},
+    ]
+  },
+  fixedEvent:{type:'neg', title:'Cyclone Destroys Southern Infrastructure',
+    text:'A category 3 cyclone makes direct landfall in the south. Road, bridge and clinic infrastructure worth $380m is destroyed. International emergency aid covers $120m. Your prior climate adaptation investment — in drainage, flood barriers and building codes — significantly reduces casualties but cannot prevent the economic damage.',
+    effect:{gdpPCdelta:-12, hdiDelta:-0.016, giniDelta:3, debtDelta:6, stabDelta:-7},
+    mitigatedBy:'infra', mitigationFactor:0.4},
+  randomEvents:[
+    {id:'green_fund', prob:0.35, type:'pos', title:'Green Climate Fund Bonus',
+      text:'Your early environmental commitments have qualified Savana for an additional $180m Green Climate Fund disbursement. International reputation rises.',
+      condition: s => s.specialChoice === 'green_energy' || s.specialChoice === 'mixed_energy',
+      effect:{gdpPCdelta:2, hdiDelta:0.006, giniDelta:-1, debtDelta:-3, stabDelta:5}},
+  ],
+  lessonTitle:'Environmental Sustainability & Growth Trade-offs',
+  lesson:'The environmental Kuznets curve suggests pollution first rises then falls with income — but only if effective environmental regulation exists. Developing countries face an acute justice dilemma: the energy sources that powered Western industrialisation are now restricted for climate reasons — but their populations have not yet had their industrial revolution. Climate finance attempts to compensate for this asymmetry. This is simultaneously a development economics question and a global public goods problem — climate is non-excludable and non-rivalrous, creating a free-rider problem that individual nations cannot solve alone.',
+  concepts:['Environmental Kuznets Curve','Public Goods','Climate Finance','Sustainability','Externalities'],
+},
+{
+  year:8, title:'The Brain Drain Crisis',
+  situation:[
+    'Your investment in education is yielding graduates — but too many are leaving. A survey finds that <strong>61% of university graduates emigrate within 3 years</strong>, drawn by salaries in Europe and the Gulf that are 7-10 times higher than Savana can offer.',
+    'The healthcare system is particularly affected. You trained 340 doctors and nurses last year. The UK NHS recruited 180 of them. Your rural clinics remain dangerously understaffed. You are, in effect, subsidising the British health service.',
+    'However, your diaspora is growing and sending record remittances — $240m this year. Some are starting to invest back home. A new concept is emerging: "brain circulation" — if you create the conditions for return migration, the diaspora becomes a development asset rather than a loss.'
+  ],
+  specialDecision:{
+    label:'🌍 Brain Drain Response',
+    prompt:'Your cabinet is divided on the right response. Evidence from India and China suggests the relationship between emigration and development is more complex than it appears.',
+    opts:[
+      {id:'engage_diaspora', title:'Engage diaspora — make returning rewarding',
+        desc:'Diaspora investment bonds, return incentives, match-funding for hometown projects. Counterintuitive but evidence-based.',
+        effect:{gdpPCdelta:5, hdiDelta:0.010, giniDelta:-2, debtDelta:-2, stabDelta:4, budgetBonus:0}},
+      {id:'raise_wages', title:'Compete — raise public sector wages to near-market rates',
+        desc:'Directly addresses the cause of emigration. Fiscally expensive — requires tax increase or spending cuts elsewhere.',
+        effect:{gdpPCdelta:2, hdiDelta:0.016, giniDelta:-1, debtDelta:5, stabDelta:5, budgetBonus:0}},
+      {id:'restrict_emigration', title:'Restrict — bonding requirements for publicly-funded graduates',
+        desc:'Legally contested. May reduce short-run emigration. But reduces incentive to pursue education and creates resentment.',
+        effect:{gdpPCdelta:1, hdiDelta:-0.004, giniDelta:0, debtDelta:0, stabDelta:-6, budgetBonus:0}},
+    ]
+  },
+  fixedEvent:null,
+  randomEvents:[
+    {id:'tech_boom', prob:0.35, type:'pos', title:'Digital Economy Takes Off',
+      text:'Your broadband infrastructure and growing pool of technical graduates have attracted a cluster of fintech and e-commerce startups. A digital economy is emerging organically — creating high-skilled jobs that previously did not exist in Savana.',
+      effect:{gdpPCdelta:7, hdiDelta:0.012, giniDelta:0, debtDelta:-1, stabDelta:5},
+      condition: s => s.cumSpend.edu > 150 && s.cumSpend.infra > 120},
+    {id:'disease_outbreak', prob:0.25, type:'neg', title:'Regional Disease Outbreak',
+      text:'A regional epidemic spreads across the border. Your health investment — if substantial — means Savana contains the outbreak faster than neighbours, but the economic disruption still costs growth.',
+      effect:{gdpPCdelta:-6, hdiDelta:-0.014, giniDelta:2, debtDelta:4, stabDelta:-5},
+      mitigatedBy:'health', mitigationFactor:0.5},
+  ],
+  lessonTitle:'Brain Drain, Remittances & Human Capital',
+  lesson:'Brain drain costs developing countries an estimated $2bn annually in lost human capital investment. But the picture is nuanced: remittances now exceed total foreign aid globally. The "brain circulation" model — where emigrants eventually return with skills, networks and capital — has been central to development successes in India (IT sector), Taiwan (semiconductors) and China. Policy should not aim to restrict movement but to create conditions — salaries, opportunity, rule of law — that make returning rational. This is ultimately an institutional quality problem.',
+  concepts:['Brain Drain','Remittances','Human Capital','Brain Circulation','Diaspora Investment'],
+},
+{
+  year:9, title:'The Final Push',
+  situation:[
+    'With one year remaining after this, the results of eight years of choices are crystallising. International credit rating agencies have reviewed Savana. Depending on your debt management, you have either unlocked access to cheaper finance — or are facing painful risk premiums.',
+    'A donor conference in Nairobi is reviewing applications for debt cancellation from heavily-indebted low-income countries. Countries that demonstrate strong HDI improvement and institutional quality are eligible. Whether Savana qualifies depends heavily on what you have built over the past eight years.',
+    'Your political opponents are already campaigning. They are promising to reverse several of your most controversial decisions. <strong>Your final two budgets must balance long-run development with the political reality of an approaching election.</strong>'
+  ],
+  specialDecision:{
+    label:'🏛️ Nairobi Debt Conference',
+    prompt:'The conference chair has asked for Savana\'s formal position. This shapes your final two years of fiscal space.',
+    opts:[
+      {id:'request_cancellation', title:'Apply for full debt cancellation',
+        desc:'If your HDI record qualifies, debt falls dramatically. Transforms Year 10 fiscal space. Must demonstrate genuine development progress.',
+        effect:{gdpPCdelta:0, hdiDelta:0, giniDelta:0, debtDelta:-20, stabDelta:4, budgetBonus:0},
+        conditional: true, condition: s => s.hdi >= 0.55},
+      {id:'renegotiate_terms', title:'Renegotiate — lower rates, extended maturity',
+        desc:'Guaranteed regardless of HDI record. Less dramatic than cancellation but frees some fiscal space with no conditionality.',
+        effect:{gdpPCdelta:0, hdiDelta:0, giniDelta:0, debtDelta:-8, stabDelta:3, budgetBonus:0}},
+      {id:'reject_conference', title:'Reject external help — demonstrate self-sufficiency',
+        desc:'Powerful sovereignty signal. No debt relief but strong independence narrative. Politically popular domestically.',
+        effect:{gdpPCdelta:1, hdiDelta:0, giniDelta:0, debtDelta:0, stabDelta:5, budgetBonus:0}},
+    ]
+  },
+  fixedEvent:null,
+  randomEvents:[
+    {id:'credit_upgrade', prob:0.4, type:'pos', title:'Credit Rating Upgrade',
+      text:'International rating agencies upgrade Savana\'s sovereign credit rating two notches, citing a decade of institutional improvement and fiscal discipline. Borrowing costs fall and inward investment enquiries surge.',
+      condition: s => s.debt < 65 && s.stability > 55,
+      effect:{gdpPCdelta:6, hdiDelta:0.006, giniDelta:-1, debtDelta:-3, stabDelta:8}},
+    {id:'refugee_crisis', prob:0.25, type:'neg', title:'Regional Refugee Crisis',
+      text:'Conflict in a neighbouring country sends 180,000 refugees across Savana\'s border. Humanitarian costs strain your budget and infrastructure. International aid partially offsets costs, but growth and stability suffer.',
+      effect:{gdpPCdelta:-5, hdiDelta:-0.006, giniDelta:2, debtDelta:4, stabDelta:-7}},
+  ],
+  lessonTitle:'Convergence, Conditionality & Institutional Legacy',
+  lesson:'Conditional convergence theory predicts poorer economies grow faster — but only if they have the institutions, human capital and policies to absorb investment productively. The "Washington Consensus" of the 1990s imposed fiscal austerity on developing countries in exchange for debt relief — often with devastating consequences for education and health (the generation Savana is still recovering from). Modern development economists (Sachs, Stiglitz, Rodrik) argue that context-specific, institution-building approaches outperform generic conditionality. Building durable institutions is ultimately the most important development investment — one that outlasts any presidency.',
+  concepts:['Conditional Convergence','Washington Consensus','Conditionality','Institutions','Debt Cancellation'],
+},
+{
+  year:10, title:'Your Final Budget',
+  situation:[
+    'This is it. Ten years of decisions have compounded into the Savana that exists today. You have made choices that worked, choices that backfired, and weathered shocks that no economic model could fully predict.',
+    'History will judge your presidency on five things: how much GDP per capita grew, how much the HDI improved, how much inequality fell, whether debt is sustainable, and whether the institutions you built can survive your departure — and serve the next generation.',
+    'Your successor is already campaigning. The civil servants who will serve them are watching how you handle these final months. Will you spend for short-run political advantage — or make the investments that will compound for decades after you leave power?'
+  ],
+  specialDecision:{
+    label:'🎯 Presidential Legacy',
+    prompt:'Your final act defines what kind of president you chose to be. What does Savana most need from you now?',
+    opts:[
+      {id:'legacy_people', title:'A presidency for the people — the poorest first',
+        desc:'Maximum redistribution and rural development. Highest HDI and Gini improvement. Your legacy is equity. History will call this the most just choice.',
+        effect:{gdpPCdelta:1, hdiDelta:0.022, giniDelta:-8, debtDelta:3, stabDelta:7, budgetBonus:0}},
+      {id:'legacy_growth', title:'A presidency for growth — cement the transformation',
+        desc:'Final push on innovation and private sector. Highest GDP legacy. The argument: future tax revenues will fund future redistribution.',
+        effect:{gdpPCdelta:8, hdiDelta:0.008, giniDelta:2, debtDelta:2, stabDelta:2, budgetBonus:0}},
+      {id:'legacy_institutions', title:'A presidency for the future — institutions that outlast you',
+        desc:'Invest in the laws, bodies and systems that govern after you leave. Modest short-run numbers. Strongest long-run development trajectory of any choice.',
+        effect:{gdpPCdelta:2, hdiDelta:0.016, giniDelta:-4, debtDelta:0, stabDelta:12, budgetBonus:0}},
+    ]
+  },
+  fixedEvent:null,
+  randomEvents:[
+    {id:'peace_dividend', prob:0.3, type:'pos', title:'Regional Peace Agreement',
+      text:'A regional peace deal opens new trade routes and reduces military spending across the region. Your decade of diplomatic investment contributed to making this possible. A historic moment for Savana and its neighbours.',
+      effect:{gdpPCdelta:6, hdiDelta:0.014, giniDelta:-2, debtDelta:-3, stabDelta:10}},
+    {id:'final_drought', prob:0.25, type:'neg', title:'Drought Returns',
+      text:'Climate change delivers a final challenge: severe drought in the agricultural heartland. Food prices surge 22%. But your decade of investment in irrigation, safety nets and economic diversification means the impact is far less severe than it would have been in Year 1. Your early decisions protected people who will never know it.',
+      effect:{gdpPCdelta:-5, hdiDelta:-0.007, giniDelta:2, debtDelta:2, stabDelta:-4},
+      mitigatedBy:'agri', mitigationFactor:0.5},
+  ],
+  lessonTitle:'Development as Freedom — Amartya Sen',
+  lesson:'Amartya Sen argued that development is ultimately about expanding human freedoms — the ability to live long, healthy, educated lives with dignity and political agency. GDP is a means to this end, not an end in itself. The most successful development trajectories of the 20th century combined economic growth with sustained investment in people and institutions. The countries that failed — many with equivalent or greater natural resources — lacked the institutional quality and political will to translate growth into development. Your 10-year presidency of Savana has been a compressed version of that challenge.',
+  concepts:['Sen — Development as Freedom','HDI vs GDP','Institutional Quality','Sustainable Development','Long-run Growth'],
+},
+];
+
+// ═══════════════════════════════════════════════════
+//  GAME STATE
+// ═══════════════════════════════════════════════════
+let G = {};
+function initState() {
+  G = {
+    year: 0,
+    gdp: BASE.gdp,
+    gdpPC: BASE.gdpPC,
+    hdi: BASE.hdi,
+    gini: BASE.gini,
+    debt: BASE.debt,
+    stability: BASE.stability,
+    taxRate: BASE.taxRate,
+    copperPrice: BASE.copperPrice,
+    educStock: 0, infraStock: 0, institStock: 0, safetyStock: 0,
+    debtPressureYears: 0,
+    neglectedHealth: 0, neglectedSafety: 0,
+    spend: {}, // this year's spending $m
+    cumSpend: {infra:0,edu:0,health:0,instit:0,agri:0,trade:0,safety:0,debt:0},
+    specialChoice: null,
+    history: [],
+    turnScores: [],
+    triggeredEvents: [],
+    // Chart history — baseline + one entry per year submitted
+    chartData: {
+      gdpPC: [233],
+      hdi:   [0.420],
+      gini:  [62.0],
+      debt:  [68.0],
+      stab:  [52],
+    },
+  };
+}
+
+// ═══════════════════════════════════════════════════
+//  BUDGET CALCULATION
+// ═══════════════════════════════════════════════════
+function calcBudget(taxRate, gdp, bonusM) {
+  const round50 = v => Math.round(v / 50) * 50;
+  const revenue = round50(gdp * (taxRate / 100));
+  const debtInterest = round50(gdp * (G.debt / 100) * 0.04);
+  const available = Math.max(0, revenue - debtInterest) + bonusM;
+  return { revenue, debtInterest, available: round50(available) };
+}
+
+// ═══════════════════════════════════════════════════
+//  ECONOMIC MODEL — NON-LINEAR WITH TIME LAGS
+// ═══════════════════════════════════════════════════
+function applyEconomicModel(spendMap, specialEffect, t) {
+  const yr = t.year;
+  const gdp = G.gdp;
+
+  // Normalise spending as % of GDP for consistent effect sizes
+  const pct = id => (spendMap[id] || 0) / gdp * 100;
+
+  // ── STOCKS (accumulated investment, with depreciation) ──
+  G.educStock  = G.educStock * 0.88 + pct('edu');
+  G.infraStock = G.infraStock * 0.92 + pct('infra');
+  G.institStock = G.institStock * 0.90 + pct('instit');
+  G.safetyStock = G.safetyStock * 0.80 + pct('safety');
+
+  // ── COPPER PRICE SHOCK (exogenous) ──
+  const copperBaseEffect = (G.copperPrice - 6200) / 6200; // relative to baseline
+  const copperGDPboost = copperBaseEffect * 0.18 * gdp; // copper = ~18% of GDP at baseline
+
+  // ── GDP GROWTH ENGINE ──
+  // Infrastructure: direct productivity, immediate but slow at first
+  const infraEffect = pct('infra') * 0.55;
+  // Education: TIME LAG — almost nothing years 1-2, builds from year 3, peaks year 6+
+  const eduLag = Math.max(0, yr - 2);
+  const eduEffect = G.educStock * 0.12 * Math.min(1, eduLag / 4);
+  // Trade: direct export multiplier
+  const tradeEffect = pct('trade') * 0.7;
+  // Agriculture: feeds Lewis transition
+  const agriEffect = pct('agri') * 0.45;
+  // Institutions: FDI multiplier (slow, cumulative)
+  const institEffect = G.institStock * 0.08;
+  // High tax drag on private sector
+  const taxDrag = Math.max(0, G.taxRate - 22) * 0.15;
+  // Debt drag: above 80%, growth penalty
+  const debtDrag = G.debt > 80 ? (G.debt - 80) * 0.04 : 0;
+
+  const gdpGrowthPct = (infraEffect + eduEffect + tradeEffect + agriEffect + institEffect - taxDrag - debtDrag) / 100;
+  const gdpDeltaM = gdp * gdpGrowthPct + copperGDPboost;
+
+  // ── HDI ENGINE ──
+  // Health: largest immediate HDI driver
+  const healthHDI = pct('health') * 0.0028;
+  // Education: moderate immediate (enrolment), plus long-run compounding via stock
+  const eduHDI = pct('edu') * 0.0018 + G.educStock * 0.00035;
+  // Safety net: reduces poverty dimensions of HDI
+  const safetyHDI = pct('safety') * 0.0012;
+  // Infrastructure: clean water, electricity access
+  const infraHDI = pct('infra') * 0.0006;
+  // Rural: reaches unreached populations
+  const agriHDI = pct('agri') * 0.0010;
+  // Neglect penalties
+  if (pct('health') < 1.0) G.neglectedHealth++;
+  else G.neglectedHealth = Math.max(0, G.neglectedHealth - 1);
+  const healthNeglectPenalty = G.neglectedHealth * 0.003;
+  // HDI ceiling effect — harder to improve at higher levels
+  const hdiCeiling = Math.max(0.5, 1 - (G.hdi - 0.42) * 1.2);
+
+  const hdiDelta = (healthHDI + eduHDI + safetyHDI + infraHDI + agriHDI - healthNeglectPenalty) * hdiCeiling;
+
+  // ── GINI ENGINE ──
+  // Safety net: strongest redistributive tool
+  const safetyGini = -pct('safety') * 0.35;
+  // Education (long-run equaliser, via stock)
+  const eduGini = -G.educStock * 0.04;
+  // Agriculture (rural poverty reduction)
+  const agriGini = -pct('agri') * 0.18;
+  // Trade liberalisation can initially increase inequality
+  const tradeGini = pct('trade') * 0.08;
+  // Growth without redistribution widens inequality
+  const growthGiniEffect = gdpGrowthPct > 0.03 ? (gdpGrowthPct - 0.03) * 8 : 0;
+  // Safety neglect
+  if (pct('safety') < 0.8) G.neglectedSafety++;
+  else G.neglectedSafety = Math.max(0, G.neglectedSafety - 1);
+  const safetyNeglectPenalty = G.neglectedSafety * 0.5;
+
+  const giniDelta = safetyGini + eduGini + agriGini + tradeGini + growthGiniEffect + safetyNeglectPenalty;
+
+  // ── DEBT ENGINE ──
+  const budg = calcBudget(G.taxRate, gdp, 0);
+  const totalSpend = Object.values(spendMap).reduce((a,b)=>a+b,0);
+  // Deficit/surplus: spending beyond revenue increases debt
+  const fiscalDeficit = (totalSpend - budg.available) / gdp * 100; // % of GDP
+  const debtRepayment = pct('debt') * 1.2; // debt spending reduces debt stock
+  const debtDelta = fiscalDeficit - debtRepayment + (G.debt > 80 ? 1.5 : 0); // compound interest penalty
+
+  if (G.debt > 80) G.debtPressureYears++;
+  else G.debtPressureYears = Math.max(0, G.debtPressureYears - 1);
+
+  // ── STABILITY ENGINE ──
+  const safetyStab = pct('safety') * 0.25;
+  const healthStab = pct('health') * 0.15;
+  const institStab = G.institStock * 0.06;
+  const debtStab = G.debt > 90 ? -6 : G.debt > 75 ? -3 : 0;
+  const giniStab = G.gini > 58 ? -3 : G.gini < 42 ? 2 : 0;
+  const stabDelta = safetyStab + healthStab + institStab + debtStab + giniStab - 1; // natural decay
+
+  return {
+    gdpDeltaM,
+    gdpGrowthPct: gdpGrowthPct * 100,
+    hdiDelta,
+    giniDelta,
+    debtDelta,
+    stabDelta,
+  };
+}
+
+// ═══════════════════════════════════════════════════
+//  OUTCOME SCORING
+// ═══════════════════════════════════════════════════
+function scoreTurn(model) {
+  // HDI improvement (30%) — gold standard
+  const hdiScore = Math.min(100, Math.max(0, model.hdiDelta * 8000));
+
+  // GDP growth (20%) — 3% = 50 pts, 6% = 100 pts
+  const gdpScore = Math.min(100, Math.max(0, (model.gdpGrowthPct / 6) * 100));
+
+  // Gini reduction (20%) — negative change is good
+  const giniScore = Math.min(100, Math.max(0, 50 - model.giniDelta * 6));
+
+  // Debt sustainability (15%) — below 60% = 100, above 90% = 0
+  const debtScore = Math.min(100, Math.max(0, ((90 - G.debt) / 30) * 100));
+
+  // Stability (15%) — above 60 = 100, below 30 = 0
+  const stabScore = Math.min(100, Math.max(0, ((G.stability - 30) / 40) * 100));
+
+  const total = Math.round(
+    hdiScore * (SCORE_WEIGHTS.hdi/100) +
+    gdpScore * (SCORE_WEIGHTS.gdp/100) +
+    giniScore * (SCORE_WEIGHTS.gini/100) +
+    debtScore * (SCORE_WEIGHTS.debt/100) +
+    stabScore * (SCORE_WEIGHTS.stability/100)
+  );
+
+  return { total: Math.min(100, Math.max(0, total)), hdiScore, gdpScore, giniScore, debtScore, stabScore };
+}
+
+// ═══════════════════════════════════════════════════
+//  UI — INITIALISE
+// ═══════════════════════════════════════════════════
+function startGame() {
+  initState();
+  document.getElementById('introCard').style.display = 'none';
+  document.getElementById('turnCard').style.display = 'block';
+  document.getElementById('dashCard').style.display = 'block';
+  document.getElementById('histCard').style.display = 'block';
+  document.getElementById('chartsCard').style.display = 'block';
+  document.getElementById('yearBar').style.display = 'flex';
+  buildYearDots();
+  updateDashboard();
+  loadTurn(0);
+}
+
+function buildYearDots() {
+  document.getElementById('yearDots').innerHTML = TURNS.map((_,i)=>`<div class="ydot" id="yd${i}"></div>`).join('');
+}
+
+function updateYearDots() {
+  TURNS.forEach((_,i)=>{
+    const d = document.getElementById('yd'+i);
+    d.className = 'ydot' + (i < G.year ? ' done' : i === G.year ? ' cur' : '');
+  });
+  const s = G.turnScores;
+  const avg = s.length ? Math.round(s.reduce((a,b)=>a+b,0)/s.length) : null;
+  document.getElementById('yearScore').textContent = avg !== null ? `Avg: ${avg}/100` : '';
+}
+
+// ═══════════════════════════════════════════════════
+//  LOAD TURN
+// ═══════════════════════════════════════════════════
+function loadTurn(idx) {
+  G.year = idx;
+  G.spend = {};
+  G.specialChoice = null;
+  CATEGORIES.forEach(c => G.spend[c.id] = 0);
+
+  const t = TURNS[idx];
+  updateYearDots();
+
+  // Budget with any special bonus from previous special decision
+  const budg = calcBudget(G.taxRate, G.gdp, 0);
+
+  document.getElementById('turnBody').innerHTML = buildTurnHTML(t, budg);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function buildTurnHTML(t, budg) {
+  const isFinal = t.year === 10;
+  return `
+    <div class="turn-meta">
+      <span class="t-badge">Year ${t.year} / 10</span>
+      <span class="t-year">🌍 Savana · ${2024 + t.year}</span>
+      ${G.debt > 80 ? '<span class="crisis-badge">⚠ Debt Crisis Risk</span>' : ''}
+      ${G.stability < 35 ? '<span class="crisis-badge">⚠ Instability Warning</span>' : ''}
+    </div>
+    <div class="turn-title">${t.title}</div>
+
+    <div class="sit-box">
+      <div class="sit-label">🗂 Presidential Briefing</div>
+      ${t.situation.map(p=>`<p>${p}</p>`).join('')}
+    </div>
+
+    ${buildTaxPanel(budg)}
+    ${buildBudgetPanel(budg)}
+    ${buildSpecialPanel(t.specialDecision)}
+
+    <button class="btn btn-gold btn-full" id="submitBtn" onclick="submitTurn()" disabled>
+      ${isFinal ? 'Submit Final Budget & End Presidency →' : `Submit Year ${t.year} Budget →`}
+    </button>
+    <div class="outcome-panel" id="outcomePanel"></div>
+  `;
+}
+
+function buildTaxPanel(budg) {
+  return `
+    <div class="tax-panel">
+      <div class="tax-header">
+        <div>
+          <div class="tax-label">💡 Step 1 — Set Your Tax Rate</div>
+          <div style="font-size:.82rem;color:var(--muted);margin-top:.3rem">Higher tax → more budget. But above ~25%, private investment slows (Laffer curve).</div>
+        </div>
+        <div class="tax-summary">
+          Budget available<br><strong id="budgetAvailDisplay">$${budg.available}m</strong>
+        </div>
+      </div>
+      <div class="tax-row">
+        <input type="range" class="tax-slider" id="taxSlider" min="10" max="35" step="2" value="${G.taxRate}" oninput="updateTax(this.value)">
+        <div class="tax-pct" id="taxPctDisplay">${G.taxRate}%</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;font-family:'IBM Plex Mono',monospace;font-size:.67rem;margin-top:.4rem">
+        <div style="color:var(--muted)">Tax revenue: <span id="taxRevDisplay" style="color:var(--wa-gold-light)">$${budg.revenue}m</span></div>
+        <div style="color:var(--muted)">Debt interest: <span id="debtIntDisplay" style="color:var(--wa-red-light)">−$${budg.debtInterest}m</span></div>
+        <div style="color:var(--muted)">Unspent → surplus</div>
+      </div>
+      <div class="tax-note" style="margin-top:.6rem">
+        <strong>Tax above 25%:</strong> private sector investment drag. <strong>Tax below 16%:</strong> inadequate public services. Current GDP: <strong>$${Math.round(G.gdp)}m</strong>.
+      </div>
+    </div>
+  `;
+}
+
+function buildBudgetPanel(budg) {
+  return `
+    <div class="budget-panel">
+      <div class="budget-hdr">
+        <div class="budget-label">📊 Step 2 — Allocate Your Budget</div>
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+          <div class="budget-avail">Available: <strong id="avail2">$${budg.available}m</strong></div>
+          <div class="budget-unspent">Unspent: <span id="unspentDisplay" style="color:var(--wa-gold-light);font-family:'IBM Plex Mono',monospace">$${budg.available}m</span></div>
+        </div>
+      </div>
+      <div class="cat-grid">
+        ${CATEGORIES.map(c => buildCatItem(c, budg.available)).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function buildCatItem(c, avail) {
+  return `
+    <div class="cat-item" id="ci_${c.id}">
+      <div class="cat-top">
+        <div class="cat-name">${c.icon} ${c.name}</div>
+      </div>
+      <div class="cat-concept">${c.concept}</div>
+      <div class="cat-desc">${c.desc}</div>
+      <div class="cat-controls">
+        <button class="c-btn" onclick="adjustSpend('${c.id}',-50)">−</button>
+        <div class="c-val"><span id="sv_${c.id}">$0m</span></div>
+        <button class="c-btn" onclick="adjustSpend('${c.id}',50)">+</button>
+        <div class="c-pct" id="sp_${c.id}">0%</div>
+      </div>
+    </div>
+  `;
+}
+
+function buildSpecialPanel(sd) {
+  if (!sd) return '';
+  return `
+    <div class="special-panel">
+      <div class="sp-label">${sd.label}</div>
+      <div class="sp-prompt">${sd.prompt}</div>
+      <div class="sp-opts">
+        ${sd.opts.map(o=>`
+          <div class="sp-opt" id="so_${o.id}" onclick="selectSpecial('${o.id}')">
+            <div class="sp-opt-title">${o.title}</div>
+            <div class="sp-opt-desc">${o.desc}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════
+//  TAX SLIDER
+// ═══════════════════════════════════════════════════
+function updateTax(val) {
+  G.taxRate = parseInt(val);
+  document.getElementById('taxPctDisplay').textContent = val + '%';
+  const budg = calcBudget(G.taxRate, G.gdp, 0);
+  document.getElementById('budgetAvailDisplay').textContent = '$' + budg.available + 'm';
+  document.getElementById('taxRevDisplay').textContent = '$' + budg.revenue + 'm';
+  document.getElementById('debtIntDisplay').textContent = '−$' + budg.debtInterest + 'm';
+  document.getElementById('avail2').textContent = '$' + budg.available + 'm';
+  // Recalculate unspent
+  const spent = Object.values(G.spend).reduce((a,b)=>a+b,0);
+  const unspent = budg.available - spent;
+  document.getElementById('unspentDisplay').textContent = '$' + unspent + 'm';
+  document.getElementById('unspentDisplay').style.color = unspent < 0 ? 'var(--wa-red-light)' : 'var(--wa-gold-light)';
+  // Update % of GDP labels
+  CATEGORIES.forEach(c => {
+    const el = document.getElementById('sp_'+c.id);
+    if (el) el.textContent = (((G.spend[c.id]||0)/G.gdp)*100).toFixed(1)+'%';
+  });
+  checkCanSubmit();
+}
+
+// ═══════════════════════════════════════════════════
+//  SPENDING CONTROLS
+// ═══════════════════════════════════════════════════
+function adjustSpend(id, delta) {
+  const budg = calcBudget(G.taxRate, G.gdp, 0);
+  const spent = Object.values(G.spend).reduce((a,b)=>a+b,0);
+  const current = G.spend[id] || 0;
+  const newVal = Math.max(0, current + delta);
+  const newSpent = spent - current + newVal;
+  if (newSpent > budg.available) return; // can't exceed budget
+  G.spend[id] = newVal;
+  document.getElementById('sv_'+id).textContent = '$' + newVal + 'm';
+  document.getElementById('sp_'+id).textContent = ((newVal/G.gdp)*100).toFixed(1) + '%';
+  const unspent = budg.available - newSpent;
+  document.getElementById('unspentDisplay').textContent = '$' + Math.max(0,unspent) + 'm';
+  document.getElementById('unspentDisplay').style.color = unspent < 0 ? 'var(--wa-red-light)' : 'var(--wa-gold-light)';
+  checkCanSubmit();
+}
+
+function selectSpecial(id) {
+  document.querySelectorAll('.sp-opt').forEach(el=>el.classList.remove('chosen'));
+  const el = document.getElementById('so_'+id);
+  if (el) el.classList.add('chosen');
+  G.specialChoice = id;
+  checkCanSubmit();
+}
+
+function checkCanSubmit() {
+  const t = TURNS[G.year];
+  const hasSpecial = !!t.specialDecision;
+  const specialDone = !hasSpecial || !!G.specialChoice;
+  const budg = calcBudget(G.taxRate, G.gdp, 0);
+  const spent = Object.values(G.spend).reduce((a,b)=>a+b,0);
+  // Must spend at least 70% of budget and have made special decision
+  const btn = document.getElementById('submitBtn');
+  if (btn) btn.disabled = !(spent >= budg.available * 0.7 && specialDone);
+}
+
+// ═══════════════════════════════════════════════════
+//  SUBMIT TURN
+// ═══════════════════════════════════════════════════
+function submitTurn() {
+  const t = TURNS[G.year];
+  const budg = calcBudget(G.taxRate, G.gdp, 0);
+
+  // Accumulate cumulative spend
+  CATEGORIES.forEach(c => {
+    G.cumSpend[c.id] = (G.cumSpend[c.id]||0) + (G.spend[c.id]||0);
+  });
+
+  // Run economic model
+  const model = applyEconomicModel(G.spend, null, t);
+
+  // Apply special decision effects
+  let specialEffect = null;
+  let budgetBonus = 0;
+  if (t.specialDecision && G.specialChoice) {
+    const opt = t.specialDecision.opts.find(o=>o.id===G.specialChoice);
+    if (opt) {
+      specialEffect = opt;
+      // Risk decision
+      if (opt.riskChance && Math.random() < opt.riskChance) {
+        // Deal falls through — use partial effect
+        model.gdpDeltaM += G.gdp * 0.01;
+        model.hdiDelta += 0.003;
+      } else {
+        model.gdpDeltaM += G.gdp * (opt.effect.gdpPCdelta / 100);
+        model.hdiDelta += opt.effect.hdiDelta;
+        model.giniDelta += opt.effect.giniDelta;
+        model.debtDelta += opt.effect.debtDelta;
+        model.stabDelta += opt.effect.stabDelta;
+        budgetBonus = opt.effect.budgetBonus || 0;
+        // Conditional special decisions
+        if (opt.conditional && !opt.condition(G)) {
+          model.debtDelta *= 0; // condition not met, no debt relief
+        }
+      }
+    }
+  }
+
+  // Random events
+  let triggeredEvent = null;
+  for (const ev of (t.randomEvents||[])) {
+    if (ev.condition && !ev.condition(G)) continue;
+    if (Math.random() < ev.prob) {
+      triggeredEvent = ev;
+      let eff = {...ev.effect};
+      // Mitigation
+      if (ev.mitigatedBy) {
+        const spendPct = (G.spend[ev.mitigatedBy]||0) / G.gdp * 100;
+        const mitigation = Math.min(1, spendPct / 3) * ev.mitigationFactor;
+        eff.gdpPCdelta *= (1 - mitigation);
+        eff.hdiDelta *= (1 - mitigation);
+        eff.giniDelta *= (1 - mitigation);
+        eff.stabDelta *= (1 - mitigation);
+      }
+      model.gdpDeltaM += G.gdp * (eff.gdpPCdelta / 100);
+      model.hdiDelta += eff.hdiDelta;
+      model.giniDelta += eff.giniDelta;
+      model.debtDelta += eff.debtDelta;
+      model.stabDelta += eff.stabDelta;
+      if (ev.copperChange) {
+        G.copperPrice = Math.max(2000, G.copperPrice * (1 + ev.copperChange/100));
+      }
+      break;
+    }
+  }
+
+  // Fixed event
+  let fixedEvent = null;
+  if (t.fixedEvent) {
+    fixedEvent = t.fixedEvent;
+    let eff = {...fixedEvent.effect};
+    if (fixedEvent.mitigatedBy) {
+      const spendPct = (G.spend[fixedEvent.mitigatedBy]||0) / G.gdp * 100;
+      const mitigation = Math.min(1, spendPct / 4) * fixedEvent.mitigationFactor;
+      eff.gdpPCdelta *= (1 - mitigation);
+      eff.hdiDelta *= (1 - mitigation);
+      eff.giniDelta *= (1 - mitigation);
+      eff.stabDelta *= (1 - mitigation);
+    }
+    model.gdpDeltaM += G.gdp * (eff.gdpPCdelta / 100);
+    model.hdiDelta += eff.hdiDelta;
+    model.giniDelta += eff.giniDelta;
+    model.debtDelta += eff.debtDelta;
+    model.stabDelta += eff.stabDelta;
+  }
+
+  // Update state
+  const prevGDP = G.gdp;
+  G.gdp = Math.max(500, G.gdp + model.gdpDeltaM);
+  G.gdpPC = G.gdp / BASE.pop; // GDP $m ÷ pop millions = $/person
+  G.hdi = Math.min(0.92, Math.max(0.25, G.hdi + model.hdiDelta));
+  G.gini = Math.min(82, Math.max(22, G.gini + model.giniDelta));
+  G.debt = Math.min(150, Math.max(0, G.debt + model.debtDelta));
+  G.stability = Math.min(100, Math.max(5, G.stability + model.stabDelta));
+
+  // Score
+  const scores = scoreTurn(model);
+  G.turnScores.push(scores.total);
+
+  // History
+  const topSpend = CATEGORIES.filter(c=>(G.spend[c.id]||0)>0)
+    .sort((a,b)=>(G.spend[b.id]||0)-(G.spend[a.id]||0))
+    .slice(0,3).map(c=>`${c.icon}${c.name}($${G.spend[c.id]}m)`).join(', ');
+  G.history.push({
+    year: t.year,
+    text: `Tax: ${G.taxRate}% · Top spend: ${topSpend}${specialEffect?' · '+specialEffect.title.substring(0,36)+'…':''}`,
+    type: scores.total >= 65 ? 'pos' : scores.total >= 40 ? 'neu' : 'neg',
+    score: scores.total
+  });
+
+  updateDashboard();
+  updateHistLog();
+  updateYearDots();
+
+  // Record chart data point
+  G.chartData.gdpPC.push(Math.round(G.gdpPC));
+  G.chartData.hdi.push(parseFloat(G.hdi.toFixed(3)));
+  G.chartData.gini.push(parseFloat(G.gini.toFixed(1)));
+  G.chartData.debt.push(parseFloat(G.debt.toFixed(1)));
+  G.chartData.stab.push(Math.round(G.stability));
+  drawAllCharts();
+
+  // Show crisis modal for negative fixed/random events
+  const evToShow = fixedEvent || (triggeredEvent && triggeredEvent.type === 'neg' ? triggeredEvent : null);
+  if (evToShow) showCrisis(evToShow);
+
+  showOutcome(t, model, scores, triggeredEvent, fixedEvent, specialEffect);
+  document.getElementById('submitBtn').disabled = true;
+}
+
+// ═══════════════════════════════════════════════════
+//  OUTCOME DISPLAY
+// ═══════════════════════════════════════════════════
+function showOutcome(t, model, scores, randEv, fixedEv, special) {
+  const panel = document.getElementById('outcomePanel');
+  const isLast = t.year === 10;
+  const sc = scores.total;
+  const pillCls = sc>=75?'p-great':sc>=55?'p-good':sc>=38?'p-ok':'p-bad';
+  const pillTxt = sc>=75?'Strong Year':sc>=55?'Solid Progress':sc>=38?'Mixed Results':'Difficult Year';
+
+  const fmt = (v, dp=1) => v >= 0 ? `+${v.toFixed(dp)}` : v.toFixed(dp);
+  const gdpGrowth = ((G.gdp - (G.gdp - model.gdpDeltaM)) / (G.gdp - model.gdpDeltaM) * 100);
+
+  const outcomes = [
+    {label:'GDP Growth', val: fmt((model.gdpDeltaM/(G.gdp-model.gdpDeltaM))*100)+'%', cls: model.gdpDeltaM>0?'up-good':'dn-bad'},
+    {label:'GDP per Capita', val: '$'+Math.round(G.gdpPC).toLocaleString(), cls:'neutral-col'},
+    {label:'HDI', val: G.hdi.toFixed(3)+' ('+fmt(model.hdiDelta*1000,1)+'‰)', cls: model.hdiDelta>0?'up-good':'dn-bad'},
+    {label:'Gini Coefficient', val: G.gini.toFixed(1)+' ('+fmt(model.giniDelta)+')', cls: model.giniDelta<0?'dn-good':'up-bad'},
+    {label:'Debt / GDP', val: G.debt.toFixed(1)+'% ('+fmt(model.debtDelta)+'pp)', cls: model.debtDelta<0?'dn-good':'up-bad'},
+    {label:'Stability Index', val: Math.round(G.stability)+'% ('+fmt(model.stabDelta)+')', cls: model.stabDelta>0?'up-good':'dn-bad'},
+  ];
+
+  const sbItems = [
+    {label:'HDI (30%)', val:Math.round(scores.hdiScore)},
+    {label:'GDP (20%)', val:Math.round(scores.gdpScore)},
+    {label:'Gini (20%)', val:Math.round(scores.giniScore)},
+    {label:'Debt (15%)', val:Math.round(scores.debtScore)},
+    {label:'Stability (15%)', val:Math.round(scores.stabScore)},
+  ];
+
+  const posEv = randEv && randEv.type === 'pos' ? randEv : null;
+  const negEv = randEv && randEv.type === 'neg' ? randEv : null;
+
+  panel.innerHTML = `
+    <div class="op-hdr">
+      <div class="op-title">Year ${t.year} — Outcomes</div>
+      <span class="score-pill ${pillCls}">${pillTxt} · ${sc}/100</span>
+    </div>
+    <div class="op-body">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:.67rem;color:var(--muted);margin-bottom:.9rem">
+        Tax rate: <strong style="color:var(--text)">${G.taxRate}%</strong> &nbsp;·&nbsp;
+        Budget used: <strong style="color:var(--text)">$${Object.values(G.spend).reduce((a,b)=>a+b,0)}m</strong> &nbsp;·&nbsp;
+        Copper: <strong style="color:var(--wa-gold-light)">$${Math.round(G.copperPrice).toLocaleString()}/t</strong>
+      </div>
+      <div class="outcome-grid">
+        ${outcomes.map(o=>`<div class="og-item"><div class="og-label">${o.label}</div><div class="og-val ${o.cls}">${o.val}</div></div>`).join('')}
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.5rem">Score Breakdown</div>
+      <div class="score-breakdown">
+        ${sbItems.map(s=>{
+          const c = s.val>=70?'var(--wa-green-light)':s.val>=50?'var(--wa-blue)':s.val>=30?'var(--wa-orange-light)':'var(--wa-red-light)';
+          return `<div class="sb-item"><div class="sb-label">${s.label}</div><div class="sb-score" style="color:${c}">${s.val}</div><div class="sb-wt">/${100}</div></div>`;
+        }).join('')}
+      </div>
+      ${fixedEv ? `<div class="event-box"><div class="event-label">⚠ Fixed Event: ${fixedEv.title}</div><div class="event-text">${fixedEv.text}</div></div>` : ''}
+      ${negEv ? `<div class="event-box"><div class="event-label">⚠ Random Shock: ${negEv.title}</div><div class="event-text">${negEv.text}</div></div>` : ''}
+      ${posEv ? `<div class="pos-event-box"><div class="pos-event-label">✨ Positive Event: ${posEv.title}</div><div class="event-text">${posEv.text}</div></div>` : ''}
+      <div class="lesson-box">
+        <div class="lesson-label">📖 Economics Lesson: ${t.lessonTitle}</div>
+        <div class="lesson-text">${t.lesson}</div>
+        <div class="lesson-tags">${t.concepts.map(c=>`<span class="ltag">${c}</span>`).join('')}</div>
+      </div>
+      <button class="btn btn-gold btn-full" onclick="${isLast?'showResults()':'loadTurn('+(t.year)+')'}">
+        ${isLast ? 'View Presidential Legacy Report →' : 'Proceed to Year '+(t.year+1)+' — '+TURNS[t.year].title+' →'}
+      </button>
+    </div>
+  `;
+  panel.classList.add('vis');
+  setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),150);
+}
+
+// ═══════════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════════
+function updateDashboard() {
+  document.getElementById('dashYr').textContent = G.year === 0 ? 'Baseline (Pre-Presidency)' : `After Year ${G.year} · GDP $${Math.round(G.gdp)}m`;
+  document.getElementById('giniVal').textContent = G.gini.toFixed(1);
+  document.getElementById('copperPrice').textContent = '$' + Math.round(G.copperPrice).toLocaleString() + '/t';
+  const cChange = ((G.copperPrice - BASE.copperPrice)/BASE.copperPrice*100).toFixed(1);
+  document.getElementById('copperChange').textContent = `${cChange>=0?'+':''}${cChange}% vs baseline`;
+
+  const stats = [
+    {label:'GDP per capita', val:'$'+Math.round(G.gdpPC).toLocaleString(), pct:Math.min(100,((G.gdpPC-200)/1000)*100), col:statCol(G.gdpPC,250,900)},
+    {label:'HDI', val:G.hdi.toFixed(3), pct:G.hdi*100, col:statCol(G.hdi,0.40,0.72)},
+    {label:'Stability', val:Math.round(G.stability)+'%', pct:G.stability, col:statCol(G.stability,30,70)},
+    {label:'Gini (↓ better)', val:G.gini.toFixed(1), pct:G.gini, col:G.gini>55?'var(--wa-red-light)':G.gini>42?'var(--wa-orange-light)':'var(--wa-green-light)'},
+  ];
+
+  document.getElementById('dashStats').innerHTML = stats.map(s=>`
+    <div class="ds-row">
+      <div class="ds-lbl">${s.label}</div>
+      <div class="ds-track"><div class="ds-fill" style="width:${s.pct.toFixed(1)}%;background:${s.col}"></div></div>
+      <div class="ds-val" style="color:${s.col}">${s.val}</div>
+    </div>
+  `).join('');
+
+  const debtCol = G.debt>85?'var(--wa-red-light)':G.debt>65?'var(--wa-orange-light)':'var(--wa-green-light)';
+  document.getElementById('debtVal').textContent = G.debt.toFixed(1)+'%';
+  document.getElementById('debtFill').style.width = Math.min(100,G.debt)+'%';
+  document.getElementById('debtFill').style.background = debtCol;
+
+  drawLorenz();
+}
+
+function statCol(v, lo, hi) {
+  const p = Math.max(0,Math.min(1,(v-lo)/(hi-lo)));
+  return p < 0.33 ? 'var(--wa-red-light)' : p < 0.66 ? 'var(--wa-orange-light)' : 'var(--wa-green-light)';
+}
+
+function drawLorenz() {
+  const cv = document.getElementById('lorenzCanvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='rgba(255,255,255,0.02)'; ctx.fillRect(0,0,W,H);
+  // equality line
+  ctx.beginPath(); ctx.strokeStyle='rgba(255,255,255,0.18)'; ctx.lineWidth=1;
+  ctx.moveTo(0,H); ctx.lineTo(W,0); ctx.stroke();
+  // Lorenz curve
+  const g = G.gini/100;
+  ctx.beginPath();
+  ctx.strokeStyle = g>0.55?'#e05060':g>0.40?'#e0933a':'#4caf80';
+  ctx.lineWidth=2.5;
+  for (let i=0;i<=60;i++) {
+    const x=i/60, y=Math.pow(x,1+g*2.8);
+    const px=x*W, py=H-y*H;
+    i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+  }
+  ctx.stroke();
+  ctx.fillStyle='rgba(221,227,240,0.55)'; ctx.font='10px IBM Plex Mono';
+  ctx.fillText('Gini: '+G.gini.toFixed(1), 7, 16);
+}
+
+function updateHistLog() {
+  document.getElementById('histLog').innerHTML = [...G.history].reverse().map(h=>`
+    <div class="hl-item ${h.type}">
+      <span class="hl-yr">Year ${h.year} · Score: ${h.score}/100</span>
+      ${h.text}
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════
+//  CRISIS MODAL
+// ═══════════════════════════════════════════════════
+function showCrisis(ev) {
+  document.getElementById('cm-title').textContent = '⚠ ' + ev.title;
+  document.getElementById('cm-body').innerHTML = ev.text;
+  document.getElementById('cm-impact').innerHTML = `<strong>Economic impact on Savana:</strong> GDP ${ev.effect.gdpPCdelta>=0?'+':''}${ev.effect.gdpPCdelta?.toFixed(1)}% · HDI ${ev.effect.hdiDelta>=0?'+':''}${ev.effect.hdiDelta?.toFixed(3)} · Debt ${ev.effect.debtDelta>=0?'+':''}${ev.effect.debtDelta?.toFixed(1)}pp · Stability ${ev.effect.stabDelta>=0?'+':''}${Math.round(ev.effect.stabDelta||0)}`;
+  document.getElementById('crisisOverlay').classList.add('on');
+}
+function dismissCrisis() { document.getElementById('crisisOverlay').classList.remove('on'); }
+
+// ═══════════════════════════════════════════════════
+//  RESULTS
+// ═══════════════════════════════════════════════════
+function showResults() {
+  document.getElementById('turnCard').style.display = 'none';
+  document.getElementById('resultsCard').style.display = 'block';
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  const avg = Math.round(G.turnScores.reduce((a,b)=>a+b,0)/G.turnScores.length);
+  const gdpGain = Math.round(((G.gdpPC - BASE.gdpPC)/BASE.gdpPC)*100);
+  const hdiGain = (G.hdi - BASE.hdi).toFixed(3);
+  const giniChange = (G.gini - BASE.gini).toFixed(1);
+
+  let headline, grade, gradeCol;
+  if (avg>=78){headline='A Transformational Presidency';grade='Outstanding — Development Economics Distinction';gradeCol='var(--wa-green-light)'}
+  else if (avg>=63){headline='A Presidency of Real Progress';grade='Strong — A Grade Performance';gradeCol='var(--wa-blue)'}
+  else if (avg>=48){headline='A Mixed Decade in Power';grade='Solid — B Grade Performance';gradeCol='var(--wa-gold-light)'}
+  else if (avg>=33){headline='A Presidency of Missed Opportunities';grade='Developing — C Grade Performance';gradeCol='var(--wa-orange-light)'}
+  else{headline='Savana Needed More';grade='Needs Work — D Grade Performance';gradeCol='var(--wa-red-light)'}
+
+  document.getElementById('resHeadline').textContent = headline;
+  document.getElementById('resScore').textContent = avg;
+  document.getElementById('resGrade').innerHTML = `<span style="color:${gradeCol}">${grade}</span>`;
+
+  document.getElementById('finalGrid').innerHTML = [
+    {l:'GDP per Capita', v:'$'+Math.round(G.gdpPC).toLocaleString(), s:'+'+gdpGain+'% from $233'},
+    {l:'Final HDI', v:G.hdi.toFixed(3), s:'+'+(hdiGain)+' from 0.420'},
+    {l:'Gini Coefficient', v:G.gini.toFixed(1), s:parseFloat(giniChange)<=0?giniChange+' pts ✓':'+'+giniChange+' pts ✗'},
+    {l:'Debt / GDP', v:G.debt.toFixed(1)+'%', s:G.debt<55?'Sustainable':'Above safe level'},
+    {l:'Stability', v:Math.round(G.stability)+'%', s:G.stability>62?'Strong':'Fragile'},
+    {l:'Copper Price', v:'$'+Math.round(G.copperPrice).toLocaleString()+'/t', s:'vs $6,200 baseline'},
+    {l:'Overall Score', v:avg+'/100', s:grade.split('—')[0].trim()},
+    {l:'Term Complete', v:'10 yrs', s:'Savana · 18m people'},
+  ].map(x=>`<div class="fg-item"><div class="fg-lbl">${x.l}</div><div class="fg-val">${x.v}</div><div class="fg-sub">${x.s}</div></div>`).join('');
+
+  document.getElementById('tlReview').innerHTML = G.history.map(h=>{
+    const sc=h.score;
+    const cls=sc>=75?'p-great':sc>=55?'p-good':sc>=38?'p-ok':'p-bad';
+    return `<div class="tl-item"><div class="tl-yr">Year ${h.year}</div><div class="tl-text">${h.text}</div><span class="tl-score score-pill ${cls}">${sc}</span></div>`;
+  }).join('');
+
+  generateAI(avg, gdpGain, hdiGain, giniChange);
+}
+
+async function generateAI(avg, gdpGain, hdiGain, giniChange) {
+  const decisions = G.history.map(h=>({year:h.year,summary:h.text,score:h.score}));
+  const finalState = {gdpPC:Math.round(G.gdpPC),hdi:G.hdi.toFixed(3),gini:G.gini.toFixed(1),debt:G.debt.toFixed(1),stability:Math.round(G.stability)};
+  const prompt = `You are an A-Level Economics teacher at Wycombe Abbey. A student just completed a 10-year development simulation governing Savana, a landlocked sub-Saharan African economy dependent on copper exports (baseline GDP $4.2bn, GDP/capita $233, HDI 0.420, Gini 62, Debt 68%).
+
+Year-by-year decisions and scores:
+${JSON.stringify(decisions,null,2)}
+
+Final outcomes: ${JSON.stringify(finalState)}
+Overall average score: ${avg}/100. GDP/capita grew by ${gdpGain}%, HDI improved by ${hdiGain}, Gini changed by ${giniChange} points.
+
+Write a personalised presidential assessment of ~300 words in three flowing paragraphs:
+
+Paragraph 1 — "Strongest Decisions": Where did they show genuine development economics understanding? Reference specific years and concepts (Harrod-Domar, Lewis model, institutional quality, debt sustainability, etc).
+
+Paragraph 2 — "Where Savana Struggled": Lower-scoring years and weak conceptual understanding. Be direct but constructive. Name Edexcel Paper 2 topics to revisit.
+
+Paragraph 3 — "Exam Preparation": 2-3 concrete revision suggestions tied to Edexcel Paper 2 development, growth and trade. Mention specific frameworks (Harrod-Domar, Lewis, Sen, Kuznets, r-g differential).
+
+Warm, professional teacher language. No bullet points. No "I" opener. Do not mention Anthropic or Claude.`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+    const data = await res.json();
+    const text = data.content?.[0]?.text||'';
+    document.getElementById('aiFeedbackBody').innerHTML =
+      `<div class="ai-body">${text.split('\n').filter(p=>p.trim()).map(p=>`<p>${p}</p>`).join('')}</div>`;
+  } catch(e) {
+    document.getElementById('aiFeedbackBody').innerHTML =
+      `<div class="ai-body"><p>Your presidency of Savana achieved an average score of <strong>${avg}/100</strong>. ${avg>=63?'You demonstrated solid understanding of development trade-offs.':'There are important development economics concepts to revisit — particularly the Harrod-Domar model, the Lewis dual-sector model, and the role of institutions in attracting investment.'} Review your year-by-year decisions alongside your Edexcel Paper 2 revision frameworks on development, growth and trade.</p></div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  CHARTS
+// ═══════════════════════════════════════════════════
+function drawAllCharts() {
+  drawSparkline('chartGDP',  G.chartData.gdpPC, 'var(--wa-gold)',         false, '$', '');
+  drawSparkline('chartHDI',  G.chartData.hdi,   'var(--wa-blue)',         false, '',  '');
+  drawSparkline('chartGini', G.chartData.gini,  'var(--wa-orange-light)', true,  '',  '');
+  drawSparkline('chartDebt', G.chartData.debt,  'var(--wa-red-light)',    true,  '',  '%');
+  drawSparkline('chartStab', G.chartData.stab,  'var(--wa-green-light)', false, '',  '%');
+}
+
+function drawSparkline(canvasId, data, color, lowerIsBetter, prefix, suffix) {
+  const cv = document.getElementById(canvasId);
+  if (!cv || data.length < 1) return;
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  const PAD = { top: 16, right: 10, bottom: 22, left: 40 };
+  const iW = W - PAD.left - PAD.right;
+  const iH = H - PAD.top - PAD.bottom;
+
+  ctx.clearRect(0, 0, W, H);
+
+  const minV = Math.min(...data);
+  const maxV = Math.max(...data);
+  const range = maxV - minV || 1;
+  const totalPts = 11;
+  const xStep = iW / (totalPts - 1);
+
+  const toX = i => PAD.left + i * xStep;
+  const toY = v => PAD.top + iH - ((v - minV) / range) * iH;
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = PAD.top + (iH / 4) * i;
+    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(W - PAD.right, y); ctx.stroke();
+  }
+
+  // Subtle vertical tick per year
+  for (let i = 0; i < data.length; i++) {
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.setLineDash([2, 3]);
+    ctx.beginPath(); ctx.moveTo(toX(i), PAD.top); ctx.lineTo(toX(i), H - PAD.bottom); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Fill area
+  if (data.length > 1) {
+    ctx.beginPath();
+    ctx.moveTo(toX(0), toY(data[0]));
+    for (let i = 1; i < data.length; i++) ctx.lineTo(toX(i), toY(data[i]));
+    ctx.lineTo(toX(data.length - 1), H - PAD.bottom);
+    ctx.lineTo(toX(0), H - PAD.bottom);
+    ctx.closePath();
+    const grad = ctx.createLinearGradient(0, PAD.top, 0, H - PAD.bottom);
+    const rgb = colorToRgb(color);
+    grad.addColorStop(0, `rgba(${rgb}, 0.28)`);
+    grad.addColorStop(1, `rgba(${rgb}, 0)`);
+    ctx.fillStyle = grad;
+    ctx.fill();
+  }
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  for (let i = 0; i < data.length; i++) {
+    i === 0 ? ctx.moveTo(toX(i), toY(data[i])) : ctx.lineTo(toX(i), toY(data[i]));
+  }
+  ctx.stroke();
+
+  // Dots
+  for (let i = 0; i < data.length; i++) {
+    const isLast = i === data.length - 1;
+    ctx.beginPath();
+    ctx.arc(toX(i), toY(data[i]), isLast ? 4.5 : 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = isLast ? color : 'rgba(255,255,255,0.45)';
+    if (isLast) { ctx.shadowColor = color; ctx.shadowBlur = 7; }
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  // Y-axis labels
+  ctx.fillStyle = 'rgba(221,227,240,0.6)';
+  ctx.font = '9px IBM Plex Mono';
+  ctx.textAlign = 'right';
+  const fmtV = v => {
+    const num = Math.abs(v) >= 1000 ? Math.round(v/10)*10 : Math.abs(v) >= 10 ? Math.round(v) : v % 1 !== 0 ? v.toFixed(3) : Math.round(v);
+    return prefix + num + suffix;
+  };
+  ctx.fillText(fmtV(maxV), PAD.left - 4, PAD.top + 4);
+  ctx.fillText(fmtV(minV), PAD.left - 4, H - PAD.bottom + 1);
+
+  // Current value callout
+  if (data.length > 0) {
+    const last = data[data.length - 1];
+    const lx = toX(data.length - 1);
+    const ly = toY(last);
+    ctx.fillStyle = color;
+    ctx.font = 'bold 9px IBM Plex Mono';
+    ctx.textAlign = lx > W - 55 ? 'right' : 'left';
+    ctx.fillText(fmtV(last), lx + (lx > W - 55 ? -7 : 7), ly - 5);
+  }
+
+  // X-axis — show Y0, Y5, Y10 only
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(221,227,240,0.38)';
+  ctx.font = '8px IBM Plex Mono';
+  for (const yr of [0, 5, 10]) {
+    if (yr < data.length) ctx.fillText('Y'+yr, toX(yr), H - 4);
+  }
+}
+
+// Resolve CSS variables to RGB for gradient fill
+function colorToRgb(cssVar) {
+  const map = {
+    'var(--wa-gold)':         '201,168,76',
+    'var(--wa-blue)':         '74,127,181',
+    'var(--wa-orange-light)': '224,147,58',
+    'var(--wa-red-light)':    '224,80,96',
+    'var(--wa-green-light)':  '76,175,128',
+  };
+  return map[cssVar] || '255,255,255';
+}
+
+// Gradient fill helper that works with CSS variables
+function makeGradFill(ctx, color, H, PAD) {
+  const grad = ctx.createLinearGradient(0, PAD.top, 0, H - PAD.bottom);
+  const rgb = colorToRgb(color);
+  grad.addColorStop(0, `rgba(${rgb}, 0.22)`);
+  grad.addColorStop(1, `rgba(${rgb}, 0)`);
+  return grad;
+}
+function restartGame() {
+  initState();
+  document.getElementById('resultsCard').style.display='none';
+  document.getElementById('turnCard').style.display='none';
+  document.getElementById('dashCard').style.display='none';
+  document.getElementById('histCard').style.display='none';
+  document.getElementById('chartsCard').style.display='none';
+  document.getElementById('yearBar').style.display='none';
+  document.getElementById('introCard').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script>Auth.requireStudent('../login');</script>
+</body>
+</html>
