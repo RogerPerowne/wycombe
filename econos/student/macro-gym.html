@@ -1,1 +1,1261 @@
-<!-- PLACEHOLDER -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Macro Gym — Wycombe Abbey</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2744;--navyd:#0f1729;--gold:#c9a84c;--goldl:#e2c47a;--green:#4caf80;--red:#e05060;--orange:#e0933a;--blue:#4a7fb5;--bluel:#6fa8d8;--purple:#9775b5;--txt:#fff;--mut:#dde3f0;--bdr:#2e3f60;--pan:#1e2e4a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navyd);color:var(--txt);font-family:'Nunito','Segoe UI',sans-serif;font-size:16px;min-height:100vh}
+/* HEADER */
+header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);border-bottom:2px solid var(--gold);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:72px;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.hl{display:flex;align-items:center;gap:.9rem}
+.hlogo{height:48px;width:48px;object-fit:contain;border-radius:4px}
+.hsch{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:600;color:var(--goldl);line-height:1.2}
+.htit{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:700}
+.hsub{font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.7}
+.hbdg{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:.24rem .78rem;border-radius:3px;background:rgba(201,168,76,.08)}
+.homebtn{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.28rem .72rem;border-radius:4px;cursor:pointer;margin-left:.6rem;transition:all .2s}
+.homebtn:hover{background:rgba(255,255,255,.1);color:var(--txt)}
+.app{max-width:1100px;margin:0 auto;padding:1.4rem 1.8rem}
+/* HUB */
+.hub-hero{text-align:center;padding:2.4rem 1rem 1.5rem}
+.hub-hero h1{font-family:'Cormorant Garamond',serif;font-size:2.7rem;font-weight:700;line-height:1.15;margin-bottom:.35rem}
+.hub-hero .tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--goldl);margin-bottom:.8rem}
+.hub-hero .intro{font-size:.9rem;color:var(--mut);max-width:620px;margin:0 auto 1.2rem;line-height:1.75;opacity:.88}
+.hub-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;opacity:.85}
+/* MACHINE GRID */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.1rem;margin-bottom:1.8rem}
+.mcard{background:rgba(26,39,68,.7);border:1px solid var(--bdr);border-radius:12px;padding:1.4rem 1.3rem;cursor:pointer;transition:all .22s ease;position:relative;overflow:hidden}
+.mcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--machine-colour,var(--gold))}
+.mcard:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.4);border-color:rgba(201,168,76,.35)}
+.mc-icon{font-size:2.2rem;margin-bottom:.55rem;line-height:1}
+.mc-num{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem;opacity:.85}
+.mc-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;margin-bottom:.4rem;line-height:1.25}
+.mc-build{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--goldl);margin-bottom:.55rem;opacity:.85}
+.mc-desc{font-size:.82rem;color:var(--mut);line-height:1.65;opacity:.82;margin-bottom:.8rem}
+.mc-meta{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.65rem}
+.mc-meta span{font-family:'IBM Plex Mono',monospace;font-size:.54rem;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.15rem .48rem;border-radius:3px;letter-spacing:.04em;text-transform:uppercase}
+/* HUB BOTTOM */
+.hub-foot{text-align:center;padding:1.2rem;border-top:1px solid var(--bdr);margin-top:1.5rem;opacity:.42}
+.hub-foot p{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;color:var(--mut)}
+/* SESSION LAYOUT */
+.card{background:var(--pan);border:1px solid var(--bdr);border-radius:10px;overflow:hidden;position:relative;margin-bottom:1.3rem}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue))}
+.cb{padding:1.6rem}
+.sess-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.9rem 1.4rem;background:rgba(26,39,68,.5);border-bottom:1px solid var(--bdr)}
+.sess-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700}
+.sess-subtitle{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);opacity:.65}
+.sess-counter{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--gold);text-align:right;white-space:nowrap}
+.sess-score{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--goldl);line-height:1}
+.sess-progress{height:4px;background:var(--bdr);position:relative}
+.sess-pfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldl));transition:width .4s ease;width:0%}
+/* FRICTION */
+.frict-scenario{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:9px;padding:1.4rem;margin-bottom:1rem;font-size:1.02rem;line-height:1.75;color:var(--txt)}
+.timer-bar{height:6px;background:var(--bdr);border-radius:3px;overflow:hidden;margin-bottom:1rem}
+.timer-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold),var(--red));transition:width 1s linear;width:100%}
+.fopts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.6rem}
+.fopt{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:7px;padding:.75rem .85rem;cursor:pointer;transition:all .18s;text-align:left;display:flex;gap:.55rem;align-items:center}
+.fopt:hover:not(.locked){border-color:var(--gold);background:rgba(201,168,76,.07);transform:translateY(-1px)}
+.fopt.locked{cursor:default}
+.fopt.ok{border-color:var(--green)!important;background:rgba(76,175,128,.12)!important}
+.fopt.bad{border-color:var(--red)!important;background:rgba(224,80,96,.1)!important}
+.fopt.reveal{border-color:var(--green)!important;background:rgba(76,175,128,.06)!important}
+.fopt-icon{font-size:1.15rem;flex-shrink:0}
+.fopt-name{font-size:.82rem;font-weight:600}
+.frict-reveal{margin-top:1rem;padding:1rem 1.1rem;background:rgba(74,127,181,.08);border:1px solid rgba(74,127,181,.3);border-radius:7px;display:none}
+.frict-reveal.show{display:block;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.frict-reveal p{font-size:.86rem;line-height:1.7;color:var(--mut)}
+.frict-reveal p strong{color:var(--txt)}
+/* CHAIN BUILDER */
+.chain-trigger{background:rgba(26,39,68,.5);border-left:3px solid var(--gold);padding:.95rem 1.2rem;border-radius:0 6px 6px 0;margin-bottom:1.1rem}
+.chain-trigger-lbl{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:.4rem}
+.chain-trigger p{font-size:.95rem;line-height:1.7;color:var(--txt)}
+.chain-instr{font-size:.8rem;color:var(--mut);margin-bottom:.7rem;line-height:1.6;opacity:.85}
+.chain-instr strong{color:var(--goldl)}
+.chain-columns{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+@media(max-width:680px){.chain-columns{grid-template-columns:1fr}}
+.chain-col{background:rgba(26,39,68,.4);border:1px solid var(--bdr);border-radius:8px;padding:.85rem;min-height:220px}
+.chain-col-title{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:.65rem;opacity:.75}
+.chain-col.active{border-color:rgba(201,168,76,.45)}
+.chain-step{background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:6px;padding:.6rem .75rem;margin-bottom:.42rem;cursor:pointer;font-size:.82rem;line-height:1.55;transition:all .18s;display:flex;align-items:flex-start;gap:.55rem}
+.chain-step:hover:not(.locked){border-color:var(--gold);background:rgba(201,168,76,.07)}
+.chain-step.locked{cursor:default}
+.chain-step.ordered{background:rgba(26,39,68,.8);border-color:rgba(201,168,76,.35)}
+.chain-step-num{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--gold);flex-shrink:0;font-weight:600;min-width:18px}
+.chain-step-txt{flex:1}
+.chain-submit{text-align:center;margin:.8rem 0}
+.chain-result{margin-top:1rem;padding:1rem;border-radius:7px;display:none}
+.chain-result.show{display:block;animation:fadeIn .3s}
+.chain-result.ok{background:rgba(76,175,128,.08);border:1px solid rgba(76,175,128,.3)}
+.chain-result.bad{background:rgba(224,80,96,.08);border:1px solid rgba(224,80,96,.3)}
+.chain-result-title{font-family:'IBM Plex Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.65rem}
+.chain-result.ok .chain-result-title{color:var(--green)}
+.chain-result.bad .chain-result-title{color:var(--red)}
+.chain-result ol{padding-left:1.3rem;margin-bottom:.7rem}
+.chain-result li{font-size:.82rem;line-height:1.65;color:var(--mut);margin-bottom:.32rem}
+.chain-result li strong{color:var(--txt)}
+/* DIAGRAM SPRINT */
+.diag-prompt{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:9px;padding:1.2rem;margin-bottom:1rem}
+.diag-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--goldl);margin-bottom:.5rem}
+.diag-framework{font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.11em;color:var(--gold);margin-bottom:.6rem}
+.diag-prompt-text{font-size:.92rem;line-height:1.75;color:var(--txt)}
+.diag-instr{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);border-radius:7px;padding:.85rem 1.05rem;margin-bottom:1.1rem;font-size:.8rem;color:var(--goldl);line-height:1.65}
+.diag-instr strong{color:var(--gold)}
+.diag-timer{text-align:center;margin:1.2rem 0}
+.diag-timer-circle{width:130px;height:130px;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;background:conic-gradient(var(--gold) 0deg, var(--bdr) 0deg);transition:background 1s linear;position:relative}
+.diag-timer-circle::before{content:'';position:absolute;width:116px;height:116px;border-radius:50%;background:var(--navyd)}
+.diag-timer-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--goldl);z-index:2}
+.diag-btn-row{text-align:center;margin-top:.8rem;display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap}
+.diag-reveal{display:none}
+.diag-reveal.show{display:block;animation:fadeIn .35s}
+.diag-labels-box{background:rgba(74,127,181,.07);border:1px solid rgba(74,127,181,.28);border-radius:8px;padding:1.1rem;margin-bottom:.9rem}
+.diag-labels-title{font-family:'IBM Plex Mono',monospace;font-size:.57rem;text-transform:uppercase;letter-spacing:.1em;color:var(--bluel);margin-bottom:.7rem}
+.diag-labels-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.4rem}
+.diag-label-chip{font-family:'IBM Plex Mono',monospace;font-size:.75rem;background:rgba(255,255,255,.05);border:1px solid var(--bdr);padding:.35rem .58rem;border-radius:4px;color:var(--txt);line-height:1.35}
+.diag-explain{background:rgba(26,39,68,.5);border-left:3px solid var(--blue);padding:.9rem 1.1rem;border-radius:0 6px 6px 0;margin-bottom:.9rem}
+.diag-explain p{font-size:.84rem;line-height:1.72;color:var(--mut)}
+.diag-tip{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);border-radius:6px;padding:.75rem 1rem;margin-bottom:1rem;font-size:.82rem;line-height:1.7;color:var(--goldl)}
+.diag-tip strong{color:var(--gold)}
+.diag-selfrate{text-align:center;padding:.8rem 0 .3rem}
+.diag-selfrate-q{font-family:'IBM Plex Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);margin-bottom:.7rem}
+.diag-rate-btns{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap}
+.diag-rate-btn{padding:.7rem 1.1rem;border-radius:7px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;border:1px solid;transition:all .2s;font-weight:600}
+.rate-nailed{background:rgba(76,175,128,.1);border-color:var(--green);color:var(--green)}
+.rate-nailed:hover{background:rgba(76,175,128,.18)}
+.rate-nearly{background:rgba(224,147,58,.1);border-color:var(--orange);color:var(--orange)}
+.rate-nearly:hover{background:rgba(224,147,58,.18)}
+.rate-missed{background:rgba(224,80,96,.1);border-color:var(--red);color:var(--red)}
+.rate-missed:hover{background:rgba(224,80,96,.18)}
+/* WRONG BUT CONVINCING */
+.wbc-question{background:rgba(26,39,68,.5);border-left:3px solid var(--purple);padding:1rem 1.25rem;border-radius:0 6px 6px 0;margin-bottom:1rem}
+.wbc-q-lbl{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;color:var(--purple);margin-bottom:.4rem}
+.wbc-question p{font-size:.93rem;line-height:1.7;color:var(--txt)}
+.wbc-instr{font-size:.82rem;color:var(--mut);margin-bottom:.95rem;opacity:.85;line-height:1.65}
+.wbc-instr strong{color:var(--goldl)}
+.wbc-answers{display:flex;flex-direction:column;gap:.7rem;margin-bottom:1rem}
+.wbc-answer{background:rgba(255,255,255,.04);border:2px solid var(--bdr);border-radius:9px;padding:.9rem 1.05rem;cursor:pointer;transition:all .18s;position:relative}
+.wbc-answer:hover:not(.locked){border-color:var(--gold);background:rgba(201,168,76,.06)}
+.wbc-answer.locked{cursor:default}
+.wbc-answer-label{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.11em;text-transform:uppercase;color:var(--mut);margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+.wbc-answer-verdict{font-family:'IBM Plex Mono',monospace;font-size:.56rem;padding:.14rem .45rem;border-radius:3px;letter-spacing:.05em;display:none}
+.wbc-answer.revealed .wbc-answer-verdict{display:inline-block}
+.wbc-answer.revealed-strong{border-color:var(--green)!important;background:rgba(76,175,128,.06)!important}
+.wbc-answer.revealed-strong .wbc-answer-verdict{background:rgba(76,175,128,.18);color:var(--green);border:1px solid var(--green)}
+.wbc-answer.revealed-flawed{border-color:var(--red)!important;background:rgba(224,80,96,.05)!important}
+.wbc-answer.revealed-flawed .wbc-answer-verdict{background:rgba(224,80,96,.15);color:var(--red);border:1px solid var(--red)}
+.wbc-answer-text{font-size:.85rem;line-height:1.72;color:var(--txt)}
+.wbc-answer-why{display:none;margin-top:.7rem;padding-top:.7rem;border-top:1px solid rgba(46,63,96,.7);font-size:.8rem;line-height:1.7;color:var(--mut)}
+.wbc-answer.revealed .wbc-answer-why{display:block;animation:fadeIn .3s}
+.wbc-answer-why strong{color:var(--txt)}
+.wbc-flaw-box{background:rgba(74,127,181,.07);border:1px solid rgba(74,127,181,.28);border-radius:7px;padding:.8rem 1.05rem;margin-top:.6rem;display:none}
+.wbc-answer.revealed .wbc-flaw-box{display:block}
+.wbc-flaw-name{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--bluel);margin-bottom:.35rem}
+.wbc-flaw-desc{font-size:.78rem;line-height:1.65;color:var(--mut);font-style:italic}
+/* BUTTONS */
+.btn{padding:.75rem 1.15rem;border:none;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-weight:600}
+.bg{background:linear-gradient(135deg,#b8922a,var(--gold));color:var(--navyd)}
+.bg:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(201,168,76,.35)}
+.bg:disabled{opacity:.4;cursor:default}
+.bs{background:rgba(255,255,255,.06);border:1px solid var(--bdr);color:var(--mut)}
+.bs:hover{background:rgba(255,255,255,.12);color:var(--txt)}
+/* SUMMARY */
+.summary-hero{text-align:center;padding:1.8rem 1rem 1rem}
+.summary-eye{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.55rem}
+.summary-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;margin-bottom:.25rem}
+.summary-num{font-family:'Cormorant Garamond',serif;font-size:4.5rem;font-weight:700;color:var(--goldl);line-height:1;margin:.6rem 0 .25rem}
+.summary-max{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--mut);opacity:.65;margin-bottom:1rem}
+.summary-pct{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--goldl);margin-bottom:.8rem}
+.summary-break{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin:1rem auto 1.5rem;max-width:560px}
+.summary-stat{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:7px;padding:.7rem .95rem;min-width:115px;text-align:center}
+.summary-stat-num{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--goldl)}
+.summary-stat-lbl{font-family:'IBM Plex Mono',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);opacity:.75;margin-top:.15rem}
+.summary-btns{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-top:1rem}
+/* GENERIC */
+.center{text-align:center}
+.mt{margin-top:1rem}
+.diag-svg-box{margin-bottom:.9rem;text-align:center}
+.diag-svg-box svg{max-width:100%;height:auto;box-shadow:0 4px 14px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08)}
+@media(max-width:650px){
+  header{padding:0 1rem;height:64px}
+  .htit{font-size:1.05rem}
+  .hbdg{display:none}
+  .app{padding:1.1rem 1rem}
+  .hub-hero h1{font-size:2rem}
+}
+
+.hub-btn{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.3rem .75rem;border-radius:4px;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-block}
+.hub-btn:hover{background:rgba(255,255,255,.12);color:var(--txt)}
+
+/* econOS topbar */
+.sim-topbar{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9999;font-family:'Inter',system-ui,sans-serif;box-shadow:0 1px 3px rgba(15,23,42,.04)}
+.sim-topbar-left{display:flex;align-items:center;gap:.75rem}
+.sim-logo{display:flex;align-items:center;gap:.4rem;text-decoration:none}
+.sim-logo-dots{display:flex;align-items:flex-end;gap:2px}
+.sd1{display:block;width:7px;height:7px;border-radius:50%;background:#22C55E}
+.sd2{display:block;width:9px;height:9px;border-radius:50%;background:#F59E0B}
+.sd3{display:block;width:11px;height:11px;border-radius:50%;background:#2563EB}
+.sim-logo-word{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;font-family:'Inter',sans-serif}
+.sim-econ{color:#0F172A}.sim-os{color:#2563EB}
+.sim-divider{width:1px;height:20px;background:#E2E8F0;margin:0 .25rem}
+.sim-page-name{font-size:.8rem;font-weight:600;color:#64748B;font-family:'Inter',sans-serif}
+.sim-back-btn{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;font-weight:600;color:#475569;text-decoration:none;padding:.4rem .75rem;border-radius:8px;border:1px solid #E2E8F0;background:#F8FAFC;transition:all .12s;font-family:'Inter',sans-serif}
+.sim-back-btn:hover{background:#F1F5F9;color:#0F172A;border-color:#CBD5E1}
+</style>
+</head>
+<body>
+<nav class="sim-topbar">
+  <div class="sim-topbar-left">
+    <a href="/" class="sim-logo">
+      <div class="sim-logo-dots"><span class="sd1"></span><span class="sd2"></span><span class="sd3"></span></div>
+      <span class="sim-logo-word"><span class="sim-econ">econ</span><span class="sim-os">OS</span></span>
+    </a>
+    <span class="sim-divider"></span>
+    <span class="sim-page-name">The Macro Gym</span>
+  </div>
+  <div>
+    <a href="../dashboard" class="sim-back-btn">&#8592; Dashboard</a>
+  </div>
+</nav>
+<header>
+  <div class="hl">
+    <img class="hlogo" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Wycombe_Abbey_Lozenge_Grey_on_Blue_for_Wikipedia_19.02.20_KL.jpg" alt="WA" onerror="this.style.display='none'">
+    <div>
+      <div class="hsch">Wycombe Abbey</div>
+      <div class="htit">The Economics Gym</div>
+      <div class="hsub">A-Level &middot; Edexcel Paper 2 &middot; Skills Training</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:.6rem">
+    <a href="index.html" style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.28rem .72rem;border-radius:4px;text-decoration:none;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.color='var(--mut)'">&#8592; Home</a>
+    <a class="hub-btn" href="index.html">&larr; Hub</a>
+    <span class="hbdg">Revision Drills</span>
+    <button class="homebtn" id="homeBtn" onclick="goHub()" style="display:none">&larr; Hub</button>
+  </div>
+</header>
+<div class="app" id="root"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  CONTENT DATA — PAPER 2 MACRO
+// ══════════════════════════════════════════════════════════════
+var CHAINS = [
+  { id: 1, framework: "Monetary Policy",
+    trigger: "The Bank of England raises interest rates to combat above-target inflation",
+    steps: [
+      "Borrowing costs rise for households and firms",
+      "Consumption and investment fall as debt becomes more expensive",
+      "Aggregate Demand shifts left, reducing real output",
+      "The output gap narrows or turns negative",
+      "Demand-pull inflationary pressure falls",
+      "Inflation moves back toward the 2% target over 18-24 months"
+    ],
+    imposters: [
+      "The exchange rate always appreciates immediately, cutting import prices to zero",
+      "Firms immediately expand capacity in response to higher borrowing costs"
+    ] },
+  { id: 2, framework: "Monetary Policy",
+    trigger: "The Bank of England launches Quantitative Easing at the zero lower bound",
+    steps: [
+      "The central bank purchases government and corporate bonds",
+      "Bond prices rise and yields fall across financial markets",
+      "Banks hold more reserves and lending conditions ease",
+      "Asset prices rise, creating a wealth effect for asset owners",
+      "Consumer spending and investment rise, shifting AD right",
+      "Real output and employment increase toward potential"
+    ],
+    imposters: [
+      "Interest rates are raised to attract foreign capital inflows",
+      "The government automatically reduces its fiscal deficit as QE proceeds"
+    ] },
+  { id: 3, framework: "Monetary Policy",
+    trigger: "A central bank loses credibility after persistently missing its inflation target",
+    steps: [
+      "Inflation expectations become unanchored",
+      "Workers demand higher nominal wages to maintain real purchasing power",
+      "Firms raise prices to cover rising labour costs",
+      "A wage-price spiral develops, making inflation persistent",
+      "Larger and more painful interest rate rises are needed to restore credibility",
+      "The risk of recession increases as harsher tightening is required"
+    ],
+    imposters: [
+      "Low credibility automatically reduces the money supply through market mechanisms",
+      "Firms immediately reduce investment in anticipation of future deflation"
+    ] },
+  { id: 4, framework: "Fiscal Policy",
+    trigger: "A government increases public spending by £50 billion during a recession",
+    steps: [
+      "Aggregate Demand shifts right as government expenditure rises",
+      "Real output and employment increase directly",
+      "Recipients of government spending earn higher incomes",
+      "A proportion is re-spent in the economy, triggering the multiplier effect",
+      "Tax revenues rise automatically as incomes and profits grow",
+      "The initial deficit partly self-corrects through higher tax receipts"
+    ],
+    imposters: [
+      "The multiplier effect is always greater than 2 regardless of the economic context",
+      "Import spending rises but this has no effect on the size of the multiplier"
+    ] },
+  { id: 5, framework: "Fiscal Policy",
+    trigger: "The government runs a large fiscal deficit, increasing demand for loanable funds",
+    steps: [
+      "Government borrowing increases the demand for loanable funds",
+      "Interest rates are pushed upward in financial markets",
+      "Higher interest rates raise the cost of private sector borrowing",
+      "Business investment falls as projects become less profitable",
+      "Private sector activity is crowded out by public sector borrowing",
+      "Long-run growth potential may weaken if productive investment falls"
+    ],
+    imposters: [
+      "The central bank must always raise interest rates by the same amount as the deficit",
+      "Crowding out is equally severe whether the economy is in boom or recession"
+    ] },
+  { id: 6, framework: "Fiscal Policy",
+    trigger: "A government runs persistent deficits, leading to a rising debt-to-GDP ratio",
+    steps: [
+      "The national debt grows as annual deficits accumulate",
+      "Debt-interest payments consume a larger share of government revenue",
+      "Investor confidence in government solvency may weaken",
+      "Risk premiums on government bonds increase, raising borrowing costs",
+      "The government faces pressure to cut spending or raise taxes",
+      "Fiscal space for counter-cyclical policy narrows in future downturns"
+    ],
+    imposters: [
+      "Debt is always unsustainable when it exceeds 60% of GDP in any economy",
+      "Bond yields always fall as debt rises because investors prefer safe assets"
+    ] },
+  { id: 7, framework: "Supply-Side Policy",
+    trigger: "The government invests heavily in infrastructure and workforce training",
+    steps: [
+      "Labour productivity rises as workers become more skilled and better connected",
+      "Unit labour costs fall, improving international competitiveness",
+      "Firms can produce more output from the same inputs",
+      "The Long-Run Aggregate Supply curve shifts rightward",
+      "Potential output rises and the economy can grow without inflationary pressure",
+      "Long-run living standards improve alongside reduced unemployment"
+    ],
+    imposters: [
+      "Infrastructure investment always produces returns within the same fiscal year",
+      "Short-run aggregate demand always rises by more than long-run supply"
+    ] },
+  { id: 8, framework: "Supply-Side Policy",
+    trigger: "The government reduces employment regulation and cuts corporate tax rates",
+    steps: [
+      "Incentives to hire workers and invest in capital increase",
+      "Business costs fall, improving profit margins and competitiveness",
+      "Structural unemployment may fall as labour markets become more flexible",
+      "Firms expand output and may lower prices as efficiency improves",
+      "LRAS shifts rightward if the reforms improve total factor productivity",
+      "However, income inequality may rise and worker protections weaken"
+    ],
+    imposters: [
+      "Deregulation always leads to higher wages for all workers in all sectors",
+      "Cutting corporate tax always raises total government tax revenue immediately"
+    ] },
+  { id: 9, framework: "Exchange Rates",
+    trigger: "Sterling depreciates sharply following a shift in investor sentiment",
+    steps: [
+      "UK exports become cheaper in foreign currency terms",
+      "UK imports become more expensive in sterling terms",
+      "Export volumes rise as overseas buyers switch to cheaper UK goods",
+      "Import volumes fall as UK consumers and firms substitute domestically",
+      "Net exports increase, shifting AD right and raising real output",
+      "However, import costs raise domestic inflation and erode competitiveness gains"
+    ],
+    imposters: [
+      "Export prices in foreign currency immediately fall to zero after depreciation",
+      "The current account always improves within one month of depreciation"
+    ] },
+  { id: 10, framework: "Exchange Rates",
+    trigger: "Sterling depreciates but the current account initially worsens — the J-curve",
+    steps: [
+      "Import prices rise immediately in sterling after depreciation",
+      "Export contracts are fixed in foreign currency in the short run",
+      "The value of imports rises while export revenue is slow to adjust",
+      "The current account deficit worsens in the short run",
+      "Over time, export volumes rise as buyers respond to lower prices",
+      "The current account gradually improves as the Marshall-Lerner condition is met"
+    ],
+    imposters: [
+      "The Marshall-Lerner condition states that PEDx and PEDm must both equal zero",
+      "Currency depreciation always causes immediate hyperinflation in the short run"
+    ] },
+  { id: 11, framework: "Globalisation",
+    trigger: "Falling trade barriers and advances in technology accelerate global integration",
+    steps: [
+      "Transport and communication costs fall dramatically",
+      "Multinational corporations expand production across borders",
+      "Global trade volumes rise as comparative advantage is exploited",
+      "Economies of scale are achieved by firms operating in larger markets",
+      "Competition increases, putting downward pressure on prices",
+      "Global real output rises and absolute poverty falls in many developing economies"
+    ],
+    imposters: [
+      "Trade barriers always rise in response to increased global competition",
+      "All countries benefit equally from globalisation regardless of their factor endowments"
+    ] },
+  { id: 12, framework: "Globalisation",
+    trigger: "Increased global integration affects the distribution of income within countries",
+    steps: [
+      "Skilled workers in advanced economies see rising demand for their labour",
+      "Unskilled manufacturing jobs move to lower-cost developing economies",
+      "Wage differentials between skilled and unskilled workers widen",
+      "The Lorenz curve shifts away from the line of equality",
+      "The Gini coefficient rises, reflecting greater inequality within countries",
+      "Regional inequality intensifies as deindustrialised areas fall behind"
+    ],
+    imposters: [
+      "Globalisation always reduces inequality both within and between all countries simultaneously",
+      "Capital owners in advanced economies always lose from increased global competition"
+    ] },
+  { id: 13, framework: "Trade Policy",
+    trigger: "A government imposes a 25% tariff on imported manufactured goods",
+    steps: [
+      "Import prices rise for domestic consumers and businesses",
+      "Domestic producers gain a competitive advantage over foreign rivals",
+      "Domestic output and employment in the protected sector expand",
+      "Consumer surplus falls as prices rise and choice is restricted",
+      "Deadweight welfare loss arises from allocative inefficiency",
+      "Trading partners may retaliate with their own tariffs, harming exports"
+    ],
+    imposters: [
+      "Tariff revenue always exceeds the welfare loss to consumers in any market",
+      "Domestic firms always become more efficient as a result of tariff protection"
+    ] },
+  { id: 14, framework: "Development",
+    trigger: "A low-income economy is trapped in a cycle of poverty — the Harrod-Domar model",
+    steps: [
+      "Low incomes mean households save a small fraction of their earnings",
+      "Low savings translate into low investment in capital goods",
+      "Low capital stock means labour productivity remains low",
+      "Low productivity keeps output and incomes low",
+      "The poverty trap self-reinforces without external intervention",
+      "Foreign aid or FDI can inject capital to break the cycle"
+    ],
+    imposters: [
+      "The Harrod-Domar model assumes that capital and labour are always perfectly substitutable",
+      "High interest rates are the primary cause of poverty traps in all developing economies"
+    ] },
+  { id: 15, framework: "Macro Trade-offs",
+    trigger: "The government uses expansionary policy to close a negative output gap",
+    steps: [
+      "Aggregate Demand rises through fiscal stimulus or interest rate cuts",
+      "Real output and employment increase toward potential GDP",
+      "Demand-pull inflationary pressure begins to build",
+      "Inflation expectations adjust upward as the economy heats up",
+      "The short-run Phillips Curve trade-off between unemployment and inflation tightens",
+      "In the long run, the LRPC is vertical and policy only affects the price level"
+    ],
+    imposters: [
+      "The long-run Phillips Curve slopes downward, offering a permanent trade-off",
+      "Expansionary policy always reduces both inflation and unemployment simultaneously"
+    ] }
+];
+
+
+var DIAGRAMS = [
+  { id: 1, framework: "Macro Trade-offs",
+    title: "AD/AS: Demand-Pull Inflation",
+    prompt: "Draw an AD/AS diagram showing an economy operating below full employment where an expansionary policy shifts AD right, raising both real output and the price level.",
+    labels: ["LRAS (vertical at YFE)", "SRAS (upward sloping)", "AD1 (original)", "AD2 (shifted right)", "P1 (original price level)", "P2 (higher price level)", "Y1 (below full employment)", "Y2 (closer to/at YFE)"],
+    explain: "As AD shifts right from AD1 to AD2, real output rises from Y1 toward Y2 (full employment). The price level rises from P1 to P2, showing demand-pull inflation. If AD pushes beyond LRAS, inflation accelerates without a lasting output gain.",
+    examTip: "Always draw LRAS as a vertical line at YFE. The SRAS shows the short-run trade-off; the LRAS shows there is no long-run trade-off between inflation and output." },
+  { id: 4, framework: "Macro Trade-offs",
+    title: "Lorenz Curve and Income Inequality",
+    prompt: "Draw a Lorenz curve showing income distribution. Show a second curve representing increased inequality and label the Gini coefficient area.",
+    labels: ["Line of perfect equality (45° diagonal)", "Lorenz Curve A (original distribution)", "Lorenz Curve B (greater inequality, bowed further out)", "Gini coefficient (area between equality line and Lorenz curve)", "Cumulative % of population (x-axis)", "Cumulative % of income (y-axis)"],
+    explain: "The further the Lorenz Curve bows away from the line of equality, the greater the inequality. The Gini coefficient is the ratio of the area between the equality line and the Lorenz Curve to the total area under the equality line. A Gini of 0 = perfect equality; Gini of 1 = perfect inequality.",
+    examTip: "Use the Lorenz Curve to illustrate how growth or globalisation can raise average income while simultaneously widening inequality — a key macro trade-off." },
+  { id: 5, framework: "Monetary Policy",
+    title: "Interest Rate Rise — AD/AS Impact",
+    prompt: "Draw an AD/AS diagram showing the effect of a rise in interest rates on an economy experiencing above-target inflation.",
+    labels: ["LRAS", "SRAS", "AD1 (original, inflationary)", "AD2 (shifted left after rate rise)", "PL (price level)", "P1 (above-target price level)", "P2 (lower price level, towards target)", "Y2 (lower real output)", "Y1 (original output)"],
+    explain: "Higher interest rates raise borrowing costs and reduce consumption and investment. AD shifts left from AD1 to AD2. Real output falls from Y1 to Y2 and the price level falls from P1 toward target. The transmission mechanism operates with a lag of 18-24 months.",
+    examTip: "Evaluation: cost-push inflation is less responsive to this mechanism — rate rises reduce demand but don't address supply-side causes." },
+  { id: 6, framework: "Monetary Policy",
+    title: "Quantitative Easing — Bond Market",
+    prompt: "Draw a bond market diagram showing how central bank asset purchases under QE affect bond prices and yields.",
+    labels: ["Price of bonds (y-axis)", "Quantity of bonds (x-axis)", "Supply of bonds", "D1 (original demand for bonds)", "D2 (demand increases — BoE buys bonds)", "Old equilibrium price (lower)", "New equilibrium price (higher)", "Arrow showing: higher price = lower yield"],
+    explain: "QE involves the central bank purchasing bonds, shifting demand from D1 to D2. Bond prices rise to the new equilibrium. Since yield and price move inversely, yields fall. Lower yields reduce borrowing costs across the economy, aiming to stimulate lending, investment, and AD.",
+    examTip: "Key evaluation: QE raises asset prices, benefiting wealthier asset owners and potentially widening inequality — an important distributional concern." },
+  { id: 7, framework: "Fiscal Policy",
+    title: "Expansionary Fiscal Policy — AD/AS",
+    prompt: "Draw an AD/AS diagram showing the effect of a government spending increase or tax cut during a recession (negative output gap).",
+    labels: ["LRAS", "SRAS", "AD1 (recessionary — below LRAS)", "AD2 (shifted right by fiscal stimulus)", "Y1 (recession output)", "YFE (full employment output)", "P1", "P2 (slightly higher price level)", "Multiplier effect arrow"],
+    explain: "Starting below full employment, government spending or tax cuts shift AD right from AD1 to AD2. Real output rises toward YFE. The multiplier amplifies the initial injection as recipients re-spend income. With spare capacity, inflationary pressure is limited — the multiplier is larger in a recession.",
+    examTip: "The multiplier is larger when: the economy has spare capacity; the marginal propensity to consume is high; leakages (taxation, saving, imports) are small." },
+  { id: 8, framework: "Fiscal Policy",
+    title: "Crowding Out — Loanable Funds Market",
+    prompt: "Draw a loanable funds market diagram showing how higher government borrowing raises interest rates and crowds out private investment.",
+    labels: ["Real interest rate (y-axis)", "Quantity of loanable funds (x-axis)", "Supply of loanable funds", "D1 (original demand from private sector)", "D2 (demand increases — government borrowing)", "R1 (original interest rate)", "R2 (higher interest rate)", "Crowded-out private investment"],
+    explain: "Higher government borrowing increases demand for loanable funds from D1 to D2. The real interest rate rises from R1 to R2. Private sector borrowing becomes more expensive; investment projects that were viable at R1 are no longer profitable at R2. Private investment is crowded out, partially offsetting the fiscal stimulus.",
+    examTip: "Crowding out is weaker in a recession (spare capacity, QE keeps rates low) and stronger near full employment. A key evaluation point for any fiscal policy question." },
+  { id: 9, framework: "Fiscal Policy",
+    title: "Government Investment in a Recession — Multiplier and Capacity Effects",
+    prompt: "Draw an AD/AS diagram showing the effect of significant government investment (e.g. infrastructure) during a recession. Show BOTH the demand-side multiplier rounds shifting AD progressively rightward AND the long-run capacity-expanding effect shifting AS rightward.",
+    labels: ["AS (original Keynesian-shaped supply curve)", "AS1 (shifted right — productive capacity expanded by investment)", "AD (initial recessionary position — well below capacity)", "AD1 (after initial government spending injection)", "AD2 (after multiplier rounds of re-spending)", "P (original low price level — recession)", "P1 (modest price increase as economy approaches capacity)", "Y (recessionary output)", "Y1 (recovery output, closer to capacity)"],
+    explain: "Government investment during a recession produces two reinforcing effects. First, the initial spending injection shifts AD rightward (AD to AD1), and as recipients re-spend their income through successive rounds, the multiplier amplifies the effect (AD1 to AD2). Output rises from Y to Y1 with only modest price increases because the economy starts with substantial spare capacity. Second, productive investment (infrastructure, R&D, skills) expands long-run capacity, shifting AS rightward to AS1. The same fiscal injection both stimulates demand AND raises potential output, easing the inflation-growth trade-off.",
+    examTip: "This is the strongest case for fiscal stimulus: large multiplier (high MPC, spare capacity), weak crowding out (interest rates near zero in recession), AND supply-side spillovers from productive investment. Contrast sharply with stimulus financing current consumption: same demand-side effect but no AS shift, no long-run gain. Drawing the multiplier as multiple AD shifts rather than one is what marks out a top-band answer." },
+  { id: 10, framework: "Supply-Side Policy",
+    title: "PPF — Economic Growth and Decline",
+    prompt: "Draw a Production Possibility Frontier showing both an outward shift (economic growth) and an inward shift (economic decline), with axes labelled as capital goods and consumer goods.",
+    labels: ["Capital Goods (Y-axis)", "Consumer Goods (X-axis)", "PPC1 (original frontier)", "PPC2 (outward shift — economic growth)", "PPC3 (inward shift — economic decline)", "Point inside PPC: productive inefficiency", "Arrow showing growth direction", "Arrow showing decline direction"],
+    explain: "An outward shift of the PPF reflects an increase in the quantity or quality of factor inputs — more capital, better technology, or a more productive workforce. An inward shift reflects the opposite: destruction of capital, skill loss, or population decline. Points on the frontier represent productive efficiency.",
+    examTip: "Supply-side policies aim to shift the PPF outward. This is different from a movement along the PPF (which involves a trade-off between the two goods with fixed resources)." },
+  { id: 11, framework: "Exchange Rates",
+    title: "Depreciation — AD/AS Impact",
+    prompt: "Draw an AD/AS diagram showing the macroeconomic effect of a currency depreciation on an open economy.",
+    labels: ["LRAS", "SRAS1", "SRAS2 (shifts left as import costs rise)", "AD1", "AD2 (shifts right as net exports increase)", "P1 (original price level)", "P2 (higher price level)", "Y1", "Y2 (higher real output)"],
+    explain: "Depreciation makes exports cheaper and imports more expensive. Net exports rise, shifting AD right to AD2. Real output and employment increase. However, import costs also raise firms' production costs, shifting SRAS left to SRAS2. The net effect is higher output but also higher inflation — competitiveness gains may be eroded.",
+    examTip: "Show BOTH the AD effect (net exports rise) and the SRAS effect (import costs push up inflation). The net outcome depends on the relative magnitude of these two effects." },
+  { id: 12, framework: "Exchange Rates",
+    title: "J-Curve — Current Account After Depreciation",
+    prompt: "Draw a J-curve diagram showing how the current account initially worsens after a currency depreciation before eventually improving.",
+    labels: ["Current account balance (y-axis)", "Time (x-axis)", "Point of depreciation (marked on x-axis)", "Initial deterioration (dipping below zero)", "J-curve shape (dips then rises)", "Long-run improvement (above original level)", "Surplus/Deficit labels on y-axis"],
+    explain: "Immediately after depreciation, import prices rise in domestic currency but export contracts are fixed. The import bill rises while export revenues are slow to adjust — the current account worsens. Over time, export volumes rise and import volumes fall as buyers respond to relative price changes. The Marshall-Lerner condition (PEDx + PEDm > 1) must hold for long-run improvement.",
+    examTip: "The J-curve is the key time-lag argument. In the short run, depreciation worsens the current account; only in the long run does improvement occur — and only if the ML condition holds." },
+  { id: 13, framework: "Exchange Rates",
+    title: "Appreciation — AD/AS Impact",
+    prompt: "Draw an AD/AS diagram showing the macroeconomic effect of a currency appreciation on an open economy.",
+    labels: ["LRAS", "SRAS1", "SRAS2 (shifts right as import costs fall)", "AD1", "AD2 (shifts left as net exports fall)", "P1 (original price level)", "P2 (lower price level)", "Y1", "Y2 (lower real output)"],
+    explain: "Appreciation makes exports more expensive and imports cheaper. Net exports fall, shifting AD left to AD2. Real output falls to Y2. Cheaper imports reduce production costs, shifting SRAS right to SRAS2, lowering the price level. Appreciation reduces imported inflation but can harm export competitiveness and growth.",
+    examTip: "Appreciation creates a trade-off: it reduces inflation (beneficial for consumers) but slows growth and harms exporters. Evaluation depends on which macroeconomic objective is the priority." },
+  { id: 14, framework: "Trade Policy",
+    title: "Tariffs — Welfare Effects",
+    prompt: "Draw a tariff diagram showing the impact on domestic and world price, consumer surplus, producer surplus, government revenue, and deadweight welfare loss.",
+    labels: ["Price (y-axis)", "Quantity (x-axis)", "World price (Pworld, lower horizontal line)", "Domestic price with tariff (Ptariff, higher)", "Domestic supply", "Domestic demand", "Consumer surplus (lost — areas 1+2+3+4)", "Producer surplus gain (area 1)", "Government tariff revenue (area 3)", "Deadweight welfare loss (areas 2+4)"],
+    explain: "Before the tariff: price = Pworld, imports = Q1 to Q4. After the tariff: price rises to Ptariff, domestic output rises to Q2, imports fall to Q2-Q3, consumers lose surplus (1+2+3+4), producers gain (1), government gains revenue (3), and areas 2 and 4 are deadweight welfare losses.",
+    examTip: "Areas 2 and 4 represent the net welfare loss from the tariff — the production inefficiency and consumption efficiency costs. Government revenue (3) and producer gain (1) are transfers, not losses." },
+  { id: 15, framework: "Trade Policy",
+    title: "Infant Industry Protection — Subsidies",
+    prompt: "Draw a supply and demand diagram showing how a domestic production subsidy supports an infant industry competing against cheaper world imports.",
+    labels: ["Price (y-axis)", "Quantity (x-axis)", "World price (Pworld)", "Domestic demand", "Domestic supply (without subsidy)", "Domestic supply + subsidy (shifted right)", "Imports before subsidy (gap between Qs1 and Qd)", "Imports after subsidy (smaller gap)", "Consumer surplus (preserved)", "Deadweight loss (area B — production inefficiency)"],
+    explain: "A subsidy lowers the effective production cost for domestic firms, shifting their supply curve rightward. Domestic output rises from Q1 to Q2 while the consumer price remains at Pworld (unlike a tariff). Imports fall. The welfare cost is area B (production inefficiency) plus the fiscal cost of the subsidy, but consumers are not directly harmed.",
+    examTip: "Key distinction from tariffs: a subsidy keeps the consumer price at Pworld (no consumer harm), but has a fiscal cost. Critics argue infant industries often become permanently dependent on support." },
+  { id: 16, framework: "Trade Policy",
+    title: "Trade Quotas — Welfare Impact",
+    prompt: "Draw a quota diagram showing the effect of an import quota on domestic price, quantity, consumer surplus, producer surplus, and welfare.",
+    labels: ["Price (y-axis)", "Quantity (x-axis)", "World price (Pworld)", "Domestic price with quota (Pquota, higher)", "Domestic supply", "Domestic demand", "Quota amount (fixed quantity of imports)", "Consumer surplus loss (areas A+B+C+D)", "Producer surplus gain (area A)", "Quota rent (area C — to importers)", "Deadweight losses (areas B and D)"],
+    explain: "A quota restricts imports to a fixed quantity. Domestic price rises to Pquota. Unlike a tariff, the government does not receive area C — it is captured by importers as quota rent. Consumer surplus falls by A+B+C+D. Producer surplus rises by A. Net welfare loss is B+D plus the redistributed C.",
+    examTip: "Quotas are often considered worse than equivalent tariffs because the government gets no revenue from area C — it goes to importers as quota rent. Both create deadweight losses B and D." },
+  { id: 17, framework: "Development",
+    title: "Harrod-Domar Model of Growth",
+    prompt: "Draw the Harrod-Domar circular diagram showing how savings lead to investment, capital accumulation, productivity growth, and higher incomes.",
+    labels: ["Higher savings (top)", "Higher investment (right)", "Capital accumulation (bottom right)", "Higher productivity (bottom)", "Higher growth / income (left)", "Arrows showing the circular reinforcing loop", "Poverty trap: if savings are too low, the cycle breaks"],
+    explain: "The Harrod-Domar model argues that economic growth depends on the savings ratio (s) and the capital-output ratio (k): growth rate = s/k. Higher savings fund investment, which builds capital, raises productivity, and generates higher incomes — which can then support more saving. The poverty trap occurs when income is too low to generate sufficient savings to fund growth-sustaining investment.",
+    examTip: "Key criticism: the model assumes a fixed capital-output ratio and ignores the role of institutions, governance, and human capital. Aid injections can break the savings gap but don't address structural barriers." },
+  { id: 18, framework: "Development",
+    title: "Lewis Two-Sector Model of Development",
+    prompt: "Draw a flow diagram of the Lewis dual-sector model. Show the structural transformation as surplus labour migrates from traditional agriculture to modern industry, and how reinvested industrial profits drive self-sustaining growth.",
+    labels: ["Traditional agricultural sector (surplus labour, low marginal productivity)", "Rural-to-urban migration arrow", "Modern industrial sector (higher wages and profits)", "Arrow: more jobs and growth", "Reinvestment of profits into capital expansion", "Self-sustaining industrial growth loop", "Lewis turning point (when surplus labour is exhausted)"],
+    explain: "Lewis argued developing economies have a dual structure. Surplus agricultural labour with near-zero marginal product migrates to the modern industrial sector, where wages exceed subsistence. Industrial firms earn substantial profits — partly because the abundant labour supply keeps wages flat — and reinvest these profits into capital expansion. This generates more jobs, attracts further migration, and drives further reinvestment: a self-reinforcing cycle that powers structural transformation, until surplus labour is exhausted at the 'Lewis turning point' and wages start to rise.",
+    examTip: "Limitations: assumes unlimited surplus labour and a clean rural-urban transition; ignores urban unemployment, the informal sector, and the possibility that profits are repatriated rather than reinvested. The neat dual-sector model rarely holds in modern developing economies — a key evaluation point." }
+];
+
+var DIAGRAM_IMGS = {
+  1: "",
+  4: "",
+  5: "",
+  6: "",
+  7: "",
+  8: "",
+  9: "",
+  10: "",
+  11: "",
+  12: "",
+  13: "",
+  14: "",
+  15: "",
+  16: "",
+  17: "",
+  18: "",
+};
+
+// ═══════════════════════════════════════════════════════════════
+// WRONG BUT CONVINCING — 15 TRIADS
+// ═══════════════════════════════════════════════════════════════
+
+var TRIADS = [
+  { id: 1, framework: "Monetary Policy",
+    question: "Evaluate whether higher interest rates are an effective tool for controlling inflation.",
+    answers: [
+      { text: "Interest rates work well against demand-pull inflation by raising borrowing costs and reducing consumption and investment, shifting AD left. Effectiveness depends on the transmission strength: how willing banks are to lend, household debt levels, and confidence. Cost-push inflation is far less responsive.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies the transmission mechanism, distinguishes demand-pull from cost-push inflation, and conditions effectiveness on transmission strength — all key evaluation moves for Paper 2." },
+      { text: "Higher interest rates always control inflation effectively because they directly reduce the money supply and cut consumer spending. Once rates rise, inflation will fall within weeks as households immediately reduce borrowing and spending across the whole economy.",
+        verdict: "flawed", flaw: "Ignores elasticity",
+        why: "Ignores transmission lags of 18-24 months, assumes immediate full pass-through, and ignores that cost-push inflation is caused by supply factors that higher rates cannot address. 'Always' and 'within weeks' are indefensible." },
+      { text: "Interest rates are completely useless for controlling inflation because banks choose not to pass on rate rises to customers. Since firms set their own prices independently of borrowing costs, central bank policy has no meaningful effect on the inflation rate.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Overstates the transmission failure. Empirical evidence — including the 2021-24 BoE tightening cycle — shows rates do reduce inflation, though with significant lags. 'Completely useless' is an unconditional claim unsupported by evidence." }
+    ] },
+  { id: 2, framework: "Monetary Policy",
+    question: "Assess the effectiveness of quantitative easing as a tool to restore growth after a recession.",
+    answers: [
+      { text: "QE is extremely effective because it directly puts money into the economy and forces banks to lend it out. Since the central bank is buying bonds with newly created money, businesses and consumers automatically receive more credit to invest and spend.",
+        verdict: "flawed", flaw: "Unconditional assertion",
+        why: "QE creates reserves, not direct lending. Banks are not forced to lend, and if confidence is low, reserves may simply sit idle — the liquidity trap problem. 'Automatically' and 'directly' misrepresent how QE transmission actually works." },
+      { text: "QE always fails to restore growth because creating money simply causes hyperinflation. Any increase in the money supply beyond what is needed for transactions will immediately translate into an equivalent rise in prices, leaving real output entirely unchanged.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Applies a crude quantity theory of money inappropriately. In a recession with spare capacity and depressed velocity, QE has historically had limited inflationary effect (2009-2021). 'Always' and 'immediately' are empirically wrong." },
+      { text: "QE raises asset prices and lowers yields, which can stimulate lending and investment. However, liquidity may be hoarded by banks, pass-through to the real economy is weak, and QE widens inequality by primarily benefiting asset owners rather than lower-income households.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it identifies the channel (asset prices and yields), acknowledges the key weakness (liquidity hoarding and weak pass-through), and raises a distributional concern — all top-band evaluation moves." }
+    ] },
+  { id: 3, framework: "Fiscal Policy",
+    question: "Evaluate whether a large fiscal deficit will harm long-run economic growth.",
+    answers: [
+      { text: "The impact depends on context. If the economy has spare capacity, crowding out is limited and the multiplier can amplify the stimulus. If borrowing funds productive investment (infrastructure, education), it may raise LRAS and improve the r-g differential, making debt more sustainable.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it conditions the answer on the state of the economy, distinguishes investment from current spending, and applies the r-g sustainability framework — all central evaluation points for fiscal policy." },
+      { text: "A fiscal deficit always destroys growth by crowding out all private investment and triggering a debt crisis. History proves that any government with a deficit above 3% of GDP will face a financial collapse, and there is no circumstance in which borrowing could benefit the economy.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Uses 'always', 'all', and 'any' without justification. The 3% figure is a political target, not an economic law. During recessions, deficits can support growth. Whether deficits harm growth depends on context, debt levels, and whether spending is on investment or consumption." },
+      { text: "A fiscal deficit is always good for growth because more government spending always raises GDP through the multiplier. Since any money spent by government circulates through the economy repeatedly, deficits are self-financing and governments can always borrow without any negative consequences.",
+        verdict: "flawed", flaw: "Unconditional assertion",
+        why: "Ignores that near full capacity the multiplier falls toward zero and inflation rises. Deficits are not self-financing when growth is below borrowing costs. 'Always good' is as indefensible as 'always harmful'." }
+    ] },
+  { id: 4, framework: "Fiscal Policy",
+    question: "Assess whether cutting income tax rates will reliably increase economic growth.",
+    answers: [
+      { text: "Income tax cuts always boost growth because people always spend the extra money they keep. Higher disposable income means more consumption, which raises AD, output, and employment. Tax cuts therefore pay for themselves through higher growth and tax revenues.",
+        verdict: "flawed", flaw: "Ignores elasticity",
+        why: "Assumes MPC = 1 (no saving or import leakage) and near-zero inflation effects. The self-financing claim (Laffer Curve argument) applies only in limited circumstances. Near full capacity, the main effect is inflationary, not real output growth." },
+      { text: "Tax cuts never work because wealthier people save the money rather than spending it. Since high earners have a low marginal propensity to consume, any tax cut will have zero multiplier effect and will simply increase budget deficits without any economic benefit.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Uses 'never' and 'zero'. Tax cuts to lower earners with high MPC do have meaningful multiplier effects. The claim applies selectively to top-bracket cuts, not universally. Even high-income savers invest, which affects LRAS." },
+      { text: "Tax cuts boost consumer spending and work incentives, shifting AD right and potentially LRAS outward if labour supply increases. But near full employment, the main effect is inflationary. The multiplier is smaller when tax cuts primarily benefit higher earners with low MPC.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies both AD (short-run) and LRAS (long-run) frameworks, qualifies the inflation risk near full employment, and raises the distributional point about MPC and the multiplier." }
+    ] },
+  { id: 5, framework: "Supply-Side Policy",
+    question: "Evaluate whether supply-side policies can solve the problem of structural unemployment.",
+    answers: [
+      { text: "Supply-side reforms such as retraining, education investment, and labour market flexibility can reduce structural unemployment by improving the match between worker skills and employer needs. However, benefits take decades to materialise and weak AD may limit the effect even when workers are retrained.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies supply-side theory correctly, acknowledges the long time lag, and raises the demand-side constraint — structural unemployment also needs sufficient AD to absorb newly trained workers." },
+      { text: "Supply-side policies can completely eliminate unemployment because they fix the root cause of joblessness. By training workers and removing regulations, every unemployed person will quickly find a new job, and structural unemployment will disappear within a few years of reform.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Uses 'completely eliminate' and 'every unemployed person'. Structural change takes decades. Some workers face barriers (age, geography, caring responsibilities) that retraining cannot address. Demand must also be sufficient for trained workers to find employment." },
+      { text: "Supply-side policies are completely useless for unemployment because unemployment is always caused by insufficient demand. Since workers are only unemployed because firms cannot sell their output, retraining workers who produce goods nobody wants will never reduce joblessness.",
+        verdict: "flawed", flaw: "Confuses concepts",
+        why: "Conflates cyclical unemployment (caused by insufficient AD) with structural unemployment (caused by skills mismatch). Supply-side policies address structural unemployment specifically. 'Always caused by insufficient demand' is wrong — multiple types of unemployment exist." }
+    ] },
+  { id: 6, framework: "Supply-Side Policy",
+    question: "Discuss whether increased government spending on education will always raise productivity.",
+    answers: [
+      { text: "Education spending always raises productivity and growth because a more educated workforce is always more productive. Any investment in schools and universities will automatically translate into higher output per worker within a few years of the spending increase.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Uses 'always' twice and 'automatically'. Education quality, relevance to labour market needs, and complementary employer investment all matter. A poorly designed education system can spend heavily without improving productivity — outcomes depend on what is taught, not just how much is spent." },
+      { text: "Education spending raises human capital over time, improving productivity and shifting LRAS rightward. However, returns are uncertain, time lags are long (10-15 years), government may pick the wrong skills to invest in, and productivity gains depend on complementary infrastructure and investment by firms.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies human capital and LRAS theory, identifies the uncertainty of returns, and raises complementarity — the idea that education works best alongside other investments. These are all markers of top-band supply-side evaluation." },
+      { text: "Government spending on education is always wasteful because private firms are better placed to train their own workers. Markets will always provide exactly the right amount of training because firms know what skills they need, so any government education spending simply displaces better private provision.",
+        verdict: "flawed", flaw: "Ignores market failure",
+        why: "Uses 'always' twice and 'automatically'. Education quality, relevance to labour market needs, and complementary employer investment all matter. A poorly designed education system can spend heavily without improving productivity — outcomes depend on what is taught, not just how much is spent." },
+      { text: "Government spending on education is always wasteful because private firms are better placed to train their own workers. Markets will always provide exactly the right amount of training because firms know what skills they need, so any government education spending simply displaces better private provision.",
+        verdict: "flawed", flaw: "Ignores market failure",
+        why: "Ignores the market failure in education: external benefits (positive externalities) mean private markets underprovide, especially for general skills that workers can take to other firms. 'Always wasteful' and 'always provide exactly the right amount' are indefensible." }
+    ] },
+  { id: 7, framework: "Exchange Rates",
+    question: "Evaluate whether a currency depreciation will improve a country's current account deficit.",
+    answers: [
+      { text: "Depreciation definitely improves the current account because it makes exports cheaper and imports more expensive, so people will always buy more exports and fewer imports. The trade balance will automatically improve immediately after any currency falls in value.",
+        verdict: "flawed", flaw: "Ignores elasticity",
+        why: "Ignores the Marshall-Lerner condition — improvement only occurs if demand is sufficiently elastic. Also ignores the J-curve: contracts are fixed in the short run, so the current account typically worsens before improving. 'Definitely' and 'automatically immediately' are indefensible." },
+      { text: "Whether depreciation improves the current account depends on the Marshall-Lerner condition and the J-curve time lag. If PEDx + PEDm > 1, the long-run effect is positive, but the current account initially worsens as import prices rise before export volumes respond.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies the Marshall-Lerner condition as the decisive test, explains the J-curve mechanism, and correctly distinguishes short-run from long-run effects — exactly the framework examiners expect on exchange rate questions." },
+      { text: "Depreciation can never improve the current account because it causes inflation which cancels out all competitiveness gains. As import prices rise, domestic wages rise to compensate, domestic prices increase, and exports immediately become as expensive as before the depreciation.",
+        verdict: "flawed", flaw: "Ignores elasticity",
+        why: "Ignores the Marshall-Lerner condition — improvement only occurs if demand is sufficiently elastic. Also ignores the J-curve: contracts are fixed in the short run, so the current account typically worsens before improving. 'Definitely' and 'automatically immediately' are indefensible." },
+      { text: "Depreciation can never improve the current account because it causes inflation which cancels out all competitiveness gains. As import prices rise, domestic wages rise to compensate, domestic prices increase, and exports immediately become as expensive as before the depreciation.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "This describes the long-run inflation erosion of competitiveness, but assumes it happens instantaneously and completely. In practice, there is a window where competitiveness gains are real before inflation erodes them. 'Can never' and 'immediately' overstate the case." }
+    ] },
+  { id: 8, framework: "Exchange Rates",
+    question: "Evaluate whether a strong (appreciated) currency benefits the economy.",
+    answers: [
+      { text: "Appreciation reduces imported inflation and lowers production costs, benefiting consumers and firms reliant on imported inputs. However, it makes exports less competitive, shifts AD left, and may reduce growth and employment — particularly damaging for manufacturing-heavy economies.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it presents both the benefit (lower inflation) and the cost (reduced export competitiveness and AD), and identifies that the net effect depends on economic structure — a textbook conditional evaluation." },
+      { text: "A strong currency is always beneficial because it shows the economy is doing well and makes imports cheaper for everyone. Lower import prices reduce inflation, raise living standards, and attract foreign investment, so all countries should aim for the strongest possible currency at all times.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Ignores the export competitiveness effect entirely. 'All countries should aim for the strongest currency' is a mercantilist fallacy in reverse — a race to appreciate would destroy global trade. Net exports fall, harming growth and employment." },
+      { text: "Currency appreciation always destroys an economy by making all exports uncompetitive and collapsing net exports to zero. Since no country can sell anything abroad with an appreciated currency, appreciation inevitably causes a recession in all export industries within months.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Many high-productivity economies (Germany, Switzerland, Japan) maintain competitive exports despite strong currencies through non-price competitiveness (quality, technology, brand). 'Always destroys', 'collapsing to zero', and 'all export industries' are all indefensible." }
+    ] },
+  { id: 9, framework: "Globalisation",
+    question: "To what extent does globalisation benefit all countries equally?",
+    answers: [
+      { text: "Globalisation benefits every country equally because free trade raises efficiency everywhere through comparative advantage. Since all countries specialise in what they produce best, global output rises and every nation is made better off without any country experiencing net costs.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Comparative advantage theory shows gains from trade exist in aggregate, but the distributional effects within countries are highly uneven. Deindustrialised workers in advanced economies and commodity-dependent developing nations often experience net losses. 'Every country equally' is empirically wrong." },
+      { text: "Globalisation never benefits any developing country because multinational corporations extract all profits and leave no gains for local workers. Since MNCs pay no taxes and exploit all workers, the only beneficiaries of globalisation are shareholders in wealthy countries.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Ignores substantial evidence that export-led growth has raised living standards in economies from South Korea to Vietnam and China. FDI brings technology transfer, employment, and tax revenue. 'Never benefits any developing country' and 'extract all profits' are empirically unsupported." },
+      { text: "Globalisation has raised global output and reduced absolute poverty, but benefits are unevenly distributed. Developing economies may gain from FDI and export markets, but advanced economies face deindustrialisation. Capital is highly mobile; labour is not — workers bear concentrated adjustment costs.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it distinguishes aggregate from distributional effects, differentiates developing from advanced economies, and raises factor mobility asymmetry — all sophisticated evaluation points that go beyond simple 'globalisation is good/bad' claims." }
+    ] },
+  { id: 10, framework: "Globalisation",
+    question: "Assess whether increased globalisation always increases inequality.",
+    answers: [
+      { text: "Globalisation always increases inequality in every country because wealthy people always capture all gains from trade while workers always lose their jobs to cheaper foreign competitors. The result is guaranteed rising Gini coefficients everywhere globalisation occurs.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Countries with strong redistributive policies (Scandinavian economies) have maintained low inequality alongside high openness. 'Always', 'every country', and 'guaranteed' are all indefensible when counterexamples exist. Within developing economies, rapid growth has often reduced poverty even if inequality widened." },
+      { text: "Globalisation tends to widen inequality within advanced economies (via skill-biased technical change and manufacturing decline) but may reduce inequality between countries as poorer nations grow faster. The net effect on global inequality is ambiguous and depends heavily on domestic redistribution policies.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it distinguishes within-country from between-country inequality, identifies skill-biased technical change as the mechanism, and raises the role of domestic policy as a moderating factor — all marks of nuanced macro evaluation." },
+      { text: "Globalisation never affects inequality at all because markets are efficient and wages always reflect workers' productivity. Since every worker earns exactly what they produce, global trade cannot change income distribution — inequality is determined solely by individual effort and talent.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Countries with strong redistributive policies (Scandinavian economies) have maintained low inequality alongside high openness. 'Always', 'every country', and 'guaranteed' are all indefensible when counterexamples exist. Within developing economies, rapid growth has often reduced poverty even if inequality widened." },
+      { text: "Globalisation never affects inequality at all because markets are efficient and wages always reflect workers' productivity. Since every worker earns exactly what they produce, global trade cannot change income distribution — inequality is determined solely by individual effort and talent.",
+        verdict: "flawed", flaw: "Confuses concepts",
+        why: "Ignores that comparative advantage shifts labour demand across sectors, that bargaining power is unequal, and that capital is more mobile than labour. Wages do not automatically reflect productivity in imperfect labour markets — the assumption of perfect markets is precisely what the evidence contradicts." }
+    ] },
+  { id: 11, framework: "Trade Policy",
+    question: "Evaluate whether tariffs are ever economically justified.",
+    answers: [
+      { text: "Tariffs are rarely optimal from a global welfare perspective — they create deadweight losses and invite retaliation. However, specific justifications exist: infant industry support, national security, and protecting against dumping. The key evaluation is whether dynamic gains (future competitiveness) outweigh short-run static welfare losses.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it acknowledges the standard welfare cost, identifies the specific conditions where tariffs may be justified, and frames the evaluation as a dynamic vs static efficiency trade-off — the correct economic framework for assessing protectionism." },
+      { text: "Tariffs are never justified under any circumstances because free trade always maximises global welfare. The deadweight welfare loss from any tariff always exceeds any possible benefit, and there is no scenario in which protecting domestic industries could ever produce net economic gains.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Ignores the second-best problem: when markets are already distorted (e.g. trading partners subsidise their exports), a tariff may be welfare-improving. Infant industry theory, strategic trade policy, and national security are recognised exceptions in mainstream economics. 'Never' is indefensible." },
+      { text: "Tariffs should always be used to protect every domestic industry from foreign competition because free trade always destroys jobs. Since any import represents a job lost in the domestic economy, taxing all imports equally will maximise domestic employment and economic growth.",
+        verdict: "flawed", flaw: "Confuses concepts",
+        why: "The lump-of-labour fallacy: imports destroy jobs in some sectors but create jobs in export sectors and raise real incomes, enabling spending in other industries. 'Every domestic industry' and 'always maximise employment' ignore comparative advantage and the gains from specialisation." }
+    ] },
+  { id: 12, framework: "Trade Policy",
+    question: "Evaluate the infant industry argument for temporary protectionism.",
+    answers: [
+
+      { text: "The infant industry argument is always correct because new industries always need government support to compete globally. Without protection, no country would ever develop any new industry, and all developing countries should permanently protect every new sector they wish to develop.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Uses 'always correct', 'always need', 'never develop', and 'every new sector'. South Korea and Japan used infant industry protection selectively and successfully; many other countries have used it to shelter permanently inefficient industries. Context and selection of industry matter enormously." },
+
+      { text: "The infant industry argument is completely wrong because markets always identify which industries will be competitive and fund them through private capital. Any government support simply wastes taxpayers' money on sectors the market has already judged to be unviable.",
+        verdict: "flawed", flaw: "Ignores market failure",
+        why: "Ignores capital market imperfections: private investors may underinvest in industries with high learning-curve externalities where returns spill over to competitors. The market failure rationale for infant industry protection is that private investors cannot capture all the social returns from developing new sectors." },
+      { text: "The infant industry argument is theoretically valid: new industries lack scale and experience to compete, so temporary protection allows them to mature. However, protection is rarely temporary in practice, firms may become permanently dependent on support, and governments risk picking losers rather than future winners.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it grants the theoretical case before identifying the key practical failures (political economy of removal, dependency, government picking losers) — a balanced, conditional evaluation that examiners value for trade policy questions." }
+    ] },
+  { id: 13, framework: "Development",
+    question: "Evaluate whether economic growth always leads to development.",
+    answers: [
+      { text: "Economic growth (rising GDP) does not automatically produce development. Growth concentrated in capital-intensive sectors may increase inequality without improving health, education, or poverty. The HDI captures dimensions growth misses. Nigeria's oil revenues illustrate growth without broad-based development.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it uses the growth vs development distinction correctly, applies the HDI framework, identifies distributional concerns, and uses a real-world example. This directly addresses the question rather than treating GDP growth and development as synonymous." },
+      { text: "Economic growth always leads to development because higher GDP means more money for everyone. When the economy grows, all citizens automatically receive higher incomes, which they spend on better health and education, so growth definitively solves poverty and underdevelopment.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Assumes growth is evenly distributed (trickle-down) without evidence. Resource-rich economies (Nigeria, Congo) have experienced high GDP growth alongside persistent poverty and poor HDI scores. Growth that concentrates in enclaves or elite hands does not automatically improve living standards for all." },
+      { text: "Economic growth never contributes to development at all because it always causes environmental destruction and inequality. Since all growth requires exploiting natural resources and paying workers as little as possible, more growth always makes development outcomes worse for everyone in a country.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Ignores the empirical record of East Asian economies — South Korea, Taiwan, China — where sustained growth dramatically improved life expectancy, education, and poverty rates. 'Never contributes', 'always causes', and 'always makes worse' cannot be defended when strong counterexamples exist." }
+    ] },
+  { id: 14, framework: "Development",
+    question: "Assess the effectiveness of foreign aid in promoting economic development.",
+    answers: [
+      { text: "Aid can provide capital to break poverty traps and fund essential infrastructure and health. However, its effectiveness depends heavily on institutional quality in recipient countries. Aid may create dependency, fund consumption rather than investment, or be captured by corrupt governments, limiting long-run development.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it applies the Harrod-Domar savings gap rationale, then evaluates with the institutional quality caveat and the dependency/capture problems. This balanced conditional analysis is exactly what examiners reward at the top band." },
+      { text: "Foreign aid is always effective because it gives developing countries the money they need to invest and grow. Since poverty is simply caused by a lack of money, providing sufficient aid will automatically eliminate poverty and produce rapid economic development in all recipient countries.",
+        verdict: "flawed", flaw: "Unconditional assertion",
+        why: "Poverty is caused by institutional failures, governance problems, and structural barriers — not only capital shortages. Aid without institutional reform often fails or is misallocated. 'Always effective' and 'automatically eliminate' ignore 50 years of evidence on aid effectiveness." },
+      { text: "Foreign aid is always harmful and should be completely abolished. Aid creates dependency, destroys local industries by flooding markets with free goods, and always ends up in the pockets of corrupt elites. All developing countries would be better off without any international assistance.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Uses 'always harmful', 'completely abolished', 'always ends up', and 'all developing countries'. Emergency humanitarian aid and targeted programme aid (health, education) have demonstrably improved outcomes. The anti-aid position overstates failures and ignores documented successes in health and infrastructure." }
+    ] },
+  { id: 15, framework: "Macro Trade-offs",
+    question: "Is there always a trade-off between economic growth and controlling inflation?",
+    answers: [
+      { text: "The trade-off is not permanent. In the short run, closing a positive output gap pushes up inflation (as per the SRPC). But supply-side growth expands productive capacity, raising output without inflationary pressure. If expectations are anchored and LRAS grows, the economy can achieve both low inflation and sustained growth.",
+        verdict: "strong", flaw: null,
+        why: "Strong because it distinguishes demand-side from supply-side growth, applies the SRPC vs LRPC distinction, and introduces credibility/expectations — showing there is a short-run trade-off but not a permanent one. This is exactly the nuanced answer the question demands." },
+      { text: "There is always a permanent and unavoidable trade-off between growth and inflation. Any policy that increases output will always cause inflation, and any policy that reduces inflation will always reduce growth. Policymakers must forever choose between the two objectives.",
+        verdict: "flawed", flaw: "Absolute",
+        why: "Describes the short-run Phillips Curve as if it were permanent. Friedman/Phelps showed the LRPC is vertical — there is no long-run trade-off. Supply-side policies can expand LRAS, delivering growth without inflationary pressure. 'Always' and 'forever' are empirically refuted." },
+      { text: "There is never any trade-off between growth and inflation because they are completely unrelated macroeconomic variables. Since inflation is caused entirely by the money supply and growth is caused entirely by technology, the two objectives can always be achieved simultaneously without any policy conflict.",
+        verdict: "flawed", flaw: "Confuses concepts",
+        why: "Applies a rigid monetarist model that ignores demand-pull inflation. When AD rises faster than LRAS, both output and prices rise — the trade-off is real in the short run. 'Completely unrelated' and 'always achieved simultaneously' ignore the AD/AS framework and the evidence of boom-bust cycles." }
+    ] }
+];
+
+var FLAW_DESCRIPTIONS = {
+  "Unconditional assertion": "States a conclusion without specifying the conditions that make it true. Top-band answers always condition on the state of the economy, elasticity, time horizon, or institutional context.",
+  "Ignores elasticity": "Discusses price or quantity changes without considering how responsive agents are. The size of multipliers, PED, and transmission strength are almost always decisive in Paper 2 questions.",
+  "Absolute": "Uses 'always', 'never', 'definitely', or 'completely' where economic reasoning requires 'it depends on'. Any unconditional claim in economics is almost always wrong.",
+  "Ignores market failure": "Dismisses intervention without identifying the specific failure (externality, asymmetric information, missing market) that justifies government action.",
+  "Confuses concepts": "Uses two related but distinct ideas interchangeably — e.g. growth vs development, cyclical vs structural unemployment, AD-side vs LRAS-side growth, within-country vs between-country inequality.",
+  "Correlation not causation": "Observes that two variables move together and infers a causal link without justification or mechanism.",
+  "Stops at analysis": "Describes a mechanism correctly but fails to connect it to the welfare, policy, or evaluation point that the question actually asks about.",
+  "Wrong time horizon": "Applies short-run analysis to a long-run question or vice versa — e.g. treating the SRPC trade-off as permanent, or ignoring J-curve lags."
+};
+
+
+// ══════════════════════════════════════════════════════════════
+//  UTILITIES
+// ══════════════════════════════════════════════════════════════
+function shuffle(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=a[i]; a[i]=a[j]; a[j]=t;
+  }
+  return a;
+}
+function render(html){
+  document.getElementById('root').innerHTML=html;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function pct(num,den){return den>0?Math.round(num/den*100):0;}
+
+// ══════════════════════════════════════════════════════════════
+//  HUB
+// ══════════════════════════════════════════════════════════════
+function goHub(){
+  document.getElementById('homeBtn').style.display='none';
+  // Reset any active timers
+  if(window._timerID){clearInterval(window._timerID);window._timerID=null;}
+  render(
+    '<div class="hub-hero">'
+    +'<div class="hub-eyebrow">Train like an economist</div>'
+    +'<h1>The Economics Gym</h1>'
+    +'<div class="tagline">Three machines. Eight frameworks. Real skills.</div>'
+    +'<p class="intro">Short, focused drills to build the skills Edexcel Paper 2 actually tests &mdash; analytical chains, visual precision, and top-band evaluation. Each machine takes 3&ndash;8 minutes. Choose one and start.</p>'
+    +'</div>'
+    +'<div class="mgrid">'
+    +'<div class="mcard" style="--machine-colour:var(--gold)" onclick="goChain()">'
+    +'<div class="mc-icon">&#128279;</div>'
+    +'<div class="mc-num">Machine 1</div>'
+    +'<div class="mc-title">Chain Builder</div>'
+    +'<div class="mc-build">Builds: analysis</div>'
+    +'<div class="mc-desc">You are given a trigger and a shuffled set of steps &mdash; including two imposter steps that don&#39;t belong. Build the correct causal chain.</div>'
+    +'<div class="mc-meta"><span>15 chains</span><span>No timer</span><span>~8 min</span></div>'
+    +'</div>'
+    +'<div class="mcard" style="--machine-colour:var(--green)" onclick="goDiagram()">'
+    +'<div class="mc-icon">&#127919;</div>'
+    +'<div class="mc-num">Machine 2</div>'
+    +'<div class="mc-title">Diagram Sprint</div>'
+    +'<div class="mc-build">Builds: precision</div>'
+    +'<div class="mc-desc">A diagram prompt appears. Ninety seconds to sketch and label on paper. Then reveal the model answer &mdash; labels, explanation, exam tip.</div>'
+    +'<div class="mc-meta"><span>20 diagrams</span><span>90s each</span><span>~10 min</span></div>'
+    +'</div>'
+    +'<div class="mcard" style="--machine-colour:var(--purple)" onclick="goWBC()">'
+    +'<div class="mc-icon">&#9878;</div>'
+    +'<div class="mc-num">Machine 3</div>'
+    +'<div class="mc-title">Wrong but Convincing</div>'
+    +'<div class="mc-build">Builds: top-band evaluation</div>'
+    +'<div class="mc-desc">Three answers to a question. One is strong. Two are plausible but flawed. Spot the strong one &mdash; then learn exactly why the others seduce.</div>'
+    +'<div class="mc-meta"><span>15 questions</span><span>No timer</span><span>~8 min</span></div>'
+    +'</div>'
+    +'</div>'
+    +'<div class="hub-foot"><p>No accounts &middot; No tracking &middot; Session resets when you close the tab</p></div>'
+  );
+}
+
+// ══════════════════════════════════════════════════════════════
+//  MACHINE 2 — CHAIN BUILDER
+// ══════════════════════════════════════════════════════════════
+var C={i:0, score:0, chains:[], placed:[], pool:[], submitted:false};
+
+function goChain(){
+  document.getElementById('homeBtn').style.display='inline-block';
+  C={i:0, score:0, chains:shuffle(CHAINS), placed:[], pool:[], submitted:false};
+  drawChain();
+}
+
+function drawChain(){
+  if(C.i >= C.chains.length){ return chainSummary(); }
+  var ch = C.chains[C.i];
+  // Build pool: all correct steps + imposters, shuffled
+  var allSteps = ch.steps.concat(ch.imposters).map(function(txt,idx){
+    return { txt: txt, isImposter: idx >= ch.steps.length, origIdx: idx };
+  });
+  C.pool = shuffle(allSteps);
+  C.placed = [];
+  C.submitted = false;
+
+  renderChainState(ch);
+}
+
+function renderChainState(ch){
+  var poolHTML = C.pool.map(function(step,i){
+    return '<div class="chain-step" onclick="chainPick('+i+')">'
+      +'<span class="chain-step-num">+</span>'
+      +'<span class="chain-step-txt">'+step.txt+'</span>'
+      +'</div>';
+  }).join('') || '<div style="color:var(--mut);opacity:.6;font-size:.8rem;text-align:center;padding:1.5rem 0">All steps placed.</div>';
+
+  var placedHTML = C.placed.map(function(step,i){
+    return '<div class="chain-step ordered" onclick="chainUnpick('+i+')">'
+      +'<span class="chain-step-num">'+(i+1)+'</span>'
+      +'<span class="chain-step-txt">'+step.txt+'</span>'
+      +'</div>';
+  }).join('') || '<div style="color:var(--mut);opacity:.6;font-size:.8rem;text-align:center;padding:1.5rem 0">Tap steps from the left to place them here, in order.</div>';
+
+  render(
+    '<div class="card">'
+    +'<div class="sess-header">'
+    +'<div><div class="sess-title">Chain Builder</div><div class="sess-subtitle">'+ch.framework+' &middot; order the steps, skip the imposters</div></div>'
+    +'<div class="sess-counter">Chain '+(C.i+1)+' / '+C.chains.length+'<div class="sess-score">'+C.score+' pts</div></div>'
+    +'</div>'
+    +'<div class="sess-progress"><div class="sess-pfill" style="width:'+pct(C.i,C.chains.length)+'%"></div></div>'
+    +'<div class="cb">'
+    +'<div class="chain-trigger"><div class="chain-trigger-lbl">&#128204; Trigger</div><p>'+ch.trigger+'</p></div>'
+    +'<div class="chain-instr">Tap steps from the <strong>Available</strong> column to add them to <strong>Your Chain</strong>. Two of the available steps are <strong>imposters</strong> that don&#39;t belong in the chain &mdash; leave them behind. Tap a placed step to remove it.</div>'
+    +'<div class="chain-columns">'
+    +'<div class="chain-col"><div class="chain-col-title">Available steps</div>'+poolHTML+'</div>'
+    +'<div class="chain-col active"><div class="chain-col-title">Your chain (top to bottom)</div>'+placedHTML+'</div>'
+    +'</div>'
+    +'<div class="chain-submit"><button class="btn bg" onclick="chainSubmit()">Submit Chain &rarr;</button></div>'
+    +'<div id="chainResult"></div>'
+    +'</div></div>'
+  );
+}
+
+function chainPick(i){
+  if(C.submitted)return;
+  var step = C.pool.splice(i,1)[0];
+  C.placed.push(step);
+  renderChainState(C.chains[C.i]);
+}
+function chainUnpick(i){
+  if(C.submitted)return;
+  var step = C.placed.splice(i,1)[0];
+  C.pool.push(step);
+  renderChainState(C.chains[C.i]);
+}
+
+function chainSubmit(){
+  if(C.submitted)return;
+  C.submitted = true;
+  var ch = C.chains[C.i];
+  // Score: +5 per correct step in correct position, -2 per imposter placed
+  var correctSteps = ch.steps; // the correct sequence
+  var earned = 0;
+  var details = [];
+
+  for(var i=0; i<C.placed.length; i++){
+    var step = C.placed[i];
+    if(step.isImposter){
+      earned -= 2;
+      details.push({ok:false, txt:step.txt, reason:'Imposter &mdash; this step does not belong in the chain.'});
+    } else if(correctSteps[i] === step.txt){
+      earned += 5;
+      details.push({ok:true, txt:step.txt, reason:'Correctly placed at position '+(i+1)+'.'});
+    } else {
+      // Right step but wrong position
+      var correctPos = correctSteps.indexOf(step.txt);
+      details.push({ok:false, txt:step.txt, reason:'Right step, wrong position &mdash; belongs at position '+(correctPos+1)+'.'});
+    }
+  }
+  // Bonus: if all correct steps placed in right order and no imposters
+  var perfect = (C.placed.length === correctSteps.length)
+    && C.placed.every(function(s,i){return !s.isImposter && correctSteps[i]===s.txt;});
+  if(perfect) earned += 5; // completion bonus
+  earned = Math.max(0, earned);
+  C.score += earned;
+
+  // Build result HTML
+  var correctChainHTML = correctSteps.map(function(txt,i){
+    return '<li><strong>Step '+(i+1)+':</strong> '+txt+'</li>';
+  }).join('');
+
+  var resHTML = '<div class="chain-result '+(perfect?'ok':'bad')+' show">'
+    +'<div class="chain-result-title">'+(perfect ? '&#10003; Perfect chain!' : '&#9432; Review the correct chain below')+' &middot; '+earned+' pts</div>'
+    +'<p style="font-size:.82rem;color:var(--mut);margin-bottom:.55rem;line-height:1.7"><strong style="color:var(--txt)">The correct sequence for this trigger:</strong></p>'
+    +'<ol>'+correctChainHTML+'</ol>'
+    +'<p style="font-size:.8rem;color:var(--mut);line-height:1.7;margin-top:.6rem">'
+    +'<strong style="color:var(--goldl)">The two imposters:</strong> '+ch.imposters.map(function(t){return '&ldquo;'+t+'&rdquo;';}).join(' and ')+' &mdash; these sound economic but don&#39;t belong in this specific chain.'
+    +'</p>'
+    +'<div class="mt center"><button class="btn bg" onclick="chainNext()">Next Chain &rarr;</button></div>'
+    +'</div>';
+  document.getElementById('chainResult').innerHTML = resHTML;
+  document.querySelector('.sess-score').textContent = C.score+' pts';
+  window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+}
+
+function chainNext(){
+  C.i++;
+  drawChain();
+}
+
+function chainSummary(){
+  var max = C.chains.length * 35; // 5 per 6 steps + 5 completion bonus = max 35
+  var p = pct(C.score, max);
+  render(
+    '<div class="card"><div class="cb">'
+    +'<div class="summary-hero">'
+    +'<div class="summary-eye">Chain Builder &middot; Complete</div>'
+    +'<div class="summary-title">Session Results</div>'
+    +'<div class="summary-num">'+C.score+'</div>'
+    +'<div class="summary-max">points</div>'
+    +'<div class="summary-pct">'+C.chains.length+' chains attempted &middot; '+p+'%</div>'
+    +'</div>'
+    +'<div class="summary-btns">'
+    +'<button class="btn bg" onclick="goChain()">&#8635; Play Again</button>'
+    +'<button class="btn bs" onclick="goHub()">&larr; Back to Hub</button>'
+    +'</div></div></div>'
+  );
+}
+
+// ══════════════════════════════════════════════════════════════
+//  MACHINE 3 — DIAGRAM SPRINT
+// ══════════════════════════════════════════════════════════════
+var D={i:0, diagrams:[], nailed:0, nearly:0, missed:0, timeLeft:0, revealed:false};
+
+function goDiagram(){
+  document.getElementById('homeBtn').style.display='inline-block';
+  D={i:0, diagrams:shuffle(DIAGRAMS), nailed:0, nearly:0, missed:0, timeLeft:0, revealed:false};
+  drawDiagram();
+}
+
+function drawDiagram(){
+  if(D.i >= D.diagrams.length){ return diagramSummary(); }
+  var d = D.diagrams[D.i];
+  D.revealed = false;
+
+  render(
+    '<div class="card">'
+    +'<div class="sess-header">'
+    +'<div><div class="sess-title">Diagram Sprint</div><div class="sess-subtitle">90 seconds to sketch &middot; self-rate after reveal</div></div>'
+    +'<div class="sess-counter">Diagram '+(D.i+1)+' / '+D.diagrams.length+'</div>'
+    +'</div>'
+    +'<div class="sess-progress"><div class="sess-pfill" style="width:'+pct(D.i,D.diagrams.length)+'%"></div></div>'
+    +'<div class="cb">'
+    +'<div class="diag-prompt">'
+    +'<div class="diag-framework">'+d.framework+'</div>'
+    +'<div class="diag-title">'+d.title+'</div>'
+    +'<div class="diag-prompt-text">'+d.prompt+'</div>'
+    +'</div>'
+    +'<div class="diag-instr"><strong>&#9999; Sketch on paper.</strong> Aim to draw the axes, all curves, the key points, and the labels. When 90 seconds is up (or when you&#39;re ready), click <strong>Reveal</strong> to see the model answer and self-assess.</div>'
+    +'<div class="diag-timer">'
+    +'<div class="diag-timer-circle" id="dtc"><div class="diag-timer-num" id="dtn">90</div></div>'
+    +'</div>'
+    +'<div class="diag-btn-row"><button class="btn bg" id="drbtn" onclick="diagramReveal()">Reveal Answer &rarr;</button></div>'
+    +'<div class="diag-reveal" id="dreveal"></div>'
+    +'</div></div>'
+  );
+  startDiagramTimer();
+}
+
+function startDiagramTimer(){
+  D.timeLeft = 90;
+  var tnum = document.getElementById('dtn');
+  var tcirc = document.getElementById('dtc');
+  if(window._timerID)clearInterval(window._timerID);
+  var tick = function(){
+    D.timeLeft--;
+    if(tnum) tnum.textContent = D.timeLeft;
+    if(tcirc){
+      var deg = (90-D.timeLeft)/90 * 360;
+      tcirc.style.background = 'conic-gradient(var(--gold) '+deg+'deg, var(--bdr) '+deg+'deg)';
+    }
+    if(D.timeLeft <= 0){
+      clearInterval(window._timerID); window._timerID=null;
+      if(!D.revealed) diagramReveal();
+    }
+  };
+  window._timerID = setInterval(tick,1000);
+}
+
+function diagramReveal(){
+  if(D.revealed)return;
+  D.revealed = true;
+  if(window._timerID){clearInterval(window._timerID);window._timerID=null;}
+  var d = D.diagrams[D.i];
+
+  var labelsHTML = d.labels.map(function(l){
+    return '<div class="diag-label-chip">'+l+'</div>';
+  }).join('');
+
+  var imgSrc = DIAGRAM_IMGS[d.id] || '';
+  var revealHTML =
+    (imgSrc ? '<div class="diag-svg-box"><img src="'+imgSrc+'" style="width:100%;max-width:520px;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.3)" alt="'+d.title+'"></div>' : '')
+    +'<div class="diag-labels-box">'
+    +'<div class="diag-labels-title">&#128218; Labels you should have included</div>'
+    +'<div class="diag-labels-grid">'+labelsHTML+'</div>'
+    +'</div>'
+    +'<div class="diag-explain"><p><strong style="color:var(--goldl)">What the diagram shows:</strong> '+d.explain+'</p></div>'
+    +'<div class="diag-tip"><strong>&#127942; Exam tip:</strong> '+d.examTip+'</div>'
+    +'<div class="diag-selfrate">'
+    +'<div class="diag-selfrate-q">How did your sketch compare?</div>'
+    +'<div class="diag-rate-btns">'
+    +'<button class="diag-rate-btn rate-nailed" onclick="diagramRate(\'nailed\')">&#10003; Nailed it</button>'
+    +'<button class="diag-rate-btn rate-nearly" onclick="diagramRate(\'nearly\')">~ Nearly</button>'
+    +'<button class="diag-rate-btn rate-missed" onclick="diagramRate(\'missed\')">&#10007; Missed it</button>'
+    +'</div></div>';
+
+  var rev = document.getElementById('dreveal');
+  rev.innerHTML = revealHTML;
+  rev.classList.add('show');
+  document.getElementById('drbtn').style.display='none';
+  window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+}
+
+function diagramRate(r){
+  D[r]++;
+  D.i++;
+  drawDiagram();
+}
+
+function diagramSummary(){
+  render(
+    '<div class="card"><div class="cb">'
+    +'<div class="summary-hero">'
+    +'<div class="summary-eye">Diagram Sprint &middot; Complete</div>'
+    +'<div class="summary-title">Session Results</div>'
+    +'<div class="summary-num">'+D.nailed+'</div>'
+    +'<div class="summary-max">nailed of '+D.diagrams.length+'</div>'
+    +'<div class="summary-pct">Self-assessed: '+pct(D.nailed,D.diagrams.length)+'% confident</div>'
+    +'</div>'
+    +'<div class="summary-break">'
+    +'<div class="summary-stat"><div class="summary-stat-num" style="color:var(--green)">'+D.nailed+'</div><div class="summary-stat-lbl">&#10003; Nailed it</div></div>'
+    +'<div class="summary-stat"><div class="summary-stat-num" style="color:var(--orange)">'+D.nearly+'</div><div class="summary-stat-lbl">~ Nearly</div></div>'
+    +'<div class="summary-stat"><div class="summary-stat-num" style="color:var(--red)">'+D.missed+'</div><div class="summary-stat-lbl">&#10007; Missed</div></div>'
+    +'</div>'
+    +'<p style="text-align:center;font-size:.82rem;color:var(--mut);opacity:.75;max-width:480px;margin:0 auto 1rem;line-height:1.7">Focus your next revision on the diagrams you rated &ldquo;Missed it&rdquo;. Drawing them fresh on paper twice more is worth far more than looking at model answers.</p>'
+    +'<div class="summary-btns">'
+    +'<button class="btn bg" onclick="goDiagram()">&#8635; Play Again</button>'
+    +'<button class="btn bs" onclick="goHub()">&larr; Back to Hub</button>'
+    +'</div></div></div>'
+  );
+}
+
+// ══════════════════════════════════════════════════════════════
+//  MACHINE 4 — WRONG BUT CONVINCING
+// ══════════════════════════════════════════════════════════════
+var W={i:0, score:0, correct:0, triads:[], answered:false};
+
+function goWBC(){
+  document.getElementById('homeBtn').style.display='inline-block';
+  W={i:0, score:0, correct:0, triads:shuffle(TRIADS), answered:false};
+  drawWBC();
+}
+
+function drawWBC(){
+  if(W.i >= W.triads.length){ return wbcSummary(); }
+  var t = W.triads[W.i];
+  W.answered = false;
+
+  // Shuffle answer display order (store indices)
+  var order = shuffle([0,1,2]);
+
+  var ansHTML = order.map(function(origIdx, displayIdx){
+    var a = t.answers[origIdx];
+    var letter = String.fromCharCode(65+displayIdx);
+    return '<div class="wbc-answer" data-orig="'+origIdx+'" onclick="wbcPick('+origIdx+')">'
+      +'<div class="wbc-answer-label"><span>Answer '+letter+'</span><span class="wbc-answer-verdict"></span></div>'
+      +'<div class="wbc-answer-text">'+a.text+'</div>'
+      +'<div class="wbc-answer-why"></div>'
+      +'<div class="wbc-flaw-box"></div>'
+      +'</div>';
+  }).join('');
+
+  render(
+    '<div class="card">'
+    +'<div class="sess-header">'
+    +'<div><div class="sess-title">Wrong but Convincing</div><div class="sess-subtitle">'+t.framework+' &middot; identify the strong answer</div></div>'
+    +'<div class="sess-counter">Question '+(W.i+1)+' / '+W.triads.length+'<div class="sess-score">'+W.score+' pts</div></div>'
+    +'</div>'
+    +'<div class="sess-progress"><div class="sess-pfill" style="width:'+pct(W.i,W.triads.length)+'%"></div></div>'
+    +'<div class="cb">'
+    +'<div class="wbc-question"><div class="wbc-q-lbl">&#128221; Question</div><p>'+t.question+'</p></div>'
+    +'<div class="wbc-instr">Below are three possible answers. One is genuinely strong. Two are plausible but flawed. <strong>Tap the one you think is strongest.</strong></div>'
+    +'<div class="wbc-answers">'+ansHTML+'</div>'
+    +'<div class="mt center"><button class="btn bg" id="wbcNext" onclick="wbcNext()" style="display:none">Next &rarr;</button></div>'
+    +'</div></div>'
+  );
+}
+
+function wbcPick(origIdx){
+  if(W.answered) return;
+  W.answered = true;
+  var t = W.triads[W.i];
+  var chosen = t.answers[origIdx];
+  var isStrong = (chosen.verdict === 'strong');
+  var earned = isStrong ? 10 : 0;
+  if(isStrong) W.correct++;
+  W.score += earned;
+
+  // Reveal all three
+  document.querySelectorAll('.wbc-answer').forEach(function(el){
+    el.classList.add('locked');
+    el.onclick = null;
+    var oi = parseInt(el.getAttribute('data-orig'));
+    var a = t.answers[oi];
+    el.classList.add('revealed');
+    if(a.verdict === 'strong'){
+      el.classList.add('revealed-strong');
+      el.querySelector('.wbc-answer-verdict').textContent = '&#10003; Strong';
+      el.querySelector('.wbc-answer-verdict').innerHTML = '&#10003; Strong';
+    } else {
+      el.classList.add('revealed-flawed');
+      el.querySelector('.wbc-answer-verdict').innerHTML = '&#10007; Flawed';
+    }
+    el.querySelector('.wbc-answer-why').innerHTML = '<strong>'+(a.verdict==='strong'?'Why this is strong:':'Why this is flawed:')+'</strong> '+a.why;
+    if(a.flaw){
+      el.querySelector('.wbc-flaw-box').innerHTML =
+        '<div class="wbc-flaw-name">&#9432; Flaw type: '+a.flaw+'</div>'
+        +'<div class="wbc-flaw-desc">'+(FLAW_DESCRIPTIONS[a.flaw]||'')+'</div>';
+    }
+  });
+
+  document.getElementById('wbcNext').style.display = 'inline-block';
+  document.querySelector('.sess-score').textContent = W.score+' pts';
+  window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+}
+
+function wbcNext(){
+  W.i++;
+  drawWBC();
+}
+
+function wbcSummary(){
+  var max = W.triads.length * 10;
+  var p = pct(W.score, max);
+  render(
+    '<div class="card"><div class="cb">'
+    +'<div class="summary-hero">'
+    +'<div class="summary-eye">Wrong but Convincing &middot; Complete</div>'
+    +'<div class="summary-title">Session Results</div>'
+    +'<div class="summary-num">'+W.score+'</div>'
+    +'<div class="summary-max">points &middot; max '+max+'</div>'
+    +'<div class="summary-pct">'+W.correct+' correct out of '+W.triads.length+' &middot; '+p+'%</div>'
+    +'</div>'
+    +'<div class="summary-break">'
+    +'<div class="summary-stat"><div class="summary-stat-num">'+W.correct+'</div><div class="summary-stat-lbl">Strong picks</div></div>'
+    +'<div class="summary-stat"><div class="summary-stat-num">'+(W.triads.length-W.correct)+'</div><div class="summary-stat-lbl">Missed</div></div>'
+    +'<div class="summary-stat"><div class="summary-stat-num">'+p+'%</div><div class="summary-stat-lbl">Overall</div></div>'
+    +'</div>'
+    +'<p style="text-align:center;font-size:.82rem;color:var(--mut);opacity:.75;max-width:480px;margin:0 auto 1rem;line-height:1.7">Look back at the flaw types you missed. Naming the flaw (unconditional, ignores elasticity, confuses concepts) is the first step to not making it yourself.</p>'
+    +'<div class="summary-btns">'
+    +'<button class="btn bg" onclick="goWBC()">&#8635; Play Again</button>'
+    +'<button class="btn bs" onclick="goHub()">&larr; Back to Hub</button>'
+    +'</div></div></div>'
+  );
+}
+
+// BOOT — support direct deep-link via URL hash
+(function(){
+  var hash = window.location.hash.replace('#','');
+  if(hash === 'chain')        { goChain();   }
+  else if(hash === 'diagram') { goDiagram(); }
+  else if(hash === 'wbc')     { goWBC();    }
+  else                        { goHub();    }
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script>Auth.requireStudent('../login');</script>
+</body>
+</html>
