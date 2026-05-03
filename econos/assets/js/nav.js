@@ -17,7 +17,7 @@ function buildSidebar(activeItem, role, user, basePath) {
     <div class="sidebar-logo">
       <a href="/" style="text-decoration:none;">
         <div class="logo-mark">
-          <div class="logo-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+          <svg class="logo-dots-svg" width="52" height="16" viewBox="0 0 52 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="5" y1="8" x2="43" y2="8" stroke="#CBD5E1" stroke-width="1.5"/><circle cx="5" cy="8" r="4.5" fill="#22C55E"/><circle cx="22" cy="8" r="5.5" fill="#F59E0B"/><circle cx="43" cy="8" r="7.5" fill="#2563EB"/></svg>
           <div class="logo-wordmark"><span class="econ">econ</span><span class="os">OS</span></div>
         </div>
         <div class="logo-tagline">

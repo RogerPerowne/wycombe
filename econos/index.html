@@ -21,18 +21,7 @@ body { background: #fff; }
   height: 64px; display: flex; align-items: center; gap: 2rem;
 }
 .nav-logo { display: flex; align-items: flex-start; gap: 0.625rem; }
-.nav-logo-dots {
-  display: flex; flex-direction: column; gap: 2px;
-  padding-top: 2px;
-}
-.nav-logo-dots-row { display: flex; gap: 4px; align-items: center; }
-.dot-g { width: 8px; height: 8px; border-radius: 50%; background: var(--learn); }
-.dot-o { width: 10px; height: 10px; border-radius: 50%; background: var(--link); }
-.dot-b { width: 12px; height: 12px; border-radius: 50%; background: var(--land); }
-.dot-connector {
-  width: 14px; height: 1.5px; background: var(--border);
-  display: block; margin: 1px 0;
-}
+.nav-logo-dots-svg { display:block; margin-top:2px; }
 .nav-logo-text { display: flex; flex-direction: column; }
 .nav-logo-wordmark {
   font-size: 1.375rem; font-weight: 800; line-height: 1; letter-spacing: -0.02em; color: var(--navy);
@@ -317,18 +306,10 @@ body { background: #fff; }
 <nav class="site-nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">
-      <div class="nav-logo-dots">
-        <div class="nav-logo-dots-row">
-          <span class="dot-g"></span>
-          <span class="dot-connector"></span>
-          <span class="dot-o"></span>
-          <span class="dot-connector"></span>
-          <span class="dot-b"></span>
-        </div>
-      </div>
+      <svg class="nav-logo-dots-svg" width="52" height="16" viewBox="0 0 52 16" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="5" y1="8" x2="43" y2="8" stroke="#CBD5E1" stroke-width="1.5"/><circle cx="5" cy="8" r="4.5" fill="#22C55E"/><circle cx="22" cy="8" r="5.5" fill="#F59E0B"/><circle cx="43" cy="8" r="7.5" fill="#2563EB"/></svg>
       <div class="nav-logo-text">
         <div class="nav-logo-wordmark">econ<span class="os">OS</span></div>
-        <div class="nav-logo-tagline">Learn it. Link it. Land it.</div>
+        <div class="nav-logo-tagline"><span style="color:#16A34A;font-weight:600">Learn it.</span> <span style="color:#EA580C;font-weight:600">Link it.</span> <span style="color:#2563EB;font-weight:600">Land it.</span></div>
       </div>
     </a>
 
