@@ -58,7 +58,7 @@ body {
 .sidebar-logo-wordmark .os { color: #2563EB; }
 .sidebar-logo-tagline { font-size: 0.8125rem; font-weight: 500; margin-top: 3px; }
 .sidebar-logo-tagline .tl { color: #16A34A; }
-.sidebar-logo-tagline .tli { color: #D97706; }
+.sidebar-logo-tagline .tli { color: #EA580C; }
 .sidebar-logo-tagline .tla { color: #2563EB; }
 
 /* ── VERTICAL STEP INDICATOR ── */
@@ -791,8 +791,7 @@ async function handleComplete() {
   if (data.user && !data.session) {
     showMsg('✅ Account created! Check your email to confirm your address, then log in.', 'success');
   } else if (data.session) {
-    const role = data.session.user.user_metadata?.role || 'student';
-    window.location.href = role === 'teacher' ? 'teacher/dashboard.html' : 'student/dashboard.html';
+    window.location.href = 'dashboard.html';
   }
 }
 </script>
