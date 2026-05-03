@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Complete — econOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/econos.css">
+<style>
+.results-grid{display:grid;grid-template-columns:1fr 288px;gap:1.5rem;align-items:start}
+@media(max-width:860px){.results-grid{grid-template-columns:1fr}}
+
+.rc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-xl);padding:1.5rem;box-shadow:var(--shadow-sm);margin-bottom:1.25rem}
+.rc h3{font-size:.9375rem;font-weight:700;color:var(--navy);margin:0 0 1rem}
+.ac{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-xl);padding:1.25rem;box-shadow:var(--shadow-sm);margin-bottom:1rem}
+.ac h3{font-size:.875rem;font-weight:700;color:var(--navy);margin:0 0 .875rem}
+
+/* Score hero */
+.sh{display:flex;align-items:center;gap:1.75rem}
+.sc{position:relative;width:100px;height:100px;flex-shrink:0}
+.sc svg{transform:rotate(-90deg);display:block}
+.sc-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.sc-n{font-size:1.5rem;font-weight:800;line-height:1;color:var(--navy)}
+.sc-d{font-size:.7rem;color:var(--text-muted);font-weight:500;margin-top:1px}
+.sd-pct{font-size:2.5rem;font-weight:800;line-height:1;margin-bottom:.25rem}
+.sd-v{font-size:.875rem;color:var(--text-secondary);margin-bottom:.875rem;line-height:1.45;max-width:300px}
+.stats-row{display:flex;gap:1.25rem;flex-wrap:wrap}
+.stat{display:flex;align-items:center;gap:.3rem;font-size:.775rem;color:var(--text-secondary);font-weight:500}
+.stat b{font-weight:700;color:var(--navy);margin-right:.15rem}
+
+/* Type bars */
+.type-rows{display:flex;flex-direction:column;gap:.625rem}
+.tr{display:flex;align-items:center;gap:.75rem}
+.tr-lbl{font-size:.775rem;font-weight:600;width:160px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-bar{flex:1;height:7px;background:var(--bg-subtle);border-radius:999px;overflow:hidden}
+.tr-fill{height:100%;border-radius:999px;transition:width .9s ease}
+.tr-sc{font-size:.75rem;font-weight:600;color:var(--text-muted);width:36px;text-align:right;flex-shrink:0}
+
+/* Question review */
+.rv-list{display:flex;flex-direction:column;gap:.375rem}
+.rv{display:flex;align-items:flex-start;gap:.625rem;padding:.5rem .625rem;border-radius:var(--r-md)}
+.rv.ok{background:#F0FDF4}.rv.bad{background:#FFF5F5}
+.rv-n{font-size:.68rem;font-weight:700;color:var(--text-muted);width:22px;flex-shrink:0;padding-top:3px;text-align:right}
+.rv-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;margin-top:1px}
+.rv-dot.ok{background:#22C55E;color:#fff}.rv-dot.bad{background:#EF4444;color:#fff}
+.rv-meta{flex:1;min-width:0}
+.rv-type{font-size:.68rem;font-weight:700;margin-bottom:2px}
+.rv-sum{font-size:.775rem;color:var(--text-secondary);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* Aside donut */
+.ad{position:relative;width:72px;height:72px;flex-shrink:0}
+.ad svg{transform:rotate(-90deg);display:block}
+.ad-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.ad-pct{font-size:1.05rem;font-weight:800;line-height:1}
+.ad-lbl{font-size:.5rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-top:1px}
+
+/* Breakdown rows */
+.br-rows{display:flex;flex-direction:column;gap:.4rem}
+.br-row{display:flex;align-items:center;justify-content:space-between;font-size:.775rem}
+.br-left{display:flex;align-items:center;gap:.35rem;color:var(--text-secondary);min-width:0}
+.br-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.br-val{font-weight:600;color:var(--navy);flex-shrink:0;margin-left:.5rem}
+
+/* Next steps */
+.ns-btn{display:flex;align-items:center;justify-content:center;gap:.35rem;width:100%;padding:.575rem 1rem;border-radius:var(--r-md);font-size:.8rem;font-weight:600;font-family:inherit;text-decoration:none;cursor:pointer;border:none;transition:background .12s,color .12s,border-color .12s;margin-bottom:.4rem}
+</style>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <header class="main-header" id="main-header">
+      <div class="header-title">
+        <div style="font-size:1.125rem;font-weight:700;color:var(--navy)">Loading…</div>
+      </div>
+    </header>
+    <div class="page-body">
+      <div id="results-root">
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <div class="skel" style="height:128px;border-radius:16px"></div>
+          <div class="skel" style="height:156px;border-radius:16px"></div>
+          <div class="skel" style="height:260px;border-radius:16px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/nav.js"></script>
+<script>
+var TM = {
+  elastic_sort:    { label:'Visual Sort',        col:'#e07a5f' },
+  calculation:     { label:'Calculation',         col:'#9775b5' },
+  diagnostic_pair: { label:'Compare Answers',     col:'#2a9d8f' },
+  mcq:             { label:'Multiple Choice',      col:'#4a7fb5' },
+  confidence_mcq:  { label:'Confidence MCQ',      col:'#c9a84c' },
+  odd_one_out:     { label:'Odd One Out',          col:'#e0933a' },
+  multi_select:    { label:'Multi Select',         col:'#4caf80' },
+  rank:            { label:'Rank in Order',        col:'#6fa8d8' },
+  para_fill:       { label:'Complete Analysis',    col:'#2a9d8f' },
+  data_table:      { label:'Data Interpretation',  col:'#d4a72c' },
+  diagram_interp:  { label:'Read the Diagram',     col:'#4a7fb5' },
+  chain:           { label:'Sequence the Chain',   col:'#6fa8d8' }
+};
+
+function scoreCol(p){ return p>=80?'#22C55E':p>=60?'#F59E0B':p>=40?'#F97316':'#EF4444'; }
+
+function verdictText(p){
+  if(p>=80) return 'Excellent command of this topic — the full picture is clear.';
+  if(p>=60) return 'Solid understanding. A few analytical gaps remain.';
+  if(p>=40) return 'Developing — some core ideas need more work.';
+  return 'This topic needs focused revision before the exam.';
+}
+
+function donutSVG(size, r, pct, col, sw){
+  var c = size/2, circ = 2*Math.PI*r, dash = circ*pct/100;
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'" style="transform:rotate(-90deg);display:block">'
+    +'<circle cx="'+c+'" cy="'+c+'" r="'+r+'" fill="none" stroke="var(--border)" stroke-width="'+sw+'"/>'
+    +'<circle cx="'+c+'" cy="'+c+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="'+sw+'" stroke-linecap="round"'
+    +' style="stroke-dasharray:'+dash+' '+circ+'"/></svg>';
+}
+
+function render(D){
+  var total = D.total, score = D.score, pct = D.pct;
+  var col = scoreCol(pct);
+  var hub = D.hubUrl || 'micro-quiz';
+  var home = D.homeUrl || '../dashboard';
+
+  // Group results by type, sorted best-first
+  var byType = {};
+  (D.results||[]).forEach(function(rv){
+    if(!byType[rv.type]) byType[rv.type]={correct:0,total:0};
+    byType[rv.type].total++;
+    if(rv.ok) byType[rv.type].correct++;
+  });
+  var types = Object.keys(byType).sort(function(a,b){
+    return (byType[b].correct/byType[b].total)-(byType[a].correct/byType[a].total);
+  });
+
+  // Header
+  var emoji = pct>=80?'🎉':pct>=60?'👍':'📚';
+  document.title = D.title+' · Results — econOS';
+  document.getElementById('main-header').innerHTML =
+    '<div class="header-title">'
+    +'<div style="font-size:1.125rem;font-weight:700;color:var(--navy)">Session complete! '+emoji+'</div>'
+    +'<div style="font-size:.75rem;color:var(--text-muted)">'+D.title+(D.subtitle?' &middot; '+D.subtitle:'')+'</div>'
+    +'</div>'
+    +'<div class="header-actions" style="gap:.5rem">'
+    +'<a href="quiz?topic='+encodeURIComponent(D.topicId)+'" class="btn btn-secondary" style="font-size:.8rem">&#8635; Try again</a>'
+    +'<a href="'+hub+'" class="btn btn-primary" style="font-size:.8rem">All topics &#8594;</a>'
+    +'</div>';
+
+  // Type rows HTML
+  var typeRowsHTML = types.map(function(t){
+    var s=byType[t], m=TM[t]||{label:t,col:'#64748B'};
+    var tp = Math.round(s.correct/s.total*100);
+    return '<div class="tr">'
+      +'<span class="tr-lbl" style="color:'+m.col+'">'+m.label+'</span>'
+      +'<div class="tr-bar"><div class="tr-fill" style="width:'+tp+'%;background:'+m.col+'"></div></div>'
+      +'<span class="tr-sc">'+s.correct+'/'+s.total+'</span>'
+      +'</div>';
+  }).join('');
+
+  // Question review HTML
+  var reviewHTML = (D.results||[]).map(function(rv,i){
+    var m=TM[rv.type]||{label:rv.type,col:'#64748B'};
+    return '<div class="rv '+(rv.ok?'ok':'bad')+'">'
+      +'<span class="rv-n">Q'+(rv.n||i+1)+'</span>'
+      +'<div class="rv-dot '+(rv.ok?'ok':'bad')+'">'+(rv.ok?'&#10003;':'&#10007;')+'</div>'
+      +'<div class="rv-meta">'
+      +'<div class="rv-type" style="color:'+m.col+'">'+m.label+'</div>'
+      +'<div class="rv-sum">'+(rv.summary||'')+'</div>'
+      +'</div></div>';
+  }).join('');
+
+  // Breakdown rows HTML
+  var breakdownHTML = types.map(function(t){
+    var s=byType[t], m=TM[t]||{label:t,col:'#64748B'};
+    return '<div class="br-row">'
+      +'<span class="br-left"><span class="br-dot" style="background:'+m.col+'"></span>'
+      +'<span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+m.label+'</span></span>'
+      +'<span class="br-val">'+s.correct+'/'+s.total+'</span>'
+      +'</div>';
+  }).join('');
+
+  var timeRow = D.elapsed > 0
+    ? '<div style="display:flex;justify-content:space-between;font-size:.775rem;color:var(--text-secondary);border-top:1px solid var(--border);margin-top:.625rem;padding-top:.625rem">'
+      +'<span>Time taken</span><span style="font-weight:600;color:var(--navy)">'+D.elapsed+' min</span></div>'
+    : '';
+
+  var statsHTML =
+    '<div class="stat"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><b>'+score+'</b>correct</div>'
+    +'<div class="stat"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 18L18 6M6 6l12 12"/></svg><b>'+(total-score)+'</b>incorrect</div>'
+    +'<div class="stat"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg><b>'+total+'</b>questions</div>'
+    +(D.elapsed>0?'<div class="stat"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><b>'+D.elapsed+'</b>min</div>':'')
+    +(types.length>1?'<div class="stat"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><b>'+types.length+'</b>formats</div>':'');
+
+  document.getElementById('results-root').innerHTML =
+    '<div class="results-grid">'
+
+    // ── MAIN COLUMN ──────────────────────────────────────────
+    +'<div>'
+
+    // Score hero
+    +'<div class="rc"><div class="sh">'
+    +'<div class="sc">'+donutSVG(100,36,pct,col,7)
+    +'<div class="sc-inner"><span class="sc-n">'+score+'</span><span class="sc-d">/ '+total+'</span></div></div>'
+    +'<div style="flex:1;min-width:0">'
+    +'<div class="sd-pct" style="color:'+col+'">'+pct+'%</div>'
+    +'<div class="sd-v">'+verdictText(pct)+'</div>'
+    +'<div class="stats-row">'+statsHTML+'</div>'
+    +'</div></div></div>'
+
+    // Type performance (only when multiple types present)
+    +(types.length>1
+      ? '<div class="rc"><h3>Performance by question type</h3><div class="type-rows">'+typeRowsHTML+'</div></div>'
+      : '')
+
+    // Question review
+    +'<div class="rc">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">'
+    +'<h3 style="margin:0">Question review</h3>'
+    +'<span style="font-size:.75rem;color:var(--text-muted)">'+score+' correct &middot; '+(total-score)+' incorrect</span>'
+    +'</div>'
+    +'<div class="rv-list">'+reviewHTML+'</div>'
+    +'</div>'
+
+    +'</div>'
+
+    // ── ASIDE ────────────────────────────────────────────────
+    +'<div>'
+
+    // Score card
+    +'<div class="ac"><h3>Your score</h3>'
+    +'<div style="display:flex;align-items:center;gap:1rem">'
+    +'<div class="ad">'+donutSVG(72,26,pct,col,6)
+    +'<div class="ad-inner"><span class="ad-pct" style="color:'+col+'">'+pct+'%</span><span class="ad-lbl">score</span></div></div>'
+    +'<div>'
+    +'<div style="font-size:1.5rem;font-weight:800;color:var(--navy);line-height:1">'+score
+    +'<span style="font-size:.9rem;font-weight:500;color:var(--text-muted)"> / '+total+'</span></div>'
+    +'<div style="font-size:.775rem;color:var(--text-secondary);margin-top:.3rem;line-height:1.4">'+verdictText(pct)+'</div>'
+    +'</div></div></div>'
+
+    // Session breakdown
+    +'<div class="ac"><h3>Session breakdown</h3>'
+    +'<div class="br-rows">'+breakdownHTML+'</div>'+timeRow+'</div>'
+
+    // What's next
+    +'<div class="ac"><h3>What\'s next?</h3>'
+    +'<a href="quiz?topic='+encodeURIComponent(D.topicId)+'" class="ns-btn" style="background:var(--bg-subtle);color:var(--navy);border:1px solid var(--border)">&#8635; Try this topic again</a>'
+    +'<a href="'+hub+'" class="ns-btn" style="background:var(--land);color:#fff">Browse all topics &#8594;</a>'
+    +'<a href="'+home+'" class="ns-btn" style="background:transparent;color:var(--text-secondary);border:1px solid var(--border)">&#8592; Dashboard</a>'
+    +'</div>'
+
+    +'<div id="save-status" style="text-align:center;font-size:.7rem;min-height:1.2em;padding:.25rem 0"></div>'
+    +'</div>'
+    +'</div>';
+}
+
+(async function(){
+  var raw = sessionStorage.getItem('econos_quiz_results');
+  if (!raw){ window.location.href = '../dashboard'; return; }
+  var D;
+  try{ D = JSON.parse(raw); } catch(e){ window.location.href = '../dashboard'; return; }
+  if (!D.topicId && !D.title){ window.location.href = '../dashboard'; return; }
+
+  render(D);
+
+  var auth = await Auth.requireStudent('../login');
+  var p = auth.profile || {};
+  var name = p.full_name || 'Student';
+  var initials = name.split(' ').map(function(n){ return n[0]; }).join('').toUpperCase().slice(0,2);
+  buildSidebar(D.hubUrl||'', 'student', {
+    name: name, initials: initials,
+    school: p.school_name || '', yearGroup: p.year_group || 'Year 12'
+  });
+
+  if (D.topicId && window.supabaseClient){
+    window.supabaseClient.from('quiz_attempts').insert({
+      user_id: auth.user.id,
+      topic_id: D.topicId,
+      score: D.score,
+      total: D.total,
+      pct: D.pct
+    }).then(function(res){
+      var el = document.getElementById('save-status');
+      if (el && !res.error){
+        el.textContent = '✓ Score saved';
+        el.style.color = 'var(--learn)';
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

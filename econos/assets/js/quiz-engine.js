@@ -130,7 +130,8 @@ function buildHeader(){
 function bootQuiz(questions, topicConfig){
   Qs = questions.map(shuffleQuestion);
   TOPIC = topicConfig || TOPIC;
-  document.title = TOPIC.title + ' - Wycombe Abbey';
+  S.startTime = Date.now();
+  document.title = TOPIC.title + ' — econOS';
   buildHeader();
   renderQ(0);
 }
@@ -610,53 +611,22 @@ function pickDIM(i){
 //  RESULTS
 // ═══════════════════════════════════════════════════════════════
 function renderResults(){
-  var total=Qs.length;
-  var pct=Math.round(S.score/total*100);
-  var col=pct>=80?'var(--green)':pct>=60?'var(--goldl)':pct>=40?'var(--orange)':'var(--red)';
-  var verdict=pct>=80?'Excellent command of this topic - the full picture is clear.'
-    :pct>=60?'Solid understanding. A few analytical gaps remain.'
-    :pct>=40?'Developing - some core ideas need more work.'
-    :'This topic needs focused revision before the exam.';
-  var reviewItems=S.results.map(function(rv){
-    var m=TYPE_META[rv.type];
-    return '<div class="rv-item">'
-      +'<div class="rv-dot '+(rv.ok?'ok':'bad')+'">'+(rv.ok?'&#10003;':'&#10007;')+'</div>'
-      +'<div><div class="rv-type" style="color:'+m.colour+'">Q'+rv.n+' &middot; '+m.label+'</div>'
-      +'<div class="rv-q">'+rv.summary+'</div></div></div>';
-  }).join('');
-  var hub = TOPIC.hubUrl || 'micro-quiz.html';
-  var home = TOPIC.homeUrl || 'index.html';
-  r('<div class="results-wrap">'
-    +'<div class="results-hero">'
-    +'<div class="results-lbl">'+TOPIC.title+' &middot; Session Complete</div>'
-    +'<div class="results-score" style="color:'+col+'">'+S.score+'<span style="font-size:2.2rem;color:var(--mut);opacity:.35"> / '+total+'</span></div>'
-    +'<div class="results-lbl">'+pct+'% correct</div>'
-    +'<div class="results-verdict">'+verdict+'</div></div>'
-    +'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.55rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);opacity:.55;margin-bottom:.65rem">Session Review</div>'
-    +'<div class="review-grid">'+reviewItems+'</div>'
-    +'<div id="save-status" style="text-align:center;margin-top:.8rem;font-family:\'IBM Plex Mono\',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;min-height:1.4em"></div>'
-    +'<div style="display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-top:.6rem">'
-    +'<button class="btn b-blue" onclick="restartSession()">Try Again</button>'
-    +'<a href="'+hub+'" class="btn b-sec">All Topics</a>'
-    +'<a href="'+home+'" class="btn b-sec">Home</a>'
-    +'</div><div style="height:2rem"></div></div>');
-  if(typeof WA !== 'undefined' && WA.isLoggedIn() && TOPIC.id){
-    var el = document.getElementById('save-status');
-    el.textContent = 'Saving score...';
-    el.style.color = 'var(--mut)';
-    el.style.opacity = '.5';
-    WA.saveScore(TOPIC.id, S.score, total).then(function(res){
-      if(res.ok){
-        el.textContent = '✓ Score saved to your profile';
-        el.style.color = 'var(--green)';
-        el.style.opacity = '.7';
-      } else {
-        el.textContent = 'Could not save — ' + (res.error || 'unknown error');
-        el.style.color = 'var(--orange)';
-        el.style.opacity = '.6';
-      }
-    });
-  }
+  var total = Qs.length;
+  var pct   = Math.round(S.score / total * 100);
+  var elapsed = S.startTime ? Math.round((Date.now() - S.startTime) / 60000) : 0;
+  sessionStorage.setItem('econos_quiz_results', JSON.stringify({
+    topicId:  TOPIC.id       || '',
+    title:    TOPIC.title    || 'Quiz',
+    subtitle: TOPIC.subtitle || '',
+    hubUrl:   TOPIC.hubUrl   || 'micro-quiz',
+    homeUrl:  TOPIC.homeUrl  || '../dashboard',
+    score:    S.score,
+    total:    total,
+    pct:      pct,
+    elapsed:  elapsed,
+    results:  S.results
+  }));
+  window.location.href = 'quiz-results';
 }
 function restartSession(){
   S={qi:0,score:0,results:[],answered:false,rankOrder:[],pfSel:{},msChecked:[],esChosen:{},confChosen:-1,confPhase:'pick'};
