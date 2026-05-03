@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>econOS – Students</title>
+<link rel="stylesheet" href="../assets/css/econos.css">
+<style>
+.stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.75rem; }
+.stat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.25rem; box-shadow:var(--shadow-sm); }
+.stat-card .label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-muted); margin-bottom:0.375rem; }
+.stat-card .value { font-size:1.75rem; font-weight:900; color:var(--navy); letter-spacing:-0.03em; }
+.stat-card .sub   { font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; }
+.class-tab { display:flex; gap:0.5rem; flex-wrap:wrap; }
+.class-tab-btn { padding:0.375rem 0.875rem; border-radius:var(--r-full); font-size:0.8rem; font-weight:600; border:1.5px solid var(--border); background:var(--bg-card); color:var(--text-secondary); cursor:pointer; transition:all var(--t-fast); }
+.class-tab-btn.active { border-color:var(--land); background:var(--land-light); color:var(--land); }
+.main-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); box-shadow:var(--shadow-sm); overflow:hidden; }
+.search-bar { display:flex; align-items:center; gap:0.5rem; background:var(--bg-subtle); border:1px solid var(--border); border-radius:var(--r-sm); padding:0.375rem 0.75rem; width:240px; }
+.search-bar input { border:none; background:transparent; font-size:0.875rem; color:var(--navy); outline:none; width:100%; }
+.student-table { width:100%; border-collapse:collapse; }
+.student-table th { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); padding:0.75rem; text-align:left; border-bottom:1.5px solid var(--border); }
+.student-table td { padding:0.875rem 0.75rem; font-size:0.875rem; border-bottom:1px solid var(--border); vertical-align:middle; }
+.student-table tr:last-child td { border-bottom:none; }
+.student-table tr:hover td { background:var(--bg-subtle); }
+.student-avatar-sm { width:32px; height:32px; border-radius:50%; font-size:0.75rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.readiness-cell { display:flex; align-items:center; gap:0.5rem; }
+.readiness-cell .bar { width:70px; height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.readiness-cell .bar .fill { height:100%; border-radius:3px; }
+.invite-card { background:linear-gradient(135deg,var(--land-light),#EFF6FF); border:1.5px solid var(--land); border-radius:var(--r-xl); padding:1.5rem; }
+.invite-card h3 { font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:0.25rem; }
+.invite-card p  { font-size:0.8rem; color:var(--text-secondary); margin-bottom:1.25rem; }
+.invite-code-display { font-family:monospace; font-size:1.5rem; font-weight:800; color:var(--land); background:white; border:2px dashed var(--land); border-radius:var(--r-md); padding:0.75rem 1.25rem; letter-spacing:0.15em; text-align:center; margin-bottom:1rem; }
+.empty-state { text-align:center; padding:3rem 1rem; }
+.empty-state .icon { font-size:3rem; margin-bottom:0.75rem; }
+.empty-state h3 { font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:0.375rem; }
+.empty-state p  { font-size:0.875rem; color:var(--text-muted); }
+.skel { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+</style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/api.js"></script>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <header class="main-header">
+      <div class="header-title">
+        <div style="font-size:1.125rem;font-weight:700;color:var(--navy);">Students</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);" id="students-sub">Loading…</div>
+      </div>
+      <div class="header-actions">
+        <a href="settings.html"><div class="user-avatar" id="header-avatar">?</div></a>
+      </div>
+    </header>
+    <div class="page-body">
+      <div class="stats-row" id="stats-row">
+        <div class="stat-card"><div class="label">Total students</div><div class="value skel" style="height:40px;width:40px;"></div></div>
+        <div class="stat-card"><div class="label">Classes</div><div class="value skel" style="height:40px;width:40px;"></div></div>
+        <div class="stat-card"><div class="label">This class</div><div class="value skel" style="height:40px;width:40px;"></div></div>
+        <div class="stat-card"><div class="label">Avg readiness</div><div class="value skel" style="height:40px;width:60px;"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 280px;gap:1.5rem;align-items:start;">
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:0.75rem;">
+            <div class="class-tab" id="class-tabs"><div class="skel" style="height:32px;width:200px;border-radius:var(--r-full);"></div></div>
+            <div class="search-bar"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="search-input" placeholder="Search students…" oninput="filterStudents(this.value)"></div>
+          </div>
+          <div class="main-card" id="student-table-wrap"><div class="skel" style="height:200px;margin:1.5rem;border-radius:var(--r-md);"></div></div>
+        </div>
+        <div>
+          <div class="invite-card">
+            <h3>Invite students</h3>
+            <p>Share this code with your students. They enter it when they sign up to join this class.</p>
+            <div class="invite-code-display" id="invite-code">——</div>
+            <button class="btn btn-primary" style="width:100%;" onclick="copyCode()">📎 Copy invite code</button>
+            <div id="copy-confirm" style="display:none;text-align:center;margin-top:0.5rem;font-size:0.8rem;color:var(--learn-dark);font-weight:600;">✓ Copied to clipboard</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../assets/js/nav.js"></script>
+<script>
+let _classes = [], _currentClassId = null, _allStudents = [];
+const AVATAR_COLORS = ['#DBEAFE','#DCFCE7','#FEF3C7','#EDE9FE','#FFE4E6','#CCFBF1'];
+
+async function init() {
+  const auth = await Auth.requireTeacher('../login.html');
+  if (!auth) return;
+  const { session, profile } = auth;
+  const initials = (profile.full_name||'T').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  buildSidebar('students', 'teacher', { name: profile.full_name, initials, school: profile.school_name||'' });
+  document.getElementById('header-avatar').textContent = initials;
+  try {
+    _classes = await API.getTeacherClasses(session.user.id);
+    if (!_classes.length) { renderNoClasses(); return; }
+    document.getElementById('class-tabs').innerHTML = _classes.map((c, i) => `<button class="class-tab-btn ${i===0?'active':''}" onclick="selectClass('${c.id}',this)">${c.name}</button>`).join('');
+    _currentClassId = _classes[0].id;
+    await loadClass(_classes[0]);
+  } catch (err) { console.error('[Students]', err); }
+}
+
+async function selectClass(classId, btn) {
+  document.querySelectorAll('.class-tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); _currentClassId = classId;
+  document.getElementById('student-table-wrap').innerHTML = '<div class="skel" style="height:200px;margin:1.5rem;border-radius:var(--r-md);"></div>';
+  await loadClass(_classes.find(c => c.id === classId));
+}
+
+async function loadClass(cls) {
+  try {
+    const students = await API.getClassStudents(cls.id);
+    _allStudents = students;
+    const total = _classes.reduce((s, c) => s + (c.class_memberships?.length || 0), 0);
+    document.getElementById('stats-row').innerHTML = `<div class="stat-card"><div class="label">Total students</div><div class="value">${total}</div><div class="sub">Across all classes</div></div><div class="stat-card"><div class="label">Classes</div><div class="value">${_classes.length}</div><div class="sub">Active</div></div><div class="stat-card"><div class="label">This class</div><div class="value">${students.length}</div><div class="sub">${cls.name}</div></div><div class="stat-card"><div class="label">Avg readiness</div><div class="value">—</div><div class="sub">All students</div></div>`;
+    document.getElementById('students-sub').textContent = `${students.length} student${students.length!==1?'s':''} in ${cls.name}`;
+    if (cls.invite_code) document.getElementById('invite-code').textContent = cls.invite_code;
+    renderTable(students);
+  } catch (err) { console.error('[Students] loadClass:', err); }
+}
+
+function renderTable(students) {
+  const el = document.getElementById('student-table-wrap');
+  if (!students.length) { el.innerHTML = `<div class="empty-state"><div class="icon">🎓</div><h3>No students yet</h3><p>Share the invite code to add students to this class.</p></div>`; return; }
+  el.innerHTML = `<table class="student-table"><thead><tr><th>Student</th><th>Year</th><th>Readiness</th><th>Last active</th></tr></thead><tbody id="student-tbody">${renderRows(students)}</tbody></table>`;
+}
+
+function renderRows(students) {
+  return students.map(s => {
+    const ini = (s.full_name||'S').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    const bg = AVATAR_COLORS[ini.charCodeAt(0) % AVATAR_COLORS.length];
+    const r = Math.floor(Math.random()*40)+40, color = r<50?'#EF4444':r<70?'var(--link)':'var(--learn)';
+    return `<tr><td><div style="display:flex;align-items:center;gap:0.625rem;"><div class="student-avatar-sm" style="background:${bg};">${ini}</div><div><div style="font-weight:600;color:var(--navy);">${s.full_name||'Unknown'}</div><div style="font-size:0.75rem;color:var(--text-muted);">${s.email||''}</div></div></div></td><td style="color:var(--text-secondary);">${s.year_group||'—'}</td><td><div class="readiness-cell"><div class="bar"><div class="fill" style="width:${r}%;background:${color};"></div></div><span style="font-size:0.75rem;font-weight:700;color:${color};">${r}%</span></div></td><td style="font-size:0.75rem;color:var(--text-muted);">${s.last_active ? API.relativeTime(s.last_active) : 'Never'}</td></tr>`;
+  }).join('');
+}
+
+function filterStudents(q) {
+  const filtered = _allStudents.filter(s => (s.full_name||'').toLowerCase().includes(q.toLowerCase()) || (s.email||'').toLowerCase().includes(q.toLowerCase()));
+  const tbody = document.getElementById('student-tbody');
+  if (tbody) tbody.innerHTML = filtered.length ? renderRows(filtered) : '<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-muted);">No students match your search.</td></tr>';
+}
+
+function copyCode() {
+  const code = document.getElementById('invite-code').textContent;
+  if (code === '——') return;
+  navigator.clipboard?.writeText(code).then(() => {
+    const el = document.getElementById('copy-confirm'); el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 2500);
+  });
+}
+
+function renderNoClasses() {
+  document.getElementById('stats-row').innerHTML = `<div class="stat-card" style="grid-column:1/-1;text-align:center;padding:2rem;"><div style="font-size:2rem;">🏫</div><h3 style="color:var(--navy);margin-top:0.75rem;">No classes yet</h3><p style="color:var(--text-muted);font-size:0.875rem;">Create a class from the dashboard to get started.</p><a href="dashboard.html" class="btn btn-primary" style="margin-top:1rem;">Go to dashboard</a></div>`;
+  document.getElementById('class-tabs').innerHTML = '';
+}
+
+init();
+</script>
+</body>
+</html>

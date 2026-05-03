@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>econOS – Teacher Settings</title>
+<link rel="stylesheet" href="../assets/css/econos.css">
+<style>
+.settings-layout { max-width: 680px; }
+.settings-section { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.75rem; margin-bottom:1.5rem; box-shadow:var(--shadow-sm); }
+.settings-section h2 { font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:0.25rem; }
+.settings-section .section-desc { font-size:0.8rem; color:var(--text-muted); margin-bottom:1.5rem; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.save-row { display:flex; align-items:center; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid var(--border); }
+.save-confirm { font-size:0.8rem; color:var(--learn-dark); font-weight:600; display:none; }
+.danger-section { background:var(--bg-card); border:1.5px solid #FCA5A5; border-radius:var(--r-xl); padding:1.75rem; margin-bottom:1.5rem; }
+.danger-section h2 { font-size:1rem; font-weight:700; color:#DC2626; }
+.danger-section .section-desc { font-size:0.8rem; color:var(--text-muted); margin-bottom:1.25rem; }
+.danger-row { display:flex; align-items:center; justify-content:space-between; padding:0.875rem 0; border-bottom:1px solid var(--border); }
+.danger-row:last-child { border-bottom:none; padding-bottom:0; }
+.danger-row .info .title { font-size:0.875rem; font-weight:600; color:var(--navy); }
+.danger-row .info .desc  { font-size:0.75rem; color:var(--text-muted); margin-top:0.125rem; }
+.provider-badge { display:inline-flex; align-items:center; gap:0.5rem; background:var(--bg-subtle); border:1px solid var(--border); border-radius:var(--r-full); padding:0.375rem 0.875rem; font-size:0.8rem; font-weight:600; color:var(--text-secondary); }
+.toggle-row { display:flex; align-items:center; justify-content:space-between; padding:0.75rem 0; border-bottom:1px solid var(--border); }
+.toggle-row:last-child { border-bottom:none; }
+.toggle-info .title { font-size:0.875rem; font-weight:600; color:var(--navy); }
+.toggle-info .desc  { font-size:0.75rem; color:var(--text-muted); margin-top:0.125rem; }
+.toggle { position:relative; display:inline-block; width:40px; height:22px; }
+.toggle input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; cursor:pointer; inset:0; background:var(--border); border-radius:11px; transition:var(--t-base); }
+.toggle-slider:before { position:absolute; content:''; width:16px; height:16px; left:3px; top:3px; background:white; border-radius:50%; transition:var(--t-base); box-shadow:var(--shadow-xs); }
+.toggle input:checked + .toggle-slider { background:var(--land); }
+.toggle input:checked + .toggle-slider:before { transform:translateX(18px); }
+.class-manage-row { display:flex; align-items:center; justify-content:space-between; padding:0.875rem 0; border-bottom:1px solid var(--border); }
+.class-manage-row:last-child { border-bottom:none; }
+.class-manage-row .name { font-size:0.875rem; font-weight:600; color:var(--navy); }
+.class-manage-row .meta { font-size:0.75rem; color:var(--text-muted); }
+</style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/api.js"></script>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <header class="main-header">
+      <div class="header-title">
+        <div style="font-size:1.125rem;font-weight:700;color:var(--navy);">Settings</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);">Manage your profile and preferences</div>
+      </div>
+      <div class="header-actions">
+        <a href="settings.html"><div class="user-avatar" id="header-avatar" style="background:var(--learn-dark);">?</div></a>
+      </div>
+    </header>
+    <div class="page-body">
+      <div class="settings-layout">
+        <div class="settings-section">
+          <h2>Profile</h2>
+          <p class="section-desc">Update your name and school details. Students will see your name on their assignments.</p>
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+            <div class="user-avatar" id="profile-avatar" style="width:56px;height:56px;font-size:1.25rem;background:var(--learn-dark);">?</div>
+            <div>
+              <div style="font-weight:700;color:var(--navy);" id="profile-name-display">Loading…</div>
+              <div style="font-size:0.8rem;color:var(--text-muted);" id="profile-email-display"></div>
+              <div style="margin-top:0.25rem;"><span class="stage-pill pill-learn" style="font-size:0.65rem;">Teacher</span></div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Full name</label><input type="text" class="form-input" id="field-name" placeholder="Your full name"></div>
+            <div class="form-group"><label class="form-label">School name</label><input type="text" class="form-input" id="field-school" placeholder="Your school"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Subject / department</label><input type="text" class="form-input" id="field-subject" placeholder="e.g. Economics"></div>
+          <div class="save-row">
+            <span class="save-confirm" id="profile-saved">✓ Saved</span>
+            <button class="btn btn-secondary" onclick="resetProfileForm()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveProfile()">Save changes</button>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h2>Security</h2>
+          <p class="section-desc">Manage how you sign in to econOS.</p>
+          <div id="security-content"><div style="height:60px;" class="skel"></div></div>
+        </div>
+        <div class="settings-section">
+          <h2>My Classes</h2>
+          <p class="section-desc">Manage your classes. Students join using invite codes.</p>
+          <div id="class-list"><div class="skel" style="height:80px;"></div></div>
+          <div style="margin-top:1.25rem;"><button class="btn btn-secondary" onclick="createNewClass()">+ Create new class</button></div>
+        </div>
+        <div class="settings-section">
+          <h2>Notifications</h2>
+          <p class="section-desc">Choose what you want to be notified about.</p>
+          <div class="toggle-row"><div class="toggle-info"><div class="title">Assignment submission alerts</div><div class="desc">Get notified when students submit assignments.</div></div><label class="toggle"><input type="checkbox" id="notif-submissions" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="title">Weekly class progress digest</div><div class="desc">Weekly summary of your class performance.</div></div><label class="toggle"><input type="checkbox" id="notif-digest" checked><span class="toggle-slider"></span></label></div>
+          <div class="toggle-row"><div class="toggle-info"><div class="title">New econOS features</div><div class="desc">Updates when new features or topics are added.</div></div><label class="toggle"><input type="checkbox" id="notif-features"><span class="toggle-slider"></span></label></div>
+        </div>
+        <div class="danger-section">
+          <h2>Account</h2>
+          <p class="section-desc">Actions that affect your account.</p>
+          <div class="danger-row"><div class="info"><div class="title">Sign out</div><div class="desc">Sign out of econOS on this device.</div></div><button class="btn btn-secondary btn-sm" onclick="Auth.signOut('../login.html')">Sign out</button></div>
+          <div class="danger-row"><div class="info"><div class="title">Delete account</div><div class="desc">Permanently delete your account. All classes and assignments will be removed.</div></div><button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete account</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="../assets/js/nav.js"></script>
+<script>
+let _profile = null, _session = null, _classes = [];
+
+async function init() {
+  const auth = await Auth.requireTeacher('../login.html');
+  if (!auth) return;
+  const { session, profile } = auth;
+  _profile = profile; _session = session;
+  const initials = (profile.full_name||'T').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  buildSidebar('settings', 'teacher', { name: profile.full_name, initials, school: profile.school_name||'' });
+  document.getElementById('header-avatar').textContent = initials;
+  document.getElementById('profile-avatar').textContent = initials;
+  document.getElementById('profile-name-display').textContent = profile.full_name || 'Unknown';
+  document.getElementById('profile-email-display').textContent = session.user.email || '';
+  document.getElementById('field-name').value    = profile.full_name || '';
+  document.getElementById('field-school').value  = profile.school_name || '';
+  document.getElementById('field-subject').value = profile.subject || '';
+  renderSecurity(session);
+  loadClasses();
+}
+
+function renderSecurity(session) {
+  const isGoogle = (session.user?.app_metadata?.providers || []).includes('google');
+  const el = document.getElementById('security-content');
+  if (isGoogle) {
+    el.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0;"><div><div style="font-size:0.875rem;font-weight:600;color:var(--navy);">Sign-in method</div><div style="font-size:0.75rem;color:var(--text-muted);">You sign in with Google. No password is needed.</div></div><div class="provider-badge"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Google</div></div>`;
+  } else {
+    el.innerHTML = `<div style="margin-bottom:1rem;"><div class="form-group"><label class="form-label">New password</label><input type="password" class="form-input" id="field-password" placeholder="Enter new password" autocomplete="new-password"></div><div class="form-group" style="margin-bottom:0;"><label class="form-label">Confirm new password</label><input type="password" class="form-input" id="field-password-confirm" placeholder="Confirm new password" autocomplete="new-password"></div></div><div style="display:flex;align-items:center;justify-content:flex-end;gap:0.75rem;"><span id="pw-saved" style="font-size:0.8rem;color:var(--learn-dark);display:none;">✓ Updated</span><span id="pw-error" style="font-size:0.8rem;color:#EF4444;display:none;"></span><button class="btn btn-primary btn-sm" onclick="changePassword()">Update password</button></div>`;
+  }
+}
+
+async function loadClasses() {
+  try {
+    _classes = await API.getTeacherClasses(_session.user.id);
+    const el = document.getElementById('class-list');
+    if (!_classes.length) { el.innerHTML = '<div style="text-align:center;padding:1rem;color:var(--text-muted);font-size:0.875rem;">No classes yet. Create one to get started.</div>'; return; }
+    el.innerHTML = _classes.map(c => { const count = c.class_memberships?.length||0; return `<div class="class-manage-row"><div><div class="name">${c.name}</div><div class="meta">${count} student${count!==1?'s':''} · Code: <strong>${c.invite_code||'—'}</strong></div></div><div style="display:flex;gap:0.375rem;"><button class="btn btn-ghost btn-sm" onclick="navigator.clipboard?.writeText('${c.invite_code}').then(()=>alert('Copied!'))">Copy</button><button class="btn btn-danger btn-sm" onclick="deleteClass('${c.id}')">Delete</button></div></div>`; }).join('');
+  } catch (err) { document.getElementById('class-list').innerHTML = '<div style="color:#EF4444;font-size:0.875rem;">Could not load classes.</div>'; }
+}
+
+async function saveProfile() {
+  const updates = { full_name: document.getElementById('field-name').value.trim(), school_name: document.getElementById('field-school').value.trim(), subject: document.getElementById('field-subject').value.trim() };
+  if (!updates.full_name) { alert('Please enter your full name.'); return; }
+  try {
+    await API.updateProfile(_session.user.id, updates);
+    Object.assign(_profile, updates);
+    const initials = updates.full_name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    document.getElementById('profile-avatar').textContent = initials;
+    document.getElementById('profile-name-display').textContent = updates.full_name;
+    const conf = document.getElementById('profile-saved'); conf.style.display = 'inline';
+    setTimeout(() => { conf.style.display = 'none'; }, 3000);
+  } catch (err) { alert('Could not save: ' + err.message); }
+}
+
+function resetProfileForm() {
+  if (!_profile) return;
+  document.getElementById('field-name').value    = _profile.full_name || '';
+  document.getElementById('field-school').value  = _profile.school_name || '';
+  document.getElementById('field-subject').value = _profile.subject || '';
+}
+
+async function changePassword() {
+  const pw = document.getElementById('field-password').value, pw2 = document.getElementById('field-password-confirm').value;
+  const errEl = document.getElementById('pw-error'); errEl.style.display = 'none';
+  if (pw.length < 8) { errEl.textContent = 'Min 8 characters.'; errEl.style.display = 'inline'; return; }
+  if (pw !== pw2)    { errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'inline'; return; }
+  const { error } = await window._sb.auth.updateUser({ password: pw });
+  if (error) { errEl.textContent = error.message; errEl.style.display = 'inline'; return; }
+  document.getElementById('pw-saved').style.display = 'inline';
+  document.getElementById('field-password').value = document.getElementById('field-password-confirm').value = '';
+  setTimeout(() => { document.getElementById('pw-saved').style.display = 'none'; }, 3000);
+}
+
+async function createNewClass() {
+  const name = prompt('Class name (e.g. "Year 12 Economics A"):');
+  if (!name?.trim()) return;
+  const { error } = await window._sb.from('classes').insert({ teacher_id: _session.user.id, name: name.trim() });
+  if (error) { alert('Could not create: ' + error.message); return; }
+  loadClasses();
+}
+
+async function deleteClass(id) {
+  if (!confirm('Delete this class? All students and assignments will be removed.')) return;
+  const { error } = await window._sb.from('classes').delete().eq('id', id);
+  if (error) { alert('Could not delete: ' + error.message); return; }
+  loadClasses();
+}
+
+async function confirmDelete() {
+  if (!confirm('Permanently delete your account? All classes and data will be removed.')) return;
+  await window._sb.from('profiles').delete().eq('id', _session.user.id);
+  await window._sb.auth.signOut();
+  window.location.href = '../login.html';
+}
+
+init();
+</script>
+</body>
+</html>
