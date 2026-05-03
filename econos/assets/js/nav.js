@@ -11,11 +11,11 @@ function buildSidebar(activeItem, role, user, basePath) {
   const initials = u.initials || name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   const school   = u.school   || '';
   const subLabel = role === 'teacher' ? school : (u.yearGroup ? u.yearGroup + ' · Student' : 'Student');
-  const loginPath = basePath ? 'login.html' : '../login.html';
+  const loginPath = '/login.html';
 
   const logoBlock = `
     <div class="sidebar-logo">
-      <a href="../index.html" style="text-decoration:none;">
+      <a href="/" style="text-decoration:none;">
         <div class="logo-mark">
           <div class="logo-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
           <div class="logo-wordmark"><span class="econ">econ</span><span class="os">OS</span></div>

@@ -612,7 +612,7 @@ async function handleGoogleAuth() {
   if (!window._sbConfigured) { alert('Supabase is not configured yet.'); return; }
   const { error } = await window._sb.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.origin + '/dashboard.html' }
+    options: { redirectTo: window.location.origin + '/dashboard' }
   });
   if (error) alert('Google sign-in failed: ' + error.message);
 }

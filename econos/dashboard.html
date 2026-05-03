@@ -2,10 +2,34 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0;url=student/dashboard.html">
-<title>econOS – Redirecting…</title>
+<title>econOS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/supabase-client.js"></script>
 </head>
 <body>
-<script>window.location.replace('student/dashboard.html');</script>
+<script>
+(async function () {
+  if (!window._sbConfigured || !window._sb) {
+    window.location.replace('/login.html');
+    return;
+  }
+  const { data: { session } } = await window._sb.auth.getSession();
+  if (!session) {
+    window.location.replace('/login.html');
+    return;
+  }
+  const { data: profile } = await window._sb
+    .from('profiles')
+    .select('role')
+    .eq('id', session.user.id)
+    .single();
+  if (profile && profile.role === 'teacher') {
+    window.location.replace('/teacher/dashboard.html');
+  } else {
+    window.location.replace('/student/dashboard.html');
+  }
+})();
+</script>
 </body>
 </html>

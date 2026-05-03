@@ -105,20 +105,9 @@ const Auth = (function () {
 
   // ── Helpers ────────────────────────────────────────────────────────────
 
-  function _resolveLoginUrl() {
-    const depth = (window.location.pathname.match(/\//g) || []).length - 1;
-    return depth >= 2 ? '../login.html' : 'login.html';
-  }
-
-  function _resolveStudentDash() {
-    const depth = (window.location.pathname.match(/\//g) || []).length - 1;
-    return depth >= 2 ? 'dashboard.html' : 'student/dashboard.html';
-  }
-
-  function _resolveTeacherDash() {
-    const depth = (window.location.pathname.match(/\//g) || []).length - 1;
-    return depth >= 2 ? '../teacher/dashboard.html' : 'teacher/dashboard.html';
-  }
+  function _resolveLoginUrl()    { return '/login.html'; }
+  function _resolveStudentDash() { return '/student/dashboard.html'; }
+  function _resolveTeacherDash() { return '/teacher/dashboard.html'; }
 
   function _showConfigBanner() {
     const banner = document.createElement('div');
