@@ -59,7 +59,7 @@
       </div>
       <div class="header-actions">
         <a href="builder.html" class="btn btn-primary btn-sm">+ New assignment</a>
-        <div class="user-avatar" id="header-avatar" style="cursor:pointer;">?</div>
+        <a href="settings.html"><div class="user-avatar" id="header-avatar">?</div></a>
       </div>
     </header>
     <div class="page-body">
@@ -97,7 +97,7 @@
         </div>
 
         <!-- RIGHT -->
-        <div>
+        <div class="sticky-right">
           <div class="main-card">
             <h3>Class performance</h3>
             <div id="performance-chart"><div class="skel" style="height:160px;border-radius:var(--r-md);"></div></div>
@@ -280,7 +280,7 @@ function renderNoClasses() {
       <p style="color:var(--text-muted);font-size:0.875rem;max-width:400px;margin:0 auto 1rem;">Create your first class to start setting assignments and tracking student progress.</p>
       <button onclick="createClass()" class="btn btn-primary">Create a class</button>
     </div>`;
-  document.getElementById('teacher-grid')?.remove();
+  document.querySelector('.teacher-grid')?.remove();
 }
 
 async function createClass() {
