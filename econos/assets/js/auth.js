@@ -48,7 +48,7 @@ const Auth = (function () {
     const session = await requireAuth(loginUrl);
     if (!session) return null;
     const profile = await getProfile(session.user.id);
-    if (!profile) { window.location.href = '/signup-details'; return null; }
+    if (!profile) { window.location.href = _resolveLoginUrl(); return null; }
     if (profile.role === 'teacher') {
       window.location.href = _resolveTeacherDash();
       return null;
@@ -60,7 +60,7 @@ const Auth = (function () {
     const session = await requireAuth(loginUrl);
     if (!session) return null;
     const profile = await getProfile(session.user.id);
-    if (!profile) { window.location.href = '/signup-details'; return null; }
+    if (!profile) { window.location.href = _resolveLoginUrl(); return null; }
     if (profile.role !== 'teacher') {
       window.location.href = _resolveStudentDash();
       return null;
