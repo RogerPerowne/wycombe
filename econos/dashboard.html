@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>econOS – Dashboard</title>
+<link rel="stylesheet" href="assets/css/econos.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { font-family: 'Inter', system-ui, sans-serif; background: #F8FAFC; color: #0F172A; }
+
+/* ── LAYOUT ── */
+.dash-layout { display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.dash-sidebar {
+  width: 232px; min-width: 232px;
+  background: #fff;
+  border-right: 1px solid #E2E8F0;
+  display: flex; flex-direction: column;
+  position: fixed; top: 0; left: 0; bottom: 0;
+  z-index: 20; overflow-y: auto;
+}
+.db-logo {
+  padding: 1.375rem 1.25rem 1rem;
+  border-bottom: 1px solid #F1F5F9;
+  flex-shrink: 0;
+}
+.db-logo-graph { width: 36px; height: 28px; margin-bottom: 5px; display: block; }
+.db-logo-wordmark { font-size: 1.375rem; font-weight: 800; letter-spacing: -0.03em; color: #0F172A; }
+.db-logo-wordmark .os { color: #2563EB; }
+.db-logo-tagline { font-size: 0.75rem; font-weight: 500; margin-top: 2px; }
+.tl { color: #16A34A; } .tli { color: #EA580C; } .tla { color: #2563EB; }
+
+.db-nav {
+  flex: 1; padding: 0.625rem 0.625rem;
+  display: flex; flex-direction: column; gap: 0.125rem;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 0.625rem;
+  padding: 0.5625rem 0.75rem; border-radius: 8px;
+  font-size: 0.875rem; font-weight: 500; color: #475569;
+  cursor: pointer; transition: background 0.12s, color 0.12s;
+  text-decoration: none;
+}
+.nav-item:hover { background: #F8FAFC; color: #0F172A; }
+.nav-item.active { background: #EFF6FF; color: #2563EB; font-weight: 600; }
+.nav-icon { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.nav-lock {
+  margin-left: auto; font-size: 0.625rem; font-weight: 700;
+  background: #F1F5F9; color: #94A3B8;
+  padding: 0.125rem 0.375rem; border-radius: 4px;
+}
+
+.db-sidebar-footer { padding: 0.875rem 0.75rem; border-top: 1px solid #F1F5F9; flex-shrink: 0; }
+.db-sidebar-card { background: #F8FAFC; border-radius: 12px; padding: 1rem; }
+.db-sidebar-card-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 0.625rem;
+}
+.db-sidebar-card-title { font-size: 0.8125rem; font-weight: 700; color: #0F172A; margin-bottom: 0.25rem; }
+.db-sidebar-card-body { font-size: 0.75rem; color: #64748B; line-height: 1.5; }
+.db-sidebar-card-btn {
+  display: inline-flex; align-items: center; gap: 0.25rem; margin-top: 0.75rem;
+  font-size: 0.8125rem; font-weight: 600; color: #16A34A;
+  border: 1.5px solid #16A34A; border-radius: 8px; padding: 0.375rem 0.75rem;
+  background: transparent; cursor: pointer; text-decoration: none;
+}
+.db-child-pill {
+  display: flex; align-items: center; gap: 0.625rem; margin-top: 0.75rem;
+  padding: 0.625rem 0.75rem; background: #fff;
+  border: 1.5px solid #E2E8F0; border-radius: 10px; cursor: pointer;
+}
+.db-child-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.db-child-name { font-size: 0.8125rem; font-weight: 600; color: #0F172A; }
+.db-child-sub { font-size: 0.75rem; color: #64748B; }
+.db-child-chevron { margin-left: auto; color: #94A3B8; }
+
+/* ── BODY ── */
+.dash-body { margin-left: 232px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ── TOPBAR ── */
+.dash-topbar {
+  background: #fff; border-bottom: 1px solid #E2E8F0;
+  height: 56px; display: flex; align-items: center; justify-content: flex-end;
+  padding: 0 2rem; gap: 0.875rem;
+  position: sticky; top: 0; z-index: 10;
+}
+.topbar-greeting { font-size: 0.9375rem; font-weight: 500; color: #334155; }
+.topbar-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8125rem; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.topbar-bell {
+  position: relative; width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: #F8FAFC; cursor: pointer; color: #64748B;
+}
+.topbar-bell-dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 8px; height: 8px; background: #EF4444;
+  border-radius: 50%; border: 2px solid #fff;
+}
+.topbar-user { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+.topbar-user-name { font-size: 0.875rem; font-weight: 600; color: #0F172A; text-align: right; }
+.topbar-user-role { font-size: 0.75rem; color: #64748B; text-align: right; }
+.topbar-chevron { color: #94A3B8; }
+
+/* ── CONTENT ROW ── */
+.dash-content-row { display: flex; flex: 1; align-items: flex-start; }
+
+/* ── MAIN ── */
+.dash-main { flex: 1; padding: 2rem 2rem 3rem 2.5rem; min-width: 0; }
+
+/* ── PAGE HEADER ── */
+.db-page-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.75rem; }
+.db-header-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.db-header-text h1 {
+  font-size: 1.875rem; font-weight: 800; color: #0F172A;
+  letter-spacing: -0.025em; margin: 0 0 0.25rem; line-height: 1.2;
+}
+.db-header-text p { font-size: 0.9375rem; color: #64748B; margin: 0; line-height: 1.5; }
+
+/* ── TOPIC CARD ── */
+.db-topic-card {
+  background: #fff; border: 1.5px solid #E2E8F0;
+  border-radius: 16px; padding: 1.75rem; margin-bottom: 1.5rem;
+}
+.topic-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+.topic-info { flex: 1; }
+.topic-label { font-size: 0.8125rem; font-weight: 600; color: #64748B; margin-bottom: 0.5rem; }
+.topic-label.green { color: #16A34A; }
+.topic-title { font-size: 1.625rem; font-weight: 800; color: #0F172A; letter-spacing: -0.025em; margin: 0 0 0.625rem; line-height: 1.2; }
+.topic-desc { font-size: 0.875rem; color: #64748B; margin: 0; line-height: 1.55; max-width: 380px; }
+.topic-chart { flex-shrink: 0; width: 160px; margin-left: 1.5rem; }
+
+/* ── PHASE GRID ── */
+.topic-phases { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.phase-card { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 1rem; }
+.phase-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+.phase-icon {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.phase-name { font-size: 0.9375rem; font-weight: 700; }
+.phase-name.learn { color: #16A34A; }
+.phase-name.link  { color: #D97706; }
+.phase-name.land  { color: #2563EB; }
+.phase-header-lock { color: #CBD5E1; display: flex; align-items: center; }
+.phase-desc { font-size: 0.8125rem; color: #475569; line-height: 1.5; margin: 0.375rem 0 0.75rem; }
+
+.phase-badge {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-size: 0.8125rem; font-weight: 600;
+  padding: 0.25rem 0.625rem; border-radius: 6px;
+}
+.phase-badge.ready { background: #DCFCE7; color: #16A34A; }
+.phase-badge.locked-badge { background: #F1F5F9; color: #94A3B8; }
+.phase-step-done {
+  display: inline-flex; align-items: center; gap: 0.375rem;
+  font-size: 0.8125rem; font-weight: 600; color: #16A34A;
+}
+.phase-check-circle {
+  width: 20px; height: 20px; background: #16A34A; color: #fff;
+  border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.6875rem; flex-shrink: 0;
+}
+.phase-locked-row {
+  display: inline-flex; align-items: center; gap: 0.375rem;
+  font-size: 0.8125rem; font-weight: 500; color: #94A3B8;
+}
+
+/* ── CTA ── */
+.topic-cta { display: flex; flex-direction: column; align-items: center; gap: 0.625rem; }
+.btn-cta {
+  width: 100%; padding: 1rem; background: #2563EB; color: #fff;
+  font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  transition: background 0.15s; font-family: inherit;
+}
+.btn-cta:hover { background: #1D4ED8; }
+.topic-cta-note {
+  font-size: 0.8125rem; color: #94A3B8; margin: 0;
+  display: flex; align-items: center; gap: 0.375rem;
+}
+
+/* ── TRUST BADGES ── */
+.db-trust-row { display: grid; gap: 1rem; }
+.db-trust-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.db-trust-row.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.trust-badge {
+  background: #fff; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 1rem;
+  display: flex; align-items: flex-start; gap: 0.75rem;
+}
+.trust-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.trust-title { font-size: 0.875rem; font-weight: 700; color: #0F172A; margin-bottom: 0.25rem; }
+.trust-body { font-size: 0.75rem; color: #64748B; line-height: 1.5; }
+
+/* ── RIGHT PANEL ── */
+.dash-right {
+  width: 280px; min-width: 280px; background: #fff; border-left: 1px solid #E2E8F0;
+  padding: 2rem 1.5rem; position: sticky; top: 56px;
+  max-height: calc(100vh - 56px); overflow-y: auto;
+}
+.right-section-title { font-size: 1rem; font-weight: 700; color: #0F172A; margin: 0 0 0.375rem; }
+.right-section-sub { font-size: 0.8125rem; color: #64748B; margin: 0 0 1.125rem; line-height: 1.5; }
+.right-item { display: flex; align-items: flex-start; gap: 0.625rem; margin-bottom: 0.875rem; }
+.right-item-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+.right-item-title { font-size: 0.875rem; font-weight: 700; }
+.right-item-title.learn  { color: #16A34A; }
+.right-item-title.link   { color: #D97706; }
+.right-item-title.land   { color: #2563EB; }
+.right-item-title.add    { color: #16A34A; }
+.right-item-title.assign { color: #D97706; }
+.right-item-title.track  { color: #2563EB; }
+.right-item-body { font-size: 0.8125rem; color: #64748B; line-height: 1.4; }
+.right-chevron { text-align: center; color: #CBD5E1; margin: -0.375rem 0 0.625rem 2.625rem; display: block; }
+.right-divider { height: 1px; background: #F1F5F9; margin: 1.125rem 0; }
+.right-mini-card { background: #F8FAFC; border-radius: 12px; padding: 1rem; margin-bottom: 0.75rem; }
+.right-mini-card-title { font-size: 0.875rem; font-weight: 700; color: #0F172A; margin: 0 0 0.25rem; }
+.right-mini-card-body { font-size: 0.8125rem; color: #64748B; line-height: 1.4; margin: 0 0 0.75rem; }
+.right-mini-card-btn {
+  display: inline-flex; align-items: center; gap: 0.375rem;
+  font-size: 0.8125rem; font-weight: 600; color: #475569;
+  border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 0.375rem 0.75rem;
+  background: #fff; cursor: pointer; text-decoration: none;
+}
+.right-help { display: flex; align-items: flex-start; gap: 0.625rem; }
+.right-help-icon { width: 32px; height: 32px; border-radius: 50%; background: #EFF6FF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #2563EB; }
+.right-help-title { font-size: 0.875rem; font-weight: 700; color: #0F172A; margin: 0 0 0.25rem; }
+.right-help-body { font-size: 0.8125rem; color: #64748B; line-height: 1.4; margin-bottom: 0.375rem; }
+.right-contact-link {
+  font-size: 0.8125rem; font-weight: 600; color: #2563EB;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;
+}
+.right-contact-link:hover { text-decoration: underline; }
+
+/* ── LOADING ── */
+.dash-loading { display: flex; align-items: center; justify-content: center; height: 100vh; color: #94A3B8; font-size: 0.9375rem; }
+</style>
+</head>
+<body>
+<div id="dashLoading" class="dash-loading">Loading…</div>
+<div class="dash-layout" id="dashLayout" style="display:none">
+
+  <!-- SIDEBAR -->
+  <aside class="dash-sidebar">
+    <div class="db-logo">
+      <svg class="db-logo-graph" viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="6" cy="28" r="5" fill="#22C55E"/>
+        <circle cx="24" cy="16" r="6" fill="#F59E0B"/>
+        <circle cx="42" cy="6" r="7" fill="#2563EB"/>
+        <line x1="10.5" y1="25.5" x2="19" y2="19" stroke="#CBD5E1" stroke-width="1.5"/>
+        <line x1="29" y1="13" x2="36" y2="9" stroke="#CBD5E1" stroke-width="1.5"/>
+      </svg>
+      <div class="db-logo-wordmark">econ<span class="os">OS</span></div>
+      <div class="db-logo-tagline">
+        <span class="tl">Learn it.</span> <span class="tli">Link it.</span> <span class="tla">Land it.</span>
+      </div>
+    </div>
+    <nav class="db-nav" id="dbNav"></nav>
+    <div class="db-sidebar-footer" id="dbSidebarFooter"></div>
+  </aside>
+
+  <!-- BODY -->
+  <div class="dash-body">
+    <header class="dash-topbar" id="dashTopbar"></header>
+    <div class="dash-content-row">
+      <main class="dash-main">
+        <div id="dbPageHeader" class="db-page-header"></div>
+        <div id="dbTopicCard" class="db-topic-card"></div>
+        <div id="dbTrustRow" class="db-trust-row"></div>
+      </main>
+      <aside class="dash-right" id="dashRight"></aside>
+    </div>
+  </div>
+
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// ── SVG ICON LIBRARY ──
+const IC = {
+  home:       `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+  grid:       `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>`,
+  chart:      `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  graduation: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
+  editDoc:    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`,
+  calendar:   `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+  settings:   `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>`,
+  person:     `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+  message:    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>`,
+  people:     `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>`,
+  book:       `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>`,
+  folder:     `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>`,
+  clipboard:  `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>`,
+  bookOpen:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>`,
+  chain:      `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>`,
+  target:     `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  lock:       `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>`,
+  check:      `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  shield:     `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+  star:       `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+  lockBig:    `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>`,
+  heart:      `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>`,
+  clock:      `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  clockSm:    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  rocket:     `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2l5.5-5.5M2.5 2.5s2.5-.5 5.5 2.5"/><path d="M13.5 13.5l-5-5M21.5 2.5c0 0-6-1-11 6-1.11 1.66-2 4-2 4l3 3s2.34-.89 4-2c7-5 6-11 6-11z"/></svg>`,
+  graduationBig: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
+  headphone:  `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>`,
+  bell:       `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>`,
+  chevronDown: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`,
+  chevronSm:  `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`,
+  arrowRight: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
+  chartSm:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  folderSm:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>`,
+  peopleSm:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>`,
+};
+
+// ── BAR CHART SVG ──
+const CHART_SVG = `<svg width="160" height="120" viewBox="0 0 160 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="8" y="76" width="36" height="40" rx="5" fill="#C7D2FE"/>
+  <rect x="60" y="50" width="36" height="66" rx="5" fill="#A5B4FC"/>
+  <rect x="112" y="20" width="36" height="96" rx="5" fill="#818CF8"/>
+  <path d="M 22 68 C 42 46 78 24 144 14" stroke="#22C55E" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 137 7 L 145 14 L 135 19" stroke="#22C55E" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+// ── PHASE DESCRIPTIONS BY ROLE ──
+const PHASE_DESCS = {
+  student: {
+    learn: 'Understand the key concepts in simple steps.',
+    link:  'Connect ideas and see how they work together.',
+    land:  'Apply your knowledge in essay and exam questions.',
+  },
+  parent: {
+    learn: 'Understand the key concepts in simple steps.',
+    link:  'Connect ideas and see how they work together.',
+    land:  'Apply knowledge in essay and exam questions.',
+  },
+  teacher: {
+    learn: 'Teach the key concepts with ready-to-use lessons and slides.',
+    link:  'Help students connect ideas and apply to real-world examples.',
+    land:  'Strengthen exam skills with questions and essay practice.',
+  },
+};
+
+// ── HELPERS ──
+function firstName(n) { return (n || '').split(' ')[0] || n || 'there'; }
+function avatarInitials(n) {
+  const p = (n || '').trim().split(/\s+/);
+  if (p.length === 1) return p[0].charAt(0).toUpperCase();
+  return (p[0].charAt(0) + p[p.length - 1].charAt(0)).toUpperCase();
+}
+
+// ── PHASE CARD BUILDER ──
+const PHASE_META = {
+  learn: { name: 'Learn it', cls: 'learn', iconBg: '#DCFCE7', iconColor: '#16A34A', icon: IC.bookOpen },
+  link:  { name: 'Link it',  cls: 'link',  iconBg: '#FEF3C7', iconColor: '#D97706', icon: IC.chain },
+  land:  { name: 'Land it',  cls: 'land',  iconBg: '#DBEAFE', iconColor: '#2563EB', icon: IC.target },
+};
+
+function buildPhaseCard(stage, isFirst, statusHtml, role) {
+  const m = PHASE_META[stage];
+  const desc = (PHASE_DESCS[role] || PHASE_DESCS.student)[stage];
+  const lockInHeader = !isFirst && role === 'student'
+    ? `<span class="phase-header-lock">${IC.lock}</span>` : '';
+  return `
+    <div class="phase-card">
+      <div class="phase-header">
+        <div class="phase-icon" style="background:${m.iconBg};color:${m.iconColor}">${m.icon}</div>
+        <span class="phase-name ${m.cls}">${m.name}</span>
+        ${lockInHeader}
+      </div>
+      <p class="phase-desc">${desc}</p>
+      ${statusHtml}
+    </div>`;
+}
+
+// ── ROLE CONFIG ──
+const ROLE_CONFIG = {
+
+  student: {
+    navItems: [
+      { icon: 'home',       label: 'Get started', active: true },
+      { icon: 'grid',       label: 'My topics' },
+      { icon: 'chart',      label: 'Progress' },
+      { icon: 'graduation', label: 'Exam practice', locked: true },
+      { icon: 'editDoc',    label: 'Essay feedback', locked: true },
+      { icon: 'calendar',   label: 'Study planner' },
+      { icon: 'settings',   label: 'Settings' },
+    ],
+    sidebarCard: (u) => `
+      <div class="db-sidebar-card">
+        <div class="db-sidebar-card-icon" style="background:#DCFCE7;color:#16A34A">${IC.rocket}</div>
+        <div class="db-sidebar-card-title" style="color:#16A34A">Your learning journey starts here</div>
+        <div class="db-sidebar-card-body">We'll guide you step by step to build confidence and master economics.</div>
+      </div>`,
+    topbar: (u) => {
+      const name = firstName(u.user_metadata?.full_name);
+      const init = avatarInitials(u.user_metadata?.full_name || 'A');
+      return `
+        <span class="topbar-greeting">Welcome, ${name}! 👋</span>
+        <div class="topbar-avatar" style="background:#475569">${init}</div>`;
+    },
+    pageHeader: (u) => `
+      <div class="db-header-icon" style="background:#DCFCE7;font-size:1.75rem;line-height:1">🎉</div>
+      <div class="db-header-text">
+        <h1>Let's get you started.</h1>
+        <p>We've built your first learning path. It takes about 10 minutes.</p>
+      </div>`,
+    topicLabel: () => 'Your first topic',
+    topicLabelGreen: false,
+    phaseStatuses: [
+      `<div class="phase-step-done"><span class="phase-check-circle">${IC.check}</span> Step 1 of 3</div>`,
+      `<div class="phase-locked-row">${IC.lock} Step 2 of 3</div>`,
+      `<div class="phase-locked-row">${IC.lock} Step 2 of 3</div>`,
+    ],
+    ctaLabel: (u) => 'Start your first session',
+    ctaNote: () => `<span>No pressure &ndash; just try it.</span>`,
+    trustCols: 'cols-3',
+    trustBadges: [
+      { icon: IC.shield,    bg: '#DCFCE7', color: '#16A34A', title: 'Trusted by students',      body: 'Join thousands of students across the UK.' },
+      { icon: IC.star,      bg: '#FEF3C7', color: '#D97706', title: 'Curriculum aligned',        body: 'Content written by experts and aligned to the A-Level syllabus.' },
+      { icon: IC.lockBig,   bg: '#DBEAFE', color: '#2563EB', title: 'Safe, secure and private', body: 'Your data is secure and never shared with third parties.' },
+    ],
+    rightPanel: (u) => `
+      <h3 class="right-section-title">What's next?</h3>
+      <p class="right-section-sub">Complete each step to build deeper understanding and boost your grades.</p>
+      <div class="right-item">
+        <div class="right-item-icon" style="background:#DCFCE7;color:#16A34A">${IC.bookOpen}</div>
+        <div><div class="right-item-title learn">Learn it</div><div class="right-item-body">Build a strong foundation</div></div>
+      </div>
+      <span class="right-chevron">${IC.chevronSm}</span>
+      <div class="right-item">
+        <div class="right-item-icon" style="background:#FEF3C7;color:#D97706">${IC.chain}</div>
+        <div><div class="right-item-title link">Link it</div><div class="right-item-body">Make connections</div></div>
+      </div>
+      <span class="right-chevron">${IC.chevronSm}</span>
+      <div class="right-item">
+        <div class="right-item-icon" style="background:#DBEAFE;color:#2563EB">${IC.target}</div>
+        <div><div class="right-item-title land">Land it</div><div class="right-item-body">Apply and excel</div></div>
+      </div>`,
+  },
+
+  parent: {
+    navItems: [
+      { icon: 'home',     label: 'Home', active: true },
+      { icon: 'person',   label: 'Your child' },
+      { icon: 'chart',    label: 'Progress' },
+      { icon: 'calendar', label: 'Study planner' },
+      { icon: 'message',  label: 'Messages' },
+      { icon: 'settings', label: 'Settings' },
+    ],
+    sidebarCard: (u) => {
+      const childName = u.user_metadata?.student_name || 'your child';
+      const yearGroup = u.user_metadata?.year_group || '';
+      const init = avatarInitials(childName);
+      return `
+        <div class="db-sidebar-card">
+          <div class="db-sidebar-card-icon" style="background:#DCFCE7;color:#16A34A">${IC.shield}</div>
+          <div class="db-sidebar-card-title" style="color:#16A34A">Supporting your child's success</div>
+          <div class="db-sidebar-card-body">We're here to help you stay informed and support their learning journey.</div>
+        </div>
+        <div class="db-child-pill">
+          <div class="db-child-avatar" style="background:#7C3AED">${init}</div>
+          <div>
+            <div class="db-child-name">${childName}</div>
+            ${yearGroup ? `<div class="db-child-sub">${yearGroup}</div>` : ''}
+          </div>
+          <span class="db-child-chevron">${IC.chevronDown}</span>
+        </div>`;
+    },
+    topbar: (u) => {
+      const name = u.user_metadata?.full_name || 'Parent';
+      const init = avatarInitials(name);
+      return `
+        <div class="topbar-bell">${IC.bell}<span class="topbar-bell-dot"></span></div>
+        <div class="topbar-user">
+          <div><div class="topbar-user-name">${name}</div><div class="topbar-user-role">Parent</div></div>
+          <div class="topbar-avatar" style="background:#7C3AED">${init}</div>
+          <span class="topbar-chevron">${IC.chevronDown}</span>
+        </div>`;
+    },
+    pageHeader: (u) => {
+      const name = firstName(u.user_metadata?.full_name);
+      const childName = u.user_metadata?.student_name || 'your child';
+      return `
+        <div class="db-header-icon" style="background:#EDE9FE;color:#7C3AED">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+          </svg>
+        </div>
+        <div class="db-header-text">
+          <h1>Welcome, ${name}! 👋</h1>
+          <p>We've set up ${childName}'s learning path to help them build confidence and achieve their goals in A-Level Economics.</p>
+        </div>`;
+    },
+    topicLabel: (u) => (u.user_metadata?.student_name || 'Your child') + "'s first topic",
+    topicLabelGreen: true,
+    phaseStatuses: [
+      `<span class="phase-badge ready">Ready to start</span>`,
+      `<span class="phase-badge locked-badge">${IC.lock} Locked</span>`,
+      `<span class="phase-badge locked-badge">${IC.lock} Locked</span>`,
+    ],
+    ctaLabel: (u) => 'Start ' + firstName(u.user_metadata?.student_name || "your child's") + "'s first session",
+    ctaNote: () => `<span>It takes about 10 minutes. No pressure &ndash; just try it.</span>`,
+    trustCols: 'cols-4',
+    trustBadges: [
+      { icon: IC.shield,  bg: '#DCFCE7', color: '#16A34A', title: 'Trusted by families',  body: 'Join thousands of parents supporting their children\'s learning across the UK.' },
+      { icon: IC.star,    bg: '#FEF3C7', color: '#D97706', title: 'Curriculum aligned',    body: 'Content written by experts and aligned to the A-Level syllabus.' },
+      { icon: IC.lockBig, bg: '#DBEAFE', color: '#2563EB', title: 'Safe and secure',       body: "Your family's data is secure and never shared with third parties." },
+      { icon: IC.heart,   bg: '#F3E8FF', color: '#9333EA', title: 'Built for success',     body: 'Designed to build confidence, improve grades and achieve goals.' },
+    ],
+    rightPanel: (u) => {
+      const child = firstName(u.user_metadata?.student_name || 'your child');
+      return `
+        <h3 class="right-section-title">What happens next?</h3>
+        <div class="right-item">
+          <div class="right-item-icon" style="background:#DCFCE7;color:#16A34A">${IC.bookOpen}</div>
+          <div><div class="right-item-title learn">Learn it</div><div class="right-item-body">Build a strong foundation of key concepts.</div></div>
+        </div>
+        <div class="right-item">
+          <div class="right-item-icon" style="background:#FEF3C7;color:#D97706">${IC.chain}</div>
+          <div><div class="right-item-title link">Link it</div><div class="right-item-body">Make connections and deepen understanding.</div></div>
+        </div>
+        <div class="right-item">
+          <div class="right-item-icon" style="background:#DBEAFE;color:#2563EB">${IC.target}</div>
+          <div><div class="right-item-title land">Land it</div><div class="right-item-body">Apply and excel in exam questions and essays.</div></div>
+        </div>
+        <div class="right-divider"></div>
+        <div class="right-mini-card">
+          <div class="right-mini-card-title">Keep track of progress</div>
+          <div class="right-mini-card-body">See how ${child} is doing and celebrate their wins.</div>
+          <a href="#" class="right-mini-card-btn">${IC.chartSm} View progress</a>
+        </div>
+        <div class="right-divider"></div>
+        <div class="right-help">
+          <div class="right-help-icon">${IC.headphone}</div>
+          <div>
+            <div class="right-help-title">We're here to help</div>
+            <div class="right-help-body">Need support or have a question? Our team is here for you.</div>
+            <a href="#" class="right-contact-link">Contact support ${IC.arrowRight}</a>
+          </div>
+        </div>`;
+    },
+  },
+
+  teacher: {
+    navItems: [
+      { icon: 'home',       label: 'Home', active: true },
+      { icon: 'people',     label: 'My classes' },
+      { icon: 'book',       label: 'Topics' },
+      { icon: 'folder',     label: 'Resources' },
+      { icon: 'clipboard',  label: 'Assignments' },
+      { icon: 'chart',      label: 'Progress' },
+      { icon: 'graduation', label: 'Exam practice' },
+      { icon: 'message',    label: 'Messages' },
+      { icon: 'settings',   label: 'Settings' },
+    ],
+    sidebarCard: (u) => `
+      <div class="db-sidebar-card">
+        <div class="db-sidebar-card-icon" style="background:#DCFCE7;color:#16A34A">${IC.graduationBig}</div>
+        <div class="db-sidebar-card-title" style="color:#16A34A">Built for teachers</div>
+        <div class="db-sidebar-card-body">Save time, engage students and improve outcomes in Economics.</div>
+        <a href="#" class="db-sidebar-card-btn">Explore features &rarr;</a>
+      </div>`,
+    topbar: (u) => {
+      const name = u.user_metadata?.full_name || 'Teacher';
+      const init = avatarInitials(name);
+      return `
+        <div class="topbar-bell">${IC.bell}<span class="topbar-bell-dot"></span></div>
+        <div class="topbar-user">
+          <div><div class="topbar-user-name">${name}</div><div class="topbar-user-role">Teacher</div></div>
+          <div class="topbar-avatar" style="background:#0891B2">${init}</div>
+          <span class="topbar-chevron">${IC.chevronDown}</span>
+        </div>`;
+    },
+    pageHeader: (u) => {
+      const name = u.user_metadata?.full_name || 'there';
+      return `
+        <div class="db-header-icon" style="background:#DBEAFE;color:#2563EB">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+          </svg>
+        </div>
+        <div class="db-header-text">
+          <h1>Welcome, ${name}! 👋</h1>
+          <p>Let's get your classes set up and help you deliver outstanding Economics lessons.</p>
+        </div>`;
+    },
+    topicLabel: () => 'Your recommended first topic',
+    topicLabelGreen: true,
+    phaseStatuses: [
+      `<span class="phase-badge ready">${IC.check} Ready to use</span>`,
+      `<span class="phase-badge locked-badge">${IC.lock} Locked</span>`,
+      `<span class="phase-badge locked-badge">${IC.lock} Locked</span>`,
+    ],
+    ctaLabel: (u) => 'Prepare this topic for your class',
+    ctaNote: () => `${IC.clockSm}<span>Estimated prep time: 10&ndash;15 minutes</span>`,
+    trustCols: 'cols-4',
+    trustBadges: [
+      { icon: IC.clock,         bg: '#DCFCE7', color: '#16A34A', title: 'Save time',          body: 'Ready-to-use lessons and resources reduce planning time.' },
+      { icon: IC.star,          bg: '#FEF3C7', color: '#D97706', title: 'Engage students',    body: 'Interactive content that builds understanding and confidence.' },
+      { icon: IC.shield,        bg: '#DBEAFE', color: '#2563EB', title: 'Improve outcomes',   body: 'Data-driven insights to help every student achieve more.' },
+      { icon: IC.graduationBig, bg: '#F3E8FF', color: '#9333EA', title: 'Curriculum aligned', body: 'Written by experts and fully aligned to the A-Level Economics specification.' },
+    ],
+    rightPanel: (u) => `
+      <h3 class="right-section-title">What happens next?</h3>
+      <div class="right-item">
+        <div class="right-item-icon" style="background:#DCFCE7;color:#16A34A">${IC.peopleSm}</div>
+        <div><div class="right-item-title add">Add your classes</div><div class="right-item-body">Set up your classes and invite your students.</div></div>
+      </div>
+      <div class="right-item">
+        <div class="right-item-icon" style="background:#FEF3C7;color:#D97706">${IC.folderSm}</div>
+        <div><div class="right-item-title assign">Assign topics</div><div class="right-item-body">Share lessons and resources with your students.</div></div>
+      </div>
+      <div class="right-item">
+        <div class="right-item-icon" style="background:#DBEAFE;color:#2563EB">${IC.chartSm}</div>
+        <div><div class="right-item-title track">Track progress</div><div class="right-item-body">Monitor understanding and identify areas to focus on.</div></div>
+      </div>
+      <div class="right-divider"></div>
+      <div class="right-mini-card">
+        <div class="right-mini-card-title">Save time with econOS</div>
+        <div class="right-mini-card-body">Access ready-made lessons, exam practice and AI tools to streamline planning and marking.</div>
+        <a href="#" class="right-mini-card-btn">Explore resources ${IC.arrowRight}</a>
+      </div>
+      <div class="right-divider"></div>
+      <div class="right-help">
+        <div class="right-help-icon">${IC.headphone}</div>
+        <div>
+          <div class="right-help-title">We're here to help</div>
+          <div class="right-help-body">Need support or training? Our team is here for you.</div>
+          <a href="#" class="right-contact-link">Contact support ${IC.arrowRight}</a>
+        </div>
+      </div>`,
+  },
+};
+
+// ── BUILDERS ──
+function buildNav(items) {
+  return items.map(it => `
+    <a class="nav-item${it.active ? ' active' : ''}" href="#">
+      <span class="nav-icon">${IC[it.icon] || ''}</span>${it.label}
+      ${it.locked ? `<span class="nav-lock">Locked</span>` : ''}
+    </a>`).join('');
+}
+
+function buildTrustBadges(badges) {
+  return badges.map(b => `
+    <div class="trust-badge">
+      <div class="trust-icon" style="background:${b.bg};color:${b.color}">${b.icon}</div>
+      <div><div class="trust-title">${b.title}</div><div class="trust-body">${b.body}</div></div>
+    </div>`).join('');
+}
+
+function buildTopicCard(cfg, user) {
+  const label = cfg.topicLabel(user);
+  const labelCls = cfg.topicLabelGreen ? 'topic-label green' : 'topic-label';
+  const role = user.user_metadata?.role || 'student';
+  const phases = ['learn', 'link', 'land'].map((stage, i) =>
+    buildPhaseCard(stage, i === 0, cfg.phaseStatuses[i], role)
+  ).join('');
+  return `
+    <div class="topic-header">
+      <div class="topic-info">
+        <div class="${labelCls}">${label}</div>
+        <h2 class="topic-title">Inflation &ndash; Cost-push vs Demand-pull</h2>
+        <p class="topic-desc">A key topic in A-Level Economics that builds the foundation for many other areas of the course.</p>
+      </div>
+      <div class="topic-chart">${CHART_SVG}</div>
+    </div>
+    <div class="topic-phases">${phases}</div>
+    <div class="topic-cta">
+      <button class="btn-cta">${cfg.ctaLabel(user)} &rarr;</button>
+      <p class="topic-cta-note">${cfg.ctaNote(user)}</p>
+    </div>`;
+}
+
+// ── INIT ──
+(async function init() {
+  const { createClient } = supabase;
+  const sb = createClient(window.ECONOS_CONFIG.supabaseUrl, window.ECONOS_CONFIG.supabaseAnonKey);
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+
+  const user = session.user;
+  const role = (user.user_metadata?.role || 'student').toLowerCase();
+  const cfg = ROLE_CONFIG[role] || ROLE_CONFIG.student;
+
+  document.getElementById('dbNav').innerHTML = buildNav(cfg.navItems);
+  document.getElementById('dbSidebarFooter').innerHTML = cfg.sidebarCard(user);
+  document.getElementById('dashTopbar').innerHTML = cfg.topbar(user);
+  document.getElementById('dbPageHeader').innerHTML = cfg.pageHeader(user);
+  document.getElementById('dbTopicCard').innerHTML = buildTopicCard(cfg, user);
+
+  const trustRow = document.getElementById('dbTrustRow');
+  trustRow.className = `db-trust-row ${cfg.trustCols}`;
+  trustRow.innerHTML = buildTrustBadges(cfg.trustBadges);
+
+  document.getElementById('dashRight').innerHTML = cfg.rightPanel(user);
+
+  document.getElementById('dashLoading').style.display = 'none';
+  document.getElementById('dashLayout').style.display = 'flex';
+})();
+</script>
+</body>
+</html>
