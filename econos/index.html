@@ -112,13 +112,6 @@ body { background: #fff; }
   width: 100%; height: 100%; display: block;
   object-fit: cover; object-position: 50% 10%;
 }
-.hero-photo::after {
-  content: '';
-  position: absolute; inset: 0; pointer-events: none;
-  background:
-    linear-gradient(to right, #fff 0%, rgba(255,255,255,0) 32%),
-    linear-gradient(to top, #fff 0%, rgba(255,255,255,0) 18%);
-}
 .hero-photo-placeholder {
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
@@ -382,7 +375,7 @@ body { background: #fff; }
     <!-- Right: photo + floating card -->
     <div class="hero-right">
       <div class="hero-photo">
-        <img src="https://zefasbqhksjjusbooqga.supabase.co/storage/v1/object/public/Assets/hero-student.png"
+        <img src="https://zefasbqhksjjusbooqga.supabase.co/storage/v1/object/public/Assets/student-hero.png"
              alt="Student studying economics"
              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="hero-photo-placeholder" style="display:none;">

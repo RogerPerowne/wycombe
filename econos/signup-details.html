@@ -707,28 +707,10 @@ function goBack() {
   window.location.href = 'login.html';
 }
 
-(async function init() {
+(function init() {
   const raw = sessionStorage.getItem('econos_signup');
-  if (raw) {
-    signupData = JSON.parse(raw);
-  } else if (window._sbConfigured) {
-    const { data: { session } } = await window._sb.auth.getSession();
-    if (session) {
-      const meta = session.user.user_metadata || {};
-      signupData = {
-        name: meta.full_name || '',
-        email: session.user.email || '',
-        role: meta.role || 'student',
-        _fromSession: true
-      };
-    } else {
-      window.location.href = 'login';
-      return;
-    }
-  } else {
-    window.location.href = 'login';
-    return;
-  }
+  if (!raw) { window.location.href = 'login'; return; }
+  signupData = JSON.parse(raw);
   const role = signupData.role || 'student';
   const cfg = ROLE_CONFIG[role] || ROLE_CONFIG.student;
 
@@ -759,7 +741,7 @@ function gatherExtraData() {
   const role = signupData?.role || 'student';
   if (role === 'student') {
     return {
-      school: document.getElementById('s-school')?.value.trim() || '',
+      school_name: document.getElementById('s-school')?.value.trim() || '',
       year_group: document.getElementById('s-year')?.value || '',
       exam_board: document.getElementById('s-board')?.value || '',
       target_grade: document.getElementById('s-target')?.value || '',
@@ -772,7 +754,7 @@ function gatherExtraData() {
     if (document.getElementById('t-year12')?.checked) years.push('year12');
     if (document.getElementById('t-year13')?.checked) years.push('year13');
     return {
-      school: document.getElementById('t-school')?.value.trim() || '',
+      school_name: document.getElementById('t-school')?.value.trim() || '',
       teacher_role: document.getElementById('t-role')?.value || '',
       subject: document.getElementById('t-subject')?.value || '',
       years_taught: years,
@@ -786,7 +768,7 @@ function gatherExtraData() {
       parent_name: document.getElementById('p-name')?.value.trim() || '',
       student_name: document.getElementById('p-student-name')?.value.trim() || '',
       year_group: document.getElementById('p-year')?.value || '',
-      school: document.getElementById('p-school')?.value.trim() || '',
+      school_name: document.getElementById('p-school')?.value.trim() || '',
       referral: document.getElementById('p-referral')?.value || ''
     };
   }
@@ -802,22 +784,6 @@ async function handleComplete() {
   btn.disabled = true;
 
   const extra = gatherExtraData();
-
-  if (signupData._fromSession) {
-    const { data: { session } } = await window._sb.auth.getSession();
-    if (!session) { btn.classList.remove('btn-loading'); btn.disabled = false; goBack(); return; }
-    const { error } = await window._sb.from('profiles').upsert({
-      id: session.user.id,
-      full_name: signupData.name,
-      role: signupData.role,
-      ...extra
-    }, { onConflict: 'id' });
-    btn.classList.remove('btn-loading');
-    btn.disabled = false;
-    if (error) { showMsg(error.message || 'Could not save profile.', 'error'); return; }
-    window.location.href = signupData.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard';
-    return;
-  }
 
   const { data, error } = await window._sb.auth.signUp({
     email: signupData.email,
