@@ -8,6 +8,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 window.ECONOS_CONFIG = {
-  supabaseUrl:     'YOUR_SUPABASE_URL',       // e.g. https://abcdefgh.supabase.co
-  supabaseAnonKey: 'YOUR_SUPABASE_ANON_KEY'   // starts with eyJ...
+  supabaseUrl:     'https://zefasbqhksjjusbooqga.supabase.co',
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InplZmFzYnFoa3NqanVzYm9vcWdhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MjMzOTMsImV4cCI6MjA5MzI5OTM5M30.rOq-ngBe_kh6jlyTY4EoQS5nafZE1tXSIy-QQO0prcM'
 };
