@@ -11,9 +11,20 @@ html, body { height: 100%; margin: 0; }
 body {
   font-family: 'Inter', system-ui, sans-serif;
   min-height: 100vh;
-  background: #F8FAFC;
+  background: #fff;
   display: flex;
   flex-direction: column;
+}
+.page-shell {
+  width: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
+  background: #F8FAFC;
+  border-left: 1px solid #E2E8F0;
+  border-right: 1px solid #E2E8F0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 /* ── TOPBAR ── */
@@ -289,6 +300,8 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/supabase-client.js"></script>
+
+<div class="page-shell">
 
 <!-- ── TOPBAR ── -->
 <div class="topbar">
@@ -660,6 +673,8 @@ body {
     </div>
   </main>
 </div>
+
+</div><!-- /page-shell -->
 
 <script>
 const ROLE_CONFIG = {
