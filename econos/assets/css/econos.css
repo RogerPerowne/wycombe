@@ -96,7 +96,7 @@ input, textarea, select { font-family: inherit; }
 .t-land    { color: var(--land); }
 
 /* ── LAYOUT ── */
-.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.container { max-width: 1440px; margin: 0 auto; padding: 0 2rem; }
 .app-layout { display: flex; min-height: 100vh; }
 
 /* Sidebar */
