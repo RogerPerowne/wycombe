@@ -8,10 +8,18 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
-body { font-family: 'Inter', system-ui, sans-serif; background: #F8FAFC; color: #0F172A; }
+body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F172A; }
 
 /* ── LAYOUT ── */
-.dash-layout { display: flex; min-height: 100vh; }
+.dash-layout {
+  display: flex;
+  min-height: 100vh;
+  max-width: 1480px;
+  margin: 0 auto;
+  background: #F8FAFC;
+  border-left: 1px solid #E2E8F0;
+  border-right: 1px solid #E2E8F0;
+}
 
 /* ── SIDEBAR ── */
 .dash-sidebar {
@@ -19,7 +27,8 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #F8FAFC; color: 
   background: #fff;
   border-right: 1px solid #E2E8F0;
   display: flex; flex-direction: column;
-  position: fixed; top: 0; left: 0; bottom: 0;
+  position: sticky; top: 0; align-self: flex-start;
+  height: 100vh;
   z-index: 20; overflow-y: auto;
 }
 .db-logo {
@@ -82,7 +91,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #F8FAFC; color: 
 .db-child-chevron { margin-left: auto; color: #94A3B8; }
 
 /* ── BODY ── */
-.dash-body { margin-left: 232px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+.dash-body { flex: 1; display: flex; flex-direction: column; min-height: 100vh; min-width: 0; }
 
 /* ── TOPBAR ── */
 .dash-topbar {
