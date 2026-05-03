@@ -47,8 +47,14 @@ const Auth = (function () {
   async function requireStudent(loginUrl) {
     const session = await requireAuth(loginUrl);
     if (!session) return null;
-    const profile = await getProfile(session.user.id);
-    if (!profile) { window.location.href = _resolveLoginUrl(); return null; }
+    let profile = await getProfile(session.user.id);
+    if (!profile) profile = await _ensureProfile(session);
+    if (!profile) {
+      // Last resort: build a minimal profile from user_metadata so the page loads
+      const metaRole = session.user.user_metadata?.role || 'student';
+      if (metaRole === 'teacher') { window.location.href = _resolveTeacherDash(); return null; }
+      profile = { id: session.user.id, role: 'student', full_name: session.user.user_metadata?.full_name || '' };
+    }
     if (profile.role === 'teacher') {
       window.location.href = _resolveTeacherDash();
       return null;
@@ -59,13 +65,36 @@ const Auth = (function () {
   async function requireTeacher(loginUrl) {
     const session = await requireAuth(loginUrl);
     if (!session) return null;
-    const profile = await getProfile(session.user.id);
-    if (!profile) { window.location.href = _resolveLoginUrl(); return null; }
+    let profile = await getProfile(session.user.id);
+    if (!profile) profile = await _ensureProfile(session);
+    if (!profile) {
+      const metaRole = session.user.user_metadata?.role || 'student';
+      if (metaRole !== 'teacher') { window.location.href = _resolveStudentDash(); return null; }
+      profile = { id: session.user.id, role: 'teacher', full_name: session.user.user_metadata?.full_name || '' };
+    }
     if (profile.role !== 'teacher') {
       window.location.href = _resolveStudentDash();
       return null;
     }
     return { session, profile };
+  }
+
+  async function _ensureProfile(session) {
+    if (!window._sb || !session) return null;
+    const user = session.user;
+    const meta = user.user_metadata || {};
+    const allowed = ['student', 'teacher', 'admin', 'parent'];
+    const role = allowed.includes(meta.role) ? meta.role : 'student';
+    const { data, error } = await window._sb.from('profiles').upsert({
+      id: user.id,
+      email: user.email,
+      full_name: meta.full_name || user.email.split('@')[0],
+      role,
+      school_name: meta.school_name || null
+    }, { onConflict: 'id' }).select().single();
+    if (error) { console.error('[Auth] _ensureProfile error:', error); return null; }
+    _cachedProfile = data;
+    return data;
   }
 
   // ── Sign out ─────────────────────────────────────────────────────────
@@ -126,7 +155,7 @@ const Auth = (function () {
         See <code>SETUP.md</code> for full instructions.
       </p>
       <a href="../SETUP.md" style="margin-top:1.5rem;padding:0.625rem 1.25rem;background:#2563EB;border-radius:8px;text-decoration:none;color:white;font-weight:600;">
-        View setup guide →
+        View setup guide &rarr;
       </a>`;
     document.body.appendChild(banner);
   }

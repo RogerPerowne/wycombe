@@ -568,8 +568,8 @@ async function redirectAfterAuth() {
   if (!session) return false;
   const { data: profile } = await window._sb
     .from('profiles').select('role').eq('id', session.user.id).single();
-  if (!profile) return false;
-  window.location.href = profile.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard';
+  const role = profile?.role || session.user.user_metadata?.role || 'student';
+  window.location.href = role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard';
   return true;
 }
 
@@ -594,8 +594,7 @@ async function handleSignIn(e) {
     return;
   }
   if (data.session) {
-    const ok = await redirectAfterAuth();
-    if (!ok) showMsg('signin-msg', 'Signed in but your profile could not be loaded.', 'error');
+    await redirectAfterAuth();
   }
 }
 
