@@ -153,7 +153,7 @@ const DEFAULT_QUESTIONS = [
 let currentQuestion = DEFAULT_QUESTIONS[0];
 
 async function init() {
-  const auth = await Auth.requireStudent('../login.html');
+  const auth = await Auth.requireStudent();
   if (!auth) return;
   const { session, profile } = auth;
   userId = session.user.id;
@@ -309,7 +309,7 @@ function showSubmissionConfirmation(wordCount) {
     <div style="background:var(--learn-light);border:1px solid var(--learn);border-radius:var(--r-md);padding:1rem;font-size:0.875rem;color:var(--learn-dark);font-weight:600;text-align:center;">
       ✅ Essay submitted (${wordCount} words)! Your teacher will review it soon.
       <div style="margin-top:0.5rem;">
-        <a href="dashboard.html" class="btn btn-ghost btn-sm">Back to dashboard</a>
+        <a href="dashboard" class="btn btn-ghost btn-sm">Back to dashboard</a>
       </div>
     </div>`;
 }
