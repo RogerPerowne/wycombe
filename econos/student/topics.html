@@ -3,47 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>econOS – Your Topic Map</title>
+<title>econOS – Topic Map</title>
 <link rel="stylesheet" href="../assets/css/econos.css">
 <style>
-.filter-bar { display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap; margin-bottom:1.75rem; }
-.filter-select { padding:0.5rem 2rem 0.5rem 0.875rem; border:1px solid var(--border); border-radius:var(--r-sm); font-size:0.8rem; font-weight:600; color:var(--text-primary); background:var(--bg-card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 0.75rem center; appearance:none; cursor:pointer; transition:border-color var(--t-fast); }
-.filter-select:focus { outline:none; border-color:var(--land); }
-.filter-pill { padding:0.375rem 0.875rem; border-radius:var(--r-full); font-size:0.75rem; font-weight:700; border:1.5px solid var(--border); background:var(--bg-card); color:var(--text-secondary); cursor:pointer; transition:all var(--t-fast); }
-.filter-pill.active { border-color:var(--land); background:var(--land-light); color:var(--land); }
+.filter-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.75rem; flex-wrap:wrap; gap:0.75rem; }
+.filter-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; }
+.filter-tab { padding:0.375rem 0.875rem; border-radius:var(--r-full); font-size:0.8rem; font-weight:600; border:1.5px solid var(--border); background:var(--bg-card); color:var(--text-secondary); cursor:pointer; transition:all var(--t-fast); }
+.filter-tab.active { border-color:var(--land); background:var(--land-light); color:var(--land); }
 
-.theme-section { margin-bottom:2.5rem; }
-.theme-header { display:flex; align-items:center; gap:0.75rem; margin-bottom:1.25rem; }
-.theme-badge { padding:0.25rem 0.75rem; border-radius:var(--r-full); font-size:0.7rem; font-weight:700; background:var(--land-light); color:var(--land); }
-.theme-header h2 { font-size:1.125rem; font-weight:800; color:var(--navy); letter-spacing:-0.01em; }
+.readiness-summary { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.75rem; }
+.summary-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.25rem; box-shadow:var(--shadow-sm); }
+.summary-card .label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-muted); margin-bottom:0.375rem; }
+.summary-card .value { font-size:1.75rem; font-weight:900; letter-spacing:-0.03em; }
+.summary-card .sub { font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; }
 
-.topics-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
-.topic-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.25rem 1.5rem; cursor:pointer; transition:all var(--t-base); }
-.topic-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); border-color:var(--land-light); }
-.topic-card-head { display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem; }
-.topic-icon { width:42px; height:42px; border-radius:var(--r-md); background:var(--land-light); display:flex; align-items:center; justify-content:center; font-size:1.25rem; flex-shrink:0; }
-.topic-icon.t1 { background:var(--learn-light); }
-.topic-icon.t2 { background:var(--land-light); }
-.topic-icon.t3 { background:var(--link-light); }
-.topic-icon.t4 { background:rgba(139,92,246,0.1); }
-.topic-name { font-size:0.9375rem; font-weight:700; color:var(--navy); line-height:1.25; }
-.topic-sub  { font-size:0.75rem; color:var(--text-muted); margin-top:0.125rem; }
-.topic-stages { display:flex; flex-direction:column; gap:6px; margin-bottom:1rem; }
-.stage-row { display:flex; align-items:center; gap:0.5rem; }
-.stage-label { font-size:0.68rem; font-weight:700; width:52px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; }
-.stage-bar-wrap { flex:1; }
-.stage-bar { height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
-.stage-bar .fill { height:100%; border-radius:3px; transition:width 0.5s ease; }
-.stage-pct { font-size:0.7rem; font-weight:700; width:28px; text-align:right; }
-.topic-footer { display:flex; align-items:center; justify-content:space-between; }
-.subtopic-count { font-size:0.75rem; color:var(--text-muted); }
-.mastery-badge { font-size:0.7rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:var(--r-full); }
-.mastery-badge.strong { background:var(--learn-light); color:var(--learn-dark); }
-.mastery-badge.mid    { background:var(--link-light);  color:var(--link-dark); }
-.mastery-badge.weak   { background:#FEF2F2; color:#DC2626; }
-.mastery-badge.new    { background:var(--bg-subtle); color:var(--text-muted); }
+.theme-section { margin-bottom:2rem; }
+.theme-heading { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:0.875rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border); }
 
-.skel { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:var(--r-md); }
+.topic-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1rem; }
+.topic-card {
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl);
+  padding:1.25rem 1.5rem; box-shadow:var(--shadow-sm); cursor:pointer;
+  transition:all var(--t-fast);
+}
+.topic-card:hover { box-shadow:var(--shadow-md); transform:translateY(-1px); border-color:var(--land-light); }
+
+.topic-card-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:1rem; gap:0.75rem; }
+.topic-title { font-size:0.9375rem; font-weight:700; color:var(--navy); line-height:1.3; }
+.topic-count-badge { font-size:0.65rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:var(--r-full); white-space:nowrap; flex-shrink:0; }
+
+.stage-rows { display:flex; flex-direction:column; gap:0.5rem; }
+.stage-row { display:flex; align-items:center; gap:0.625rem; }
+.stage-row .stage-label { font-size:0.7rem; font-weight:700; width:54px; flex-shrink:0; }
+.stage-row .bar-wrap { flex:1; height:6px; background:var(--border); border-radius:var(--r-full); overflow:hidden; }
+.stage-row .bar-fill { height:100%; border-radius:var(--r-full); transition:width 0.6s ease; }
+.stage-row .bar-pct { font-size:0.7rem; font-weight:700; width:28px; text-align:right; flex-shrink:0; }
+
+.topic-footer { display:flex; align-items:center; justify-content:space-between; margin-top:1rem; padding-top:0.875rem; border-top:1px solid var(--border); }
+.start-link { font-size:0.75rem; font-weight:700; color:var(--land); }
+
+.empty-state { text-align:center; padding:3rem 1rem; }
+.empty-state .icon { font-size:3rem; margin-bottom:0.75rem; }
+.empty-state h3 { font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:0.375rem; }
+.empty-state p { font-size:0.875rem; color:var(--text-muted); }
+
+.skel { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
 @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 </style>
 </head>
@@ -60,39 +64,39 @@
     <header class="main-header">
       <div class="header-title">
         <div style="font-size:1.125rem;font-weight:700;color:var(--navy);">Topic Map</div>
-        <div style="font-size:0.75rem;color:var(--text-muted);">All A-Level Economics themes</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);" id="topics-sub">Loading…</div>
       </div>
       <div class="header-actions">
-        <div class="streak-badge"><span class="flame">🔥</span><span id="header-streak">— day streak</span></div>
-        <div class="user-avatar" id="header-avatar">?</div>
+        <a href="settings.html"><div class="user-avatar" id="header-avatar">?</div></a>
       </div>
     </header>
 
     <div class="page-body">
-      <div class="filter-bar">
-        <select class="filter-select" id="theme-filter" onchange="applyFilter()">
-          <option value="all">All themes</option>
-          <option value="1">Theme 1: Markets</option>
-          <option value="2">Theme 2: UK Economy</option>
-          <option value="3">Theme 3: Business</option>
-          <option value="4">Theme 4: Global</option>
-        </select>
-        <button class="filter-pill active" onclick="setStatus('all',this)">All</button>
-        <button class="filter-pill" onclick="setStatus('weak',this)">Needs work</button>
-        <button class="filter-pill" onclick="setStatus('strong',this)">Strong</button>
-        <button class="filter-pill" onclick="setStatus('new',this)">Not started</button>
+      <!-- READINESS SUMMARY -->
+      <div class="readiness-summary" id="summary-row">
+        <div class="summary-card"><div class="label">Topics started</div><div class="value skel" style="height:40px;width:40px;"></div></div>
+        <div class="summary-card"><div class="label">Learn it avg</div><div class="value skel" style="height:40px;width:60px;"></div></div>
+        <div class="summary-card"><div class="label">Link it avg</div><div class="value skel" style="height:40px;width:60px;"></div></div>
+        <div class="summary-card"><div class="label">Land it avg</div><div class="value skel" style="height:40px;width:60px;"></div></div>
       </div>
 
+      <!-- FILTER TABS -->
+      <div class="filter-row">
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="setFilter('all',this)">All topics</button>
+          <button class="filter-tab" onclick="setFilter('in-progress',this)">In progress</button>
+          <button class="filter-tab" onclick="setFilter('not-started',this)">Not started</button>
+          <button class="filter-tab" onclick="setFilter('mastered',this)">Mastered</button>
+        </div>
+      </div>
+
+      <!-- TOPIC MAP -->
       <div id="topics-container">
-        <!-- Skeleton -->
-        <div class="theme-section">
-          <div class="theme-header">
-            <div style="height:22px;width:70px;" class="skel"></div>
-            <div style="height:22px;width:200px;" class="skel"></div>
-          </div>
-          <div class="topics-grid">
-            <div style="height:170px;" class="skel"></div><div style="height:170px;" class="skel"></div><div style="height:170px;" class="skel"></div><div style="height:170px;" class="skel"></div>
-          </div>
+        <div class="topic-grid">
+          <div class="skel" style="height:170px;border-radius:var(--r-xl);"></div>
+          <div class="skel" style="height:170px;border-radius:var(--r-xl);"></div>
+          <div class="skel" style="height:170px;border-radius:var(--r-xl);"></div>
+          <div class="skel" style="height:170px;border-radius:var(--r-xl);"></div>
         </div>
       </div>
     </div>
@@ -101,112 +105,133 @@
 
 <script src="../assets/js/nav.js"></script>
 <script>
-let allTopics = [];
-let masteryMap = {};
-let activeStatus = 'all';
+let _topics = [];
+let _masteryMap = {};
+let _currentFilter = 'all';
 
-function setStatus(status, btn) {
-  activeStatus = status;
-  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+const THEME_COLORS = [
+  { bg: '#DBEAFE', color: '#1D4ED8' },
+  { bg: '#DCFCE7', color: '#15803D' },
+  { bg: '#FEF3C7', color: '#B45309' },
+  { bg: '#EDE9FE', color: '#6D28D9' },
+  { bg: '#FFE4E6', color: '#BE123C' },
+  { bg: '#CCFBF1', color: '#0F766E' },
+];
+
+function getMastery(subtopicId) {
+  return _masteryMap[subtopicId] || { learn_score: 0, link_score: 0, land_score: 0 };
+}
+
+function getTopicStatus(subtopics) {
+  if (!subtopics.length) return 'not-started';
+  const hasAny = subtopics.some(s => {
+    const m = getMastery(s.id);
+    return m.learn_score > 0 || m.link_score > 0 || m.land_score > 0;
+  });
+  if (!hasAny) return 'not-started';
+  const avg = Math.round(subtopics.reduce((sum, s) => {
+    const m = getMastery(s.id);
+    return sum + Math.round((m.learn_score + m.link_score + m.land_score) / 3);
+  }, 0) / subtopics.length);
+  return avg >= 80 ? 'mastered' : 'in-progress';
+}
+
+function setFilter(f, btn) {
+  _currentFilter = f;
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderTopics();
 }
 
-function applyFilter() { renderTopics(); }
-
-function getMasteryClass(overall) {
-  if (overall === 0) return 'new';
-  if (overall >= 70) return 'strong';
-  if (overall >= 50) return 'mid';
-  return 'weak';
-}
-
-function getMasteryLabel(overall) {
-  if (overall === 0) return 'Not started';
-  if (overall >= 70) return '✓ Strong';
-  if (overall >= 50) return '△ Improving';
-  return '⚡ Needs work';
-}
-
-function themeIconClass(themeNum) {
-  return ['t1','t1','t2','t3','t4'][themeNum] || 't1';
-}
-
 function renderTopics() {
-  const themeFilter = document.getElementById('theme-filter').value;
   const container = document.getElementById('topics-container');
-
-  const themes = {};
-  allTopics.forEach(topic => {
-    if (themeFilter !== 'all' && String(topic.theme_number) !== themeFilter) return;
-    const key = topic.theme_number;
-    if (!themes[key]) themes[key] = { name: topic.theme_name, topics: [] };
-    themes[key].topics.push(topic);
-  });
-
-  if (!Object.keys(themes).length) {
-    container.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--text-muted);">No topics found.</div>';
+  if (!_topics.length) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">📚</div><h3>No topics available yet</h3><p>Your teacher hasn't added any topics yet. Check back soon.</p></div>`;
     return;
   }
 
-  container.innerHTML = Object.entries(themes).map(([themeNum, { name, topics }]) => {
-    const filtered = topics.filter(t => {
-      const m = masteryMap[t.id];
-      const overall = m ? m.overall : 0;
-      const cls = getMasteryClass(overall);
-      if (activeStatus === 'all') return true;
-      return cls === activeStatus;
+  const grouped = {};
+  _topics.forEach(t => {
+    const key = t.theme_name || 'General';
+    if (!grouped[key]) grouped[key] = { theme_number: t.theme_number || 0, topics: [] };
+    grouped[key].topics.push(t);
+  });
+
+  const sortedThemes = Object.entries(grouped).sort((a, b) => a[1].theme_number - b[1].theme_number);
+  let html = '';
+  let totalShown = 0;
+
+  sortedThemes.forEach(([themeName, themeData], idx) => {
+    const color = THEME_COLORS[idx % THEME_COLORS.length];
+    const visible = themeData.topics.filter(t => {
+      if (_currentFilter === 'all') return true;
+      return getTopicStatus(t.subtopics || []) === _currentFilter;
     });
-    if (!filtered.length) return '';
+    if (!visible.length) return;
+    totalShown += visible.length;
 
-    const cards = filtered.map(t => {
-      const m = masteryMap[t.id] || { avg_learn: 0, avg_link: 0, avg_land: 0, overall_mastery: 0, overall: 0 };
-      const overall = m.overall_mastery || 0;
-      const cls = getMasteryClass(overall);
-      const subtopicCount = t.subtopics?.length || 0;
-      const iconCls = themeIconClass(parseInt(themeNum));
-      return `
-        <div class="topic-card" onclick="window.location.href='learn.html?topic=${t.slug}'">
-          <div class="topic-card-head">
-            <div class="topic-icon ${iconCls}">${t.icon || '📊'}</div>
-            <div>
-              <div class="topic-name">${t.title}</div>
-              <div class="topic-sub">${subtopicCount} subtopic${subtopicCount !== 1 ? 's' : ''}</div>
-            </div>
-          </div>
-          <div class="topic-stages">
-            <div class="stage-row">
-              <div class="stage-label">Learn</div>
-              <div class="stage-bar-wrap"><div class="stage-bar"><div class="fill fill-learn" style="width:${m.avg_learn || 0}%;"></div></div></div>
-              <div class="stage-pct" style="color:var(--learn-dark);">${m.avg_learn || 0}%</div>
-            </div>
-            <div class="stage-row">
-              <div class="stage-label">Link</div>
-              <div class="stage-bar-wrap"><div class="stage-bar"><div class="fill fill-link" style="width:${m.avg_link || 0}%;"></div></div></div>
-              <div class="stage-pct" style="color:var(--link-dark);">${m.avg_link || 0}%</div>
-            </div>
-            <div class="stage-row">
-              <div class="stage-label">Land</div>
-              <div class="stage-bar-wrap"><div class="stage-bar"><div class="fill fill-land" style="width:${m.avg_land || 0}%;"></div></div></div>
-              <div class="stage-pct" style="color:var(--land);">${m.avg_land || 0}%</div>
-            </div>
-          </div>
-          <div class="topic-footer">
-            <div class="subtopic-count">${subtopicCount} subtopic${subtopicCount !== 1 ? 's' : ''}</div>
-            <div class="mastery-badge ${cls}">${getMasteryLabel(overall)}</div>
-          </div>
-        </div>`;
-    }).join('');
+    html += `<div class="theme-section">
+      <div class="theme-heading">${themeData.theme_number ? 'Theme ' + themeData.theme_number + ': ' : ''}${themeName}</div>
+      <div class="topic-grid">${visible.map(t => renderCard(t, color)).join('')}</div>
+    </div>`;
+  });
 
-    return `
-      <div class="theme-section">
-        <div class="theme-header">
-          <span class="theme-badge">Theme ${themeNum}</span>
-          <h2>${name}</h2>
-        </div>
-        <div class="topics-grid">${cards}</div>
-      </div>`;
-  }).join('');
+  if (!totalShown) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">🔍</div><h3>No topics match this filter</h3><p>Try a different filter or start practising to build progress.</p></div>`;
+    return;
+  }
+  container.innerHTML = html;
+}
+
+function renderCard(topic, color) {
+  const subs = topic.subtopics || [];
+  const status = getTopicStatus(subs);
+
+  const avgLearn = subs.length ? Math.round(subs.reduce((s, sub) => s + getMastery(sub.id).learn_score, 0) / subs.length) : 0;
+  const avgLink  = subs.length ? Math.round(subs.reduce((s, sub) => s + getMastery(sub.id).link_score,  0) / subs.length) : 0;
+  const avgLand  = subs.length ? Math.round(subs.reduce((s, sub) => s + getMastery(sub.id).land_score,  0) / subs.length) : 0;
+
+  const learnColor = avgLearn < 50 ? '#EF4444' : avgLearn < 75 ? 'var(--link)' : 'var(--learn)';
+  const linkColor  = avgLink  < 50 ? '#EF4444' : avgLink  < 75 ? 'var(--link)' : 'var(--learn)';
+  const landColor  = avgLand  < 50 ? '#EF4444' : avgLand  < 75 ? 'var(--link)' : 'var(--learn)';
+
+  const statusPill = status === 'mastered'
+    ? `<span class="stage-pill pill-learn">✓ Mastered</span>`
+    : status === 'in-progress'
+    ? `<span class="stage-pill pill-link">In progress</span>`
+    : `<span class="stage-pill" style="background:var(--bg-subtle);color:var(--text-muted);">Not started</span>`;
+
+  const firstSubId = subs.length ? subs[0].id : '';
+  const href = firstSubId ? `learn.html?subtopic=${firstSubId}` : '#';
+  const ctaLabel = status === 'mastered' ? 'Review →' : status === 'in-progress' ? 'Continue →' : 'Start →';
+
+  return `<div class="topic-card" onclick="window.location.href='${href}'">
+    <div class="topic-card-header">
+      <div class="topic-title">${topic.title}</div>
+      <span class="topic-count-badge" style="background:${color.bg};color:${color.color};">${subs.length} subtopic${subs.length !== 1 ? 's' : ''}</span>
+    </div>
+    <div class="stage-rows">
+      <div class="stage-row">
+        <span class="stage-label" style="color:var(--learn-dark);">Learn it</span>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${avgLearn}%;background:${learnColor};"></div></div>
+        <span class="bar-pct" style="color:${learnColor};">${avgLearn}%</span>
+      </div>
+      <div class="stage-row">
+        <span class="stage-label" style="color:var(--link-dark);">Link it</span>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${avgLink}%;background:${linkColor};"></div></div>
+        <span class="bar-pct" style="color:${linkColor};">${avgLink}%</span>
+      </div>
+      <div class="stage-row">
+        <span class="stage-label" style="color:var(--land);">Land it</span>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${avgLand}%;background:${landColor};"></div></div>
+        <span class="bar-pct" style="color:${landColor};">${avgLand}%</span>
+      </div>
+    </div>
+    <div class="topic-footer">
+      ${statusPill}
+      <span class="start-link">${ctaLabel}</span>
+    </div>
+  </div>`;
 }
 
 async function init() {
@@ -214,41 +239,33 @@ async function init() {
   if (!auth) return;
   const { session, profile } = auth;
   const userId = session.user.id;
-
   const initials = (profile.full_name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   buildSidebar('topics', 'student', { name: profile.full_name, initials, school: profile.school_name || '', yearGroup: profile.year_group || 'Year 12' });
   document.getElementById('header-avatar').textContent = initials;
 
   try {
-    const [topics, mastery, streakData] = await Promise.all([
+    const [topics, masteryData] = await Promise.all([
       API.getTopics(),
-      API.getStudentMastery(userId),
-      API.getStreakData(userId)
+      API.getStudentMastery(userId)
     ]);
 
-    allTopics = topics;
-    document.getElementById('header-streak').textContent = `${streakData.streak} day streak`;
+    _topics = topics;
+    _masteryMap = {};
+    masteryData.forEach(m => { _masteryMap[m.subtopic_id] = m; });
 
-    mastery.forEach(m => {
-      const topicId = m.subtopic?.topic?.id;
-      if (!topicId) return;
-      if (!masteryMap[topicId]) {
-        masteryMap[topicId] = { avg_learn: 0, avg_link: 0, avg_land: 0, overall_mastery: 0, _count: 0 };
-      }
-      const entry = masteryMap[topicId];
-      entry.avg_learn = Math.round((entry.avg_learn * entry._count + m.learn_score) / (entry._count + 1));
-      entry.avg_link  = Math.round((entry.avg_link  * entry._count + m.link_score)  / (entry._count + 1));
-      entry.avg_land  = Math.round((entry.avg_land  * entry._count + m.land_score)  / (entry._count + 1));
-      entry._count++;
-      entry.overall_mastery = Math.round((entry.avg_learn + entry.avg_link + entry.avg_land) / 3);
-      entry.overall = entry.overall_mastery;
-    });
+    const readiness = API.calcReadiness(masteryData);
+    document.getElementById('topics-sub').textContent = `${topics.length} topic${topics.length !== 1 ? 's' : ''} · ${masteryData.length} subtopic${masteryData.length !== 1 ? 's' : ''} practised`;
+    document.getElementById('summary-row').innerHTML = `
+      <div class="summary-card"><div class="label">Topics started</div><div class="value" style="color:var(--navy);">${masteryData.length}</div><div class="sub">Subtopics practised</div></div>
+      <div class="summary-card"><div class="label">Learn it avg</div><div class="value" style="color:var(--learn-dark);">${readiness.learn}%</div><div class="sub">Recall &amp; concepts</div></div>
+      <div class="summary-card"><div class="label">Link it avg</div><div class="value" style="color:var(--link-dark);">${readiness.link}%</div><div class="sub">Reasoning chains</div></div>
+      <div class="summary-card"><div class="label">Land it avg</div><div class="value" style="color:var(--land);">${readiness.land}%</div><div class="sub">Written analysis</div></div>`;
 
     renderTopics();
   } catch (err) {
     console.error('[Topics]', err);
-    document.getElementById('topics-container').innerHTML =
-      '<div style="text-align:center;padding:3rem;color:#EF4444;">Could not load topics. Please refresh.</div>';
+    document.getElementById('topics-sub').textContent = 'Could not load topics.';
+    document.getElementById('topics-container').innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><h3>Error loading topics</h3><p>Please refresh the page.</p></div>`;
   }
 }
 
