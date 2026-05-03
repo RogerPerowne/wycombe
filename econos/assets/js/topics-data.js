@@ -2,6 +2,7 @@
 window.ECONOS_TOPICS = {
   inflation: {
     id: 'inflation',
+    quizId: 'inflation_causes',
     title: 'Inflation – Cost-push vs Demand-pull',
     subject: 'Macroeconomics',
     sessionLabel: 'Session 1 of 2: Learn',
