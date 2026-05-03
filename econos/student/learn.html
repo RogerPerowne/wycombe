@@ -3,609 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>econOS – Learn it</title>
+<title>econOS – Learn It</title>
 <link rel="stylesheet" href="../assets/css/econos.css">
 <style>
-/* LEARN IT SPECIFIC */
-.learn-layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 1.75rem;
-  align-items: flex-start;
-}
-
-/* TOPIC HEADER */
-.topic-header-card {
-  background: linear-gradient(135deg, var(--learn-light) 0%, #ECFDF5 100%);
-  border: 1.5px solid var(--learn);
-  border-radius: var(--r-xl);
-  padding: 1.5rem 2rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-}
-.topic-header-left {}
-.topic-header-card .back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--learn-dark);
-  margin-bottom: 0.625rem;
-  opacity: 0.8;
-}
-.topic-header-card h1 { font-size: 1.625rem; font-weight: 800; color: var(--navy); letter-spacing: -0.02em; }
-.topic-header-card .topic-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  margin-top: 0.5rem;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  flex-wrap: wrap;
-}
-.topic-header-card .topic-meta span { display: flex; align-items: center; gap: 0.3rem; }
-.topic-stage-indicator {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  padding: 0.75rem 1rem;
-}
-
-/* CONTENT CARD */
-.content-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  margin-bottom: 1.25rem;
-}
-.content-nav {
-  background: var(--bg-subtle);
-  border-bottom: 1px solid var(--border);
-  padding: 0 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.content-nav-items { display: flex; }
-.content-nav-item {
-  padding: 0.75rem 1rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  transition: all var(--t-fast);
-  margin-bottom: -1px;
-}
-.content-nav-item:hover { color: var(--learn-dark); }
-.content-nav-item.active { color: var(--learn-dark); border-bottom-color: var(--learn); }
-.content-progress { font-size: 0.75rem; color: var(--text-muted); }
-
-.content-body { padding: 2rem; }
-.content-section { margin-bottom: 2rem; }
-.content-section h2 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 0.875rem;
-  padding-bottom: 0.625rem;
-  border-bottom: 2px solid var(--learn-light);
-}
-.content-section h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin: 1rem 0 0.5rem; }
-.content-section p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 0.875rem; }
-
-/* CALLOUT BOXES */
-.callout {
-  border-radius: var(--r-md);
-  padding: 1rem 1.25rem;
-  margin: 1rem 0;
-  border-left: 4px solid;
-}
-.callout-definition { background: var(--land-light); border-color: var(--land); }
-.callout-definition .callout-label { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--land); margin-bottom: 0.375rem; }
-.callout-definition p { color: var(--navy); font-weight: 500; margin: 0; }
-.callout-example { background: var(--learn-light); border-color: var(--learn); }
-.callout-example .callout-label { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--learn-dark); margin-bottom: 0.375rem; }
-.callout-example p { color: var(--navy); margin: 0; }
-.callout-warn { background: var(--link-light); border-color: var(--link); }
-.callout-warn .callout-label { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--link-dark); margin-bottom: 0.375rem; }
-.callout-warn p { color: var(--navy); margin: 0; }
-.callout-tip { background: #F3E8FF; border-color: #7C3AED; }
-.callout-tip .callout-label { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #7C3AED; margin-bottom: 0.375rem; }
-.callout-tip p { color: var(--navy); margin: 0; }
-
-/* KEY TERMS */
-.key-terms { display: flex; flex-direction: column; gap: 0.75rem; margin: 1rem 0; }
-.key-term {
-  display: flex;
-  gap: 0.875rem;
-  padding: 0.875rem;
-  background: var(--bg-subtle);
-  border-radius: var(--r-md);
-  border: 1px solid var(--border);
-}
-.key-term .term { font-size: 0.875rem; font-weight: 700; color: var(--land); min-width: 140px; flex-shrink: 0; }
-.key-term .def  { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.55; }
-
-/* DIAGRAM PLACEHOLDER */
-.diagram-box {
-  background: var(--bg-subtle);
-  border: 1.5px dashed var(--border);
-  border-radius: var(--r-lg);
-  padding: 2.5rem;
-  text-align: center;
-  margin: 1.25rem 0;
-}
-.diagram-box .diagram-icon { font-size: 2rem; margin-bottom: 0.625rem; opacity: 0.4; }
-.diagram-box .diagram-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
-.diagram-box .diagram-title { font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem; }
-
-/* AD/AS DIAGRAM SVG */
-.adas-diagram {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  padding: 1rem;
-  margin: 1rem 0;
-}
-
-/* KNOWLEDGE CHECK */
-.knowledge-check {
-  background: var(--bg-card);
-  border: 1.5px solid var(--learn);
-  border-radius: var(--r-xl);
-  padding: 1.5rem;
-  margin-top: 1.5rem;
-}
-.knowledge-check .kc-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
-.knowledge-check .kc-icon { font-size: 1.25rem; }
-.knowledge-check h3 { font-size: 1rem; font-weight: 700; color: var(--navy); }
-.kc-question { font-size: 0.9rem; color: var(--text-primary); font-weight: 500; margin-bottom: 1rem; }
-.kc-options { display: flex; flex-direction: column; gap: 0.5rem; }
-.kc-option {
-  padding: 0.75rem 1rem;
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-md);
-  cursor: pointer;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  transition: all var(--t-fast);
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-}
-.kc-option:hover { border-color: var(--learn); background: var(--learn-light); color: var(--learn-dark); }
-.kc-option.correct { border-color: var(--learn); background: var(--learn-light); color: var(--learn-dark); font-weight: 600; }
-.kc-option.incorrect { border-color: #EF4444; background: #FEF2F2; color: #DC2626; }
-.kc-option .opt-letter {
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  background: var(--border);
-  font-size: 0.75rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.kc-option.correct .opt-letter { background: var(--learn); color: white; }
-.kc-option.incorrect .opt-letter { background: #EF4444; color: white; }
-.kc-feedback {
-  margin-top: 1rem;
-  padding: 0.875rem;
-  border-radius: var(--r-md);
-  font-size: 0.875rem;
-  display: none;
-}
-.kc-feedback.show { display: block; }
-.kc-feedback.correct { background: var(--learn-light); color: var(--learn-dark); }
-.kc-feedback.incorrect { background: #FEF2F2; color: #DC2626; }
-
-/* NAVIGATION FOOTER */
-.content-footer {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  padding: 1.25rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: var(--shadow-sm);
-}
-.content-footer .section-info { font-size: 0.8rem; color: var(--text-muted); }
-.content-footer .section-name { font-size: 0.875rem; font-weight: 700; color: var(--navy); }
-
-/* RIGHT SIDEBAR */
-.learn-sidebar {}
-.sidebar-section {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 1.25rem;
-}
-.sidebar-section h5 { font-size: 0.875rem; font-weight: 700; color: var(--navy); margin-bottom: 0.875rem; }
-.topic-outline-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.625rem;
-  border-radius: var(--r-sm);
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: background var(--t-fast);
-  margin-bottom: 2px;
-}
-.topic-outline-item:hover { background: var(--bg-subtle); color: var(--text-primary); }
-.topic-outline-item.active { background: var(--learn-light); color: var(--learn-dark); font-weight: 600; }
-.topic-outline-item .check { margin-left: auto; font-size: 0.65rem; }
-.topic-outline-item.done .check { color: var(--learn-dark); font-weight: 800; }
-.outline-num {
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  background: var(--border);
-  font-size: 0.65rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: var(--text-muted);
-}
-.topic-outline-item.active .outline-num { background: var(--learn); color: white; }
-.topic-outline-item.done .outline-num   { background: var(--learn); color: white; }
-
-.learn-progress-bar {
-  height: 8px;
-  background: var(--bg-subtle);
-  border-radius: var(--r-full);
-  overflow: hidden;
-  margin: 0.875rem 0 0.25rem;
-}
-.learn-progress-bar .fill { height: 100%; background: var(--learn); border-radius: var(--r-full); transition: width 0.5s ease; }
-.progress-text { font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between; }
-
-.key-terms-mini { display: flex; flex-direction: column; gap: 0.5rem; }
-.kterm-mini {
-  font-size: 0.775rem;
-  padding: 0.375rem 0.5rem;
-  background: var(--land-light);
-  border-radius: var(--r-sm);
-  color: var(--land-dark);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background var(--t-fast);
-}
-.kterm-mini:hover { background: #DBEAFE; }
-
-@media (max-width:900px) { .learn-layout { grid-template-columns: 1fr; } }
+.learn-layout { display:grid; grid-template-columns:1fr 300px; gap:1.75rem; align-items:start; }
+.learn-content-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:2rem; box-shadow:var(--shadow-sm); }
+.learn-breadcrumb { font-size:0.75rem; color:var(--text-muted); margin-bottom:1.25rem; display:flex; align-items:center; gap:0.375rem; }
+.learn-breadcrumb a { color:var(--text-muted); text-decoration:none; }
+.learn-breadcrumb a:hover { color:var(--land); }
+.learn-stage-pill { display:inline-flex; align-items:center; gap:0.375rem; background:var(--learn-light); color:var(--learn-dark); font-size:0.7rem; font-weight:700; padding:0.25rem 0.625rem; border-radius:var(--r-full); margin-bottom:0.75rem; }
+.learn-title { font-size:1.5rem; font-weight:800; color:var(--navy); letter-spacing:-0.02em; margin-bottom:0.5rem; }
+.learn-meta-row { font-size:0.8rem; color:var(--text-muted); margin-bottom:1.75rem; display:flex; align-items:center; gap:1rem; }
+.learn-body h2 { font-size:1.125rem; font-weight:700; color:var(--navy); margin:1.5rem 0 0.75rem; }
+.learn-body h3 { font-size:1rem; font-weight:700; color:var(--navy); margin:1.25rem 0 0.5rem; }
+.learn-body p { font-size:0.9rem; line-height:1.75; color:var(--text-primary); margin-bottom:0.875rem; }
+.learn-body ul, .learn-body ol { padding-left:1.5rem; margin-bottom:0.875rem; }
+.learn-body li { font-size:0.9rem; line-height:1.7; color:var(--text-primary); margin-bottom:0.25rem; }
+.learn-body strong { color:var(--navy); font-weight:700; }
+.content-formula { background:var(--bg-subtle); border-left:3px solid var(--land); border-radius:0 var(--r-sm) var(--r-sm) 0; padding:0.75rem 1rem; font-size:0.875rem; font-weight:700; color:var(--navy); margin:1rem 0; font-family:monospace; }
+.content-callout { border-radius:var(--r-md); padding:0.875rem 1rem; margin:1rem 0; font-size:0.85rem; }
+.content-callout.info { background:#EFF6FF; border:1px solid #BFDBFE; color:#1E40AF; }
+.content-callout.warn { background:#FFFBEB; border:1px solid #FDE68A; color:#92400E; }
+.learn-sidebar-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.5rem; box-shadow:var(--shadow-sm); margin-bottom:1rem; position:sticky; top:1.5rem; }
+.key-term-item { padding:0.625rem 0; border-bottom:1px solid var(--border); }
+.key-term-item:last-child { border-bottom:none; }
+.key-term-name { font-size:0.8rem; font-weight:700; color:var(--navy); margin-bottom:0.25rem; }
+.key-term-def  { font-size:0.75rem; color:var(--text-secondary); line-height:1.5; }
+.obj-item { display:flex; align-items:flex-start; gap:0.5rem; padding:0.375rem 0; font-size:0.8rem; color:var(--text-primary); line-height:1.4; }
+.obj-item::before { content:'→'; color:var(--learn); font-weight:700; flex-shrink:0; margin-top:1px; }
+.learn-actions { display:flex; gap:0.75rem; margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border); }
+.mcq-opt { display:flex; align-items:flex-start; gap:0.625rem; padding:0.625rem 0.875rem; border:1.5px solid var(--border); border-radius:var(--r-sm); cursor:pointer; transition:all var(--t-fast); }
+.skel { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 </style>
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/api.js"></script>
+
 <div class="app-layout">
   <aside class="sidebar" id="sidebar"></aside>
-
   <div class="main-content">
     <header class="main-header">
       <div class="header-title">
-        <a href="topics.html" style="display:flex;align-items:center;gap:0.375rem;font-size:0.8rem;font-weight:600;color:var(--text-secondary);text-decoration:none;">
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-          Back to Topics
-        </a>
-      </div>
-      <div style="flex:1;text-align:center;">
-        <div class="stage-trail" style="justify-content:center;">
-          <div class="stage-node">
-            <div class="stage-circle active-learn">1</div>
-            <span class="stage-node-label active-learn" style="margin-right:0.375rem;">Learn it</span>
-          </div>
-          <div class="stage-trail-line done-learn"></div>
-          <div class="stage-node">
-            <div class="stage-circle">2</div>
-            <span class="stage-node-label" style="margin-right:0.375rem;">Link it</span>
-          </div>
-          <div class="stage-trail-line"></div>
-          <div class="stage-node">
-            <div class="stage-circle">3</div>
-            <span class="stage-node-label">Land it</span>
-          </div>
-        </div>
+        <div style="font-size:1.125rem;font-weight:700;color:var(--navy);">Learn It</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);" id="learn-meta-header">Loading…</div>
       </div>
       <div class="header-actions">
-        <a href="link.html" class="btn btn-secondary btn-sm">Next: Link it →</a>
+        <div class="streak-badge"><span class="flame">🔥</span><span id="header-streak">—</span></div>
+        <div class="user-avatar" id="header-avatar">?</div>
       </div>
     </header>
-
     <div class="page-body">
-      <!-- TOPIC HEADER -->
-      <div class="topic-header-card">
-        <div class="topic-header-left">
-          <a href="topics.html" class="back-link">← 2.3 Policies</a>
-          <h1>Monetary policy</h1>
-          <div class="topic-meta">
-            <span>📚 2.3.2</span>
-            <span>⏱ ~25 mins to complete</span>
-            <span>📝 5 sections</span>
-            <span class="stage-pill pill-learn">Learn it</span>
-          </div>
-        </div>
-        <div class="topic-stage-indicator">
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;font-weight:600;color:var(--learn-dark);">
-              <div style="width:12px;height:12px;background:var(--learn);border-radius:50%;"></div>
-              Learn it · 60% done
-            </div>
-            <div class="progress-bar thick"><div class="fill fill-learn" style="width:60%;"></div></div>
-          </div>
-        </div>
-      </div>
-
       <div class="learn-layout">
-        <!-- MAIN CONTENT -->
         <div>
-          <div class="content-card">
-            <div class="content-nav">
-              <div class="content-nav-items">
-                <div class="content-nav-item active" onclick="showSection(this,'overview')">Overview</div>
-                <div class="content-nav-item" onclick="showSection(this,'mechanism')">Mechanism</div>
-                <div class="content-nav-item" onclick="showSection(this,'diagrams')">Diagrams</div>
-                <div class="content-nav-item" onclick="showSection(this,'evaluation')">Evaluation</div>
-                <div class="content-nav-item" onclick="showSection(this,'check')">Knowledge check</div>
-              </div>
-              <div class="content-progress">Section 1 of 5</div>
+          <div class="learn-content-card">
+            <div class="learn-breadcrumb">
+              <a href="topics.html">Topics</a> ›
+              <span id="bc-topic"></span> ›
+              <span id="bc-subtopic"></span>
             </div>
-
-            <div class="content-body">
-              <!-- OVERVIEW SECTION -->
-              <div id="section-overview" class="content-section">
-                <h2>What is monetary policy?</h2>
-                <p>Monetary policy refers to the decisions made by a country's central bank (in the UK, the Bank of England) to control the money supply and interest rates in order to achieve macroeconomic objectives — primarily low and stable inflation.</p>
-
-                <div class="callout callout-definition">
-                  <div class="callout-label">Key definition</div>
-                  <p><strong>Monetary policy:</strong> The use of interest rates, quantitative easing, and other tools by a central bank to influence aggregate demand, inflation, and economic growth.</p>
-                </div>
-
-                <h3>The Bank of England's mandate</h3>
-                <p>The Bank of England's primary objective is to maintain price stability, defined as keeping CPI inflation at <strong>2% per year</strong> (± 1%). The Monetary Policy Committee (MPC) meets every six weeks to set the base rate.</p>
-
-                <div class="callout callout-example">
-                  <div class="callout-label">Real world example</div>
-                  <p>In 2021–2023, the Bank of England raised interest rates from 0.1% to 5.25% in response to inflation reaching over 11% — the fastest tightening cycle in 30 years.</p>
-                </div>
-
-                <h3>Types of monetary policy</h3>
-                <div class="key-terms">
-                  <div class="key-term">
-                    <div class="term">Contractionary</div>
-                    <div class="def">Raising interest rates or reducing money supply to reduce inflation and slow aggregate demand.</div>
-                  </div>
-                  <div class="key-term">
-                    <div class="term">Expansionary</div>
-                    <div class="def">Lowering interest rates or increasing money supply to stimulate aggregate demand and economic growth.</div>
-                  </div>
-                  <div class="key-term">
-                    <div class="term">Quantitative Easing (QE)</div>
-                    <div class="def">The central bank creates money to buy financial assets, increasing money supply when interest rates are already near zero.</div>
-                  </div>
-                </div>
-
-                <div class="callout callout-warn">
-                  <div class="callout-label">Common exam mistake</div>
-                  <p>Students often confuse the <strong>base rate</strong> with <strong>commercial bank interest rates</strong>. The base rate set by the Bank of England influences (but doesn't directly set) the rates offered by commercial banks to consumers and businesses.</p>
-                </div>
-
-                <div class="callout callout-tip">
-                  <div class="callout-label">Examiner tip</div>
-                  <p>Always explain the <strong>transmission mechanism</strong> when discussing monetary policy — don't just say "higher interest rates reduce inflation." Show the chain: rate rise → higher borrowing costs → less consumer spending → lower AD → reduced demand-pull inflation.</p>
-                </div>
-              </div>
-
-              <!-- MECHANISM SECTION (hidden) -->
-              <div id="section-mechanism" class="content-section" style="display:none;">
-                <h2>The transmission mechanism</h2>
-                <p>The transmission mechanism describes <em>how</em> a change in interest rates works its way through the economy to affect inflation and output. Understanding this chain is essential for Link it and Land it.</p>
-
-                <h3>Step-by-step: Interest rate rise</h3>
-                <div style="display:flex;flex-direction:column;gap:0.625rem;margin:1rem 0;">
-                  <div style="display:flex;align-items:flex-start;gap:0.875rem;padding:0.875rem;background:var(--bg-subtle);border-radius:var(--r-md);">
-                    <div style="width:28px;height:28px;border-radius:50%;background:var(--land);color:white;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
-                    <div><strong style="font-size:0.875rem;">Bank of England raises base rate</strong><br><span style="font-size:0.8rem;color:var(--text-secondary);">MPC votes to increase the rate (e.g. from 4.5% to 5%).</span></div>
-                  </div>
-                  <div style="display:flex;align-items:flex-start;gap:0.875rem;padding:0.875rem;background:var(--bg-subtle);border-radius:var(--r-md);">
-                    <div style="width:28px;height:28px;border-radius:50%;background:var(--land);color:white;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-                    <div><strong style="font-size:0.875rem;">Commercial banks raise their rates</strong><br><span style="font-size:0.8rem;color:var(--text-secondary);">Mortgage rates, business loan rates, and credit card rates increase.</span></div>
-                  </div>
-                  <div style="display:flex;align-items:flex-start;gap:0.875rem;padding:0.875rem;background:var(--bg-subtle);border-radius:var(--r-md);">
-                    <div style="width:28px;height:28px;border-radius:50%;background:var(--land);color:white;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
-                    <div><strong style="font-size:0.875rem;">Consumers and firms borrow less</strong><br><span style="font-size:0.8rem;color:var(--text-secondary);">Higher cost of borrowing reduces incentive to take loans for consumption or investment.</span></div>
-                  </div>
-                  <div style="display:flex;align-items:flex-start;gap:0.875rem;padding:0.875rem;background:var(--bg-subtle);border-radius:var(--r-md);">
-                    <div style="width:28px;height:28px;border-radius:50%;background:var(--land);color:white;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
-                    <div><strong style="font-size:0.875rem;">Aggregate demand falls</strong><br><span style="font-size:0.8rem;color:var(--text-secondary);">C and I components of AD (C+I+G+(X-M)) decline, shifting AD left.</span></div>
-                  </div>
-                  <div style="display:flex;align-items:flex-start;gap:0.875rem;padding:0.875rem;background:var(--learn-light);border-radius:var(--r-md);border:1px solid var(--learn);">
-                    <div style="width:28px;height:28px;border-radius:50%;background:var(--learn);color:white;font-size:0.75rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">5</div>
-                    <div><strong style="font-size:0.875rem;color:var(--learn-dark);">Inflation falls toward target</strong><br><span style="font-size:0.8rem;color:var(--text-secondary);">Reduced demand-pull pressure brings CPI closer to 2%.</span></div>
-                  </div>
-                </div>
-
-                <div class="callout callout-warn">
-                  <div class="callout-label">Time lags</div>
-                  <p>Monetary policy takes <strong>12–24 months</strong> to have its full effect on inflation. This makes it difficult to calibrate precisely and is a key evaluation point.</p>
-                </div>
-              </div>
-
-              <!-- DIAGRAMS SECTION (hidden) -->
-              <div id="section-diagrams" class="content-section" style="display:none;">
-                <h2>Key diagrams</h2>
-                <p>The primary diagram for monetary policy is the AD/AS model, showing how changes in interest rates shift aggregate demand.</p>
-                <div class="diagram-box">
-                  <div class="diagram-icon">📊</div>
-                  <div class="diagram-label">AD/AS diagram</div>
-                  <div class="diagram-title">Effect of contractionary monetary policy: AD shifts left → lower price level, lower real output</div>
-                  <div style="margin-top:1rem;font-size:0.75rem;color:var(--text-muted);">[Interactive diagram — click to explore]</div>
-                </div>
-                <h3>What to include in exam diagrams</h3>
-                <div class="key-terms">
-                  <div class="key-term">
-                    <div class="term">Both curves</div>
-                    <div class="def">Draw AD (downward sloping) and AS (upward sloping + vertical LRAS). Label both axes.</div>
-                  </div>
-                  <div class="key-term">
-                    <div class="term">Equilibrium points</div>
-                    <div class="def">Show E1 (original) and E2 (new) with dashed lines to both axes.</div>
-                  </div>
-                  <div class="key-term">
-                    <div class="term">Shift direction</div>
-                    <div class="def">Arrow on AD curve showing direction of shift. Label AD₁ → AD₂.</div>
-                  </div>
-                  <div class="key-term">
-                    <div class="term">Axes labels</div>
-                    <div class="def">Price level (vertical) and Real GDP / National Output (horizontal). Don't forget units.</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- EVALUATION SECTION (hidden) -->
-              <div id="section-evaluation" class="content-section" style="display:none;">
-                <h2>Evaluating monetary policy</h2>
-                <p>Strong exam answers don't just describe how monetary policy works — they evaluate its effectiveness and consider counterarguments.</p>
-                <h3>Arguments for effectiveness</h3>
-                <div class="key-terms">
-                  <div class="key-term"><div class="term">Independent central bank</div><div class="def">Removes political influence, improving credibility and anchoring inflation expectations.</div></div>
-                  <div class="key-term"><div class="term">Flexible tool</div><div class="def">Rates can be adjusted quickly (every 6 weeks) compared to fiscal policy which requires Parliamentary approval.</div></div>
-                  <div class="key-term"><div class="term">Proven track record</div><div class="def">UK inflation averaged ~2% from 1997–2020 under inflation targeting, compared to 10%+ in the 1970s.</div></div>
-                </div>
-                <h3>Arguments against / limitations</h3>
-                <div class="key-terms">
-                  <div class="key-term"><div class="term">Time lags</div><div class="def">12–24 months for full effect makes it hard to stabilise the economy without over/under-shooting.</div></div>
-                  <div class="key-term"><div class="term">Zero lower bound</div><div class="def">Rates cannot fall below ~0%, limiting effectiveness in deep recessions (as seen in 2009–2021).</div></div>
-                  <div class="key-term"><div class="term">Distributional effects</div><div class="def">Rate rises hurt mortgage holders disproportionately. Savers benefit. Worsens inequality.</div></div>
-                  <div class="key-term"><div class="term">Cost-push inflation</div><div class="def">Raising rates doesn't fix supply-side shocks (e.g. energy price rises). May cause unnecessary unemployment.</div></div>
-                </div>
-              </div>
-
-              <!-- KNOWLEDGE CHECK (hidden) -->
-              <div id="section-check" class="content-section" style="display:none;">
-                <h2>Knowledge check</h2>
-                <p>Test your understanding before moving to Link it.</p>
-              </div>
-
-              <!-- KNOWLEDGE CHECK -->
-              <div class="knowledge-check">
-                <div class="kc-header">
-                  <span class="kc-icon">✏️</span>
-                  <h3>Quick check — Question 1 of 3</h3>
-                </div>
-                <div class="kc-question">Which of the following best describes the primary objective of monetary policy in the UK?</div>
-                <div class="kc-options">
-                  <div class="kc-option" onclick="checkAnswer(this, false)">
-                    <div class="opt-letter">A</div>
-                    <span>Maximise economic growth and employment</span>
-                  </div>
-                  <div class="kc-option" onclick="checkAnswer(this, true)">
-                    <div class="opt-letter">B</div>
-                    <span>Maintain low and stable inflation (CPI at 2%)</span>
-                  </div>
-                  <div class="kc-option" onclick="checkAnswer(this, false)">
-                    <div class="opt-letter">C</div>
-                    <span>Reduce the government budget deficit</span>
-                  </div>
-                  <div class="kc-option" onclick="checkAnswer(this, false)">
-                    <div class="opt-letter">D</div>
-                    <span>Stabilise the exchange rate</span>
-                  </div>
-                </div>
-                <div class="kc-feedback" id="kc-feedback">
-                  <strong>✓ Correct!</strong> The Bank of England's primary mandate is to maintain price stability — specifically keeping CPI inflation at 2% per year. Employment and growth are secondary considerations.
-                </div>
-              </div>
+            <div class="learn-stage-pill">📗 Learn It</div>
+            <div id="learn-title" class="learn-title"><div class="skel" style="height:36px;width:70%;"></div></div>
+            <div id="learn-meta-row" class="learn-meta-row"><div class="skel" style="height:14px;width:100px;display:inline-block;"></div></div>
+            <div class="learn-body" id="learn-body">
+              <div class="skel" style="height:16px;margin-bottom:0.75rem;"></div>
+              <div class="skel" style="height:16px;width:80%;margin-bottom:0.75rem;"></div>
+              <div class="skel" style="height:16px;width:90%;"></div>
+            </div>
+            <div class="learn-actions" id="learn-actions" style="display:none;">
+              <button onclick="markComplete()" class="btn btn-primary btn-lg" id="complete-btn">Mark as read ✓</button>
+              <a href="link.html" class="btn btn-secondary btn-lg" id="link-btn">Next: Link It →</a>
             </div>
           </div>
 
-          <!-- NAVIGATION FOOTER -->
-          <div class="content-footer">
-            <div>
-              <div class="section-info">Section 1 of 5 — Overview</div>
-              <div class="section-name" style="margin-top:2px;font-size:0.75rem;color:var(--text-muted);">Next: The transmission mechanism</div>
-            </div>
-            <div style="display:flex;gap:0.625rem;">
-              <a href="topics.html" class="btn btn-secondary btn-sm">← Topics</a>
-              <button class="btn btn-learn btn-sm" onclick="nextSection()">Next section →</button>
+          <div id="mcq-section" style="display:none;margin-top:1.5rem;">
+            <div class="learn-content-card">
+              <h3 style="font-size:1.0625rem;font-weight:700;color:var(--navy);margin-bottom:1rem;">Quick check: test your understanding</h3>
+              <div id="mcq-container"></div>
+              <div id="mcq-result" style="display:none;margin-top:1rem;"></div>
+              <button onclick="submitMCQ()" id="mcq-submit" class="btn btn-primary" style="margin-top:1rem;display:none;">Check answers</button>
             </div>
           </div>
         </div>
 
-        <!-- RIGHT SIDEBAR -->
-        <div class="learn-sidebar">
-          <div class="sidebar-section">
-            <h5>Your progress</h5>
-            <div class="learn-progress-bar">
-              <div class="fill" id="learnProgressFill" style="width:20%;"></div>
-            </div>
-            <div class="progress-text">
-              <span>1 of 5 sections</span>
-              <span>20%</span>
-            </div>
+        <div>
+          <div class="learn-sidebar-card">
+            <h4 style="font-size:0.875rem;font-weight:700;color:var(--navy);margin-bottom:1rem;">Learning objectives</h4>
+            <div id="objectives-list"><div class="skel" style="height:50px;"></div></div>
           </div>
-
-          <div class="sidebar-section">
-            <h5>Topic outline</h5>
-            <div class="topic-outline-item active" onclick="showSection(null,'overview')">
-              <div class="outline-num">1</div>
-              Overview
-              <span class="check">→</span>
-            </div>
-            <div class="topic-outline-item done" onclick="showSection(null,'mechanism')">
-              <div class="outline-num">2</div>
-              Transmission mechanism
-              <span class="check">✓</span>
-            </div>
-            <div class="topic-outline-item" onclick="showSection(null,'diagrams')">
-              <div class="outline-num">3</div>
-              Diagrams
-            </div>
-            <div class="topic-outline-item" onclick="showSection(null,'evaluation')">
-              <div class="outline-num">4</div>
-              Evaluation
-            </div>
-            <div class="topic-outline-item" onclick="showSection(null,'check')">
-              <div class="outline-num">5</div>
-              Knowledge check
-            </div>
+          <div class="learn-sidebar-card">
+            <h4 style="font-size:0.875rem;font-weight:700;color:var(--navy);margin-bottom:1rem;">Key terms</h4>
+            <div id="key-terms-list"><div class="skel" style="height:80px;"></div></div>
           </div>
-
-          <div class="sidebar-section">
-            <h5>Key terms</h5>
-            <div class="key-terms-mini">
-              <div class="kterm-mini">Monetary policy</div>
-              <div class="kterm-mini">Base rate</div>
-              <div class="kterm-mini">MPC</div>
-              <div class="kterm-mini">Quantitative easing</div>
-              <div class="kterm-mini">Transmission mechanism</div>
-              <div class="kterm-mini">Inflation targeting</div>
-            </div>
-          </div>
-
-          <div class="sidebar-section" style="background:var(--land-light);border-color:var(--land);">
-            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.625rem;">
-              <span style="font-size:1rem;">🔗</span>
-              <h5 style="margin:0;">Up next: Link it</h5>
-            </div>
-            <p style="font-size:0.775rem;color:var(--text-secondary);margin-bottom:0.75rem;line-height:1.55;">Build the monetary policy transmission chain and test your reasoning.</p>
-            <a href="link.html" class="btn btn-primary btn-sm" style="width:100%;">Go to Link it →</a>
+          <div class="learn-sidebar-card">
+            <h4 style="font-size:0.875rem;font-weight:700;color:var(--navy);margin-bottom:0.75rem;">Your progress</h4>
+            ${['learn','link','land'].map(s => `
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+              <span style="font-size:0.7rem;font-weight:700;color:var(--text-muted);width:50px;text-transform:capitalize;">${s.charAt(0).toUpperCase()+s.slice(1)}</span>
+              <div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div id="prog-${s}" class="fill fill-${s}" style="height:100%;border-radius:3px;width:0%;transition:width 0.5s;"></div></div>
+              <span id="prog-${s}-pct" style="font-size:0.7rem;font-weight:700;color:var(--${s==='land'?'land':''+s+'-dark'});">0%</span>
+            </div>`).join('')}
           </div>
         </div>
       </div>
@@ -615,53 +116,148 @@
 
 <script src="../assets/js/nav.js"></script>
 <script>
-buildSidebar('topics', 'student');
+let currentSubtopic = null, currentMastery = null, mcqQuestions = [], userId = null, selectedAnswers = {};
 
-const sections = ['overview','mechanism','diagrams','evaluation','check'];
-let currentSection = 0;
+async function init() {
+  const auth = await Auth.requireStudent('../login.html');
+  if (!auth) return;
+  const { session, profile } = auth;
+  userId = session.user.id;
+  const initials = (profile.full_name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  buildSidebar('learn', 'student', { name: profile.full_name, initials, school: profile.school_name || '', yearGroup: profile.year_group || 'Year 12' });
+  document.getElementById('header-avatar').textContent = initials;
 
-function showSection(el, name) {
-  const idx = sections.indexOf(name);
-  if (idx === -1) return;
-  currentSection = idx;
-  sections.forEach(s => {
-    const el = document.getElementById('section-' + s);
-    if (el) el.style.display = 'none';
-  });
-  const target = document.getElementById('section-' + name);
-  if (target) target.style.display = 'block';
-  document.querySelectorAll('.content-nav-item').forEach((btn, i) => {
-    btn.classList.toggle('active', i === idx);
-  });
-  document.querySelectorAll('.topic-outline-item').forEach((item, i) => {
-    item.classList.toggle('active', i === idx);
-  });
-  const pct = Math.round(((idx + 1) / sections.length) * 100);
-  document.getElementById('learnProgressFill').style.width = pct + '%';
-}
+  const params = new URLSearchParams(window.location.search);
+  const subtopicId = params.get('subtopic');
 
-function nextSection() {
-  if (currentSection < sections.length - 1) {
-    showSection(null, sections[currentSection + 1]);
-  } else {
-    window.location.href = 'link.html';
+  try {
+    let subtopic = null;
+    if (subtopicId) {
+      const { data } = await window._sb.from('subtopics').select('*, topic:topics(id, title, slug, theme_number, theme_name)').eq('id', subtopicId).single();
+      subtopic = data;
+    }
+    if (!subtopic) {
+      const { data } = await window._sb.from('subtopics').select('*, topic:topics(id, title, slug, theme_number, theme_name)').limit(1).single();
+      subtopic = data;
+    }
+    if (!subtopic) { document.getElementById('learn-body').innerHTML = '<p style="color:#EF4444;">No content available. <a href="topics.html">Browse topics →</a></p>'; return; }
+    currentSubtopic = subtopic;
+    renderSubtopic(subtopic);
+
+    const [mastery, questions, streakData] = await Promise.all([
+      API.getSubtopicMastery(userId, subtopic.id),
+      API.getMCQForSubtopic(subtopic.id, 5),
+      API.getStreakData(userId)
+    ]);
+    currentMastery = mastery;
+    document.getElementById('header-streak').textContent = streakData.streak + ' day streak';
+    updateProgressBars(mastery);
+    if (questions.length) renderMCQ(questions);
+  } catch (err) {
+    console.error('[Learn]', err);
+    document.getElementById('learn-body').innerHTML = '<p style="color:#EF4444;">Could not load content. Please refresh.</p>';
   }
 }
 
-function checkAnswer(el, isCorrect) {
-  document.querySelectorAll('.kc-option').forEach(opt => {
-    opt.style.pointerEvents = 'none';
+function renderSubtopic(st) {
+  document.title = 'econOS – Learn: ' + st.title;
+  document.getElementById('learn-meta-header').textContent = st.topic?.theme_name || '';
+  document.getElementById('bc-topic').innerHTML = `<a href="topics.html" style="color:var(--text-muted);text-decoration:none;">${st.topic?.title || 'Topics'}</a>`;
+  document.getElementById('bc-subtopic').textContent = st.title;
+  document.getElementById('learn-title').textContent = st.title;
+  document.getElementById('learn-meta-row').innerHTML = `<span>⏱ ~${st.estimated_minutes || 10} minutes</span><span>📗 Learn It</span>`;
+  document.getElementById('learn-body').innerHTML = st.content_html || '<p style="color:var(--text-muted);">Content coming soon. Use your textbook for this topic.</p>';
+  const objs = Array.isArray(st.learning_objectives) ? st.learning_objectives : [];
+  document.getElementById('objectives-list').innerHTML = objs.length ? objs.map(o => `<div class="obj-item">${o}</div>`).join('') : '<div style="font-size:0.8rem;color:var(--text-muted);">See your specification.</div>';
+  const terms = Array.isArray(st.key_terms) ? st.key_terms : [];
+  document.getElementById('key-terms-list').innerHTML = terms.length ? terms.map(t => `<div class="key-term-item"><div class="key-term-name">${t.term}</div><div class="key-term-def">${t.def}</div></div>`).join('') : '<div style="font-size:0.8rem;color:var(--text-muted);">No key terms listed.</div>';
+  document.getElementById('link-btn').href = `link.html?subtopic=${st.id}`;
+  document.getElementById('learn-actions').style.display = 'flex';
+}
+
+function updateProgressBars(m) {
+  ['learn','link','land'].forEach(s => {
+    const pct = m?.[s + '_score'] || 0;
+    document.getElementById('prog-' + s).style.width = pct + '%';
+    document.getElementById('prog-' + s + '-pct').textContent = pct + '%';
   });
-  el.classList.add(isCorrect ? 'correct' : 'incorrect');
-  if (!isCorrect) {
-    document.querySelectorAll('.kc-option')[1].classList.add('correct');
-  }
-  const feedback = document.getElementById('kc-feedback');
-  feedback.classList.add('show', isCorrect ? 'correct' : 'incorrect');
-  if (!isCorrect) {
-    feedback.innerHTML = '<strong>Not quite.</strong> The correct answer is B. While economic growth and employment are secondary objectives, the Bank of England\'s primary mandate is maintaining CPI inflation at 2%.';
+}
+
+function renderMCQ(questions) {
+  mcqQuestions = questions;
+  document.getElementById('mcq-section').style.display = 'block';
+  document.getElementById('mcq-container').innerHTML = questions.map((q, qi) => {
+    const opts = Array.isArray(q.options) ? q.options : [];
+    return `<div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);" id="q${qi}-wrap">
+      <div style="font-size:0.875rem;font-weight:600;color:var(--navy);margin-bottom:0.75rem;">${qi+1}. ${q.question_text}</div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        ${opts.map((opt, oi) => `<label class="mcq-opt" data-q="${qi}" data-o="${oi}" onclick="selectOpt(${qi},${oi},this)">
+          <input type="radio" name="q${qi}" value="${oi}" style="margin-top:2px;accent-color:var(--land);">
+          <span style="font-size:0.85rem;">${opt.text}</span>
+        </label>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('mcq-submit').style.display = 'inline-block';
+}
+
+function selectOpt(qi, oi, clicked) {
+  selectedAnswers[qi] = oi;
+  document.querySelectorAll(`[data-q="${qi}"]`).forEach(el => {
+    el.style.borderColor = el.dataset.o == oi ? 'var(--land)' : 'var(--border)';
+    el.style.background  = el.dataset.o == oi ? 'var(--land-light)' : '';
+  });
+}
+
+async function submitMCQ() {
+  const btn = document.getElementById('mcq-submit');
+  btn.disabled = true; btn.textContent = 'Checking…';
+  let correct = 0;
+  mcqQuestions.forEach((q, qi) => {
+    const opts = Array.isArray(q.options) ? q.options : [];
+    const chosen = selectedAnswers[qi];
+    const correctIdx = opts.findIndex(o => o.correct);
+    const isCorrect = chosen === correctIdx;
+    if (isCorrect) correct++;
+    document.querySelectorAll(`[data-q="${qi}"]`).forEach(el => {
+      const oi = parseInt(el.dataset.o);
+      if (oi === correctIdx) { el.style.borderColor = 'var(--learn)'; el.style.background = 'var(--learn-light)'; }
+      else if (oi === chosen && !isCorrect) { el.style.borderColor = '#EF4444'; el.style.background = '#FEF2F2'; }
+    });
+    if (opts[correctIdx]?.explanation) {
+      const wrap = document.getElementById(`q${qi}-wrap`);
+      if (wrap) {
+        const exp = document.createElement('div');
+        exp.style.cssText = 'font-size:0.8rem;color:var(--text-secondary);background:var(--bg-subtle);padding:0.625rem 0.875rem;border-radius:var(--r-sm);margin-top:0.5rem;';
+        exp.textContent = '💡 ' + (isCorrect ? 'Correct! ' : 'Not quite. ') + opts[correctIdx].explanation;
+        wrap.appendChild(exp);
+      }
+    }
+  });
+  const pct = Math.round((correct / mcqQuestions.length) * 100);
+  const resultEl = document.getElementById('mcq-result');
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = `<div style="background:${pct>=70?'var(--learn-light)':'#FEF3C7'};border:1px solid ${pct>=70?'var(--learn)':'var(--link)'};border-radius:var(--r-md);padding:1rem;font-size:0.875rem;font-weight:600;color:${pct>=70?'var(--learn-dark)':'var(--link-dark)'}">${pct>=70?'✅':'⚡'} You scored ${correct}/${mcqQuestions.length} (${pct}%)${pct>=70?' — excellent!':' — review the explanations, then try Link It.'}</div>`;
+  btn.style.display = 'none';
+  if (userId && currentSubtopic) {
+    const newScore = Math.max(currentMastery?.learn_score || 0, pct);
+    try { const up = await API.upsertMastery(userId, currentSubtopic.id, { learn_score: newScore, attempts: (currentMastery?.attempts||0)+1 }); currentMastery=up; updateProgressBars(up); } catch(e){}
+    Auth.recordActivity('learn', currentSubtopic.topic?.title, currentSubtopic.title, correct, mcqQuestions.length, null);
   }
 }
+
+async function markComplete() {
+  const btn = document.getElementById('complete-btn');
+  btn.textContent = '✓ Marked complete'; btn.disabled = true;
+  if (userId && currentSubtopic) {
+    const newScore = Math.max(currentMastery?.learn_score || 0, 70);
+    try { const up = await API.upsertMastery(userId, currentSubtopic.id, { learn_score: newScore, attempts: (currentMastery?.attempts||0)+1 }); currentMastery=up; updateProgressBars(up); } catch(e){}
+    Auth.recordActivity('learn', currentSubtopic.topic?.title, currentSubtopic.title, newScore, 100, null);
+  }
+  setTimeout(() => { window.location.href = `link.html?subtopic=${currentSubtopic?.id||''}`; }, 1000);
+}
+
+init();
 </script>
 </body>
 </html>
