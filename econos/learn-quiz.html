@@ -967,7 +967,7 @@ function nextQuestion() {
   document.getElementById('backLink').href = `learn-cards.html?topic=${t}&card=5`;
 
   const { data, error } = await sb
-    .from('questions_legacy')
+    .from('quiz_questions')
     .select('*')
     .eq('quiz_id', quizId)
     .order('question_index');
