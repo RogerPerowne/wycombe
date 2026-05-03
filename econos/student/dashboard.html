@@ -139,7 +139,7 @@
         <button class="notif-btn">
           <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
         </button>
-        <a href="settings.html"><div class="user-avatar" id="header-avatar">?</div></a>
+        <a href="settings"><div class="user-avatar" id="header-avatar">?</div></a>
       </div>
     </header>
 
@@ -156,7 +156,7 @@
             <span class="count" id="dash-streak">—</span>
             <span class="label">day streak</span>
           </div>
-          <a href="exam-mode.html" class="btn btn-primary btn-lg">Start practising →</a>
+          <a href="exam-mode" class="btn btn-primary btn-lg">Start practising →</a>
         </div>
       </div>
 
@@ -177,7 +177,7 @@
           <div class="assignments-widget">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
               <h3>Assignments due</h3>
-              <a href="assignments.html" class="btn btn-ghost btn-sm">View all</a>
+              <a href="assignments" class="btn btn-ghost btn-sm">View all</a>
             </div>
             <div id="assignments-list"><div style="height:60px;" class="skel"></div></div>
           </div>
@@ -203,17 +203,17 @@
                 <div class="legend-row"><div class="legend-dot" style="background:var(--land);"></div><div class="legend-label">Land it</div><div class="legend-pct" id="leg-land" style="color:var(--land);"></div></div>
               </div>
             </div>
-            <div class="readiness-cta"><a href="topics.html">View full topic map →</a></div>
+            <div class="readiness-cta"><a href="topics">View full topic map →</a></div>
           </div>
 
           <div class="weakness-card">
             <div class="card-header">
               <h3>Your weakest areas</h3>
-              <a href="topics.html" class="btn btn-ghost btn-sm">View all</a>
+              <a href="topics" class="btn btn-ghost btn-sm">View all</a>
             </div>
             <div id="weakness-list"><div style="height:120px;" class="skel"></div></div>
             <div style="margin-top:1rem;">
-              <a href="exam-mode.html" class="btn btn-secondary" style="width:100%;font-size:0.8rem;">Practice weak areas →</a>
+              <a href="exam-mode" class="btn btn-secondary" style="width:100%;font-size:0.8rem;">Practice weak areas →</a>
             </div>
           </div>
 
@@ -273,7 +273,7 @@ function renderAssignments(assignments) {
     const due = API.formatDueDate(a.due_date);
     const isUrgent = due.includes('tomorrow') || due.includes('today') || due.includes('Overdue');
     const teacher = a.class?.teacher?.full_name || '';
-    return `<div class="assignment-item"><div class="assignment-dot" style="background:${dotColors[i % dotColors.length]};"></div><div class="assignment-info flex-1"><div class="name">${a.title}</div><div class="due ${isUrgent ? 'urgent' : ''}">${isUrgent ? '⚠ ' : ''}${due}${teacher ? ' · ' + teacher : ''}</div></div><div class="assignment-status"><a href="land.html" class="btn btn-ghost btn-sm">Start</a></div></div>`;
+    return `<div class="assignment-item"><div class="assignment-dot" style="background:${dotColors[i % dotColors.length]};"></div><div class="assignment-info flex-1"><div class="name">${a.title}</div><div class="due ${isUrgent ? 'urgent' : ''}">${isUrgent ? '⚠ ' : ''}${due}${teacher ? ' · ' + teacher : ''}</div></div><div class="assignment-status"><a href="land" class="btn btn-ghost btn-sm">Start</a></div></div>`;
   }).join('');
 }
 
@@ -325,7 +325,7 @@ function renderMission(masteryData) {
   const prog = document.getElementById('mission-progress');
   if (!masteryData.length) {
     prog.textContent = 'Get started!';
-    el.innerHTML = `<div class="mission-item" onclick="window.location.href='topics.html'"><div class="mission-icon learn">📗</div><div class="mission-info"><div class="topic">Learn it: Choose your first topic</div><div class="desc">Pick a topic from the topic map to begin</div></div><div class="mission-cta"><a href="topics.html" class="btn btn-primary btn-sm">Browse topics →</a></div></div>`;
+    el.innerHTML = `<div class="mission-item" onclick="window.location.href='topics'"><div class="mission-icon learn">📗</div><div class="mission-info"><div class="topic">Learn it: Choose your first topic</div><div class="desc">Pick a topic from the topic map to begin</div></div><div class="mission-cta"><a href="topics" class="btn btn-primary btn-sm">Browse topics →</a></div></div>`;
     return;
   }
   const sorted = [...masteryData].sort((a, b) => (a.learn_score + a.link_score + a.land_score) - (b.learn_score + b.link_score + b.land_score));
@@ -333,25 +333,25 @@ function renderMission(masteryData) {
   const name = weakest.subtopic?.title || 'Economics';
   prog.textContent = 'Ready to practise';
   el.innerHTML = `
-    <div class="mission-item" onclick="window.location.href='learn.html?subtopic=${weakest.subtopic_id}'">
+    <div class="mission-item" onclick="window.location.href='learn?subtopic=${weakest.subtopic_id}'">
       <div class="mission-icon learn">📗</div>
       <div class="mission-info"><div class="topic">Learn it: ${name}</div><div class="desc">Review core concepts · ~10 mins</div></div>
-      <div class="mission-cta"><a href="learn.html?subtopic=${weakest.subtopic_id}" class="btn btn-primary btn-sm">Start →</a></div>
+      <div class="mission-cta"><a href="learn?subtopic=${weakest.subtopic_id}" class="btn btn-primary btn-sm">Start →</a></div>
     </div>
-    <div class="mission-item" onclick="window.location.href='link.html'">
+    <div class="mission-item" onclick="window.location.href='link'">
       <div class="mission-icon link">🔗</div>
       <div class="mission-info"><div class="topic">Link it: Build a reasoning chain</div><div class="desc">Connect economic ideas step-by-step · ~15 mins</div></div>
-      <div class="mission-cta"><a href="link.html" class="btn btn-link-stage btn-sm">Start →</a></div>
+      <div class="mission-cta"><a href="link" class="btn btn-link-stage btn-sm">Start →</a></div>
     </div>
-    <div class="mission-item" onclick="window.location.href='land.html'">
+    <div class="mission-item" onclick="window.location.href='land'">
       <div class="mission-icon land">🎯</div>
       <div class="mission-info"><div class="topic">Land it: Write an evaluation essay</div><div class="desc">Apply your knowledge in exam conditions · ~20 mins</div></div>
-      <div class="mission-cta"><a href="land.html" class="btn btn-primary btn-sm">Start →</a></div>
+      <div class="mission-cta"><a href="land" class="btn btn-primary btn-sm">Start →</a></div>
     </div>`;
 }
 
 async function init() {
-  const auth = await Auth.requireStudent('../login.html');
+  const auth = await Auth.requireStudent();
   if (!auth) return;
   const { session, profile } = auth;
   const userId = session.user.id;
@@ -386,7 +386,7 @@ async function init() {
       continueEl.innerHTML = recentMastery.slice(0, 2).map((m, i) => {
         const name = m.subtopic?.title || 'Economics';
         const pct = Math.round((m.learn_score + m.link_score + m.land_score) / 3);
-        const url = i === 0 ? `land.html?subtopic=${m.subtopic_id}` : `link.html?subtopic=${m.subtopic_id}`;
+        const url = i === 0 ? `land?subtopic=${m.subtopic_id}` : `link?subtopic=${m.subtopic_id}`;
         const icon = i === 0 ? '🎯' : '🔗';
         const label = i === 0 ? 'Land it' : 'Link it';
         return `<div class="continue-item" onclick="window.location.href='${url}'" style="${i>0?'border-color:var(--link-light);background:var(--link-light);':''}"><div class="continue-icon">${icon}</div><div class="continue-info flex-1"><div class="title">${label}: ${name}</div><div class="meta">${API.relativeTime(m.last_practiced)}</div></div><div class="continue-progress"><div class="pct">${pct}%</div><div class="progress-bar"><div class="fill ${i===0?'fill-land':'fill-link'}" style="width:${pct}%;"></div></div></div><a href="${url}" class="btn ${i===0?'btn-primary':'btn-link-stage'} btn-sm" style="margin-left:0.75rem;" onclick="event.stopPropagation()">Continue</a></div>`;
