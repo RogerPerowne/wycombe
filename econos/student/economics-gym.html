@@ -10,9 +10,97 @@
 :root{--navy:#1a2744;--navyd:#0f1729;--gold:#c9a84c;--goldl:#e2c47a;--green:#4caf80;--red:#e05060;--orange:#e0933a;--blue:#4a7fb5;--bluel:#6fa8d8;--purple:#9775b5;--txt:#fff;--mut:#dde3f0;--bdr:#2e3f60;--pan:#1e2e4a}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--navyd);color:var(--txt);font-family:'Nunito','Segoe UI',sans-serif;font-size:16px;min-height:100vh}
+/* HEADER */
+header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);border-bottom:2px solid var(--gold);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:72px;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.hl{display:flex;align-items:center;gap:.9rem}
+.hlogo{height:48px;width:48px;object-fit:contain;border-radius:4px}
+.hsch{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:600;color:var(--goldl);line-height:1.2}
+.htit{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:700}
+.hsub{font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.7}
+.hbdg{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:.24rem .78rem;border-radius:3px;background:rgba(201,168,76,.08)}
+.homebtn{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.28rem .72rem;border-radius:4px;cursor:pointer;margin-left:.6rem;transition:all .2s}
+.homebtn:hover{background:rgba(255,255,255,.1);color:var(--txt)}
+.app{max-width:1100px;margin:0 auto;padding:1.4rem 1.8rem}
+/* HUB */
+.hub-hero{text-align:center;padding:2.4rem 1rem 1.5rem}
+.hub-hero h1{font-family:'Cormorant Garamond',serif;font-size:2.7rem;font-weight:700;line-height:1.15;margin-bottom:.35rem}
+.hub-hero .tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--goldl);margin-bottom:.8rem}
+.hub-hero .intro{font-size:.9rem;color:var(--mut);max-width:620px;margin:0 auto 1.2rem;line-height:1.75;opacity:.88}
+.hub-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;opacity:.85}
+/* MACHINE GRID */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.1rem;margin-bottom:1.8rem}
+.mcard{background:rgba(26,39,68,.7);border:1px solid var(--bdr);border-radius:12px;padding:1.4rem 1.3rem;cursor:pointer;transition:all .22s ease;position:relative;overflow:hidden}
+.mcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--machine-colour,var(--gold))}
+.mcard:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.4);border-color:rgba(201,168,76,.35)}
+.mc-icon{font-size:2.2rem;margin-bottom:.55rem;line-height:1}
+.mc-num{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem;opacity:.85}
+.mc-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;margin-bottom:.4rem;line-height:1.25}
+.mc-build{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--goldl);margin-bottom:.55rem;opacity:.85}
+.mc-desc{font-size:.82rem;color:var(--mut);line-height:1.65;opacity:.82;margin-bottom:.8rem}
+.mc-meta{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.65rem}
+.mc-meta span{font-family:'IBM Plex Mono',monospace;font-size:.54rem;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.15rem .48rem;border-radius:3px;letter-spacing:.04em;text-transform:uppercase}
+/* HUB BOTTOM */
+.hub-foot{text-align:center;padding:1.2rem;border-top:1px solid var(--bdr);margin-top:1.5rem;opacity:.42}
+.hub-foot p{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;color:var(--mut)}
+/* SESSION LAYOUT */
+.card{background:var(--pan);border:1px solid var(--bdr);border-radius:10px;overflow:hidden;position:relative;margin-bottom:1.3rem}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue))}
+.cb{padding:1.6rem}
+.sess-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.9rem 1.4rem;background:rgba(26,39,68,.5);border-bottom:1px solid var(--bdr)}
+.sess-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700}
+.sess-subtitle{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);opacity:.65}
+.sess-counter{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--gold);text-align:right;white-space:nowrap}
+.sess-score{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--goldl);line-height:1}
+.sess-progress{height:4px;background:var(--bdr);position:relative}
+.sess-pfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldl));transition:width .4s ease;width:0%}
+/* BUTTONS */
+.btn{padding:.75rem 1.15rem;border:none;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-weight:600}
+.bg{background:linear-gradient(135deg,#b8922a,var(--gold));color:var(--navyd)}
+.bg:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(201,168,76,.35)}
+.bg:disabled{opacity:.4;cursor:default}
+.bs{background:rgba(255,255,255,.06);border:1px solid var(--bdr);color:var(--mut)}
+.bs:hover{background:rgba(255,255,255,.12);color:var(--txt)}
+@media(max-width:650px){
+  header{padding:0 1rem;height:64px}
+  .htit{font-size:1.05rem}
+  .hbdg{display:none}
+  .app{padding:1.1rem 1rem}
+  .hub-hero h1{font-size:2rem}
+}
+.hub-btn{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.3rem .75rem;border-radius:4px;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-block}
+.hub-btn:hover{background:rgba(255,255,255,.12);color:var(--txt)}
+/* econOS topbar */
+.sim-topbar{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9999;font-family:'Inter',system-ui,sans-serif;box-shadow:0 1px 3px rgba(15,23,42,.04)}
+.sim-topbar-left{display:flex;align-items:center;gap:.75rem}
+.sim-logo{display:flex;align-items:center;gap:.4rem;text-decoration:none}
+.sim-logo-dots{display:flex;align-items:flex-end;gap:2px}
+.sd1{display:block;width:7px;height:7px;border-radius:50%;background:#22C55E}
+.sd2{display:block;width:9px;height:9px;border-radius:50%;background:#F59E0B}
+.sd3{display:block;width:11px;height:11px;border-radius:50%;background:#2563EB}
+.sim-logo-word{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;font-family:'Inter',sans-serif}
+.sim-econ{color:#0F172A}.sim-os{color:#2563EB}
+.sim-divider{width:1px;height:20px;background:#E2E8F0;margin:0 .25rem}
+.sim-page-name{font-size:.8rem;font-weight:600;color:#64748B;font-family:'Inter',sans-serif}
+.sim-back-btn{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;font-weight:600;color:#475569;text-decoration:none;padding:.4rem .75rem;border-radius:8px;border:1px solid #E2E8F0;background:#F8FAFC;transition:all .12s;font-family:'Inter',sans-serif}
+.sim-back-btn:hover{background:#F1F5F9;color:#0F172A;border-color:#CBD5E1}
 </style>
 </head>
 <body>
-<p>placeholder — full content to follow</p>
+<nav class="sim-topbar">
+  <div class="sim-topbar-left">
+    <a href="/" class="sim-logo">
+      <div class="sim-logo-dots"><span class="sd1"></span><span class="sd2"></span><span class="sd3"></span></div>
+      <span class="sim-logo-word"><span class="sim-econ">econ</span><span class="sim-os">OS</span></span>
+    </a>
+    <span class="sim-divider"></span>
+    <span class="sim-page-name">Economics Gym</span>
+  </div>
+  <div>
+    <a href="../dashboard" class="sim-back-btn">← Dashboard</a>
+  </div>
+</nav>
+<div class="app" id="root"></div>
+<script src="../assets/js/auth.js"></script>
+<script>Auth.requireStudent('../login');</script>
 </body>
 </html>
