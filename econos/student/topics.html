@@ -57,6 +57,7 @@
 <script src="../assets/js/supabase-client.js"></script>
 <script src="../assets/js/auth.js"></script>
 <script src="../assets/js/api.js"></script>
+<script src="../assets/js/topics-data.js"></script>
 
 <div class="app-layout">
   <aside class="sidebar" id="sidebar"></aside>
@@ -202,7 +203,8 @@ function renderCard(topic, color) {
     : `<span class="stage-pill" style="background:var(--bg-subtle);color:var(--text-muted);">Not started</span>`;
 
   const firstSubId = subs.length ? subs[0].id : '';
-  const href = firstSubId ? `learn?subtopic=${firstSubId}` : '#';
+  const staticSlug = window.ECONOS_TOPICS && topic.slug && window.ECONOS_TOPICS[topic.slug] ? topic.slug : null;
+  const href = staticSlug ? `../learn-cards?topic=${staticSlug}` : firstSubId ? `learn?subtopic=${firstSubId}` : '#';
   const ctaLabel = status === 'mastered' ? 'Review →' : status === 'in-progress' ? 'Continue →' : 'Start →';
 
   return `<div class="topic-card" onclick="window.location.href='${href}'">
