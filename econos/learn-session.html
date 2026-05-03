@@ -202,8 +202,8 @@ function renderStages(current) {
     return `<div class="stage-item">
       <div class="stage-num ${isCurrent?'current':''}">${isDone ? TICK : (i+1)}</div>
       <div class="stage-content">
-        <div class="stage-name${isCurrent?' current':''}">${s.label}</div>
-        <div class="stage-desc">${s.desc}</div>
+        <div class="stage-name${isCurrent?' current':''}">` + s.label + `</div>
+        <div class="stage-desc">` + s.desc + `</div>
         ${isCurrent ? '<span class="stage-badge-current">Current</span>' : `<span class="stage-lock">${LOCK} Locked</span>`}
       </div>
     </div>`;
