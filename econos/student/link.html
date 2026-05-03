@@ -141,7 +141,7 @@ let steps = [], currentStepIdx = 0, correctCount = 0, impostorCount = 0;
 let userSelections = {};
 
 async function init() {
-  const auth = await Auth.requireStudent('../login.html');
+  const auth = await Auth.requireStudent();
   if (!auth) return;
   const { session, profile } = auth;
   userId = session.user.id;
@@ -272,7 +272,7 @@ async function finishChain() {
   const banner = document.getElementById('result-banner');
   banner.style.display = 'block';
   banner.className = 'result-banner ' + (pct >= 70 ? 'win' : 'miss');
-  banner.innerHTML = `<div style="font-size:2rem;margin-bottom:0.5rem;">${pct>=70?'🎉':'💪'}</div><h3>${pct>=70?'Chain complete!':'Good effort!'}</h3><p>You scored ${totalCorrect}/${total} (${pct}%)${pct>=70?' — strong economic reasoning!':' — review the explanations and try again.'}</p><div style="display:flex;gap:0.75rem;justify-content:center;margin-top:1rem;"><button onclick="window.location.reload()" class="btn btn-ghost">Try again</button><a href="land.html" class="btn btn-primary">Next: Land It →</a></div>`;
+  banner.innerHTML = `<div style="font-size:2rem;margin-bottom:0.5rem;">${pct>=70?'🎉':'💪'}</div><h3>${pct>=70?'Chain complete!':'Good effort!'}</h3><p>You scored ${totalCorrect}/${total} (${pct}%)${pct>=70?' — strong economic reasoning!':' — review the explanations and try again.'}</p><div style="display:flex;gap:0.75rem;justify-content:center;margin-top:1rem;"><button onclick="window.location.reload()" class="btn btn-ghost">Try again</button><a href="land" class="btn btn-primary">Next: Land It →</a></div>`;
   const subtopicId = new URLSearchParams(window.location.search).get('subtopic');
   if (userId && subtopicId) {
     const newScore = Math.max(currentMastery?.link_score || 0, pct);
