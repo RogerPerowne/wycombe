@@ -587,7 +587,7 @@ async function redirectAfterAuth() {
   if (!session) return;
   const { data: profile } = await window._sb
     .from('profiles').select('role').eq('id', session.user.id).single();
-  if (!profile) { window.location.href = '/signup-details'; return; }
+  if (!profile) return;
   window.location.href = profile.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard';
 }
 
