@@ -582,13 +582,14 @@ function handleStep1(e) {
 }
 
 async function redirectAfterAuth() {
-  if (!window._sb) return;
+  if (!window._sb) return false;
   const { data: { session } } = await window._sb.auth.getSession();
-  if (!session) return;
+  if (!session) return false;
   const { data: profile } = await window._sb
     .from('profiles').select('role').eq('id', session.user.id).single();
-  if (!profile) return;
+  if (!profile) return false;
   window.location.href = profile.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard';
+  return true;
 }
 
 (async function () {
@@ -607,8 +608,21 @@ async function handleSignIn(e) {
     password: document.getElementById('signin-password').value
   });
   setBtnLoading('signin-btn', false);
-  if (error) { showMsg('signin-msg', error.message || 'Invalid email or password.', 'error'); return; }
-  if (data.session) await redirectAfterAuth();
+  if (error) {
+    const msg = error.message?.toLowerCase().includes('email not confirmed')
+      ? 'Please confirm your email address before signing in. Check your inbox for a confirmation link.'
+      : (error.message || 'Invalid email or password.');
+    showMsg('signin-msg', msg, 'error');
+    return;
+  }
+  if (!data.session) {
+    showMsg('signin-msg', 'Please confirm your email address before signing in. Check your inbox for a confirmation link.', 'error');
+    return;
+  }
+  const ok = await redirectAfterAuth();
+  if (!ok) {
+    showMsg('signin-msg', 'Your account was found but your profile could not be loaded. Please try signing up again or contact support.', 'error');
+  }
 }
 
 async function handleGoogleAuth() {
