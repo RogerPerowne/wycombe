@@ -52,7 +52,7 @@
         <div style="font-size:0.75rem;color:var(--text-muted);">Manage your profile and preferences</div>
       </div>
       <div class="header-actions">
-        <a href="settings.html"><div class="user-avatar" id="header-avatar" style="background:var(--learn-dark);">?</div></a>
+        <a href="settings"><div class="user-avatar" id="header-avatar" style="background:var(--learn-dark);">?</div></a>
       </div>
     </header>
     <div class="page-body">
@@ -100,7 +100,7 @@
         <div class="danger-section">
           <h2>Account</h2>
           <p class="section-desc">Actions that affect your account.</p>
-          <div class="danger-row"><div class="info"><div class="title">Sign out</div><div class="desc">Sign out of econOS on this device.</div></div><button class="btn btn-secondary btn-sm" onclick="Auth.signOut('../login.html')">Sign out</button></div>
+          <div class="danger-row"><div class="info"><div class="title">Sign out</div><div class="desc">Sign out of econOS on this device.</div></div><button class="btn btn-secondary btn-sm" onclick="Auth.signOut('/login')">Sign out</button></div>
           <div class="danger-row"><div class="info"><div class="title">Delete account</div><div class="desc">Permanently delete your account. All classes and assignments will be removed.</div></div><button class="btn btn-danger btn-sm" onclick="confirmDelete()">Delete account</button></div>
         </div>
       </div>
@@ -112,7 +112,7 @@
 let _profile = null, _session = null, _classes = [];
 
 async function init() {
-  const auth = await Auth.requireTeacher('../login.html');
+  const auth = await Auth.requireTeacher();
   if (!auth) return;
   const { session, profile } = auth;
   _profile = profile; _session = session;
@@ -200,7 +200,7 @@ async function confirmDelete() {
   if (!confirm('Permanently delete your account? All classes and data will be removed.')) return;
   await window._sb.from('profiles').delete().eq('id', _session.user.id);
   await window._sb.auth.signOut();
-  window.location.href = '../login.html';
+  window.location.href = '/login';
 }
 
 init();
