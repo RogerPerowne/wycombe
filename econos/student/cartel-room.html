@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cartel Room — econOS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2744;--navyd:#0f1729;--gold:#c9a84c;--goldl:#e2c47a;--green:#4caf80;--red:#e05060;--orange:#e0933a;--blue:#4a7fb5;--bluel:#6fa8d8;--purple:#9775b5;--crim:#b03040;--criml:#d44455;--txt:#fff;--mut:#dde3f0;--bdr:#2e3f60;--pan:#1e2e4a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navyd);color:var(--txt);font-family:'Nunito','Segoe UI',sans-serif;font-size:16px;min-height:100vh}
+header{background:linear-gradient(135deg,var(--navyd),var(--navy) 60%,#1e3060);border-bottom:2px solid var(--gold);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:72px;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.hl{display:flex;align-items:center;gap:.9rem}
+.hlogo{height:48px;width:48px;object-fit:contain;border-radius:4px}
+.hsch{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:600;color:var(--goldl);line-height:1.2}
+.htit{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:700;color:var(--txt)}
+.hsub{font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.7}
+.hbdg{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);padding:.24rem .78rem;border-radius:3px;background:rgba(201,168,76,.08)}
+.hnav{display:flex;align-items:center;gap:.6rem}
+.hbtn{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--mut);padding:.28rem .72rem;border-radius:4px;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-block}
+.hbtn:hover{background:rgba(255,255,255,.1);color:var(--txt)}
+.app{max-width:1060px;margin:0 auto;padding:1.4rem 1.8rem}
+@media(max-width:650px){header{padding:0 1rem;height:64px}.htit{font-size:1rem}.hbdg{display:none}.app{padding:1rem}}
+
+/* HUB */
+.hub-hero{text-align:center;padding:2.2rem 1rem 1.2rem}
+.hub-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;opacity:.85}
+.hub-hero h1{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;line-height:1.1;margin-bottom:.35rem;color:var(--txt)}
+.hub-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--goldl);margin-bottom:.9rem}
+.hub-intro{font-size:.9rem;color:var(--mut);max-width:640px;margin:0 auto 1.2rem;line-height:1.8;opacity:.88}
+
+/* MARKET STATS */
+.mkt-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.7rem;margin-bottom:1.4rem}
+.mkt-stat{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:8px;padding:.85rem 1rem;text-align:center}
+.mkt-stat-num{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;color:var(--goldl);line-height:1;margin-bottom:.18rem}
+.mkt-stat-lbl{font-family:'IBM Plex Mono',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);opacity:.55}
+.mkt-stat-sub{font-size:.7rem;color:var(--mut);opacity:.5;margin-top:.25rem;line-height:1.4}
+
+/* MATRIX */
+.matrix-wrap{background:rgba(26,39,68,.6);border:1px solid var(--bdr);border-radius:12px;padding:1.4rem;margin-bottom:1.4rem}
+.matrix-title{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;opacity:.85}
+.matrix-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;max-width:580px;margin:0 auto}
+.mx{border-radius:6px;padding:.8rem .7rem;text-align:center;font-size:.8rem}
+.mx-corner{background:transparent}
+.mx-head{background:rgba(255,255,255,.05);font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);display:flex;align-items:center;justify-content:center;padding:.65rem .5rem;text-align:center;line-height:1.4}
+.mx-head.your-head{color:var(--goldl)}
+.mx-cell{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;min-height:80px;border:1px solid var(--bdr);border-radius:6px}
+.mx-cell.good{background:rgba(76,175,128,.12);border-color:rgba(76,175,128,.35)}
+.mx-cell.bad{background:rgba(224,80,96,.1);border-color:rgba(224,80,96,.3)}
+.mx-cell.nash{background:rgba(224,147,58,.1);border-color:rgba(224,147,58,.35)}
+.mx-cell.great{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.4)}
+.mx-profit{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;line-height:1}
+.mx-lbl{font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
+.mx-cell.good .mx-profit{color:var(--green)}
+.mx-cell.bad .mx-profit{color:var(--red)}
+.mx-cell.nash .mx-profit{color:var(--orange)}
+.mx-cell.great .mx-profit{color:var(--goldl)}
+.matrix-note{font-size:.76rem;color:var(--mut);opacity:.65;text-align:center;margin-top:.8rem;line-height:1.6;font-style:italic}
+
+/* FIRMS */
+.firms-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem;margin-bottom:1.4rem}
+.firm-card{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:9px;padding:.95rem 1.1rem;position:relative;overflow:hidden}
+.firm-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--fc,var(--bdr))}
+.firm-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;margin-bottom:.2rem;color:var(--txt)}
+.firm-strategy{font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;opacity:.8}
+.firm-desc{font-size:.75rem;color:var(--mut);line-height:1.6;opacity:.8}
+.firm-reliability{font-family:'IBM Plex Mono',monospace;font-size:.52rem;letter-spacing:.06em;text-transform:uppercase;margin-top:.5rem;padding:.18rem .45rem;border-radius:3px;display:inline-block}
+.rel-high{background:rgba(76,175,128,.15);border:1px solid rgba(76,175,128,.3);color:var(--green)}
+.rel-med{background:rgba(224,147,58,.12);border:1px solid rgba(224,147,58,.3);color:var(--orange)}
+.rel-low{background:rgba(224,80,96,.12);border:1px solid rgba(224,80,96,.3);color:var(--red)}
+
+.start-btn{display:block;margin:0 auto 2rem;padding:.9rem 2.8rem;background:linear-gradient(135deg,#a03035,var(--crim));border:none;border-radius:8px;color:var(--txt);font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(176,48,64,.35)}
+.start-btn:hover{background:linear-gradient(135deg,var(--crim),var(--criml));transform:translateY(-2px);box-shadow:0 8px 28px rgba(176,48,64,.45)}
+
+/* ROUND SCREEN */
+.round-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.9rem 1.3rem;background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:9px 9px 0 0}
+.round-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem;opacity:.85}
+.round-title{font-family:'Cormorant Garamond',serif;font-size:1.32rem;font-weight:700;color:var(--txt)}
+.round-scorebox{text-align:right;flex-shrink:0}
+.round-score-lbl{font-family:'IBM Plex Mono',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);opacity:.6}
+.round-score-num{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--goldl)}
+.round-progress{height:4px;background:var(--bdr);margin-bottom:1.1rem}
+.round-pfill{height:100%;background:linear-gradient(90deg,var(--crim),var(--criml));transition:width .4s ease}
+.scenario-box{background:rgba(26,39,68,.4);border:1px solid var(--bdr);border-radius:0 0 9px 9px;padding:1.3rem;margin-bottom:1rem;font-size:.92rem;line-height:1.8;color:var(--txt)}
+
+/* ALERTS */
+.alert{border-radius:8px;padding:.85rem 1.1rem;margin-bottom:1rem;display:flex;gap:.75rem;align-items:flex-start}
+.alert-cma{background:rgba(176,48,64,.12);border:1px solid rgba(176,48,64,.4)}
+.alert-len{background:rgba(224,147,58,.1);border:1px solid rgba(224,147,58,.4)}
+.alert-price{background:rgba(74,127,181,.1);border:1px solid rgba(74,127,181,.35)}
+.alert-grim{background:rgba(224,80,96,.13);border:1px solid rgba(224,80,96,.45)}
+.alert-icon{font-size:1.2rem;flex-shrink:0;margin-top:.1rem}
+.alert-body{font-size:.82rem;line-height:1.65;color:var(--mut)}
+.alert-body strong{color:var(--txt)}
+.alert-title{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem}
+.alert-cma .alert-title{color:var(--crim)}
+.alert-len .alert-title{color:var(--orange)}
+.alert-price .alert-title{color:var(--bluel)}
+.alert-grim .alert-title{color:var(--red)}
+
+/* SIGNALS */
+.section-label{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.55;margin-bottom:.6rem}
+.signals-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.65rem;margin-bottom:1.1rem}
+.signal-card{background:rgba(26,39,68,.4);border:1px solid var(--bdr);border-radius:8px;padding:.8rem 1rem;position:relative;overflow:hidden}
+.signal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.signal-card.coop::before{background:var(--green)}
+.signal-card.warn::before{background:var(--orange)}
+.signal-card.host::before{background:var(--red)}
+.signal-card.neut::before{background:var(--bdr)}
+.signal-card.sil::before{background:var(--mut);opacity:.2}
+.signal-firm{font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.32rem}
+.signal-card.coop .signal-firm{color:var(--green)}
+.signal-card.warn .signal-firm{color:var(--orange)}
+.signal-card.host .signal-firm{color:var(--red)}
+.signal-card.neut .signal-firm,.signal-card.sil .signal-firm{color:var(--mut);opacity:.6}
+.signal-quote{font-size:.8rem;font-style:italic;color:var(--mut);line-height:1.55;opacity:.88}
+.signal-card.sil .signal-quote{opacity:.3}
+.signal-badge{font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.05em;text-transform:uppercase;padding:.12rem .38rem;border-radius:3px;display:inline-block;margin-top:.42rem}
+.badge-public{background:rgba(74,127,181,.18);border:1px solid rgba(74,127,181,.4);color:var(--bluel)}
+.badge-unrel{background:rgba(224,80,96,.12);border:1px solid rgba(224,80,96,.3);color:var(--red)}
+
+/* MINI LEADERBOARD */
+.mini-lb{background:rgba(26,39,68,.35);border:1px solid var(--bdr);border-radius:8px;padding:.8rem 1rem;margin-bottom:1rem}
+.mini-lb-title{font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);opacity:.55;margin-bottom:.6rem}
+.mini-lb-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.4rem}
+.mlb-row{display:flex;align-items:center;gap:.55rem}
+.mlb-name{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);width:90px;flex-shrink:0}
+.mlb-name.you{color:var(--goldl)}
+.mlb-track{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.mlb-fill{height:100%;border-radius:3px;transition:width .4s ease}
+.mlb-val{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--mut);width:36px;text-align:right;flex-shrink:0}
+.mlb-val.you{color:var(--goldl)}
+
+/* CHOICE BUTTONS */
+.choice-title{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);opacity:.6;margin-bottom:.7rem;text-align:center}
+.choice-btns{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.85rem;margin-bottom:1rem}
+.choice-btn{border:2px solid;border-radius:10px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s;text-align:left;background:transparent;width:100%;position:relative;overflow:hidden}
+.choice-btn::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s}
+.choice-btn:hover::before{opacity:1}
+.coop-btn{border-color:rgba(76,175,128,.5)}.coop-btn::before{background:rgba(76,175,128,.07)}
+.coop-btn:hover{border-color:var(--green);transform:translateY(-2px);box-shadow:0 6px 20px rgba(76,175,128,.2)}
+.def-btn{border-color:rgba(224,80,96,.5)}.def-btn::before{background:rgba(224,80,96,.07)}
+.def-btn:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:0 6px 20px rgba(224,80,96,.2)}
+.len-btn{border-color:rgba(224,147,58,.5)}.len-btn::before{background:rgba(224,147,58,.07)}
+.len-btn:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:0 6px 20px rgba(224,147,58,.2)}
+.cb-icon{font-size:1.5rem;margin-bottom:.45rem}
+.cb-label{font-family:'IBM Plex Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.coop-btn .cb-label{color:var(--green)}.def-btn .cb-label{color:var(--red)}.len-btn .cb-label{color:var(--orange)}
+.cb-price{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;margin-bottom:.3rem;color:var(--txt)}
+.cb-desc{font-size:.76rem;color:var(--mut);line-height:1.55;opacity:.82}
+
+/* RESULT */
+.result-table{width:100%;border-collapse:collapse;margin-bottom:1rem}
+.result-table th{font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);opacity:.6;text-align:left;padding:.5rem .8rem;border-bottom:1px solid var(--bdr)}
+.result-table td{padding:.65rem .8rem;border-bottom:1px solid rgba(46,63,96,.45);font-size:.84rem;color:var(--mut)}
+.result-table tr.player-row td{background:rgba(201,168,76,.05);color:var(--txt)}
+.result-table tr.player-row .firm-col{font-weight:700;color:var(--goldl)}
+.choice-pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.07em;text-transform:uppercase;padding:.16rem .52rem;border-radius:3px;font-weight:700}
+.pill-c{background:rgba(76,175,128,.15);border:1px solid rgba(76,175,128,.4);color:var(--green)}
+.pill-d{background:rgba(224,80,96,.12);border:1px solid rgba(224,80,96,.35);color:var(--red)}
+.pill-w{background:rgba(224,147,58,.15);border:1px solid rgba(224,147,58,.4);color:var(--orange)}
+.profit-col{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--mut)}
+.profit-col.mine{color:var(--goldl)}
+.sig-acc{font-family:'IBM Plex Mono',monospace;font-size:.56rem;padding:.12rem .4rem;border-radius:3px;margin-left:.4rem;white-space:nowrap}
+.sig-ok{background:rgba(76,175,128,.12);color:var(--green)}
+.sig-bad{background:rgba(224,80,96,.1);color:var(--red)}
+.sig-na{background:rgba(46,63,96,.5);color:var(--mut);opacity:.5}
+
+.round-summary-box{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:9px;padding:1.1rem 1.3rem;margin-bottom:1rem}
+.rs-row{display:flex;justify-content:space-around;align-items:center;gap:.6rem;flex-wrap:wrap}
+.rs-item{text-align:center}
+.rs-lbl{font-family:'IBM Plex Mono',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);opacity:.6;margin-bottom:.2rem}
+.rs-val{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;color:var(--goldl)}
+
+.econ-insight{background:rgba(74,127,181,.08);border:1px solid rgba(74,127,181,.28);border-radius:8px;padding:.9rem 1.1rem;margin-bottom:1rem}
+.ei-lbl{font-family:'IBM Plex Mono',monospace;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bluel);margin-bottom:.5rem}
+.ei-text{font-size:.82rem;line-height:1.72;color:var(--mut)}
+.ei-text strong{color:var(--txt)}
+
+.lb-bar-wrap{margin-bottom:.32rem}
+.lb-firm-name{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;color:var(--mut);margin-bottom:.18rem;display:flex;justify-content:space-between}
+.lb-firm-name span{color:var(--goldl)}
+.lb-bar-track{height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.lb-bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
+
+/* BUTTONS */
+.btn{padding:.75rem 1.2rem;border:none;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-weight:600}
+.bg{background:linear-gradient(135deg,#a03035,var(--crim));color:#fff}
+.bg:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(176,48,64,.4)}
+.bs{background:rgba(255,255,255,.06);border:1px solid var(--bdr);color:var(--mut)}
+.bs:hover{background:rgba(255,255,255,.12);color:var(--txt)}
+.btn-row{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-top:.6rem}
+
+/* SUMMARY */
+.summary-hero{text-align:center;padding:2rem 1rem 1rem}
+.summary-eye{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+.summary-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;margin-bottom:.25rem;color:var(--txt)}
+.summary-bignum{font-family:'Cormorant Garamond',serif;font-size:3.8rem;font-weight:700;color:var(--goldl);line-height:1;margin:.4rem 0 .2rem}
+.summary-sub{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--mut);opacity:.6;margin-bottom:.6rem}
+.verdict-box{border-radius:10px;padding:1.2rem;margin:1rem 0;text-align:center}
+.verdict-box.clear{background:rgba(76,175,128,.1);border:1px solid rgba(76,175,128,.35)}
+.verdict-box.guilty{background:rgba(224,80,96,.1);border:1px solid rgba(224,80,96,.35)}
+.verdict-box.immune{background:rgba(224,147,58,.1);border:1px solid rgba(224,147,58,.35)}
+.verdict-label{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.4rem}
+.verdict-box.clear .verdict-label{color:var(--green)}
+.verdict-box.guilty .verdict-label{color:var(--red)}
+.verdict-box.immune .verdict-label{color:var(--orange)}
+.verdict-text{font-size:.86rem;line-height:1.7;color:var(--mut)}
+.verdict-text strong{color:var(--txt)}
+.summary-stats{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin:1rem auto;max-width:620px}
+.ss-box{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:8px;padding:.7rem .95rem;min-width:105px;text-align:center}
+.ss-num{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;color:var(--goldl)}
+.ss-lbl{font-family:'IBM Plex Mono',monospace;font-size:.52rem;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);opacity:.7;margin-top:.15rem}
+.round-history{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center;margin:.8rem 0}
+.rh-pip{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:.58rem;font-weight:700;border:2px solid}
+.rh-pip.c{background:rgba(76,175,128,.18);border-color:var(--green);color:var(--green)}
+.rh-pip.d{background:rgba(224,80,96,.15);border-color:var(--red);color:var(--red)}
+.rh-pip.w{background:rgba(224,147,58,.18);border-color:var(--orange);color:var(--orange)}
+.welfare-box{background:rgba(176,48,64,.08);border:1px solid rgba(176,48,64,.3);border-radius:9px;padding:1.1rem;margin-bottom:1rem}
+.welfare-title{font-family:'IBM Plex Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--criml);margin-bottom:.5rem}
+.welfare-text{font-size:.82rem;line-height:1.7;color:var(--mut)}
+.welfare-text strong{color:var(--txt)}
+
+/* DEBRIEF */
+.debrief-box{background:rgba(26,39,68,.5);border:1px solid var(--bdr);border-radius:10px;padding:1.4rem;min-height:120px;font-size:.86rem;line-height:1.8;color:var(--mut)}
+.debrief-loading{text-align:center;padding:2rem;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);opacity:.75}
+.typing-dot{display:inline-block;animation:blink 1.2s infinite;margin-left:2px}
+.typing-dot:nth-child(2){animation-delay:.2s}.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+.debrief-box p{margin-bottom:.8rem}.debrief-box p:last-child{margin-bottom:0}
+.debrief-box strong{color:var(--txt)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .32s ease both}
+
+/* econOS topbar */
+.sim-topbar{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:9999;font-family:'Inter',system-ui,sans-serif;box-shadow:0 1px 3px rgba(15,23,42,.04)}
+.sim-topbar-left{display:flex;align-items:center;gap:.75rem}
+.sim-logo{display:flex;align-items:center;gap:.4rem;text-decoration:none}
+.sim-logo-dots{display:flex;align-items:flex-end;gap:2px}
+.sd1{display:block;width:7px;height:7px;border-radius:50%;background:#22C55E}
+.sd2{display:block;width:9px;height:9px;border-radius:50%;background:#F59E0B}
+.sd3{display:block;width:11px;height:11px;border-radius:50%;background:#2563EB}
+.sim-logo-word{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;font-family:'Inter',sans-serif}
+.sim-econ{color:#0F172A}.sim-os{color:#2563EB}
+.sim-divider{width:1px;height:20px;background:#E2E8F0;margin:0 .25rem}
+.sim-page-name{font-size:.8rem;font-weight:600;color:#64748B;font-family:'Inter',sans-serif}
+.sim-back-btn{display:inline-flex;align-items:center;gap:.3rem;font-size:.8rem;font-weight:600;color:#475569;text-decoration:none;padding:.4rem .75rem;border-radius:8px;border:1px solid #E2E8F0;background:#F8FAFC;transition:all .12s;font-family:'Inter',sans-serif}
+.sim-back-btn:hover{background:#F1F5F9;color:#0F172A;border-color:#CBD5E1}
+</style>
+</head>
+<body>
+<nav class="sim-topbar">
+  <div class="sim-topbar-left">
+    <a href="/" class="sim-logo">
+      <div class="sim-logo-dots"><span class="sd1"></span><span class="sd2"></span><span class="sd3"></span></div>
+      <span class="sim-logo-word"><span class="sim-econ">econ</span><span class="sim-os">OS</span></span>
+    </a>
+    <span class="sim-divider"></span>
+    <span class="sim-page-name">The Cartel Room</span>
+  </div>
+  <div>
+    <a href="../dashboard" class="sim-back-btn">← Dashboard</a>
+  </div>
+</nav>
+<div class="app" id="root"></div>
+
+<script>
+var ROUNDS = [
+  { n:1, title:"The Trade Association Dinner",
+    scenario:"The four major fuel retailers along the M1–M6 corridor have competed fiercely on price for years. This month, a trade association dinner provides an unusual opportunity. Your sales director returns with a quiet message: the other CEOs are prepared to hold pump prices at 130p per litre. Together, you would all earn significantly more than in an open price war. The choice is yours.",
+    signals:[
+      {firm:"Apex Fuels",    tone:"coop", quote:"Stable conditions benefit everyone in this market.",                   reliable:0.82},
+      {firm:"Crest Energy",  tone:"coop", quote:"A price war helps nobody. We are holding at 130p.",                   reliable:0.78},
+      {firm:"Vantage Petrol",tone:"warn", quote:"We are watching the market closely this quarter.",                     reliable:0.38}
+    ], special:null },
+
+  { n:2, title:"The Price Leadership Signal",
+    scenario:"Apex Fuels' CEO has given a widely-reported trade press interview stating the company will hold pump prices at 130p 'for the foreseeable future, as this accurately reflects our cost base.' This is a public, on-the-record commitment. Economists call this price leadership — a form of tacit collusion that signals the cartel price without requiring an explicit agreement. Unlike last month's quiet dinner conversation, a public statement is costly to reverse. Apex is almost certainly telling the truth.",
+    signals:[
+      {firm:"Apex Fuels",    tone:"coop", quote:"Our CEO's statement is on record. We are holding at 130p.",           reliable:0.96, badge:'public'},
+      {firm:"Crest Energy",  tone:"coop", quote:"We see no reason to deviate from current market pricing.",            reliable:0.76},
+      {firm:"Vantage Petrol",tone:"warn", quote:"Cost pressures are building. We are reviewing our position.",         reliable:0.35}
+    ], special:'price_leader' },
+
+  { n:3, title:"The Wobble",
+    scenario:"Vantage Petroleum's Q2 results were poor and their CEO faces pressure from institutional investors. A contact in their procurement team hints they are 'reviewing pricing strategy.' Meanwhile, FastFuel — a regional newcomer — has opened three forecourts along the A14 at 112p, undercutting all four majors. The arrangement feels fragile.",
+    signals:[
+      {firm:"Apex Fuels",    tone:"coop", quote:"One bad quarter does not change the fundamentals. Hold the line.",    reliable:0.80},
+      {firm:"Crest Energy",  tone:"coop", quote:"FastFuel will not survive at those margins. We sit tight.",           reliable:0.74},
+      {firm:"Vantage Petrol",tone:"host", quote:"Our investors expect results. We will do what is necessary.",         reliable:0.40}
+    ], special:null },
+
+  { n:4, title:"The New Entrant",
+    scenario:"FastFuel has secured two more site leases and is pricing at 112p, winning loyal customers along key feeder roads. Your strategy team flags two responses: match FastFuel's price to deter further entry — a limit pricing strategy — or maintain 130p and accept some volume loss. Apex's regional manager sends a message: 'Do we need a coordinated response?' All four firms are weighing their options.",
+    signals:[
+      {firm:"Apex Fuels",    tone:"warn", quote:"We may need a collective response to FastFuel's expansion.",          reliable:0.70},
+      {firm:"Crest Energy",  tone:"coop", quote:"If we all cut to respond, we all sacrifice margins. Hold.",           reliable:0.72},
+      {firm:"Vantage Petrol",tone:"host", quote:"FastFuel is eating our volumes. Something has to change this month.", reliable:0.42}
+    ], special:'new_entrant' },
+
+  { n:5, title:"The CMA Announces",
+    scenario:"The Competition and Markets Authority has launched a formal inquiry into motorway fuel pricing, citing 'suspicious price uniformity across service station operators.' Investigators have requested two years of pricing records and internal email correspondence. Your legal team warns that communications referencing price coordination are now discoverable under the inquiry powers. The arrangement has become significantly more dangerous — but changing behaviour now could itself look suspicious.",
+    signals:[
+      {firm:"Apex Fuels",    tone:"neut", quote:"Our lawyers have instructed us to cease all non-commercial contact.", reliable:0.55},
+      {firm:"Crest Energy",  tone:"neut", quote:"We are cooperating fully with the CMA. No comment on pricing.",      reliable:0.55},
+      {firm:"Vantage Petrol",tone:"host", quote:"Every firm must now act entirely in its own best interests.",         reliable:0.65}
+    ], special:'cma' },
+
+  { n:6, title:"The Leniency Window",
+    scenario:"The CMA has activated its leniency programme. The first firm to come forward with evidence of collusion receives full immunity from financial penalties. The second receives a 30–50% reduction. All subsequent firms face the full penalty — potentially tens of millions of pounds. Your legal team has prepared the paperwork. Vantage has gone quiet. You have three choices.",
+    signals:[
+      {firm:"Apex Fuels",    tone:"neut", quote:"We have no further comment at this stage of the process.",           reliable:0.50},
+      {firm:"Crest Energy",  tone:"neut", quote:"We are considering all options in light of the CMA proceedings.",    reliable:0.50},
+      {firm:"Vantage Petrol",tone:"sil",  quote:"...",                                                                 reliable:0.30}
+    ], special:'leniency' },
+
+  { n:7, title:"Under the Microscope",
+    scenario:"CMA investigators have visited fourteen service stations in the past fortnight, recording prices at half-hour intervals and photographing signage. The trade association has suspended its market-information newsletter pending legal review. Whatever informal communication existed between the four firms has now ceased. Each firm is pricing independently — or at least, that is what each firm is telling the CMA.",
+    signals:[
+      {firm:"Apex Fuels",    tone:"neut", quote:"We price independently based on our own costs and market data.",     reliable:0.52},
+      {firm:"Crest Energy",  tone:"neut", quote:"Our decisions reflect normal commercial judgement. Nothing more.",    reliable:0.52},
+      {firm:"Vantage Petrol",tone:"neut", quote:"We welcome the CMA's review of competitive conditions.",             reliable:0.48}
+    ], special:null },
+
+  { n:8, title:"The Last Move",
+    scenario:"The CMA's provisional findings are due in four weeks. Investigators have assembled 18 months of pricing data, emails obtained under warrant, and a statement from FastFuel's founder noting the 130p ceiling held 'suspiciously constant' across all four operators. This is your final pricing decision. Whatever you do now, the evidence already exists. How do you play your last move?",
+    signals:[
+      {firm:"Apex Fuels",    tone:"neut", quote:"Whatever the outcome, we have always acted within the law.",         reliable:0.50},
+      {firm:"Crest Energy",  tone:"neut", quote:"The CMA will find what it finds.",                                   reliable:0.50},
+      {firm:"Vantage Petrol",tone:"neut", quote:"See you on the other side.",                                         reliable:0.50}
+    ], special:null }
+];
+
+var PT = { 'C':[2,5,8,10], 'D':[3,7,10,12] };
+function profitFor(myChoice, othersArr) {
+  var n = othersArr.filter(function(c){return c==='C';}).length;
+  return PT[myChoice][n];
+}
+
+var G = {};
+function freshGame() {
+  return {
+    round: 0,
+    playerChoices: [],
+    roundData: [],
+    profits: {player:0, apex:0, crest:0, vantage:0},
+    whistleblew: false,
+    grimFired: false,
+    grimRound: -1,
+    crestBetrayal: 0
+  };
+}
+
+function apexChoice(ri, ph) {
+  if (ri === 0) return 'C';
+  var p1 = ph[ri-1];
+  var p2 = ri >= 2 ? ph[ri-2] : 'C';
+  if (p1==='D'||p1==='W'||p2==='D'||p2==='W') return 'D';
+  return 'C';
+}
+
+function crestChoice(ri, ph) {
+  if (ri === 0) return 'C';
+  if (G.grimFired) return 'D';
+  return (Math.random() < (ri >= 4 ? 0.72 : 0.85)) ? 'C' : 'D';
+}
+
+function vantageChoice(ri) {
+  if (ri === 0) return 'D';
+  if (ri === 5) return 'D';
+  if (ri >= 4) return Math.random() < 0.80 ? 'D' : 'C';
+  return Math.random() < 0.58 ? 'D' : 'C';
+}
+
+function signalAccurate(tone, choice) {
+  if (tone === 'coop') return choice === 'C' ? 'yes' : 'no';
+  if (tone === 'host' || tone === 'warn') return (choice === 'D') ? 'yes' : 'no';
+  return 'na';
+}
+
+function render(html) {
+  var el = document.getElementById('root');
+  el.innerHTML = html;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goHub() { render('<div class="fade-in">'+hubHTML()+'</div>'); }
+
+function hubHTML() {
+  return '<div class="hub-hero">'
+    +'<div class="hub-eyebrow">Paper 1 &middot; Oligopoly &amp; Game Theory</div>'
+    +'<h1>The Cartel Room</h1>'
+    +'<div class="hub-tagline">Can a cartel survive when everyone has a reason to cheat?</div>'
+    +'<p class="hub-intro">You are CEO of NovaPetro, one of four major fuel retailers on the UK motorway network. An informal price-fixing arrangement keeps all four firms earning strong profits — but the incentive to secretly undercut your rivals never disappears. Over 8 rounds you will face real decisions about cooperation, defection, and the arrival of the Competition and Markets Authority. Signals from rivals are real — but not always truthful.</p>'
+    +'</div>'
+    +'<div class="mkt-stats">'
+    +'<div class="mkt-stat"><div class="mkt-stat-num">78%</div><div class="mkt-stat-lbl">CR4 — Four-Firm Concentration Ratio</div><div class="mkt-stat-sub">Four firms control 78% of motorway fuel retail. Above 60% triggers CMA interest.</div></div>'
+    +'<div class="mkt-stat"><div class="mkt-stat-num">1,840</div><div class="mkt-stat-lbl">HHI — Herfindahl-Hirschman Index</div><div class="mkt-stat-sub">HHI above 1,500 indicates a concentrated market. The US DOJ would classify this as oligopoly.</div></div>'
+    +'<div class="mkt-stat"><div class="mkt-stat-num">130p</div><div class="mkt-stat-lbl">Cartel Price vs ~110p competitive</div><div class="mkt-stat-sub">The 20p margin above competitive price represents the supernormal profit the cartel generates — and consumer surplus destroyed.</div></div>'
+    +'<div class="mkt-stat"><div class="mkt-stat-num">10%</div><div class="mkt-stat-lbl">Maximum CMA Fine of Annual Turnover</div><div class="mkt-stat-sub">Under the Competition Act 1998 (Chapter I Prohibition), price-fixing fines can reach 10% of global annual turnover.</div></div>'
+    +'</div>'
+    +'<div class="matrix-wrap">'
+    +'<div class="matrix-title">&#9632; The Payoff Matrix &mdash; Your Profit Per Round (£m)</div>'
+    +'<div class="matrix-grid">'
+    +'<div class="mx mx-corner"></div>'
+    +'<div class="mx mx-head">Others<br><strong style="color:#4caf80">Cooperate</strong></div>'
+    +'<div class="mx mx-head">Others<br><strong style="color:#e05060">Defect</strong></div>'
+    +'<div class="mx mx-head your-head">You<br><strong>Cooperate</strong><br>130p</div>'
+    +'<div class="mx mx-cell good"><div class="mx-profit">£10m</div><div class="mx-lbl">Cartel Optimum</div></div>'
+    +'<div class="mx mx-cell bad"><div class="mx-profit">£2m</div><div class="mx-lbl">Exploited</div></div>'
+    +'<div class="mx mx-head your-head">You<br><strong>Defect</strong><br>115p</div>'
+    +'<div class="mx mx-cell great"><div class="mx-profit">£12m</div><div class="mx-lbl">Free Rider</div></div>'
+    +'<div class="mx mx-cell nash"><div class="mx-profit">£3m</div><div class="mx-lbl">Nash Equilibrium &#9632;</div></div>'
+    +'</div>'
+    +'<div class="matrix-note">Actual profits vary because each rival chooses independently. The Nash Equilibrium (all defect, £3m each) is <em>individually rational</em> but <em>collectively suboptimal</em> — seven pounds worse per firm than the cartel optimum.</div>'
+    +'</div>'
+    +'<div class="section-label" style="margin-bottom:.65rem">Your Rivals &mdash; Signal Reliability</div>'
+    +'<div class="firms-row">'
+    +'<div class="firm-card" style="--fc:#4a7fb5"><div class="firm-name">Apex Fuels</div><div class="firm-strategy">Strategy: Two-Round Punishment</div><div class="firm-desc">Apex cooperates until you defect, then retaliates for two full rounds before forgiving.</div><span class="firm-reliability rel-high">Signal Reliability: High</span></div>'
+    +'<div class="firm-card" style="--fc:#4caf80"><div class="firm-name">Crest Energy</div><div class="firm-strategy">Strategy: Grim Trigger</div><div class="firm-desc">Crest cooperates by default — but betray them once while they are cooperating, and they switch to permanent defection.</div><span class="firm-reliability rel-med">Signal Reliability: Medium — until triggered</span></div>'
+    +'<div class="firm-card" style="--fc:#e05060"><div class="firm-name">Vantage Petroleum</div><div class="firm-strategy">Strategy: Predominantly Aggressive</div><div class="firm-desc">Vantage is unreliable from round one. Treat everything from Vantage as potentially a bluff.</div><span class="firm-reliability rel-low">Signal Reliability: Low</span></div>'
+    +'</div>'
+    +'<button class="start-btn" onclick="startGame()">Enter the Cartel Room &rarr;</button>';
+}
+
+function startGame() { G = freshGame(); renderRound(); }
+
+function renderRound() {
+  var rd = ROUNDS[G.round];
+  var ri = G.round;
+  var prog = (ri / 8 * 100).toFixed(0);
+  var alerts = '';
+  if (G.grimFired && ri > G.grimRound) {
+    alerts += '<div class="alert alert-grim"><div class="alert-icon">&#9888;</div><div class="alert-body"><div class="alert-title">Crest Energy: Grim Trigger Fired</div>Crest Energy has switched to <strong>permanent defection</strong> for the remainder of the game.</div></div>';
+  }
+  if (rd.special === 'price_leader') {
+    alerts += '<div class="alert alert-price"><div class="alert-icon">&#128240;</div><div class="alert-body"><div class="alert-title">Price Leadership — Tacit Collusion</div>Apex\'s public commitment is a form of <strong>tacit collusion</strong> without an explicit agreement.</div></div>';
+  }
+  if (rd.special === 'new_entrant') {
+    alerts += '<div class="alert alert-price"><div class="alert-icon">&#9888;</div><div class="alert-body"><div class="alert-title">Entry Threat &mdash; Limit Pricing &amp; Contestability</div>FastFuel\'s expansion tests <strong>Baumol\'s contestability theory</strong>.</div></div>';
+  }
+  if (rd.special === 'cma') {
+    alerts += '<div class="alert alert-cma"><div class="alert-icon">&#9876;</div><div class="alert-body"><div class="alert-title">CMA Investigation Launched</div>The CMA has opened a formal inquiry under the <strong>Competition Act 1998, Chapter I Prohibition</strong>.</div></div>';
+  }
+  if (rd.special === 'leniency') {
+    alerts += '<div class="alert alert-len"><div class="alert-icon">&#9878;</div><div class="alert-body"><div class="alert-title">Leniency Programme Activated</div>The CMA is offering full immunity to the first firm to come forward with evidence.</div></div>';
+  }
+  var sigs = rd.signals.map(function(s){
+    var badge = s.badge === 'public' ? '<span class="signal-badge badge-public">Public Commitment</span>' : '';
+    if (s.tone === 'warn' || s.tone === 'host') badge += '<span class="signal-badge badge-unrel" style="margin-left:.3rem">Treat with caution</span>';
+    return '<div class="signal-card '+s.tone+'"><div class="signal-firm">'+s.firm+'</div><div class="signal-quote">&ldquo;'+s.quote+'&rdquo;</div>'+badge+'</div>';
+  }).join('');
+  var maxP = Math.max(G.profits.player, G.profits.apex, G.profits.crest, G.profits.vantage, 1);
+  function mlb(name, val, col, isYou) {
+    var w = (val/maxP*100).toFixed(0);
+    return '<div class="mlb-row"><div class="mlb-name'+(isYou?' you':'')+'">'+name+'</div><div class="mlb-track"><div class="mlb-fill" style="width:'+w+'%;background:'+col+'"></div></div><div class="mlb-val'+(isYou?' you':'')+'">£'+val+'m</div></div>';
+  }
+  var miniLb = '<div class="mini-lb"><div class="mini-lb-title">Current Standings</div><div class="mini-lb-rows">'+mlb('You',G.profits.player,'var(--goldl)',true)+mlb('Apex',G.profits.apex,'var(--blue)',false)+mlb('Crest',G.profits.crest,'var(--green)',false)+mlb('Vantage',G.profits.vantage,'var(--red)',false)+'</div></div>';
+  var buttons;
+  if (rd.special === 'leniency') {
+    buttons = '<button class="choice-btn coop-btn" onclick="submitChoice(\'C\')"><div class="cb-icon">&#129309;</div><div class="cb-label">Hold the Arrangement</div><div class="cb-price">130p per litre</div><div class="cb-desc">Maintain the cartel price.</div></button><button class="choice-btn def-btn" onclick="submitChoice(\'D\')"><div class="cb-icon">&#9986;</div><div class="cb-label">Defect on Price Only</div><div class="cb-price">115p per litre</div><div class="cb-desc">Undercut rivals but do not contact the CMA.</div></button><button class="choice-btn len-btn" onclick="submitChoice(\'W\')"><div class="cb-icon">&#128203;</div><div class="cb-label">Activate Leniency</div><div class="cb-price">Whistleblow to the CMA</div><div class="cb-desc">Guaranteed full immunity from any financial penalty.</div></button>';
+  } else {
+    buttons = '<button class="choice-btn coop-btn" onclick="submitChoice(\'C\')"><div class="cb-icon">&#129309;</div><div class="cb-label">Cooperate</div><div class="cb-price">Hold at 130p per litre</div><div class="cb-desc">Maintain the cartel price.</div></button><button class="choice-btn def-btn" onclick="submitChoice(\'D\')"><div class="cb-icon">&#9986;</div><div class="cb-label">Defect</div><div class="cb-price">Cut to 115p per litre</div><div class="cb-desc">Undercut rivals.</div></button>';
+  }
+  render('<div class="fade-in"><div class="round-header"><div><div class="round-eyebrow">Round '+rd.n+' of 8</div><div class="round-title">'+rd.title+'</div></div><div class="round-scorebox"><div class="round-score-lbl">Your Cumulative Profit</div><div class="round-score-num">£'+G.profits.player+'m</div></div></div><div class="round-progress"><div class="round-pfill" style="width:'+prog+'%"></div></div>'+alerts+'<div class="scenario-box">'+rd.scenario+'</div><div class="section-label">Intelligence — Signals from Rivals</div><div class="signals-grid">'+sigs+'</div>'+miniLb+'<div class="choice-title">Your Decision This Month</div><div class="choice-btns">'+buttons+'</div></div>');
+}
+
+function submitChoice(playerChoice) {
+  var ri = G.round;
+  var rd = ROUNDS[ri];
+  var apex    = apexChoice(ri, G.playerChoices);
+  var crest   = crestChoice(ri, G.playerChoices);
+  var vantage = vantageChoice(ri);
+  if (rd.special === 'leniency') vantage = 'D';
+  var effP = (playerChoice === 'W') ? 'D' : playerChoice;
+  if (playerChoice === 'W') G.whistleblew = true;
+  if (effP === 'D' && crest === 'C') {
+    G.crestBetrayal++;
+    if (!G.grimFired) { G.grimFired = true; G.grimRound = ri; }
+  }
+  var pp = profitFor(effP,   [apex, crest, vantage]);
+  var ap = profitFor(apex,   [effP, crest, vantage]);
+  var cp = profitFor(crest,  [effP, apex, vantage]);
+  var vp = profitFor(vantage,[effP, apex, crest]);
+  G.profits.player += pp; G.profits.apex += ap; G.profits.crest += cp; G.profits.vantage += vp;
+  G.playerChoices.push(playerChoice);
+  G.roundData.push({round:ri+1,rd:rd,playerChoice:playerChoice,apex:apex,crest:crest,vantage:vantage,playerProfit:pp,apexProfit:ap,crestProfit:cp,vantageProfit:vp,sigAcc:{apex:signalAccurate(rd.signals[0].tone,apex),crest:signalAccurate(rd.signals[1].tone,crest),vantage:signalAccurate(rd.signals[2].tone,vantage)}});
+  renderReveal();
+}
+
+function renderReveal() {
+  var d = G.roundData[G.roundData.length - 1];
+  var ri = G.round;
+  var isLast = ri === 7;
+  function pill(c) {
+    if (c==='W') return '<span class="choice-pill pill-w">Whistleblew</span>';
+    if (c==='C') return '<span class="choice-pill pill-c">Cooperated</span>';
+    return '<span class="choice-pill pill-d">Defected</span>';
+  }
+  function accBadge(acc) {
+    if (acc==='yes') return '<span class="sig-acc sig-ok">&#10003; Signal reliable</span>';
+    if (acc==='no')  return '<span class="sig-acc sig-bad">&#10007; Signal misleading</span>';
+    return '<span class="sig-acc sig-na">&mdash; Inconclusive</span>';
+  }
+  var maxTotal = Math.max(G.profits.player, G.profits.apex, G.profits.crest, G.profits.vantage, 1);
+  function lbBar(name, val, col) {
+    var w = (val/maxTotal*100).toFixed(1);
+    return '<div class="lb-bar-wrap"><div class="lb-firm-name">'+name+'<span>£'+val+'m</span></div><div class="lb-bar-track"><div class="lb-bar-fill" style="width:'+w+'%;background:'+col+'"></div></div></div>';
+  }
+  var grimAnnounce = '';
+  if (G.grimFired && G.grimRound === ri) {
+    grimAnnounce = '<div class="alert alert-grim" style="margin-bottom:1rem"><div class="alert-icon">&#9888;</div><div class="alert-body"><div class="alert-title">Crest Energy: Grim Trigger Activated</div>You defected while Crest was cooperating. Crest has now switched to <strong>permanent defection</strong> for all remaining rounds.</div></div>';
+  }
+  render('<div class="fade-in"><div class="round-header"><div><div class="round-eyebrow">Round '+d.round+' Result</div><div class="round-title">'+d.rd.title+'</div></div><div class="round-scorebox"><div class="round-score-lbl">Your Cumulative Profit</div><div class="round-score-num">£'+G.profits.player+'m</div></div></div><div class="round-progress"><div class="round-pfill" style="width:'+(d.round/8*100).toFixed(0)+'%"></div></div>'+grimAnnounce+'<table class="result-table"><thead><tr><th>Firm</th><th>Decision</th><th>Profit</th><th>Signal Accuracy</th></tr></thead><tbody><tr class="player-row"><td class="firm-col">&#9733; You (NovaPetro)</td><td>'+pill(d.playerChoice)+'</td><td class="profit-col mine">£'+d.playerProfit+'m</td><td>&mdash;</td></tr><tr><td>Apex Fuels</td><td>'+pill(d.apex)+'</td><td class="profit-col">£'+d.apexProfit+'m</td><td>'+accBadge(d.sigAcc.apex)+'</td></tr><tr><td>Crest Energy</td><td>'+pill(d.crest)+'</td><td class="profit-col">£'+d.crestProfit+'m</td><td>'+accBadge(d.sigAcc.crest)+'</td></tr><tr><td>Vantage Petroleum</td><td>'+pill(d.vantage)+'</td><td class="profit-col">£'+d.vantageProfit+'m</td><td>'+accBadge(d.sigAcc.vantage)+'</td></tr></tbody></table><div class="round-summary-box"><div class="rs-row"><div class="rs-item"><div class="rs-lbl">Your Profit This Round</div><div class="rs-val">£'+d.playerProfit+'m</div></div><div class="rs-item"><div class="rs-lbl">Cumulative Total</div><div class="rs-val">£'+G.profits.player+'m</div></div><div class="rs-item"><div class="rs-lbl">Rounds Remaining</div><div class="rs-val">'+(7-ri)+'</div></div></div></div><div class="econ-insight"><div class="ei-lbl">&#9632; Economics Commentary</div><div class="ei-text">'+getInsight(d, ri)+'</div></div><div class="section-label" style="margin-bottom:.5rem">Running Totals</div><div class="round-summary-box">'+lbBar('You (NovaPetro)',G.profits.player,'var(--goldl)')+lbBar('Apex Fuels',G.profits.apex,'var(--blue)')+lbBar('Crest Energy',G.profits.crest,'var(--green)')+lbBar('Vantage Petroleum',G.profits.vantage,'var(--red)')+'</div><div class="btn-row"><button class="btn bg" onclick="'+(isLast?'renderSummary()':'nextRound()')+'">'+(isLast?'View Final Summary':'Next Round &rarr;')+'</button></div><div style="height:1.5rem"></div></div>');
+}
+
+function nextRound() { G.round++; renderRound(); }
+
+function getInsight(d, ri) {
+  var pC = d.playerChoice === 'C';
+  var pD = !pC;
+  var aC = d.apex === 'C', cC = d.crest === 'C', vC = d.vantage === 'C';
+  var allCoop = pC && aC && cC && vC;
+  switch(ri) {
+    case 0: if (allCoop) return 'The cartel held fully — the <strong>Pareto optimal outcome</strong>. The repeated game makes cooperation rational even though defection is dominant in a single-shot game.'; if (pC && !vC) return 'You cooperated but Vantage defected — the <strong>exploitation outcome</strong>. This illustrates why defection is the <strong>dominant strategy</strong> in a single-shot game.'; if (pD) return 'You defected in round one. In repeated play, Apex\'s two-round punishment and Crest\'s grim trigger mean a one-round gain can trigger larger losses.'; return 'Round one established the initial pattern. Watch signal accuracy carefully over coming rounds.';
+    case 1: if (pC) return 'You followed Apex\'s public commitment — <strong>tacit collusion through price leadership</strong>. Public statements are more credible than private signals.'; return 'You defected despite Apex\'s public commitment. The <strong>kinked demand curve model</strong> predicts rivals will match price cuts, reducing your net gain.';
+    case 2: if (!vC) return 'Vantage defected as their hostile signal suggested. Financial stress raises a firm\'s discount rate, making current defection more attractive — the core of <strong>cartel fragility</strong>.'; return 'Vantage cooperated despite their hostile signal — illustrating the <strong>imperfect information problem</strong> in oligopoly.';
+    case 3: if (pD) return 'Your defection could be interpreted as <strong>limit pricing</strong>: pricing below the cartel level to deter FastFuel\'s further entry.'; return 'You held at 130p. <strong>Baumol\'s contestability theory</strong> predicts that low entry costs allow small entrants to discipline incumbent pricing.';
+    case 4: if (pD) return 'The <strong>expected cost of cooperation</strong> has risen sharply with the CMA\'s inquiry. Rational expected-utility maximisation under uncertainty makes defection more attractive.'; return 'You held despite the CMA. The Chapter I Prohibition fines of up to 10% of global turnover far exceed the accumulated profit from cooperation.';
+    case 5: if (d.playerChoice === 'W') return 'You activated leniency — theoretically optimal when discovery is expected. The leniency programme creates a <strong>prisoner\'s dilemma within the prisoner\'s dilemma</strong>.'; if (pC) return 'You held despite the leniency window. Vantage may have already contacted the CMA — the <strong>race to the courthouse</strong> model predicts first-mover advantage.'; return 'You defected without activating leniency — higher revenue this round but still exposed to investigation.';
+    case 6: if (G.grimFired) return 'With Crest on grim trigger and CMA scrutiny, the cartel is fragmenting. The <strong>kinked demand curve</strong> predicts price rigidity, but enforcement changes the payoff structure.'; return 'Coordination has effectively ended. The market is transitioning toward <strong>non-collusive oligopoly</strong>.';
+    case 7: if (pD) return '<strong>Backward induction</strong> predicts defection in the final round — no future punishment is possible. In practice, cooperation sometimes persists due to norms and reputation.'; return 'You cooperated in the final round. Standard backward induction predicts defection, but norms and risk aversion can sustain cooperation.';
+  }
+  return 'Each outcome reflects the central tension: what is individually rational (defect) is collectively suboptimal.';
+}
+
+function renderSummary() {
+  var coopN = G.playerChoices.filter(function(c){return c==='C';}).length;
+  var gross = G.profits.player;
+  var fine = 0, verdictClass, verdictTitle, verdictText;
+  if (G.whistleblew) {
+    verdictClass='immune'; verdictTitle='CMA Verdict: Full Immunity Granted';
+    verdictText='You activated the leniency programme. <strong>Fine: £0.</strong>';
+  } else if (coopN >= 5) {
+    verdictClass='guilty'; verdictTitle='CMA Verdict: Cartel Participation Proven';
+    fine=20;
+    verdictText='Sustained price coordination across '+coopN+' of 8 rounds. <strong>Fine: £20m.</strong>';
+  } else if (coopN >= 3) {
+    verdictClass='guilty'; verdictTitle='CMA Verdict: Partial Cartel Involvement';
+    fine=10;
+    verdictText='Evidence of coordination in '+coopN+' of 8 rounds. <strong>Fine: £10m.</strong>';
+  } else {
+    verdictClass='clear'; verdictTitle='CMA Verdict: Insufficient Evidence';
+    verdictText='You cooperated in only '+coopN+' of 8 rounds. <strong>Fine: £0.</strong>';
+  }
+  var net = gross - fine;
+  var sigCorrect = 0, sigWrong = 0;
+  G.roundData.forEach(function(d){
+    if (d.sigAcc.apex==='yes') sigCorrect++; else if (d.sigAcc.apex==='no') sigWrong++;
+    if (d.sigAcc.crest==='yes') sigCorrect++; else if (d.sigAcc.crest==='no') sigWrong++;
+    if (d.sigAcc.vantage==='yes') sigCorrect++; else if (d.sigAcc.vantage==='no') sigWrong++;
+  });
+  var consumerLoss = coopN * 8;
+  var pips = G.playerChoices.map(function(c,i){
+    var cls=c==='W'?'w':c==='C'?'c':'d';
+    var lbl=c==='W'?'W':c==='C'?'C':'D';
+    return '<div class="rh-pip '+cls+'" title="Round '+(i+1)+'">'+lbl+'</div>';
+  }).join('');
+  render('<div class="fade-in"><div class="summary-hero"><div class="summary-eye">Game Complete &mdash; 8 Rounds</div><div class="summary-title">Final Results</div><div class="summary-bignum">£'+gross+'m</div><div class="summary-sub">Gross profit before regulatory outcome</div>'+(fine>0?'<div class="summary-bignum" style="font-size:2.4rem;color:var(--red)">&#8722;£'+fine+'m</div><div class="summary-sub">CMA Financial Penalty</div>':'')+'<div class="summary-bignum" style="font-size:2.8rem;margin-top:.4rem">£'+net+'m</div><div class="summary-sub">Net profit</div></div><div class="verdict-box '+verdictClass+'"><div class="verdict-label">'+verdictTitle+'</div><div class="verdict-text">'+verdictText+'</div></div><div class="summary-stats"><div class="ss-box"><div class="ss-num">'+coopN+'</div><div class="ss-lbl">Rounds Cooperated</div></div><div class="ss-box"><div class="ss-num">'+(8-coopN)+'</div><div class="ss-lbl">Rounds Defected</div></div><div class="ss-box"><div class="ss-num">£'+G.profits.apex+'m</div><div class="ss-lbl">Apex Final</div></div><div class="ss-box"><div class="ss-num">£'+G.profits.crest+'m</div><div class="ss-lbl">Crest Final</div></div><div class="ss-box"><div class="ss-num">£'+G.profits.vantage+'m</div><div class="ss-lbl">Vantage Final</div></div><div class="ss-box"><div class="ss-num">'+sigCorrect+'/'+(sigCorrect+sigWrong)+'</div><div class="ss-lbl">Signals Accurate</div></div></div><div class="welfare-box"><div class="welfare-title">&#9632; Consumer Welfare Impact</div><div class="welfare-text">During '+coopN+' months at the cartel price, motorists paid ~20p per litre above the competitive price. Estimated consumer surplus destruction: <strong>£'+consumerLoss+'m</strong>. This represents <strong>allocative inefficiency</strong> (P &gt; MC).</div></div><div style="margin:1rem 0;text-align:center"><div class="section-label" style="margin-bottom:.6rem">Your Choices &mdash; All 8 Rounds</div><div class="round-history">'+pips+'</div></div><div class="section-label" style="margin-bottom:.5rem">Economics Debrief</div><div class="debrief-box" id="debriefBox"><p>Review your decisions through these lenses: <strong>Prisoner\'s Dilemma</strong> — was defection individually rational but collectively harmful? <strong>Punishment strategies</strong> — did Apex\'s two-round punishment or Crest\'s grim trigger influence your choices? <strong>CMA enforcement</strong> — how did the expected cost of collusion change once the investigation launched? Discuss with your teacher how your strategy compared to the Nash equilibrium prediction.</p></div><div class="btn-row" style="margin-top:1rem"><button class="btn bg" onclick="startGame()">&#8635; Play Again</button><button class="btn bs" onclick="goHub()">&larr; Back to Hub</button></div><div style="height:2rem"></div></div>');
+}
+
+goHub();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script>Auth.requireStudent('../login');</script>
+</body>
+</html>
