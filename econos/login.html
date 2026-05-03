@@ -303,18 +303,6 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── FORGOT PASSWORD ── */
-.forgot-row {
-  display: flex; justify-content: flex-end;
-  margin-bottom: 0.25rem;
-}
-.forgot-link {
-  font-size: 0.8rem; color: #2563EB; font-weight: 600;
-  cursor: pointer; background: none; border: none;
-  padding: 0; text-decoration: none;
-}
-.forgot-link:hover { text-decoration: underline; }
-
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .page-shell { grid-template-columns: 1fr; border: none; }
@@ -426,16 +414,6 @@ body {
             <input id="signup-email" type="email" placeholder="Enter your email address" required autocomplete="email">
           </div>
         </div>
-        <div class="field-group" style="margin-bottom:0;">
-          <label class="input-label" for="signup-password">Password</label>
-          <div class="input-wrap">
-            <span class="input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
-            <input id="signup-password" type="password" placeholder="Create a password" required autocomplete="new-password" minlength="8">
-            <button type="button" class="input-eye" onclick="togglePw('signup-password', this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-          </div>
-          <div class="input-hint">At least 8 characters with a number or symbol</div>
-        </div>
-
         <div class="role-label">I am signing up as a...</div>
         <div class="role-buttons" id="roleButtons">
           <button type="button" class="role-btn active" data-role="student" onclick="selectRole(this)">
@@ -469,40 +447,52 @@ body {
     <!-- ══ SIGN IN ══ -->
     <div id="signinView" style="display:none;">
       <h2 class="auth-card-title">Welcome back</h2>
-      <p class="auth-card-sub">Sign in to your econOS account.</p>
       <div class="auth-msg" id="signin-msg"></div>
 
-      <form id="signinFormEl" onsubmit="handleSignIn(event)">
-        <div class="field-group">
-          <label class="input-label" for="signin-email">Email address</label>
-          <div class="input-wrap">
-            <span class="input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></span>
-            <input id="signin-email" type="email" placeholder="Enter your email address" required autocomplete="email">
+      <!-- Step 1: enter email -->
+      <div id="signinEmailStep">
+        <p class="auth-card-sub">Enter your email and we'll send you a sign-in code.</p>
+        <form onsubmit="handleSendSigninOtp(event)">
+          <div class="field-group">
+            <label class="input-label" for="signin-email">Email address</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></span>
+              <input id="signin-email" type="email" placeholder="Enter your email address" required autocomplete="email">
+            </div>
           </div>
-        </div>
-        <div class="field-group" style="margin-bottom:0;">
-          <label class="input-label" for="signin-password">Password</label>
-          <div class="input-wrap">
-            <span class="input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
-            <input id="signin-password" type="password" placeholder="Enter your password" required autocomplete="current-password">
-            <button type="button" class="input-eye" onclick="togglePw('signin-password', this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-          </div>
-        </div>
-        <div class="forgot-row" style="margin-top:0.5rem;">
-          <a class="forgot-link" onclick="handleForgotPassword()">Forgot password?</a>
-        </div>
-        <button type="submit" id="signin-btn" class="btn-submit" style="margin-top:0.75rem;">
-          Log in
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <button type="submit" id="signin-send-btn" class="btn-submit">
+            Send sign-in code
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+        <div class="or-divider">or</div>
+        <button class="google-btn" onclick="handleGoogleAuth()">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
+          Continue with Google
         </button>
-      </form>
+        <div class="auth-switch">Don't have an account? <a onclick="showView('signup')">Create one free</a></div>
+      </div>
 
-      <div class="or-divider">or</div>
-      <button class="google-btn" onclick="handleGoogleAuth()">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
-        Continue with Google
-      </button>
-      <div class="auth-switch">Don't have an account? <a onclick="showView('signup')">Create one free</a></div>
+      <!-- Step 2: enter OTP code -->
+      <div id="signinOtpStep" style="display:none;">
+        <p class="auth-card-sub" id="signin-otp-hint">We've sent a 6-digit code to your email &mdash; check your inbox.</p>
+        <form onsubmit="handleVerifySigninOtp(event)">
+          <div class="field-group">
+            <label class="input-label" for="signin-otp">Verification code</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+              <input id="signin-otp" type="text" inputmode="numeric" maxlength="6" placeholder="000000" required autocomplete="one-time-code" style="letter-spacing:0.35em;font-size:1.25rem;font-weight:700;padding-left:3rem;">
+            </div>
+          </div>
+          <button type="submit" id="signin-verify-btn" class="btn-submit">
+            Verify &amp; sign in
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+        <div style="text-align:center;margin-top:1rem;">
+          <a onclick="showSigninEmailStep()" style="font-size:.8125rem;color:#2563EB;cursor:pointer;font-weight:600;">&#8592; Use a different email</a>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -540,16 +530,9 @@ function selectRole(el) {
   selectedRole = el.dataset.role;
 }
 
-function togglePw(inputId, btn) {
-  const input = document.getElementById(inputId);
-  const isText = input.type === 'text';
-  input.type = isText ? 'password' : 'text';
-  btn.style.opacity = isText ? '1' : '0.5';
-}
-
 function showMsg(id, text, type) {
   const el = document.getElementById(id);
-  el.textContent = text;
+  el.innerHTML = text;
   el.className = 'auth-msg ' + type;
 }
 function clearMsg(id) {
@@ -568,13 +551,8 @@ function handleStep1(e) {
   clearMsg('signup-msg');
   const name = document.getElementById('signup-fullname').value.trim();
   const email = document.getElementById('signup-email').value.trim();
-  const pw = document.getElementById('signup-password').value;
-  if (!name || !email || !pw) return;
-  if (pw.length < 8) {
-    showMsg('signup-msg', 'Password must be at least 8 characters.', 'error');
-    return;
-  }
-  sessionStorage.setItem('econos_signup', JSON.stringify({ name, email, password: pw, role: selectedRole }));
+  if (!name || !email) return;
+  sessionStorage.setItem('econos_signup', JSON.stringify({ name, email, role: selectedRole }));
   window.location.href = 'signup-details';
 }
 
@@ -595,30 +573,52 @@ async function redirectAfterAuth() {
   if (session) redirectAfterAuth();
 })();
 
-async function handleSignIn(e) {
+let _signinEmail = '';
+
+function showSigninEmailStep() {
+  document.getElementById('signinEmailStep').style.display = 'block';
+  document.getElementById('signinOtpStep').style.display = 'none';
+  clearMsg('signin-msg');
+}
+
+async function handleSendSigninOtp(e) {
   e.preventDefault();
   if (!window._sbConfigured) { showMsg('signin-msg', 'Supabase is not configured yet.', 'error'); return; }
   clearMsg('signin-msg');
-  setBtnLoading('signin-btn', true);
-  const { data, error } = await window._sb.auth.signInWithPassword({
-    email: document.getElementById('signin-email').value.trim(),
-    password: document.getElementById('signin-password').value
+  _signinEmail = document.getElementById('signin-email').value.trim();
+  setBtnLoading('signin-send-btn', true);
+  const { error } = await window._sb.auth.signInWithOtp({
+    email: _signinEmail,
+    options: { shouldCreateUser: false }
   });
-  setBtnLoading('signin-btn', false);
+  setBtnLoading('signin-send-btn', false);
   if (error) {
-    const msg = error.message?.toLowerCase().includes('email not confirmed')
-      ? 'Please confirm your email address before signing in. Check your inbox for a confirmation link.'
-      : (error.message || 'Invalid email or password.');
-    showMsg('signin-msg', msg, 'error');
+    const msg = (error.message || '').toLowerCase();
+    if (msg.includes('not found') || msg.includes('no user') || msg.includes('signup')) {
+      showMsg('signin-msg', 'No account found for that email. <a onclick="showView(\'signup\')" style="color:#DC2626;text-decoration:underline;cursor:pointer;">Create a free account</a>', 'error');
+    } else {
+      showMsg('signin-msg', error.message || 'Could not send sign-in code. Please try again.', 'error');
+    }
     return;
   }
-  if (!data.session) {
-    showMsg('signin-msg', 'Please confirm your email address before signing in. Check your inbox for a confirmation link.', 'error');
-    return;
-  }
-  const ok = await redirectAfterAuth();
-  if (!ok) {
-    showMsg('signin-msg', 'Your account was found but your profile could not be loaded. Please try signing up again or contact support.', 'error');
+  document.getElementById('signin-otp-hint').textContent = 'We sent a 6-digit code to ' + _signinEmail + ' — check your inbox (and spam folder).';
+  document.getElementById('signinEmailStep').style.display = 'none';
+  document.getElementById('signinOtpStep').style.display = 'block';
+}
+
+async function handleVerifySigninOtp(e) {
+  e.preventDefault();
+  if (!window._sbConfigured) return;
+  clearMsg('signin-msg');
+  const token = document.getElementById('signin-otp').value.replace(/\s/g, '');
+  if (token.length < 6) { showMsg('signin-msg', 'Please enter the 6-digit code from your email.', 'error'); return; }
+  setBtnLoading('signin-verify-btn', true);
+  const { data, error } = await window._sb.auth.verifyOtp({ email: _signinEmail, token, type: 'email' });
+  setBtnLoading('signin-verify-btn', false);
+  if (error) { showMsg('signin-msg', error.message || 'Invalid or expired code. Try sending a new one.', 'error'); return; }
+  if (data.session) {
+    const ok = await redirectAfterAuth();
+    if (!ok) showMsg('signin-msg', 'Signed in but could not load your profile. Please contact support.', 'error');
   }
 }
 
@@ -629,17 +629,6 @@ async function handleGoogleAuth() {
     options: { redirectTo: window.location.origin + '/dashboard' }
   });
   if (error) alert('Google sign-in failed: ' + error.message);
-}
-
-async function handleForgotPassword() {
-  if (!window._sbConfigured) { alert('Supabase is not configured.'); return; }
-  const email = document.getElementById('signin-email').value.trim();
-  if (!email) { showMsg('signin-msg', 'Enter your email address first, then click Forgot password.', 'error'); return; }
-  const { error } = await window._sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/login'
-  });
-  if (error) showMsg('signin-msg', error.message, 'error');
-  else showMsg('signin-msg', '✅ Password reset email sent — check your inbox.', 'success');
 }
 
 const params = new URLSearchParams(window.location.search);
