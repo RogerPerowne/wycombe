@@ -11,12 +11,12 @@
 <script>
 (async function () {
   if (!window._sbConfigured || !window._sb) {
-    window.location.replace('/login.html');
+    window.location.replace('/login');
     return;
   }
   const { data: { session } } = await window._sb.auth.getSession();
   if (!session) {
-    window.location.replace('/login.html');
+    window.location.replace('/login');
     return;
   }
   const { data: profile } = await window._sb
@@ -25,9 +25,9 @@
     .eq('id', session.user.id)
     .single();
   if (profile && profile.role === 'teacher') {
-    window.location.replace('/teacher/dashboard.html');
+    window.location.replace('/teacher/dashboard');
   } else {
-    window.location.replace('/student/dashboard.html');
+    window.location.replace('/student/dashboard');
   }
 })();
 </script>

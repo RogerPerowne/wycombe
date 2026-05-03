@@ -1,9 +1,5 @@
-# Homepage: redirect /index and /index.html to canonical /
-/index.html   /   301!
-/index        /   301
-
-# Force clean URLs: redirect .html to extensionless
-/*.html   /:splat   301!
-
-# Serve extensionless URLs from .html files
+# Serve extensionless URLs from .html files (clean URLs)
+# The forced *.html → extensionless 301 has been removed to prevent
+# redirect loops and extra roundtrips on every internal navigation.
+# Internal links use clean URLs directly; this rule handles direct access.
 /*   /:splat.html   200

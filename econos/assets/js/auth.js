@@ -105,9 +105,9 @@ const Auth = (function () {
 
   // ── Helpers ────────────────────────────────────────────────────────────
 
-  function _resolveLoginUrl()    { return '/login.html'; }
-  function _resolveStudentDash() { return '/student/dashboard.html'; }
-  function _resolveTeacherDash() { return '/teacher/dashboard.html'; }
+  function _resolveLoginUrl()    { return '/login'; }
+  function _resolveStudentDash() { return '/student/dashboard'; }
+  function _resolveTeacherDash() { return '/teacher/dashboard'; }
 
   function _showConfigBanner() {
     const banner = document.createElement('div');

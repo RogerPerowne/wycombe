@@ -578,14 +578,16 @@ function handleStep1(e) {
     return;
   }
   sessionStorage.setItem('econos_signup', JSON.stringify({ name, email, password: pw, role: selectedRole }));
-  window.location.href = 'signup-details.html';
+  window.location.href = 'signup-details';
 }
 
 async function redirectAfterAuth() {
   if (!window._sb) return;
   const { data: { session } } = await window._sb.auth.getSession();
   if (!session) return;
-  window.location.href = 'dashboard.html';
+  const { data: profile } = await window._sb
+    .from('profiles').select('role').eq('id', session.user.id).single();
+  window.location.href = profile?.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard';
 }
 
 (async function () {
@@ -622,7 +624,7 @@ async function handleForgotPassword() {
   const email = document.getElementById('signin-email').value.trim();
   if (!email) { showMsg('signin-msg', 'Enter your email address first, then click Forgot password.', 'error'); return; }
   const { error } = await window._sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/login.html'
+    redirectTo: window.location.origin + '/login'
   });
   if (error) showMsg('signin-msg', error.message, 'error');
   else showMsg('signin-msg', '✅ Password reset email sent — check your inbox.', 'success');
