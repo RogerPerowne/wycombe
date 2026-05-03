@@ -6,264 +6,422 @@
 <title>econOS – Sign in</title>
 <link rel="stylesheet" href="assets/css/econos.css">
 <style>
-body { background: var(--bg); min-height: 100vh; display: flex; flex-direction: column; }
-.login-page { flex: 1; display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  background: #fff;
+}
 
-.login-left {
-  background: var(--navy); padding: 3rem;
-  display: flex; flex-direction: column; justify-content: space-between;
-  position: relative; overflow: hidden;
+/* ── LEFT PANEL ── */
+.auth-left {
+  background: linear-gradient(160deg, #EEF2FF 0%, #E8EFFD 100%);
+  padding: 3rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
 }
-.login-left::before {
-  content: ''; position: absolute; top: -200px; right: -200px;
-  width: 500px; height: 500px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%);
-}
-.login-left::after {
-  content: ''; position: absolute; bottom: -100px; left: -100px;
-  width: 350px; height: 350px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(34,197,94,0.1) 0%, transparent 70%);
-}
-.login-brand { position: relative; z-index: 1; }
-.login-brand .logo-wordmark { font-size: 1.5rem; color: white; margin-top: 0.5rem; }
-.login-brand .logo-wordmark .os { color: #93C5FD; }
-.login-brand .logo-tagline { color: rgba(255,255,255,0.4); margin-top: 0.25rem; font-size: 0.75rem; }
-.login-hero { position: relative; z-index: 1; }
-.login-hero h2 { font-size: 2rem; font-weight: 800; color: white; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 1rem; }
-.login-hero h2 .green { color: var(--learn); }
-.login-hero h2 .amber { color: var(--link); }
-.login-hero h2 .blue  { color: #93C5FD; }
-.login-hero p { font-size: 0.9375rem; color: rgba(255,255,255,0.5); line-height: 1.65; max-width: 340px; }
-.login-steps { display: flex; flex-direction: column; gap: 1rem; position: relative; z-index: 1; }
-.login-step {
-  display: flex; align-items: center; gap: 0.875rem;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07);
-  border-radius: var(--r-md); padding: 1rem;
-}
-.login-step-icon {
-  width: 36px; height: 36px; border-radius: var(--r-sm);
-  display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0;
-}
-.login-step-icon.learn { background: rgba(34,197,94,0.15); }
-.login-step-icon.link  { background: rgba(245,158,11,0.15); }
-.login-step-icon.land  { background: rgba(37,99,235,0.15); }
-.login-step-text h6 { font-size: 0.8rem; font-weight: 700; color: white; margin-bottom: 0.1rem; }
-.login-step-text p  { font-size: 0.75rem; color: rgba(255,255,255,0.45); }
 
-.login-right {
+/* subtle dot grid */
+.auth-left::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 240px; height: 200px;
+  background-image: radial-gradient(circle, #94A3B8 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.25;
+}
+
+.auth-logo { position: relative; z-index: 1; }
+.auth-logo-dots { display: flex; align-items: center; gap: 3px; margin-bottom: 6px; }
+.auth-logo-dots .dg { width: 9px; height: 9px; border-radius: 50%; background: #22C55E; }
+.auth-logo-dots .do { width: 11px; height: 11px; border-radius: 50%; background: #F59E0B; }
+.auth-logo-dots .db { width: 13px; height: 13px; border-radius: 50%; background: #2563EB; }
+.auth-logo-dots .dc { width: 16px; height: 1.5px; background: #CBD5E1; display: block; }
+.auth-logo-wordmark {
+  font-size: 1.75rem; font-weight: 800;
+  letter-spacing: -0.03em; color: #0F172A;
+}
+.auth-logo-wordmark .os { color: #2563EB; }
+.auth-logo-tagline { font-size: 0.875rem; font-weight: 500; margin-top: 4px; }
+.auth-logo-tagline .tl { color: #16A34A; }
+.auth-logo-tagline .tli { color: #D97706; }
+.auth-logo-tagline .tla { color: #2563EB; }
+
+.auth-headline { position: relative; z-index: 1; margin: 0; }
+.auth-headline h1 {
+  font-size: 2.625rem; font-weight: 800;
+  line-height: 1.1; letter-spacing: -0.03em;
+  color: #0F172A; margin: 0 0 1rem;
+}
+.auth-headline h1 .period { color: #2563EB; }
+.auth-headline p {
+  font-size: 1rem; color: #475569; line-height: 1.65;
+  max-width: 360px; margin: 0;
+}
+
+.auth-pillars {
+  display: flex;
+  gap: 0;
+  position: relative; z-index: 1;
+}
+.auth-pillar {
+  flex: 1; text-align: center;
+  padding: 0 1rem;
+  border-right: 1px solid #CBD5E1;
+}
+.auth-pillar:last-child { border-right: none; }
+.auth-pillar-icon {
+  width: 52px; height: 52px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  padding: 3rem; background: var(--bg-card);
+  margin: 0 auto 0.75rem;
 }
-.login-form-wrap { width: 100%; max-width: 400px; }
-.login-form-wrap h3 { font-size: 1.625rem; font-weight: 800; color: var(--navy); margin-bottom: 0.375rem; letter-spacing: -0.02em; }
-.login-form-wrap .login-sub { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 2rem; }
-.login-form-wrap .login-sub a { color: var(--land); font-weight: 600; cursor: pointer; }
-.tab-toggle {
-  display: flex; background: var(--bg-subtle); border-radius: var(--r-md); padding: 4px; gap: 4px; margin-bottom: 2rem;
+.auth-pillar.learn .auth-pillar-icon { background: #DCFCE7; }
+.auth-pillar.link  .auth-pillar-icon { background: #FEF3C7; }
+.auth-pillar.land  .auth-pillar-icon { background: #DBEAFE; }
+.auth-pillar-name {
+  font-size: 0.9375rem; font-weight: 700; margin-bottom: 0.25rem;
 }
-.tab-toggle-btn {
-  flex: 1; padding: 0.5rem; text-align: center; font-size: 0.8rem; font-weight: 600;
-  border-radius: calc(var(--r-md) - 2px); border: none; background: transparent;
-  color: var(--text-secondary); cursor: pointer; transition: all var(--t-fast);
+.auth-pillar.learn .auth-pillar-name { color: #16A34A; }
+.auth-pillar.link  .auth-pillar-name { color: #D97706; }
+.auth-pillar.land  .auth-pillar-name { color: #2563EB; }
+.auth-pillar p {
+  font-size: 0.8rem; color: #64748B; line-height: 1.4; margin: 0;
 }
-.tab-toggle-btn.active { background: var(--bg-card); color: var(--text-primary); box-shadow: var(--shadow-sm); }
-.role-select { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; margin-bottom: 1.5rem; }
-.role-btn {
-  border: 2px solid var(--border); border-radius: var(--r-md); padding: 0.875rem;
-  text-align: center; cursor: pointer; transition: all var(--t-fast); background: var(--bg-card);
-}
-.role-btn:hover { border-color: var(--land-light); background: var(--land-light); }
-.role-btn.active { border-color: var(--land); background: var(--land-light); }
-.role-btn .role-icon { font-size: 1.5rem; margin-bottom: 0.375rem; }
-.role-btn .role-name { font-size: 0.8rem; font-weight: 700; color: var(--navy); }
-.role-btn .role-desc { font-size: 0.7rem; color: var(--text-muted); }
-.or-divider {
-  display: flex; align-items: center; gap: 0.75rem; margin: 1.25rem 0;
-  font-size: 0.75rem; color: var(--text-muted);
-}
-.or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.google-btn {
-  width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.625rem;
-  padding: 0.625rem 1rem; border: 1px solid var(--border); border-radius: var(--r-sm);
-  background: var(--bg-card); font-size: 0.875rem; font-weight: 600; color: var(--text-primary);
-  cursor: pointer; transition: all var(--t-fast); margin-bottom: 1.25rem;
-}
-.google-btn:hover { background: var(--bg-subtle); border-color: #ccc; }
-.login-footer-note { text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 1.5rem; }
-.login-footer-note a { color: var(--land); font-weight: 600; }
 
-/* Error / success banners */
+.auth-trust {
+  display: flex; align-items: center; gap: 0.75rem;
+  font-size: 0.8125rem; color: #64748B;
+  position: relative; z-index: 1;
+}
+.auth-trust-icon {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: #E2E8F0;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: #94A3B8;
+}
+
+/* ── RIGHT PANEL ── */
+.auth-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  background: #fff;
+}
+
+.auth-card {
+  width: 100%; max-width: 440px;
+}
+
+.auth-card-title {
+  font-size: 1.625rem; font-weight: 800;
+  color: #0F172A; letter-spacing: -0.025em;
+  margin: 0 0 0.375rem;
+}
+.auth-card-sub {
+  font-size: 0.875rem; color: #64748B;
+  margin: 0 0 1.75rem;
+}
+
+/* ── INPUT WITH ICON ── */
+.input-wrap {
+  position: relative; margin-bottom: 0.875rem;
+}
+.input-wrap .input-icon {
+  position: absolute; left: 0.875rem; top: 50%;
+  transform: translateY(-50%); color: #94A3B8; pointer-events: none;
+  display: flex; align-items: center;
+}
+.input-wrap input {
+  width: 100%;
+  padding: 0.75rem 0.875rem 0.75rem 2.75rem;
+  font-size: 0.9375rem; font-family: inherit;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  background: #FAFAFA;
+  color: #0F172A;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-appearance: none;
+}
+.input-wrap input::placeholder { color: #94A3B8; }
+.input-wrap input:focus { border-color: #2563EB; background: #fff; }
+.input-wrap .input-eye {
+  position: absolute; right: 0.875rem; top: 50%;
+  transform: translateY(-50%); color: #94A3B8;
+  cursor: pointer; display: flex; align-items: center;
+  background: none; border: none; padding: 0;
+}
+
+/* ── ROLE BUTTONS ── */
+.role-label {
+  font-size: 0.875rem; color: #334155; font-weight: 500;
+  margin-bottom: 0.625rem;
+}
+.role-buttons {
+  display: flex; gap: 0.625rem; margin-bottom: 1.375rem;
+}
+.role-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  gap: 0.4rem; padding: 0.6rem 0.5rem;
+  border: 1.5px solid #E2E8F0; border-radius: 8px;
+  background: #fff; font-size: 0.8125rem; font-weight: 600;
+  color: #334155; cursor: pointer;
+  transition: all 0.15s;
+}
+.role-btn:hover { border-color: #BFDBFE; background: #EFF6FF; }
+.role-btn.active { border-color: #2563EB; background: #EFF6FF; color: #1D4ED8; }
+.role-btn svg { flex-shrink: 0; }
+
+/* ── SUBMIT BUTTON ── */
+.btn-submit {
+  width: 100%; padding: 0.875rem;
+  background: #2563EB; color: #fff;
+  font-size: 1rem; font-weight: 700;
+  border: none; border-radius: 10px;
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: center; gap: 0.5rem;
+  transition: background 0.15s, transform 0.1s;
+  margin-bottom: 1.25rem;
+}
+.btn-submit:hover { background: #1D4ED8; }
+.btn-submit:active { transform: scale(0.99); }
+
+/* ── OR DIVIDER ── */
+.or-divider {
+  display: flex; align-items: center; gap: 0.875rem;
+  font-size: 0.8rem; color: #94A3B8; margin-bottom: 1.25rem;
+}
+.or-divider::before, .or-divider::after {
+  content: ''; flex: 1; height: 1px; background: #E2E8F0;
+}
+
+/* ── GOOGLE BUTTON ── */
+.google-btn {
+  width: 100%; display: flex; align-items: center; justify-content: center;
+  gap: 0.75rem; padding: 0.75rem;
+  border: 1.5px solid #E2E8F0; border-radius: 10px;
+  background: #fff; font-size: 0.9375rem; font-weight: 600;
+  color: #0F172A; cursor: pointer; margin-bottom: 1.5rem;
+  transition: border-color 0.15s, background 0.15s;
+}
+.google-btn:hover { border-color: #CBD5E1; background: #FAFAFA; }
+
+/* ── BOTTOM LINKS ── */
+.auth-switch {
+  text-align: center; font-size: 0.875rem;
+  color: #64748B; margin-bottom: 0.875rem;
+}
+.auth-switch a { color: #2563EB; font-weight: 600; cursor: pointer; text-decoration: none; }
+.auth-switch a:hover { text-decoration: underline; }
+
+.auth-legal {
+  text-align: center; font-size: 0.75rem; color: #94A3B8; line-height: 1.6;
+}
+.auth-legal a { color: #2563EB; text-decoration: none; }
+.auth-legal a:hover { text-decoration: underline; }
+
+/* ── AUTH MESSAGES ── */
 .auth-msg {
-  padding: 0.75rem 1rem; border-radius: var(--r-sm); font-size: 0.8rem; font-weight: 500;
+  padding: 0.75rem 1rem; border-radius: 8px;
+  font-size: 0.8125rem; font-weight: 500;
   margin-bottom: 1rem; display: none;
 }
-.auth-msg.error { background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; display: block; }
+.auth-msg.error   { background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; display: block; }
 .auth-msg.success { background: #F0FDF4; border: 1px solid #BBF7D0; color: #16A34A; display: block; }
 
-/* Loading state on button */
+/* ── LOADING BUTTON ── */
 .btn-loading { position: relative; color: transparent !important; pointer-events: none; }
 .btn-loading::after {
   content: ''; position: absolute; inset: 0; margin: auto;
-  width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.4);
-  border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite;
+  width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: white; border-radius: 50%;
+  animation: spin 0.6s linear infinite;
 }
+@keyframes spin { to { transform: rotate(360deg); } }
 
+/* ── FORGOT PASSWORD ── */
+.forgot-row {
+  display: flex; justify-content: flex-end;
+  margin-bottom: 0.25rem;
+}
+.forgot-link {
+  font-size: 0.8rem; color: #2563EB; font-weight: 600;
+  cursor: pointer; background: none; border: none;
+  padding: 0; text-decoration: none;
+}
+.forgot-link:hover { text-decoration: underline; }
+
+/* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .login-page { grid-template-columns: 1fr; }
-  .login-left { display: none; }
-  .login-right { min-height: 100vh; }
+  body { grid-template-columns: 1fr; }
+  .auth-left { display: none; }
+  .auth-right { min-height: 100vh; }
 }
 </style>
 </head>
 <body>
 
-<!-- Supabase + config must load before auth.js -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/supabase-client.js"></script>
 
-<div class="login-page">
-  <!-- LEFT PANEL -->
-  <div class="login-left">
-    <div class="login-brand">
-      <div class="logo-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
-      <div class="logo-wordmark"><span class="econ">econ</span><span class="os">OS</span></div>
-      <div class="logo-tagline">Learn it. Link it. Land it.</div>
+<!-- ── LEFT PANEL ── -->
+<div class="auth-left">
+  <div class="auth-logo">
+    <div class="auth-logo-dots">
+      <span class="dg"></span><span class="dc"></span>
+      <span class="do"></span><span class="dc"></span>
+      <span class="db"></span>
     </div>
-    <div class="login-hero">
-      <h2>The clearest path to<br><span class="green">A-Level</span> <span class="amber">Economics</span><br><span class="blue">success.</span></h2>
-      <p>A structured learning system that turns understanding into exam performance — for every student, every topic, every time.</p>
-    </div>
-    <div class="login-steps">
-      <div class="login-step">
-        <div class="login-step-icon learn">📗</div>
-        <div class="login-step-text"><h6>Learn it</h6><p>Build knowledge and understanding from the ground up</p></div>
-      </div>
-      <div class="login-step">
-        <div class="login-step-icon link">🔗</div>
-        <div class="login-step-text"><h6>Link it</h6><p>Connect ideas and build chains of economic reasoning</p></div>
-      </div>
-      <div class="login-step">
-        <div class="login-step-icon land">🎯</div>
-        <div class="login-step-text"><h6>Land it</h6><p>Write exam-ready answers with impact and confidence</p></div>
-      </div>
+    <div class="auth-logo-wordmark">econ<span class="os">OS</span></div>
+    <div class="auth-logo-tagline">
+      <span class="tl">Learn it.</span> <span class="tli">Link it.</span> <span class="tla">Land it.</span>
     </div>
   </div>
 
-  <!-- RIGHT PANEL -->
-  <div class="login-right">
-    <div class="login-form-wrap">
+  <div class="auth-headline">
+    <h1>Start building<br>better answers<span class="period">.</span></h1>
+    <p>Structured learning for A-level economics – designed to improve understanding, writing, and exam performance.</p>
+  </div>
 
-      <div class="tab-toggle" id="modeToggle">
-        <button class="tab-toggle-btn active" onclick="setMode('signin')">Sign in</button>
-        <button class="tab-toggle-btn" onclick="setMode('signup')">Create account</button>
+  <div class="auth-pillars">
+    <div class="auth-pillar learn">
+      <div class="auth-pillar-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
       </div>
-
-      <!-- SIGN IN FORM -->
-      <div id="signinForm">
-        <h3>Welcome back</h3>
-        <p class="login-sub">New to econOS? <a onclick="setMode('signup')">Create a free account</a></p>
-        <div class="auth-msg" id="signin-msg"></div>
-
-        <button class="google-btn" onclick="handleGoogleAuth()">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
-            <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
-            <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-            <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
-          </svg>
-          Continue with Google
-        </button>
-        <div class="or-divider">or</div>
-
-        <form id="signinFormEl" onsubmit="handleSignIn(event)">
-          <div class="form-group">
-            <label class="form-label">Email address</label>
-            <input id="signin-email" type="email" class="form-input" placeholder="you@school.ac.uk" required autocomplete="email">
-          </div>
-          <div class="form-group" style="margin-bottom:0.75rem;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.375rem;">
-              <label class="form-label" style="margin-bottom:0;">Password</label>
-              <a href="#" onclick="handleForgotPassword();return false;" style="font-size:0.75rem;color:var(--land);font-weight:600;">Forgot?</a>
-            </div>
-            <input id="signin-password" type="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
-          </div>
-          <button type="submit" id="signin-btn" class="btn btn-primary btn-lg" style="width:100%;margin-top:1rem;">Sign in →</button>
-        </form>
+      <div class="auth-pillar-name">Learn it</div>
+      <p>Clear explanations build strong foundations.</p>
+    </div>
+    <div class="auth-pillar link">
+      <div class="auth-pillar-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
       </div>
+      <div class="auth-pillar-name">Link it</div>
+      <p>Connect ideas and develop your analysis.</p>
+    </div>
+    <div class="auth-pillar land">
+      <div class="auth-pillar-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </div>
+      <div class="auth-pillar-name">Land it</div>
+      <p>Apply your knowledge and master exam skills.</p>
+    </div>
+  </div>
 
-      <!-- SIGN UP FORM -->
-      <div id="signupForm" style="display:none;">
-        <h3>Create your account</h3>
-        <p class="login-sub">Already have an account? <a onclick="setMode('signin')">Sign in</a></p>
-        <div class="auth-msg" id="signup-msg"></div>
+  <div class="auth-trust">
+    <div class="auth-trust-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+    </div>
+    Used by students, parents and teachers across multiple schools.
+  </div>
+</div>
 
-        <div class="role-select" id="roleSelect">
-          <div class="role-btn active" onclick="selectRole(this)" data-role="student">
-            <div class="role-icon">🎓</div>
-            <div class="role-name">Student</div>
-            <div class="role-desc">I'm here to revise</div>
-          </div>
-          <div class="role-btn" onclick="selectRole(this)" data-role="teacher">
-            <div class="role-icon">👩‍🏫</div>
-            <div class="role-name">Teacher</div>
-            <div class="role-desc">I teach economics</div>
-          </div>
+<!-- ── RIGHT PANEL ── -->
+<div class="auth-right">
+  <div class="auth-card">
+
+    <!-- SIGN UP -->
+    <div id="signupView">
+      <h2 class="auth-card-title">Create your account</h2>
+      <p class="auth-card-sub">It takes less than a minute.</p>
+      <div class="auth-msg" id="signup-msg"></div>
+
+      <form id="signupFormEl" onsubmit="handleSignUp(event)">
+        <div class="input-wrap">
+          <span class="input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg></span>
+          <input id="signup-fullname" type="text" placeholder="Full name" required autocomplete="name">
+        </div>
+        <div class="input-wrap">
+          <span class="input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></span>
+          <input id="signup-email" type="email" placeholder="Email address" required autocomplete="email">
+        </div>
+        <div class="input-wrap">
+          <span class="input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+          <input id="signup-password" type="password" placeholder="Password" required autocomplete="new-password" minlength="8">
+          <button type="button" class="input-eye" onclick="togglePw('signup-password', this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         </div>
 
-        <button class="google-btn" onclick="handleGoogleAuth()">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
-            <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
-            <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-            <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
-          </svg>
-          Sign up with Google
+        <div class="role-label">I am signing up as a:</div>
+        <div class="role-buttons" id="roleButtons">
+          <button type="button" class="role-btn active" data-role="student" onclick="selectRole(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            Student
+          </button>
+          <button type="button" class="role-btn" data-role="teacher" onclick="selectRole(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Teacher
+          </button>
+          <button type="button" class="role-btn" data-role="parent" onclick="selectRole(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            Parent
+          </button>
+        </div>
+
+        <button type="submit" id="signup-btn" class="btn-submit">
+          Create account
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="or-divider">or</div>
+      </form>
 
-        <form id="signupFormEl" onsubmit="handleSignUp(event)">
-          <div class="grid-2" style="gap:0.75rem;margin-bottom:0;">
-            <div class="form-group">
-              <label class="form-label">First name</label>
-              <input id="signup-firstname" type="text" class="form-input" placeholder="Alex" required autocomplete="given-name">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Last name</label>
-              <input id="signup-lastname" type="text" class="form-input" placeholder="Smith" required autocomplete="family-name">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Email address</label>
-            <input id="signup-email" type="email" class="form-input" placeholder="you@school.ac.uk" required autocomplete="email">
-          </div>
-          <div class="form-group">
-            <label class="form-label">School name <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
-            <input id="signup-school" type="text" class="form-input" placeholder="Your school or sixth form" autocomplete="organization">
-          </div>
-          <div class="form-group" style="margin-bottom:0.5rem;">
-            <label class="form-label">Password</label>
-            <input id="signup-password" type="password" class="form-input" placeholder="At least 8 characters" required autocomplete="new-password" minlength="8">
-          </div>
-          <button type="submit" id="signup-btn" class="btn btn-primary btn-lg" style="width:100%;margin-top:1rem;">Create account →</button>
-        </form>
-        <div class="login-footer-note">By signing up you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</div>
-      </div>
-
+      <div class="or-divider">or</div>
+      <button class="google-btn" onclick="handleGoogleAuth()">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+      <div class="auth-switch">Already have an account? <a onclick="showView('signin')">Log in</a></div>
+      <div class="auth-legal">By creating an account, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</div>
     </div>
+
+    <!-- SIGN IN -->
+    <div id="signinView" style="display:none;">
+      <h2 class="auth-card-title">Welcome back</h2>
+      <p class="auth-card-sub">Sign in to your econOS account.</p>
+      <div class="auth-msg" id="signin-msg"></div>
+
+      <form id="signinFormEl" onsubmit="handleSignIn(event)">
+        <div class="input-wrap">
+          <span class="input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></span>
+          <input id="signin-email" type="email" placeholder="Email address" required autocomplete="email">
+        </div>
+        <div class="input-wrap">
+          <span class="input-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+          <input id="signin-password" type="password" placeholder="Password" required autocomplete="current-password">
+          <button type="button" class="input-eye" onclick="togglePw('signin-password', this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        </div>
+        <div class="forgot-row">
+          <a class="forgot-link" onclick="handleForgotPassword()">Forgot password?</a>
+        </div>
+        <button type="submit" id="signin-btn" class="btn-submit" style="margin-top:1rem;">
+          Log in
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+
+      <div class="or-divider">or</div>
+      <button class="google-btn" onclick="handleGoogleAuth()">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
+        Continue with Google
+      </button>
+      <div class="auth-switch">Don't have an account? <a onclick="showView('signup')">Create one free</a></div>
+    </div>
+
   </div>
 </div>
 
 <script>
-// ─── UI helpers ───────────────────────────────────────────────────────────────
 let selectedRole = 'student';
 
-function setMode(mode) {
-  document.querySelectorAll('.tab-toggle-btn').forEach((b, i) => {
-    b.classList.toggle('active', (mode === 'signin') ? i === 0 : i === 1);
-  });
-  document.getElementById('signinForm').style.display  = mode === 'signin' ? 'block' : 'none';
-  document.getElementById('signupForm').style.display  = mode === 'signup' ? 'block' : 'none';
+function showView(view) {
+  document.getElementById('signupView').style.display = view === 'signup' ? 'block' : 'none';
+  document.getElementById('signinView').style.display = view === 'signin' ? 'block' : 'none';
 }
 
 function selectRole(el) {
@@ -272,26 +430,29 @@ function selectRole(el) {
   selectedRole = el.dataset.role;
 }
 
+function togglePw(inputId, btn) {
+  const input = document.getElementById(inputId);
+  const isText = input.type === 'text';
+  input.type = isText ? 'password' : 'text';
+  btn.style.opacity = isText ? '1' : '0.5';
+}
+
 function showMsg(id, text, type) {
   const el = document.getElementById(id);
   el.textContent = text;
   el.className = 'auth-msg ' + type;
 }
-
 function clearMsg(id) {
   const el = document.getElementById(id);
   el.textContent = '';
   el.className = 'auth-msg';
 }
-
-function setBtnLoading(btnId, loading) {
-  const btn = document.getElementById(btnId);
-  if (loading) btn.classList.add('btn-loading');
-  else btn.classList.remove('btn-loading');
+function setBtnLoading(id, loading) {
+  const btn = document.getElementById(id);
+  btn.classList.toggle('btn-loading', loading);
   btn.disabled = loading;
 }
 
-// ─── Redirect based on role ───────────────────────────────────────────────────
 async function redirectAfterAuth() {
   if (!window._sb) return;
   const { data: { session } } = await window._sb.auth.getSession();
@@ -301,71 +462,52 @@ async function redirectAfterAuth() {
   window.location.href = role === 'teacher' ? 'teacher/dashboard.html' : 'student/dashboard.html';
 }
 
-// ─── Check if already logged in ───────────────────────────────────────────────
 (async function () {
   if (!window._sbConfigured) return;
   const { data: { session } } = await window._sb.auth.getSession();
   if (session) redirectAfterAuth();
 })();
 
-// ─── Sign in ──────────────────────────────────────────────────────────────────
 async function handleSignIn(e) {
   e.preventDefault();
-  if (!window._sbConfigured) { showMsg('signin-msg', 'Supabase is not configured yet. See SETUP.md.', 'error'); return; }
+  if (!window._sbConfigured) { showMsg('signin-msg', 'Supabase is not configured yet.', 'error'); return; }
   clearMsg('signin-msg');
   setBtnLoading('signin-btn', true);
-
-  const email    = document.getElementById('signin-email').value.trim();
-  const password = document.getElementById('signin-password').value;
-
-  const { data, error } = await window._sb.auth.signInWithPassword({ email, password });
+  const { data, error } = await window._sb.auth.signInWithPassword({
+    email: document.getElementById('signin-email').value.trim(),
+    password: document.getElementById('signin-password').value
+  });
   setBtnLoading('signin-btn', false);
-
-  if (error) {
-    showMsg('signin-msg', error.message || 'Invalid email or password.', 'error');
-    return;
-  }
+  if (error) { showMsg('signin-msg', error.message || 'Invalid email or password.', 'error'); return; }
   if (data.session) await redirectAfterAuth();
 }
 
-// ─── Sign up ──────────────────────────────────────────────────────────────────
 async function handleSignUp(e) {
   e.preventDefault();
-  if (!window._sbConfigured) { showMsg('signup-msg', 'Supabase is not configured yet. See SETUP.md.', 'error'); return; }
+  if (!window._sbConfigured) { showMsg('signup-msg', 'Supabase is not configured yet.', 'error'); return; }
   clearMsg('signup-msg');
   setBtnLoading('signup-btn', true);
-
-  const firstName = document.getElementById('signup-firstname').value.trim();
-  const lastName  = document.getElementById('signup-lastname').value.trim();
-  const email     = document.getElementById('signup-email').value.trim();
-  const school    = document.getElementById('signup-school').value.trim();
-  const password  = document.getElementById('signup-password').value;
-  const fullName  = `${firstName} ${lastName}`.trim();
-
   const { data, error } = await window._sb.auth.signUp({
-    email, password,
+    email: document.getElementById('signup-email').value.trim(),
+    password: document.getElementById('signup-password').value,
     options: {
-      data: { full_name: fullName, role: selectedRole, school_name: school || null }
+      data: {
+        full_name: document.getElementById('signup-fullname').value.trim(),
+        role: selectedRole
+      }
     }
   });
   setBtnLoading('signup-btn', false);
-
-  if (error) {
-    showMsg('signup-msg', error.message || 'Could not create account.', 'error');
-    return;
-  }
-
+  if (error) { showMsg('signup-msg', error.message || 'Could not create account.', 'error'); return; }
   if (data.user && !data.session) {
-    // Email confirmation required
-    showMsg('signup-msg', '✅ Account created! Check your email to confirm your address, then sign in.', 'success');
+    showMsg('signup-msg', '✅ Account created! Check your email to confirm your address, then log in.', 'success');
   } else if (data.session) {
     await redirectAfterAuth();
   }
 }
 
-// ─── Google OAuth ─────────────────────────────────────────────────────────────
 async function handleGoogleAuth() {
-  if (!window._sbConfigured) { alert('Supabase is not configured yet. See SETUP.md.'); return; }
+  if (!window._sbConfigured) { alert('Supabase is not configured yet.'); return; }
   const { error } = await window._sb.auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo: window.location.origin + '/student/dashboard.html' }
@@ -373,11 +515,10 @@ async function handleGoogleAuth() {
   if (error) alert('Google sign-in failed: ' + error.message);
 }
 
-// ─── Forgot password ──────────────────────────────────────────────────────────
 async function handleForgotPassword() {
-  if (!window._sbConfigured) { alert('Supabase is not configured. See SETUP.md.'); return; }
+  if (!window._sbConfigured) { alert('Supabase is not configured.'); return; }
   const email = document.getElementById('signin-email').value.trim();
-  if (!email) { showMsg('signin-msg', 'Enter your email address first, then click Forgot.', 'error'); return; }
+  if (!email) { showMsg('signin-msg', 'Enter your email address first, then click Forgot password.', 'error'); return; }
   const { error } = await window._sb.auth.resetPasswordForEmail(email, {
     redirectTo: window.location.origin + '/login.html'
   });
@@ -385,13 +526,9 @@ async function handleForgotPassword() {
   else showMsg('signin-msg', '✅ Password reset email sent — check your inbox.', 'success');
 }
 
-// ─── URL param handling ───────────────────────────────────────────────────────
 const params = new URLSearchParams(window.location.search);
-if (params.get('mode') === 'signup') setMode('signup');
-if (params.get('role') === 'teacher') {
-  setMode('signup');
-  document.querySelector('[data-role="teacher"]')?.click();
-}
+if (params.get('mode') === 'signin') showView('signin');
+if (params.get('role') === 'teacher') document.querySelector('[data-role="teacher"]')?.click();
 </script>
 </body>
 </html>
