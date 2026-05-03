@@ -6,6 +6,9 @@
 <title>econOS – Quick Check</title>
 <link rel="stylesheet" href="assets/css/econos.css">
 <style>
+:root {
+  --gold: #F59E0B; --bluel: #60A5FA; --green: #34D399; --coral: #F87171;
+}
 *, *::before, *::after { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
 body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F172A; }
@@ -49,7 +52,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F
 .streak-badge { display: flex; align-items: center; gap: 0.375rem; font-size: 0.875rem; font-weight: 600; color: #0F172A; }
 .topbar-avatar { width: 36px; height: 36px; border-radius: 50%; background: #2563EB; display: flex; align-items: center; justify-content: center; font-size: 0.8125rem; font-weight: 700; color: #fff; }
 
-/* QUIZ PROGRESS */
+/* PROGRESS BAR */
 .quiz-progress-bar { display: flex; align-items: center; gap: 1rem; padding: 0.875rem 2.5rem; background: #fff; border-bottom: 1px solid #F1F5F9; }
 .quiz-prog-label { font-size: 0.875rem; font-weight: 600; color: #475569; white-space: nowrap; }
 .quiz-dots { display: flex; gap: 0.375rem; flex: 1; }
@@ -65,8 +68,12 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F
 
 /* QUIZ CARD */
 .quiz-card { background: #fff; border: 1.5px solid #E2E8F0; border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; }
+.quiz-type-badge { display: inline-flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; font-weight: 700; padding: 0.3125rem 0.75rem; border-radius: 99px; margin-bottom: 1rem; letter-spacing: 0.03em; }
 .quiz-q-label { font-size: 0.8125rem; font-weight: 700; color: #64748B; margin-bottom: 0.875rem; letter-spacing: 0.02em; }
-.quiz-question { font-size: 1.375rem; font-weight: 700; color: #0F172A; line-height: 1.4; margin: 0 0 1.75rem; }
+.quiz-question { font-size: 1.25rem; font-weight: 700; color: #0F172A; line-height: 1.4; margin: 0 0 1.5rem; }
+.quiz-question-sm { font-size: 1rem; font-weight: 700; color: #0F172A; line-height: 1.4; margin: 0 0 1.25rem; }
+
+/* MCQ OPTIONS */
 .quiz-options { display: flex; flex-direction: column; gap: 0.75rem; }
 .quiz-opt { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 12px; cursor: pointer; transition: all 0.12s; }
 .quiz-opt:hover:not(.answered) { border-color: #93C5FD; background: #EFF6FF; }
@@ -97,6 +104,9 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F
 .btn-quiz-next { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; font-weight: 700; color: #fff; background: #2563EB; border: none; border-radius: 10px; padding: 0.875rem 1.75rem; cursor: pointer; font-family: inherit; transition: background 0.12s; }
 .btn-quiz-next:hover { background: #1D4ED8; }
 .btn-quiz-next:disabled { background: #93C5FD; cursor: default; }
+.btn-check { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; font-weight: 700; color: #fff; background: #16A34A; border: none; border-radius: 10px; padding: 0.875rem 1.75rem; cursor: pointer; font-family: inherit; transition: background 0.12s; }
+.btn-check:hover { background: #15803D; }
+.btn-check:disabled { background: #86EFAC; cursor: default; }
 .quiz-nav-hint { font-size: 0.8125rem; color: #94A3B8; }
 
 /* RIGHT PANEL */
@@ -114,6 +124,120 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F
 .score-big { font-size: 2rem; font-weight: 800; color: #0F172A; }
 .score-label { font-size: 0.8125rem; color: #64748B; margin-top: 0.125rem; }
 .learn-loading { display: flex; align-items: center; justify-content: center; height: 100vh; color: #94A3B8; font-size: 0.9375rem; }
+
+/* ── ODD ONE OUT ── */
+.oo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; margin-bottom: 0.5rem; }
+.oo-item { border: 2px solid #E2E8F0; border-radius: 12px; padding: 1rem; background: #F8FAFC; cursor: pointer; text-align: center; transition: all 0.12s; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.oo-item:hover:not(.answered) { border-color: #93C5FD; background: #EFF6FF; }
+.oo-item.selected { border-color: #2563EB; background: #EFF6FF; }
+.oo-item.correct { border-color: #16A34A; background: #F0FDF4; cursor: default; }
+.oo-item.wrong { border-color: #EF4444; background: #FEF2F2; cursor: default; }
+.oo-item.answered:not(.correct):not(.wrong) { cursor: default; opacity: 0.6; }
+.oo-icon { font-size: 1.75rem; }
+.oo-label { font-size: 0.875rem; font-weight: 600; color: #334155; }
+.oo-note { font-size: 0.75rem; color: #64748B; line-height: 1.3; }
+
+/* ── MULTI-SELECT ── */
+.ms-hint { font-size: 0.8125rem; color: #64748B; margin-bottom: 1rem; font-style: italic; }
+.ms-opt { display: flex; align-items: center; gap: 1rem; padding: 0.875rem 1.25rem; background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 12px; cursor: pointer; transition: all 0.12s; margin-bottom: 0.625rem; }
+.ms-opt:hover:not(.ms-locked) { border-color: #93C5FD; background: #EFF6FF; }
+.ms-opt.ms-selected { border-color: #2563EB; background: #EFF6FF; }
+.ms-checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #CBD5E1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #fff; transition: all 0.12s; }
+.ms-opt.ms-selected .ms-checkbox { background: #2563EB; border-color: #2563EB; }
+.ms-opt.ms-correct { border-color: #16A34A; background: #F0FDF4; cursor: default; }
+.ms-opt.ms-correct .ms-checkbox { background: #16A34A; border-color: #16A34A; }
+.ms-opt.ms-wrong { border-color: #EF4444; background: #FEF2F2; cursor: default; }
+.ms-opt.ms-wrong .ms-checkbox { background: #EF4444; border-color: #EF4444; }
+.ms-opt.ms-missed { border-color: #D97706; background: #FFFBEB; cursor: default; }
+.ms-opt.ms-locked { cursor: default; }
+.ms-text { font-size: 0.9375rem; color: #334155; line-height: 1.4; }
+
+/* ── ELASTIC SORT ── */
+.es-intro { font-size: 0.875rem; color: #475569; margin-bottom: 1.25rem; line-height: 1.5; }
+.es-row { display: flex; align-items: center; justify-content: space-between; padding: 0.875rem 1.25rem; background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; margin-bottom: 0.625rem; gap: 1rem; }
+.es-row.es-correct { border-color: #16A34A; background: #F0FDF4; }
+.es-row.es-wrong { border-color: #EF4444; background: #FEF2F2; }
+.es-item-label { display: flex; align-items: center; gap: 0.625rem; font-size: 0.9375rem; font-weight: 600; color: #0F172A; }
+.es-item-icon { font-size: 1.25rem; }
+.es-btns { display: flex; gap: 0.5rem; flex-shrink: 0; }
+.es-btn { padding: 0.375rem 0.875rem; border-radius: 8px; border: 2px solid #E2E8F0; background: #fff; font-size: 0.8125rem; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.12s; font-family: inherit; white-space: nowrap; }
+.es-btn:hover:not(:disabled) { border-color: #93C5FD; background: #EFF6FF; color: #2563EB; }
+.es-btn.es-active { border-color: #2563EB; background: #2563EB; color: #fff; }
+.es-btn:disabled { opacity: 0.7; cursor: default; }
+.es-result-tag { font-size: 0.8125rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 99px; }
+.es-result-tag.correct { background: #DCFCE7; color: #166534; }
+.es-result-tag.wrong { background: #FEE2E2; color: #991B1B; }
+
+/* ── DIAGRAM INTERP ── */
+.diag-wrap { background: #1E293B; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; overflow: auto; }
+.diag-wrap svg { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+.diag-caption { font-size: 0.8125rem; color: #94A3B8; text-align: center; margin-top: 0.625rem; }
+
+/* ── DIAGNOSTIC PAIR ── */
+.diag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.5rem; }
+.diag-card { border: 2px solid #E2E8F0; border-radius: 12px; padding: 1.25rem; background: #F8FAFC; cursor: pointer; transition: all 0.12s; }
+.diag-card:hover:not(.answered) { border-color: #93C5FD; background: #EFF6FF; }
+.diag-card.selected { border-color: #2563EB; background: #EFF6FF; }
+.diag-card.correct { border-color: #16A34A; background: #F0FDF4; cursor: default; }
+.diag-card.wrong { border-color: #EF4444; background: #FEF2F2; cursor: default; }
+.diag-card.answered:not(.correct):not(.wrong) { cursor: default; opacity: 0.7; }
+.diag-badge { display: inline-flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.625rem; border-radius: 99px; margin-bottom: 0.625rem; }
+.diag-student-name { font-size: 0.9375rem; font-weight: 700; color: #0F172A; margin-bottom: 0.5rem; }
+.diag-answer { font-size: 0.875rem; color: #475569; line-height: 1.5; font-style: italic; }
+
+/* ── CALCULATION ── */
+.calc-context { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; }
+.calc-context-label { font-size: 0.75rem; font-weight: 700; color: #64748B; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+.calc-context-text { font-size: 0.9375rem; color: #334155; line-height: 1.5; }
+.calc-working { margin-bottom: 1.25rem; }
+.calc-working summary { font-size: 0.875rem; font-weight: 600; color: #2563EB; cursor: pointer; padding: 0.5rem 0; list-style: none; display: flex; align-items: center; gap: 0.375rem; }
+.calc-working summary::before { content: '▶'; font-size: 0.625rem; transition: transform 0.15s; }
+.calc-working[open] summary::before { transform: rotate(90deg); }
+.calc-working-steps { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.375rem; }
+.calc-step { font-size: 0.875rem; color: #475569; padding: 0.5rem 0.875rem; background: #F8FAFC; border-left: 3px solid #E2E8F0; border-radius: 0 8px 8px 0; }
+
+/* ── DATA TABLE ── */
+.data-table-wrap { overflow-x: auto; margin-bottom: 1.25rem; border-radius: 10px; border: 1.5px solid #E2E8F0; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.data-table th { background: #F1F5F9; font-weight: 700; color: #374151; padding: 0.75rem 1rem; text-align: left; border-bottom: 1.5px solid #E2E8F0; white-space: nowrap; }
+.data-table td { padding: 0.6875rem 1rem; color: #334155; border-bottom: 1px solid #F1F5F9; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #F8FAFC; }
+
+/* ── PARA FILL ── */
+.para-fill-text { font-size: 1rem; color: #334155; line-height: 2; margin-bottom: 1.25rem; }
+.pf-blank { display: inline-flex; align-items: center; justify-content: center; min-width: 7rem; padding: 0.125rem 0.75rem; border-radius: 6px; border: 2px solid #CBD5E1; background: #F8FAFC; font-size: 0.875rem; font-weight: 600; color: #0F172A; cursor: pointer; vertical-align: middle; transition: all 0.12s; font-family: inherit; }
+.pf-blank:hover:not(.pf-locked) { border-color: #93C5FD; background: #EFF6FF; }
+.pf-blank.pf-filled { border-color: #2563EB; background: #EFF6FF; color: #1D4ED8; }
+.pf-blank.pf-correct { border-color: #16A34A; background: #F0FDF4; color: #166534; cursor: default; }
+.pf-blank.pf-wrong { border-color: #EF4444; background: #FEF2F2; color: #991B1B; cursor: default; }
+.pf-blank.pf-locked { cursor: default; }
+.pf-bank-label { font-size: 0.8125rem; font-weight: 700; color: #64748B; margin-bottom: 0.625rem; letter-spacing: 0.03em; }
+.pf-bank { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.pf-word { padding: 0.375rem 0.875rem; border-radius: 8px; border: 2px solid #CBD5E1; background: #fff; font-size: 0.875rem; font-weight: 600; color: #334155; cursor: pointer; transition: all 0.12s; font-family: inherit; }
+.pf-word:hover:not(:disabled) { border-color: #93C5FD; background: #EFF6FF; color: #1D4ED8; }
+.pf-word:disabled { opacity: 0.4; cursor: default; text-decoration: line-through; }
+.pf-word.pf-used { opacity: 0.35; cursor: default; }
+
+/* ── CHAIN ORDER ── */
+.chain-slots { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem; }
+.chain-slot { display: flex; align-items: center; gap: 0.875rem; padding: 0.875rem 1.25rem; border: 2px dashed #CBD5E1; border-radius: 12px; background: #F8FAFC; min-height: 56px; transition: all 0.12s; cursor: pointer; }
+.chain-slot.filled { border-style: solid; border-color: #2563EB; background: #EFF6FF; cursor: pointer; }
+.chain-slot.slot-correct { border-color: #16A34A; background: #F0FDF4; cursor: default; }
+.chain-slot.slot-wrong { border-color: #EF4444; background: #FEF2F2; cursor: default; }
+.chain-slot-num { width: 28px; height: 28px; border-radius: 50%; background: #E2E8F0; display: flex; align-items: center; justify-content: center; font-size: 0.8125rem; font-weight: 700; color: #64748B; flex-shrink: 0; }
+.chain-slot.filled .chain-slot-num { background: #2563EB; color: #fff; }
+.chain-slot.slot-correct .chain-slot-num { background: #16A34A; color: #fff; }
+.chain-slot.slot-wrong .chain-slot-num { background: #EF4444; color: #fff; }
+.chain-slot-text { font-size: 0.875rem; font-weight: 600; color: #475569; }
+.chain-slot.filled .chain-slot-text { color: #0F172A; }
+.chain-slot-empty { font-size: 0.875rem; color: #94A3B8; font-style: italic; }
+.chain-bank-label { font-size: 0.8125rem; font-weight: 700; color: #64748B; margin-bottom: 0.75rem; letter-spacing: 0.03em; }
+.chain-bank { display: flex; flex-direction: column; gap: 0.5rem; }
+.chain-bank-item { padding: 0.875rem 1.25rem; border: 2px solid #E2E8F0; border-radius: 12px; background: #fff; cursor: pointer; font-size: 0.875rem; font-weight: 600; color: #334155; transition: all 0.12s; }
+.chain-bank-item:hover:not(.used) { border-color: #93C5FD; background: #EFF6FF; }
+.chain-bank-item.selected { border-color: #2563EB; background: #EFF6FF; }
+.chain-bank-item.used { opacity: 0.35; cursor: default; pointer-events: none; }
 </style>
 </head>
 <body>
@@ -142,7 +266,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F
       </div>
       <div class="user-pill">
         <div class="user-avatar" id="sidebarAvatar">AB</div>
-        <div><div class="user-info-name" id="sidebarName">Alex Brown</div><div class="user-info-role">A-Level Economics</div></div>
+        <div><div class="user-info-name" id="sidebarName">Student</div><div class="user-info-role">A-Level Economics</div></div>
         <svg style="margin-left:auto;color:#94A3B8" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
     </div>
@@ -162,7 +286,6 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F
       <div class="topbar-right">
         <span class="streak-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="#EA580C"><path d="M12 2C8.5 7 6 9.5 6 14a6 6 0 0 0 12 0c0-4.5-2.5-7-6-12z"/></svg><span id="topStreak">1</span> day streak</span>
         <div class="topbar-avatar" id="topAvatar">AB</div>
-        <svg style="color:#94A3B8;cursor:pointer" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
     </header>
 
@@ -179,7 +302,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F
       <main class="learn-main">
         <div class="quiz-card" id="quizCard"></div>
         <div class="quiz-nav">
-          <span class="quiz-nav-hint" id="navHint">Select an answer to continue</span>
+          <span class="quiz-nav-hint" id="navHint">Answer to continue</span>
           <button class="btn-quiz-next" id="btnNext" disabled onclick="nextQuestion()">
             Next question <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
           </button>
@@ -198,7 +321,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             Exam tip
           </div>
-          <p class="right-tip-text">Read each question carefully before selecting your answer. Eliminate options you know are wrong first.</p>
+          <p class="right-tip-text">Read each question carefully. Eliminate options you know are wrong before selecting your final answer.</p>
         </div>
       </aside>
     </div>
@@ -209,70 +332,45 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0F
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/topics-data.js"></script>
 <script>
-let topic, quiz, currentQ = 0, score = 0;
-const results = [];
+/* ── STATE ── */
+let topic, questions = [], currentQ = 0, score = 0;
+const results = []; // true / false / undefined
+let qState = {}; // per-question interaction state
+
+const TYPE_META = {
+  mcq:             { label: 'Multiple Choice',       color: '#2563EB', bg: '#EFF6FF' },
+  odd_one_out:     { label: 'Odd One Out',            color: '#7C3AED', bg: '#F5F3FF' },
+  multi_select:    { label: 'Select All That Apply',  color: '#0891B2', bg: '#ECFEFF' },
+  elastic_sort:    { label: 'Classify',               color: '#16A34A', bg: '#F0FDF4' },
+  diagram_interp:  { label: 'Diagram Interpretation', color: '#2563EB', bg: '#EFF6FF' },
+  diagnostic_pair: { label: 'Exam Skill',             color: '#D97706', bg: '#FFFBEB' },
+  calculation:     { label: 'Calculation',            color: '#EA580C', bg: '#FFF7ED' },
+  para_fill:       { label: 'Fill the Paragraph',     color: '#7C3AED', bg: '#F5F3FF' },
+  data_table:      { label: 'Data Interpretation',    color: '#0891B2', bg: '#ECFEFF' },
+  chain:           { label: 'Order the Chain',        color: '#EA580C', bg: '#FFF7ED' },
+};
 
 function tid() { return new URLSearchParams(location.search).get('topic') || 'inflation'; }
 
+/* ── DOTS & GRID ── */
 function renderDots() {
-  const dots = document.getElementById('quizDots');
-  dots.innerHTML = quiz.map((_, i) => {
-    let cls = '';
-    if (results[i] === true) cls = 'answered-correct';
-    else if (results[i] === false) cls = 'answered-wrong';
-    else if (i === currentQ) cls = 'current';
+  document.getElementById('quizDots').innerHTML = questions.map((_, i) => {
+    let cls = results[i] === true ? 'answered-correct' : results[i] === false ? 'answered-wrong' : i === currentQ ? 'current' : '';
     return `<div class="quiz-dot ${cls}"></div>`;
   }).join('');
 }
-
 function renderQGrid() {
-  document.getElementById('qGrid').innerHTML = quiz.map((_, i) => {
-    let cls = '';
-    if (results[i] === true) cls = 'correct';
-    else if (results[i] === false) cls = 'wrong';
-    else if (i === currentQ) cls = 'current';
+  document.getElementById('qGrid').innerHTML = questions.map((_, i) => {
+    let cls = results[i] === true ? 'correct' : results[i] === false ? 'wrong' : i === currentQ ? 'current' : '';
     return `<div class="q-dot ${cls}">${i + 1}</div>`;
   }).join('');
 }
 
-function renderQuestion(idx) {
-  const q = quiz[idx];
-  const letters = ['A', 'B', 'C', 'D'];
-  document.getElementById('qLabel').textContent = `Question ${idx + 1} of ${quiz.length}`;
-  document.getElementById('quizCard').innerHTML = `
-    <div class="quiz-q-label">QUESTION ${idx + 1} OF ${quiz.length}</div>
-    <div class="quiz-question">${q.q}</div>
-    <div class="quiz-options">
-      ${q.opts.map((opt, i) => `
-        <div class="quiz-opt" data-idx="${i}" onclick="selectAnswer(${i})">
-          <div class="quiz-opt-letter">${letters[i]}</div>
-          <div class="quiz-opt-text">${opt}</div>
-        </div>`).join('')}
-    </div>`;
-  document.getElementById('btnNext').disabled = true;
-  document.getElementById('navHint').textContent = 'Select an answer to continue';
-  renderDots();
-  renderQGrid();
-}
-
-function selectAnswer(optIdx) {
-  const q = quiz[currentQ];
-  if (results[currentQ] !== undefined) return;
-
-  const isCorrect = optIdx === q.ans;
-  results[currentQ] = isCorrect;
-  if (isCorrect) score++;
-
-  const opts = document.querySelectorAll('.quiz-opt');
-  opts.forEach((el, i) => {
-    el.classList.add('answered');
-    if (i === q.ans) el.classList.add('correct');
-    else if (i === optIdx && !isCorrect) el.classList.add('wrong');
-  });
-
-  const feedback = document.createElement('div');
-  feedback.className = `quiz-feedback ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
-  feedback.innerHTML = `
+/* ── SHARED FEEDBACK ── */
+function showFeedback(isCorrect, expHtml) {
+  const fb = document.createElement('div');
+  fb.className = `quiz-feedback ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+  fb.innerHTML = `
     <div class="fb-icon ${isCorrect ? 'correct-fb' : 'wrong-fb'}">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
         ${isCorrect ? '<polyline points="20 6 9 17 4 12"/>' : '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'}
@@ -280,33 +378,571 @@ function selectAnswer(optIdx) {
     </div>
     <div>
       <div class="fb-heading ${isCorrect ? 'correct-fb' : 'wrong-fb'}">${isCorrect ? 'Correct!' : 'Not quite'}</div>
-      <p class="fb-text">${q.exp}</p>
+      <p class="fb-text">${expHtml}</p>
     </div>`;
-  document.getElementById('quizCard').appendChild(feedback);
+  document.getElementById('quizCard').appendChild(fb);
+}
 
+function markAnswered(isCorrect) {
+  results[currentQ] = isCorrect;
+  if (isCorrect) score++;
   document.getElementById('scoreDisplay').textContent = `${score} / ${results.filter(r => r !== undefined).length}`;
+  document.getElementById('navHint').textContent = isCorrect ? '✓ Well done!' : '✗ Review the explanation below';
   document.getElementById('btnNext').disabled = false;
-  document.getElementById('navHint').textContent = isCorrect ? '✓ Well done!' : `✗ The correct answer was ${['A','B','C','D'][q.ans]}`;
-
-  if (currentQ === quiz.length - 1) {
+  if (currentQ === questions.length - 1) {
     document.getElementById('btnNext').innerHTML = 'See results <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>';
-    document.getElementById('btnNext').onclick = () => {
-      localStorage.setItem(`${tid()}_quizScore`, JSON.stringify({ score, total: quiz.length }));
-      window.location.href = `learn-chain.html?topic=${tid()}&score=${score}`;
-    };
+    document.getElementById('btnNext').onclick = finishQuiz;
   }
+  renderDots(); renderQGrid();
+}
 
-  renderDots();
-  renderQGrid();
+function finishQuiz() {
+  localStorage.setItem(`${tid()}_quizScore`, JSON.stringify({ score, total: questions.length }));
+  window.location.href = `learn-chain.html?topic=${tid()}&score=${score}`;
+}
+
+/* ── QUESTION HEADER ── */
+function qHeader(q, idx) {
+  const m = TYPE_META[q.question_type] || { label: q.question_type, color: '#2563EB', bg: '#EFF6FF' };
+  return `
+    <span class="quiz-type-badge" style="color:${m.color};background:${m.bg}">${m.label}</span>
+    <div class="quiz-q-label">QUESTION ${idx + 1} OF ${questions.length}</div>
+    <div class="quiz-question">${q.stem}</div>`;
+}
+
+/* ════════════════════════════════════════════════
+   RENDERERS — one per question type
+════════════════════════════════════════════════ */
+
+/* MCQ */
+function renderMcq(q, idx) {
+  const c = q.content;
+  const letters = ['A','B','C','D','E'];
+  document.getElementById('quizCard').innerHTML = `
+    ${qHeader(q, idx)}
+    <div class="quiz-options">
+      ${c.opts.map((opt, i) => `
+        <div class="quiz-opt" data-i="${i}" onclick="mcqSelect(${i})">
+          <div class="quiz-opt-letter">${letters[i]}</div>
+          <div class="quiz-opt-text">${opt}</div>
+        </div>`).join('')}
+    </div>`;
+}
+window.mcqSelect = function(optIdx) {
+  const q = questions[currentQ]; const c = q.content;
+  if (results[currentQ] !== undefined) return;
+  const isCorrect = optIdx === c.ans;
+  document.querySelectorAll('.quiz-opt').forEach((el, i) => {
+    el.classList.add('answered');
+    if (i === c.ans) el.classList.add('correct');
+    else if (i === optIdx && !isCorrect) el.classList.add('wrong');
+  });
+  showFeedback(isCorrect, c.exp);
+  markAnswered(isCorrect);
+};
+
+/* ODD ONE OUT */
+function renderOddOneOut(q, idx) {
+  const c = q.content;
+  document.getElementById('quizCard').innerHTML = `
+    ${qHeader(q, idx)}
+    <div class="oo-grid">
+      ${c.items.map((item, i) => `
+        <div class="oo-item" data-i="${i}" onclick="ooSelect(${i})">
+          <div class="oo-icon">${item.icon || '❓'}</div>
+          <div class="oo-label">${item.label}</div>
+          ${item.note ? `<div class="oo-note">${item.note}</div>` : ''}
+        </div>`).join('')}
+    </div>`;
+}
+window.ooSelect = function(optIdx) {
+  const q = questions[currentQ]; const c = q.content;
+  if (results[currentQ] !== undefined) return;
+  const isCorrect = optIdx === c.ans;
+  document.querySelectorAll('.oo-item').forEach((el, i) => {
+    el.classList.add('answered');
+    if (i === c.ans) el.classList.add('correct');
+    else if (i === optIdx && !isCorrect) el.classList.add('wrong');
+  });
+  showFeedback(isCorrect, c.exp);
+  markAnswered(isCorrect);
+};
+
+/* MULTI-SELECT */
+function renderMultiSelect(q, idx) {
+  const c = q.content;
+  qState = { selected: new Set() };
+  document.getElementById('quizCard').innerHTML = `
+    ${qHeader(q, idx)}
+    <p class="ms-hint">Select all that apply, then click Check.</p>
+    <div id="msOpts">
+      ${c.opts.map((opt, i) => `
+        <div class="ms-opt" data-i="${i}" onclick="msToggle(${i})">
+          <div class="ms-checkbox">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:none"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="ms-text">${opt}</div>
+        </div>`).join('')}
+    </div>`;
+  const nav = document.querySelector('.quiz-nav');
+  let checkBtn = document.getElementById('msCheckBtn');
+  if (!checkBtn) {
+    checkBtn = document.createElement('button');
+    checkBtn.id = 'msCheckBtn'; checkBtn.className = 'btn-check';
+    checkBtn.innerHTML = 'Check answers <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    checkBtn.onclick = msCheck;
+    nav.insertBefore(checkBtn, document.getElementById('btnNext'));
+  }
+}
+window.msToggle = function(i) {
+  if (results[currentQ] !== undefined) return;
+  const el = document.querySelector(`.ms-opt[data-i="${i}"]`);
+  const tick = el.querySelector('svg');
+  if (qState.selected.has(i)) { qState.selected.delete(i); el.classList.remove('ms-selected'); tick.style.display = 'none'; }
+  else { qState.selected.add(i); el.classList.add('ms-selected'); tick.style.display = ''; }
+};
+window.msCheck = function() {
+  if (results[currentQ] !== undefined) return;
+  const q = questions[currentQ]; const c = q.content;
+  const correct = new Set(c.correct);
+  const sel = qState.selected;
+  const isCorrect = sel.size === correct.size && [...sel].every(i => correct.has(i));
+  document.querySelectorAll('.ms-opt').forEach((el, i) => {
+    el.classList.add('ms-locked');
+    el.onclick = null;
+    if (correct.has(i) && sel.has(i)) el.classList.add('ms-correct');
+    else if (!correct.has(i) && sel.has(i)) el.classList.add('ms-wrong');
+    else if (correct.has(i) && !sel.has(i)) el.classList.add('ms-missed');
+    el.querySelector('.ms-checkbox svg').style.display = (correct.has(i) || sel.has(i)) ? '' : 'none';
+  });
+  const checkBtn = document.getElementById('msCheckBtn');
+  if (checkBtn) checkBtn.remove();
+  showFeedback(isCorrect, c.exp);
+  markAnswered(isCorrect);
+};
+
+/* ELASTIC SORT */
+function renderElasticSort(q, idx) {
+  const c = q.content;
+  qState = { answers: {} };
+  document.getElementById('quizCard').innerHTML = `
+    ${qHeader(q, idx)}
+    <p class="es-intro">Classify each item by selecting the correct category.</p>
+    <div id="esRows">
+      ${c.goods.map((g, i) => `
+        <div class="es-row" id="esRow${i}">
+          <div class="es-item-label">
+            ${g.icon ? `<span class="es-item-icon">${g.icon}</span>` : ''}
+            <span>${g.label}</span>
+          </div>
+          <div class="es-btns">
+            ${c.categoryLabels.map((lbl, ci) => `
+              <button class="es-btn" data-row="${i}" data-cat="${ci}" onclick="esSelect(${i},${ci})">${lbl}</button>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>`;
+  const nav = document.querySelector('.quiz-nav');
+  let checkBtn = document.getElementById('esCheckBtn');
+  if (!checkBtn) {
+    checkBtn = document.createElement('button');
+    checkBtn.id = 'esCheckBtn'; checkBtn.className = 'btn-check';
+    checkBtn.disabled = true;
+    checkBtn.innerHTML = 'Check answers <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    checkBtn.onclick = esCheck;
+    nav.insertBefore(checkBtn, document.getElementById('btnNext'));
+  }
+}
+window.esSelect = function(rowIdx, catIdx) {
+  if (results[currentQ] !== undefined) return;
+  document.querySelectorAll(`.es-btn[data-row="${rowIdx}"]`).forEach(b => b.classList.remove('es-active'));
+  document.querySelector(`.es-btn[data-row="${rowIdx}"][data-cat="${catIdx}"]`).classList.add('es-active');
+  qState.answers[rowIdx] = catIdx;
+  const c = questions[currentQ].content;
+  const checkBtn = document.getElementById('esCheckBtn');
+  if (checkBtn) checkBtn.disabled = Object.keys(qState.answers).length < c.goods.length;
+};
+window.esCheck = function() {
+  if (results[currentQ] !== undefined) return;
+  const q = questions[currentQ]; const c = q.content;
+  let allCorrect = true;
+  c.goods.forEach((g, i) => {
+    const row = document.getElementById(`esRow${i}`);
+    const userAns = qState.answers[i];
+    const isRight = userAns === g.ans;
+    if (!isRight) allCorrect = false;
+    row.classList.add(isRight ? 'es-correct' : 'es-wrong');
+    document.querySelectorAll(`.es-btn[data-row="${i}"]`).forEach(b => { b.disabled = true; });
+    const tag = document.createElement('span');
+    tag.className = `es-result-tag ${isRight ? 'correct' : 'wrong'}`;
+    tag.textContent = isRight ? '✓' : `✗ ${c.categoryLabels[g.ans]}`;
+    row.querySelector('.es-btns').after(tag);
+  });
+  const checkBtn = document.getElementById('esCheckBtn');
+  if (checkBtn) checkBtn.remove();
+  const expText = c.exp || `Correct: ${c.goods.map((g,i) => `${g.label} → ${c.categoryLabels[g.ans]}`).join('; ')}`;
+  showFeedback(allCorrect, expText);
+  markAnswered(allCorrect);
+};
+
+/* DIAGRAM INTERP */
+function renderDiagramInterp(q, idx) {
+  const c = q.content;
+  const letters = ['A','B','C','D','E'];
+  document.getElementById('quizCard').innerHTML = `
+    ${qHeader(q, idx)}
+    <div class="diag-wrap">${c.svg}</div>
+    ${c.caption ? `<p class="diag-caption">${c.caption}</p>` : ''}
+    <div class="quiz-question-sm">${c.question}</div>
+    <div class="quiz-options">
+      ${c.opts.map((opt, i) => `
+        <div class="quiz-opt" data-i="${i}" onclick="diagSelect(${i})">
+          <div class="quiz-opt-letter">${letters[i]}</div>
+          <div class="quiz-opt-text">${opt}</div>
+        </div>`).join('')}
+    </div>`;
+}
+window.diagSelect = function(optIdx) {
+  const q = questions[currentQ]; const c = q.content;
+  if (results[currentQ] !== undefined) return;
+  const isCorrect = optIdx === c.ans;
+  document.querySelectorAll('.quiz-opt').forEach((el, i) => {
+    el.classList.add('answered');
+    if (i === c.ans) el.classList.add('correct');
+    else if (i === optIdx && !isCorrect) el.classList.add('wrong');
+  });
+  showFeedback(isCorrect, c.exp);
+  markAnswered(isCorrect);
+};
+
+/* DIAGNOSTIC PAIR */
+function renderDiagnosticPair(q, idx) {
+  const c = q.content;
+  document.getElementById('quizCard').innerHTML = `
+    ${qHeader(q, idx)}
+    <p style="font-size:0.875rem;color:#475569;margin-bottom:1rem;">Two students have answered the same exam question. Which student gave the better answer?</p>
+    <div class="diag-grid">
+      ${c.students.map((s, i) => `
+        <div class="diag-card" data-i="${i}" onclick="dpSelect(${i})">
+          <span class="diag-badge" style="background:${i===0?'#EFF6FF':'#FFF7ED'};color:${i===0?'#2563EB':'#EA580C'}">${s.badge || (i===0?'Student A':'Student B')}</span>
+          <div class="diag-student-name">${s.name}</div>
+          <div class="diag-answer">"${s.answer}"</div>
+        </div>`).join('')}
+    </div>`;
+}
+window.dpSelect = function(optIdx) {
+  const q = questions[currentQ]; const c = q.content;
+  if (results[currentQ] !== undefined) return;
+  const isCorrect = optIdx === c.ans;
+  document.querySelectorAll('.diag-card').forEach((el, i) => {
+    el.classList.add('answered');
+    if (i === c.ans) el.classList.add('correct');
+    else if (i === optIdx && !isCorrect) el.classList.add('wrong');
+  });
+  showFeedback(isCorrect, c.exp);
+  markAnswered(isCorrect);
+};
+
+/* CALCULATION */
+function renderCalculation(q, idx) {
+  const c = q.content;
+  const letters = ['A','B','C','D','E'];
+  const workingHtml = c.working && c.working.length ? `
+    <details class="calc-working">
+      <summary>Show working</summary>
+      <div class="calc-working-steps">
+        ${c.working.map(s => `<div class="calc-step">${s}</div>`).join('')}
+      </div>
+    </details>` : '';
+  document.getElementById('quizCard').innerHTML = `
+    ${qHeader(q, idx)}
+    ${c.context ? `<div class="calc-context"><div class="calc-context-label">CONTEXT</div><div class="calc-context-text">${c.context}</div></div>` : ''}
+    ${workingHtml}
+    <div class="quiz-options">
+      ${c.opts.map((opt, i) => {
+        const label = typeof opt === 'object' ? (opt.ped || opt.rev || opt.typ || JSON.stringify(opt)) : opt;
+        return `<div class="quiz-opt" data-i="${i}" onclick="calcSelect(${i})">
+          <div class="quiz-opt-letter">${letters[i]}</div>
+          <div class="quiz-opt-text">${label}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+window.calcSelect = function(optIdx) {
+  const q = questions[currentQ]; const c = q.content;
+  if (results[currentQ] !== undefined) return;
+  const isCorrect = optIdx === c.ans;
+  document.querySelectorAll('.quiz-opt').forEach((el, i) => {
+    el.classList.add('answered');
+    if (i === c.ans) el.classList.add('correct');
+    else if (i === optIdx && !isCorrect) el.classList.add('wrong');
+  });
+  showFeedback(isCorrect, c.exp);
+  markAnswered(isCorrect);
+};
+
+/* DATA TABLE */
+function renderDataTable(q, idx) {
+  const c = q.content;
+  const letters = ['A','B','C','D','E'];
+  const tableHtml = `
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <thead><tr>${c.headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+        <tbody>${c.rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+  document.getElementById('quizCard').innerHTML = `
+    ${qHeader(q, idx)}
+    ${tableHtml}
+    <div class="quiz-question-sm">${c.question}</div>
+    <div class="quiz-options">
+      ${c.opts.map((opt, i) => `
+        <div class="quiz-opt" data-i="${i}" onclick="dtSelect(${i})">
+          <div class="quiz-opt-letter">${letters[i]}</div>
+          <div class="quiz-opt-text">${opt}</div>
+        </div>`).join('')}
+    </div>`;
+}
+window.dtSelect = function(optIdx) {
+  const q = questions[currentQ]; const c = q.content;
+  if (results[currentQ] !== undefined) return;
+  const isCorrect = optIdx === c.ans;
+  document.querySelectorAll('.quiz-opt').forEach((el, i) => {
+    el.classList.add('answered');
+    if (i === c.ans) el.classList.add('correct');
+    else if (i === optIdx && !isCorrect) el.classList.add('wrong');
+  });
+  showFeedback(isCorrect, c.exp);
+  markAnswered(isCorrect);
+};
+
+/* PARA FILL */
+function renderParaFill(q, idx) {
+  const c = q.content;
+  qState = { fills: {}, activeFill: null };
+  let paraHtml = c.para;
+  c.blanks.forEach(b => {
+    paraHtml = paraHtml.replace(
+      `[${b.id}]`,
+      `<button class="pf-blank" id="pfBlank${b.id}" data-blank="${b.id}" onclick="pfBlankClick('${b.id}')">[${b.id}]</button>`
+    );
+  });
+  const wordSet = [...new Set(c.blanks.flatMap(b => b.opts))].sort(() => Math.random() - 0.5);
+  document.getElementById('quizCard').innerHTML = `
+    ${qHeader(q, idx)}
+    <div class="para-fill-text" id="pfPara">${paraHtml}</div>
+    <div class="pf-bank-label">WORD BANK — click a word, then click the blank to fill it</div>
+    <div class="pf-bank" id="pfBank">
+      ${wordSet.map(w => `<button class="pf-word" id="pfWord_${CSS.escape(w)}" onclick="pfWordClick('${w.replace(/'/g,"\\'")}')"> ${w}</button>`).join('')}
+    </div>`;
+  const nav = document.querySelector('.quiz-nav');
+  let checkBtn = document.getElementById('pfCheckBtn');
+  if (!checkBtn) {
+    checkBtn = document.createElement('button');
+    checkBtn.id = 'pfCheckBtn'; checkBtn.className = 'btn-check';
+    checkBtn.disabled = true;
+    checkBtn.innerHTML = 'Check answers <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    checkBtn.onclick = pfCheck;
+    nav.insertBefore(checkBtn, document.getElementById('btnNext'));
+  }
+}
+window.pfWordClick = function(word) {
+  if (results[currentQ] !== undefined) return;
+  if (qState.activeFill) {
+    pfFill(qState.activeFill, word);
+    return;
+  }
+  document.querySelectorAll('.pf-word').forEach(b => b.style.outline = '');
+  const wordBtn = document.querySelector(`.pf-bank button.pf-word`);
+  qState.pendingWord = word;
+  document.querySelectorAll('.pf-word').forEach(b => {
+    if (b.textContent.trim() === word) b.style.outline = '2px solid #2563EB';
+  });
+};
+window.pfBlankClick = function(blankId) {
+  if (results[currentQ] !== undefined) return;
+  const btn = document.getElementById(`pfBlank${blankId}`);
+  if (qState.fills[blankId]) {
+    const prev = qState.fills[blankId];
+    delete qState.fills[blankId];
+    btn.textContent = `[${blankId}]`;
+    btn.classList.remove('pf-filled');
+    document.querySelectorAll('.pf-word').forEach(b => {
+      if (b.textContent.trim() === prev) { b.classList.remove('pf-used'); b.disabled = false; }
+    });
+    pfUpdateCheckBtn();
+    return;
+  }
+  if (qState.pendingWord) {
+    pfFill(blankId, qState.pendingWord);
+  }
+};
+function pfFill(blankId, word) {
+  const btn = document.getElementById(`pfBlank${blankId}`);
+  if (qState.fills[blankId]) {
+    const prev = qState.fills[blankId];
+    document.querySelectorAll('.pf-word').forEach(b => {
+      if (b.textContent.trim() === prev) { b.classList.remove('pf-used'); b.disabled = false; }
+    });
+  }
+  qState.fills[blankId] = word;
+  btn.textContent = word;
+  btn.classList.add('pf-filled');
+  document.querySelectorAll('.pf-word').forEach(b => {
+    if (b.textContent.trim() === word) { b.classList.add('pf-used'); b.disabled = true; b.style.outline = ''; }
+  });
+  qState.pendingWord = null;
+  document.querySelectorAll('.pf-word').forEach(b => b.style.outline = '');
+  pfUpdateCheckBtn();
+}
+function pfUpdateCheckBtn() {
+  const c = questions[currentQ].content;
+  const checkBtn = document.getElementById('pfCheckBtn');
+  if (checkBtn) checkBtn.disabled = Object.keys(qState.fills).length < c.blanks.length;
+}
+window.pfCheck = function() {
+  if (results[currentQ] !== undefined) return;
+  const q = questions[currentQ]; const c = q.content;
+  let allCorrect = true;
+  c.blanks.forEach(b => {
+    const btn = document.getElementById(`pfBlank${b.id}`);
+    const isRight = qState.fills[b.id] === b.ans;
+    if (!isRight) allCorrect = false;
+    btn.classList.remove('pf-filled');
+    btn.classList.add(isRight ? 'pf-correct' : 'pf-wrong');
+    btn.classList.add('pf-locked');
+  });
+  document.querySelectorAll('.pf-word').forEach(b => { b.disabled = true; b.style.outline = ''; });
+  const checkBtn = document.getElementById('pfCheckBtn');
+  if (checkBtn) checkBtn.remove();
+  showFeedback(allCorrect, c.exp || 'Check the correct words in each blank above.');
+  markAnswered(allCorrect);
+};
+
+/* CHAIN ORDER */
+function renderChain(q, idx) {
+  const c = q.content;
+  qState = { slotFills: new Array(c.items.length).fill(null), selectedBank: null };
+  const slotsHtml = c.items.map((_, i) => `
+    <div class="chain-slot" id="chainSlot${i}" onclick="chainSlotClick(${i})">
+      <div class="chain-slot-num">${i + 1}</div>
+      <div class="chain-slot-text"><span class="chain-slot-empty">Click to place a step here…</span></div>
+    </div>`).join('');
+  const bankHtml = c.items.map((item, i) => `
+    <div class="chain-bank-item" id="chainBank${i}" onclick="chainBankClick(${i})">${item.label}</div>`).join('');
+  document.getElementById('quizCard').innerHTML = `
+    ${qHeader(q, idx)}
+    <div class="chain-slots" id="chainSlots">${slotsHtml}</div>
+    <div class="chain-bank-label">STEPS — click a step to select it, then click a slot to place it</div>
+    <div class="chain-bank" id="chainBank">${bankHtml}</div>`;
+  const nav = document.querySelector('.quiz-nav');
+  let checkBtn = document.getElementById('chainCheckBtn');
+  if (!checkBtn) {
+    checkBtn = document.createElement('button');
+    checkBtn.id = 'chainCheckBtn'; checkBtn.className = 'btn-check';
+    checkBtn.disabled = true;
+    checkBtn.innerHTML = 'Check order <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    checkBtn.onclick = chainCheck;
+    nav.insertBefore(checkBtn, document.getElementById('btnNext'));
+  }
+}
+window.chainBankClick = function(bankIdx) {
+  if (results[currentQ] !== undefined) return;
+  if (document.getElementById(`chainBank${bankIdx}`).classList.contains('used')) return;
+  document.querySelectorAll('.chain-bank-item').forEach(b => b.classList.remove('selected'));
+  document.getElementById(`chainBank${bankIdx}`).classList.add('selected');
+  qState.selectedBank = bankIdx;
+};
+window.chainSlotClick = function(slotIdx) {
+  if (results[currentQ] !== undefined) return;
+  const slot = document.getElementById(`chainSlot${slotIdx}`);
+  if (slot.classList.contains('filled') && qState.selectedBank === null) {
+    const prevBank = qState.slotFills[slotIdx];
+    qState.slotFills[slotIdx] = null;
+    slot.classList.remove('filled');
+    slot.querySelector('.chain-slot-text').innerHTML = '<span class="chain-slot-empty">Click to place a step here…</span>';
+    document.getElementById(`chainBank${prevBank}`).classList.remove('used');
+    chainUpdateCheckBtn();
+    return;
+  }
+  if (qState.selectedBank === null) return;
+  if (slot.classList.contains('filled')) {
+    const prevBank = qState.slotFills[slotIdx];
+    document.getElementById(`chainBank${prevBank}`).classList.remove('used');
+  }
+  const c = questions[currentQ].content;
+  qState.slotFills[slotIdx] = qState.selectedBank;
+  slot.classList.add('filled');
+  slot.querySelector('.chain-slot-text').textContent = c.items[qState.selectedBank].label;
+  document.getElementById(`chainBank${qState.selectedBank}`).classList.remove('selected');
+  document.getElementById(`chainBank${qState.selectedBank}`).classList.add('used');
+  qState.selectedBank = null;
+  chainUpdateCheckBtn();
+};
+function chainUpdateCheckBtn() {
+  const checkBtn = document.getElementById('chainCheckBtn');
+  if (checkBtn) checkBtn.disabled = qState.slotFills.some(f => f === null);
+}
+window.chainCheck = function() {
+  if (results[currentQ] !== undefined) return;
+  const q = questions[currentQ]; const c = q.content;
+  let allCorrect = true;
+  qState.slotFills.forEach((bankIdx, slotIdx) => {
+    const isRight = c.correctOrder[slotIdx] === bankIdx;
+    if (!isRight) allCorrect = false;
+    const slot = document.getElementById(`chainSlot${slotIdx}`);
+    slot.classList.remove('filled');
+    slot.classList.add(isRight ? 'slot-correct' : 'slot-wrong');
+  });
+  const checkBtn = document.getElementById('chainCheckBtn');
+  if (checkBtn) checkBtn.remove();
+  const correctLabels = c.correctOrder.map(i => c.items[i].label);
+  showFeedback(allCorrect, c.exp || `Correct order: ${correctLabels.map((l,i) => `${i+1}. ${l}`).join('; ')}`);
+  markAnswered(allCorrect);
+};
+
+/* ── DISPATCHER ── */
+const RENDERERS = {
+  mcq: renderMcq,
+  odd_one_out: renderOddOneOut,
+  multi_select: renderMultiSelect,
+  elastic_sort: renderElasticSort,
+  diagram_interp: renderDiagramInterp,
+  diagnostic_pair: renderDiagnosticPair,
+  calculation: renderCalculation,
+  data_table: renderDataTable,
+  para_fill: renderParaFill,
+  chain: renderChain,
+};
+
+function showQuestion(idx) {
+  currentQ = idx;
+  qState = {};
+  ['msCheckBtn','esCheckBtn','pfCheckBtn','chainCheckBtn'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.remove();
+  });
+  document.getElementById('btnNext').disabled = true;
+  document.getElementById('btnNext').innerHTML = 'Next question <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>';
+  document.getElementById('btnNext').onclick = nextQuestion;
+  document.getElementById('navHint').textContent = 'Answer to continue';
+  document.getElementById('qLabel').textContent = `Question ${idx + 1} of ${questions.length}`;
+  const q = questions[idx];
+  const render = RENDERERS[q.question_type];
+  if (render) render(q, idx);
+  else {
+    document.getElementById('quizCard').innerHTML = `${qHeader(q, idx)}<p style="color:#64748B">Question type "${q.question_type}" not yet supported.</p>`;
+  }
+  renderDots(); renderQGrid();
 }
 
 function nextQuestion() {
   currentQ++;
-  if (currentQ >= quiz.length) return;
-  renderQuestion(currentQ);
+  if (currentQ >= questions.length) return;
+  showQuestion(currentQ);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+/* ── INIT ── */
 (async function init() {
   const { createClient } = supabase;
   const sb = createClient(window.ECONOS_CONFIG.supabaseUrl, window.ECONOS_CONFIG.supabaseAnonKey);
@@ -324,13 +960,25 @@ function nextQuestion() {
 
   const t = tid();
   topic = window.ECONOS_TOPICS[t];
-  quiz = topic.quiz;
+  const quizId = topic.quizId || t;
 
   document.title = `econOS – Quick Check: ${topic.title}`;
   document.getElementById('breadTitle').textContent = topic.title;
   document.getElementById('backLink').href = `learn-cards.html?topic=${t}&card=5`;
 
-  renderQuestion(0);
+  const { data, error } = await sb
+    .from('questions_legacy')
+    .select('*')
+    .eq('quiz_id', quizId)
+    .order('question_index');
+
+  if (error || !data || data.length === 0) {
+    document.getElementById('loadingScreen').textContent = 'Could not load questions. Please try again.';
+    return;
+  }
+
+  questions = data;
+  showQuestion(0);
 
   document.getElementById('loadingScreen').style.display = 'none';
   document.getElementById('learnShell').style.display = 'flex';
