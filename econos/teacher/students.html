@@ -53,7 +53,7 @@
         <div style="font-size:0.75rem;color:var(--text-muted);" id="students-sub">Loading…</div>
       </div>
       <div class="header-actions">
-        <a href="settings.html"><div class="user-avatar" id="header-avatar">?</div></a>
+        <a href="settings"><div class="user-avatar" id="header-avatar">?</div></a>
       </div>
     </header>
     <div class="page-body">
@@ -90,7 +90,7 @@ let _classes = [], _currentClassId = null, _allStudents = [];
 const AVATAR_COLORS = ['#DBEAFE','#DCFCE7','#FEF3C7','#EDE9FE','#FFE4E6','#CCFBF1'];
 
 async function init() {
-  const auth = await Auth.requireTeacher('../login.html');
+  const auth = await Auth.requireTeacher();
   if (!auth) return;
   const { session, profile } = auth;
   const initials = (profile.full_name||'T').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
@@ -155,7 +155,7 @@ function copyCode() {
 }
 
 function renderNoClasses() {
-  document.getElementById('stats-row').innerHTML = `<div class="stat-card" style="grid-column:1/-1;text-align:center;padding:2rem;"><div style="font-size:2rem;">🏫</div><h3 style="color:var(--navy);margin-top:0.75rem;">No classes yet</h3><p style="color:var(--text-muted);font-size:0.875rem;">Create a class from the dashboard to get started.</p><a href="dashboard.html" class="btn btn-primary" style="margin-top:1rem;">Go to dashboard</a></div>`;
+  document.getElementById('stats-row').innerHTML = `<div class="stat-card" style="grid-column:1/-1;text-align:center;padding:2rem;"><div style="font-size:2rem;">🏫</div><h3 style="color:var(--navy);margin-top:0.75rem;">No classes yet</h3><p style="color:var(--text-muted);font-size:0.875rem;">Create a class from the dashboard to get started.</p><a href="dashboard" class="btn btn-primary" style="margin-top:1rem;">Go to dashboard</a></div>`;
   document.getElementById('class-tabs').innerHTML = '';
 }
 
