@@ -139,7 +139,7 @@
         <button class="notif-btn">
           <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
         </button>
-        <div class="user-avatar" id="header-avatar" style="cursor:pointer;">?</div>
+        <a href="settings.html"><div class="user-avatar" id="header-avatar">?</div></a>
       </div>
     </header>
 
@@ -188,7 +188,7 @@
           </div>
         </div>
 
-        <div>
+        <div class="sticky-right">
           <div class="readiness-card">
             <h3>Your exam readiness</h3>
             <div class="readiness-chart-row">
@@ -198,9 +198,9 @@
                 <text x="55" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#94A3B8" font-weight="600">READINESS</text>
               </svg>
               <div class="readiness-legend">
-                <div class="legend-row"><div class="legend-dot" style="background:var(--learn);"></div><div class="legend-label">Learn it</div><div class="legend-pct" id="leg-learn" style="color:var(--learn-dark);">—%</div></div>
-                <div class="legend-row"><div class="legend-dot" style="background:var(--link);"></div><div class="legend-label">Link it</div><div class="legend-pct" id="leg-link" style="color:var(--link-dark);">—%</div></div>
-                <div class="legend-row"><div class="legend-dot" style="background:var(--land);"></div><div class="legend-label">Land it</div><div class="legend-pct" id="leg-land" style="color:var(--land);">—%</div></div>
+                <div class="legend-row"><div class="legend-dot" style="background:var(--learn);"></div><div class="legend-label">Learn it</div><div class="legend-pct" id="leg-learn" style="color:var(--learn-dark);"></div></div>
+                <div class="legend-row"><div class="legend-dot" style="background:var(--link);"></div><div class="legend-label">Link it</div><div class="legend-pct" id="leg-link" style="color:var(--link-dark);"></div></div>
+                <div class="legend-row"><div class="legend-dot" style="background:var(--land);"></div><div class="legend-label">Land it</div><div class="legend-pct" id="leg-land" style="color:var(--land);"></div></div>
               </div>
             </div>
             <div class="readiness-cta"><a href="topics.html">View full topic map →</a></div>
