@@ -379,7 +379,7 @@ async function init() {
     initials,
     school: profile.school_name || '',
     yearGroup: profile.year_group || 'Year 12'
-  });
+  }, 'student/');
 
   const params = new URLSearchParams(location.search);
   _subtopicId = params.get('subtopic') || null;
