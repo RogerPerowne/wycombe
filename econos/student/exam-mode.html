@@ -6,605 +6,334 @@
 <title>econOS – Exam Mode</title>
 <link rel="stylesheet" href="../assets/css/econos.css">
 <style>
-/* EXAM MODE SPECIFIC */
+.exam-layout { display:grid; grid-template-columns:1fr 280px; gap:1.75rem; align-items:start; }
+.exam-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:2rem; box-shadow:var(--shadow-sm); }
+.exam-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
+.exam-header h2 { font-size:1.25rem; font-weight:800; color:var(--navy); letter-spacing:-0.02em; }
+.exam-pill { display:inline-flex; align-items:center; gap:0.375rem; background:#FEF3C7; color:#92400E; font-size:0.7rem; font-weight:700; padding:0.25rem 0.625rem; border-radius:var(--r-full); }
+.timer-display { font-size:1.5rem; font-weight:900; color:var(--navy); font-variant-numeric:tabular-nums; padding:0.375rem 0.875rem; background:var(--bg-subtle); border-radius:var(--r-md); border:1px solid var(--border); }
+.timer-display.warning { color:#DC2626; background:#FEF2F2; border-color:#FECACA; }
 
-/* START SCREEN */
-.exam-start-layout {
-  display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: 1.75rem;
-  align-items: flex-start;
+.question-block { margin-bottom:2rem; padding-bottom:2rem; border-bottom:1px solid var(--border); }
+.question-block:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.question-num  { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin-bottom:0.5rem; }
+.question-text { font-size:0.9375rem; font-weight:600; color:var(--navy); line-height:1.5; margin-bottom:1rem; }
+.mcq-options   { display:flex; flex-direction:column; gap:0.5rem; }
+.mcq-opt {
+  padding:0.75rem 1rem; border:1.5px solid var(--border); border-radius:var(--r-sm);
+  cursor:pointer; font-size:0.875rem; color:var(--text-primary); transition:all var(--t-fast);
+  display:flex; align-items:flex-start; gap:0.625rem;
 }
+.mcq-opt:hover { border-color:var(--land-light); background:var(--land-light); }
+.mcq-opt.selected { border-color:var(--land); background:var(--land-light); }
+.mcq-opt.correct-reveal { border-color:var(--learn); background:var(--learn-light); }
+.mcq-opt.wrong-reveal   { border-color:#EF4444; background:#FEF2F2; }
+.opt-letter { font-weight:800; min-width:18px; color:var(--text-muted); }
+.mcq-opt.selected .opt-letter { color:var(--land); }
+.opt-expl { font-size:0.775rem; color:var(--text-secondary); margin-top:0.375rem; display:none; }
+.mcq-opt.correct-reveal .opt-expl,
+.mcq-opt.wrong-reveal .opt-expl { display:block; }
 
-/* MODE SELECTION */
-.mode-tabs {
-  display: flex;
-  gap: 0;
-  background: var(--bg-subtle);
-  border-radius: var(--r-lg);
-  padding: 4px;
-  margin-bottom: 1.75rem;
-}
-.mode-tab {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding: 0.875rem 1rem;
-  border-radius: calc(var(--r-lg) - 2px);
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  transition: all var(--t-base);
-  text-align: left;
-}
-.mode-tab:hover { background: rgba(255,255,255,0.5); }
-.mode-tab.active { background: var(--bg-card); box-shadow: var(--shadow-md); }
-.mode-tab.active.smart { border-left: 3px solid var(--land); }
-.mode-tab.active.topic { border-left: 3px solid var(--learn); }
-.mode-tab.active.mixed { border-left: 3px solid var(--link); }
-.mode-tab.active.past  { border-left: 3px solid #7C3AED; }
-.mode-tab-icon {
-  width: 36px; height: 36px;
-  border-radius: var(--r-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.125rem;
-  flex-shrink: 0;
-}
-.mode-tab.active.smart .mode-tab-icon { background: var(--land-light); }
-.mode-tab.active.topic .mode-tab-icon { background: var(--learn-light); }
-.mode-tab.active.mixed .mode-tab-icon { background: var(--link-light); }
-.mode-tab.active.past  .mode-tab-icon { background: #F3E8FF; }
-.mode-tab-info {}
-.mode-tab-name { font-size: 0.875rem; font-weight: 700; color: var(--navy); }
-.mode-tab-sub  { font-size: 0.7rem; color: var(--text-muted); }
+.exam-sidebar-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--r-xl); padding:1.25rem; box-shadow:var(--shadow-sm); margin-bottom:1rem; }
+.exam-sidebar-card h4 { font-size:0.875rem; font-weight:700; color:var(--navy); margin-bottom:0.875rem; }
+.session-stat { display:flex; justify-content:space-between; align-items:center; padding:0.375rem 0; font-size:0.8rem; border-bottom:1px solid var(--border); }
+.session-stat:last-child { border-bottom:none; }
+.session-stat .lbl { color:var(--text-muted); }
+.session-stat .val { font-weight:700; color:var(--navy); }
 
-/* RECOMMENDED SECTION */
-.recommended-section {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 1.75rem;
-}
-.recommended-section h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: 0.375rem; }
-.recommended-section .rec-sub { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.25rem; }
-.rec-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-.rec-card {
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 1.25rem;
-  cursor: pointer;
-  transition: all var(--t-base);
-  position: relative;
-}
-.rec-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.rec-card.link-card  { border-color: var(--link-light); }
-.rec-card.land-card  { border-color: var(--learn-light); }
-.rec-card.mixed-card { border-color: #E9D5FF; }
-.rec-card:hover.link-card  { border-color: var(--link); }
-.rec-card:hover.land-card  { border-color: var(--learn); }
-.rec-card:hover.mixed-card { border-color: #7C3AED; }
-.rec-card-type { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
-.rec-card.link-card  .rec-card-type { color: var(--link-dark); }
-.rec-card.land-card  .rec-card-type { color: var(--learn-dark); }
-.rec-card.mixed-card .rec-card-type { color: #7C3AED; }
-.rec-card h4 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 0.375rem; }
-.rec-card-icon {
-  position: absolute;
-  top: 1rem; right: 1rem;
-  font-size: 1.25rem;
-}
-.rec-card p { font-size: 0.775rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.875rem; }
-.rec-card .rec-tag {
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.2rem 0.5rem;
-  border-radius: var(--r-full);
-  display: inline-block;
-  margin-bottom: 0.625rem;
-}
-.rec-card.link-card  .rec-tag { background: #FEF3C7; color: var(--link-dark); }
-.rec-card.land-card  .rec-tag { background: var(--learn-light); color: var(--learn-dark); }
-.rec-card.mixed-card .rec-tag { background: #F3E8FF; color: #7C3AED; }
-.rec-card-meta { font-size: 0.7rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.375rem; }
-.rec-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 0.625rem; }
+.result-screen { display:none; }
+.result-screen .big-score { font-size:4rem; font-weight:900; color:var(--learn); letter-spacing:-0.04em; }
+.result-screen .score-label { font-size:0.875rem; color:var(--text-muted); font-weight:600; }
 
-/* ALL OPTIONS */
-.all-options {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-}
-.all-options h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: 0.375rem; }
-.all-options .opts-sub { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.25rem; }
-.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.option-card {
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 1.25rem;
-  cursor: pointer;
-  transition: all var(--t-base);
-}
-.option-card:hover { border-color: var(--land-light); box-shadow: var(--shadow-sm); }
-.option-icon {
-  width: 44px; height: 44px;
-  border-radius: var(--r-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  margin-bottom: 0.875rem;
-}
-.option-card h4 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem; }
-.option-card p  { font-size: 0.775rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.875rem; }
-.option-features { display: flex; flex-direction: column; gap: 0.25rem; }
-.option-features li { font-size: 0.75rem; color: var(--text-muted); list-style: none; display: flex; align-items: center; gap: 0.375rem; }
-.option-features li::before { content: '◇'; font-size: 0.55rem; color: var(--land); }
-
-/* RIGHT COLUMN */
-.exam-right-col { display: flex; flex-direction: column; gap: 1.25rem; }
-
-/* ACTIVE EXAM SCREEN */
-.exam-active {
-  display: none;
-  min-height: 100vh;
-  background: var(--bg);
-}
-.exam-top-bar {
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
-  padding: 0 2rem;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 40;
-}
-.exam-title { font-size: 0.9rem; font-weight: 700; }
-.exam-timer {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 0.875rem;
-  background: var(--bg-subtle);
-  border-radius: var(--r-full);
-  font-size: 0.875rem;
-  font-weight: 800;
-  color: var(--navy);
-}
-.exam-timer.warn { background: #FEF3C7; color: var(--link-dark); }
-.exam-timer.urgent { background: #FEE2E2; color: #DC2626; animation: blink 1s ease infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.6} }
-.question-nav {
-  display: flex;
-  gap: 4px;
-}
-.q-nav-btn {
-  width: 28px; height: 28px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--border);
-  background: transparent;
-  font-size: 0.7rem;
-  font-weight: 700;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: all var(--t-fast);
-}
-.q-nav-btn:hover { background: var(--bg-subtle); }
-.q-nav-btn.current { background: var(--land); color: white; border-color: var(--land); }
-.q-nav-btn.answered { background: var(--learn-light); color: var(--learn-dark); border-color: var(--learn); }
-
-.exam-body { max-width: 760px; margin: 0 auto; padding: 2rem; }
-.exam-q-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  padding: 2rem;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 1.5rem;
-}
-.exam-q-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-.exam-q-number { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
-.exam-q-text { font-size: 1.0625rem; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 1.5rem; }
-.exam-options { display: flex; flex-direction: column; gap: 0.625rem; }
-.exam-option {
-  border: 2px solid var(--border);
-  border-radius: var(--r-md);
-  padding: 0.875rem 1rem;
-  cursor: pointer;
-  font-size: 0.875rem;
-  color: var(--text-primary);
-  transition: all var(--t-fast);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.exam-option:hover { border-color: var(--land); background: var(--land-light); }
-.exam-option.selected { border-color: var(--land); background: var(--land-light); font-weight: 600; }
-.exam-option .opt-letter {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: var(--bg-subtle);
-  border: 1.5px solid var(--border);
-  font-size: 0.75rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.exam-option.selected .opt-letter { background: var(--land); border-color: var(--land); color: white; }
-.exam-nav { display: flex; align-items: center; justify-content: space-between; }
+.skel { background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 </style>
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/supabase-client.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/api.js"></script>
+
 <div class="app-layout">
   <aside class="sidebar" id="sidebar"></aside>
-
-  <div class="main-content" id="appMain">
+  <div class="main-content">
     <header class="main-header">
       <div class="header-title">
         <div style="font-size:1.125rem;font-weight:700;color:var(--navy);">Exam Mode</div>
-        <div style="font-size:0.75rem;color:var(--text-muted);">Practise smart. Target your weak areas. Perform at your best.</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);">Timed practice with real exam questions</div>
       </div>
       <div class="header-actions">
-        <a href="dashboard.html" class="btn btn-ghost btn-sm">
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-          Back to Exam Mode
-        </a>
+        <div class="streak-badge"><span class="flame">🔥</span><span id="header-streak">—</span></div>
+        <div class="user-avatar" id="header-avatar">?</div>
       </div>
     </header>
-
     <div class="page-body">
-      <h2 style="font-size:1.5rem;font-weight:800;color:var(--navy);margin-bottom:0.375rem;letter-spacing:-0.02em;">Start practice</h2>
-      <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1.5rem;">Choose how you want to practise today.</p>
-
-      <!-- MODE TABS -->
-      <div class="mode-tabs">
-        <button class="mode-tab active smart" onclick="selectMode(this)">
-          <div class="mode-tab-icon">⭐</div>
-          <div class="mode-tab-info">
-            <div class="mode-tab-name">Smart recommendation</div>
-            <div class="mode-tab-sub">Best for you today</div>
-          </div>
-        </button>
-        <button class="mode-tab topic" onclick="selectMode(this)">
-          <div class="mode-tab-icon">📚</div>
-          <div class="mode-tab-info">
-            <div class="mode-tab-name">Focus on a topic</div>
-            <div class="mode-tab-sub">Choose a specific area</div>
-          </div>
-        </button>
-        <button class="mode-tab mixed" onclick="selectMode(this)">
-          <div class="mode-tab-icon">🔀</div>
-          <div class="mode-tab-info">
-            <div class="mode-tab-name">Mixed practice</div>
-            <div class="mode-tab-sub">Across multiple topics</div>
-          </div>
-        </button>
-        <button class="mode-tab past" onclick="selectMode(this)">
-          <div class="mode-tab-icon">📄</div>
-          <div class="mode-tab-info">
-            <div class="mode-tab-name">Past papers</div>
-            <div class="mode-tab-sub">Exam-style practice</div>
-          </div>
-        </button>
-      </div>
-
-      <div class="exam-start-layout">
-        <!-- LEFT -->
-        <div>
-          <!-- RECOMMENDED -->
-          <div class="recommended-section">
-            <h3>Recommended for you</h3>
-            <p class="rec-sub">Based on your recent performance, we recommend focusing on these areas:</p>
-            <div class="rec-cards">
-              <div class="rec-card link-card" onclick="startExam()">
-                <div class="rec-card-icon">🔗</div>
-                <div class="rec-card-type">Link it</div>
-                <h4>Transmission chains</h4>
-                <p>Strengthen your chains and avoid common breaks.</p>
-                <div class="rec-tag">Your weakest area</div>
-                <div class="rec-card-footer">
-                  <div class="rec-card-meta">⏱ Est. 15 mins</div>
-                  <button class="btn btn-link-stage btn-sm" onclick="startExam();event.stopPropagation();">Start →</button>
-                </div>
+      <!-- START SCREEN -->
+      <div id="start-screen">
+        <div style="max-width:640px;margin:2rem auto;">
+          <div class="exam-card" style="text-align:center;">
+            <div style="font-size:3rem;margin-bottom:1rem;">⏱</div>
+            <h2 style="font-size:1.5rem;font-weight:800;color:var(--navy);margin-bottom:0.5rem;">Exam Mode</h2>
+            <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.6;max-width:480px;margin:0 auto 1.5rem;">
+              Answer a set of exam-style questions under timed conditions. Questions are chosen from your weakest areas to target your revision where it counts most.
+            </p>
+            <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem;">
+              <div style="background:var(--bg-subtle);border-radius:var(--r-md);padding:0.875rem 1.25rem;text-align:center;">
+                <div style="font-size:1.25rem;font-weight:800;color:var(--navy);" id="start-q-count">10</div>
+                <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);">Questions</div>
               </div>
-              <div class="rec-card land-card" onclick="startExam()">
-                <div class="rec-card-icon">📝</div>
-                <div class="rec-card-type">Land it</div>
-                <h4>Evaluation in essays</h4>
-                <p>Improve your evaluation and use of real-world examples.</p>
-                <div class="rec-tag">Needs improvement</div>
-                <div class="rec-card-footer">
-                  <div class="rec-card-meta">⏱ Est. 25 mins</div>
-                  <button class="btn btn-learn btn-sm" onclick="startExam();event.stopPropagation();">Start →</button>
-                </div>
+              <div style="background:var(--bg-subtle);border-radius:var(--r-md);padding:0.875rem 1.25rem;text-align:center;">
+                <div style="font-size:1.25rem;font-weight:800;color:var(--navy);">15</div>
+                <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);">Minutes</div>
               </div>
-              <div class="rec-card mixed-card" onclick="startExam()">
-                <div class="rec-card-icon">🔀</div>
-                <div class="rec-card-type">Mixed</div>
-                <h4>Macro challenge</h4>
-                <p>Apply your knowledge across different macro topics.</p>
-                <div class="rec-tag">Build confidence</div>
-                <div class="rec-card-footer">
-                  <div class="rec-card-meta">⏱ Est. 20 mins</div>
-                  <button class="btn btn-primary btn-sm" onclick="startExam();event.stopPropagation();">Start →</button>
-                </div>
+              <div style="background:var(--bg-subtle);border-radius:var(--r-md);padding:0.875rem 1.25rem;text-align:center;">
+                <div style="font-size:1.25rem;font-weight:800;color:var(--navy);" id="start-diff">Mixed</div>
+                <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);">Difficulty</div>
               </div>
             </div>
-          </div>
-
-          <!-- ALL OPTIONS -->
-          <div class="all-options">
-            <h3>All practice options</h3>
-            <p class="opts-sub">Explore all the ways you can practise and improve.</p>
-            <div class="options-grid">
-              <div class="option-card" onclick="startExam()">
-                <div class="option-icon" style="background:#F3E8FF;">📋</div>
-                <h4>Diagnostic Quiz</h4>
-                <p>Quick quiz to identify your weakest areas.</p>
-                <ul class="option-features">
-                  <li>5–10 mins</li>
-                  <li>Adaptive questions</li>
-                  <li>Instant analysis</li>
-                </ul>
-                <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:0.875rem;" onclick="startExam();event.stopPropagation();">Start quiz →</button>
-              </div>
-              <div class="option-card" onclick="startExam()">
-                <div class="option-icon" style="background:#FEE2E2;">⏱</div>
-                <h4>Timed Practice</h4>
-                <p>Exam-style questions under timed conditions.</p>
-                <ul class="option-features">
-                  <li>10 / 20 / 30 mins</li>
-                  <li>Exam style</li>
-                  <li>Marking and feedback</li>
-                </ul>
-                <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:0.875rem;" onclick="startExam();event.stopPropagation();">Start timed →</button>
-              </div>
-              <div class="option-card" onclick="window.location.href='land.html'">
-                <div class="option-icon" style="background:var(--land-light);">✍️</div>
-                <h4>Essay Practice</h4>
-                <p>Write essays and get AI feedback.</p>
-                <ul class="option-features">
-                  <li>Various question types</li>
-                  <li>AI feedback</li>
-                  <li>Model answers</li>
-                </ul>
-                <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:0.875rem;">Start writing →</button>
-              </div>
-              <div class="option-card" onclick="window.location.href='flashcards.html'">
-                <div class="option-icon" style="background:var(--learn-light);">🃏</div>
-                <h4>Flashcards</h4>
-                <p>Reinforce key concepts and definitions.</p>
-                <ul class="option-features">
-                  <li>Key terms</li>
-                  <li>Diagrams</li>
-                  <li>Active recall</li>
-                </ul>
-                <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:0.875rem;">Open flashcards →</button>
-              </div>
-            </div>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:0.75rem;padding:1rem 1.25rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);margin-top:1.25rem;">
-            <span style="font-size:1.25rem;">💡</span>
-            <p style="font-size:0.8rem;color:var(--text-secondary);margin:0;"><strong>Tip:</strong> Short, focused practice is more effective than long, unfocused study. Consistent practice + targeted focus = exam success.</p>
-            <a href="#" style="margin-left:auto;display:flex;align-items:center;gap:0.375rem;font-size:0.775rem;font-weight:600;color:var(--land);white-space:nowrap;">▶ How it works</a>
-          </div>
-        </div>
-
-        <!-- RIGHT -->
-        <div class="exam-right-col">
-          <!-- READINESS -->
-          <div class="card card-pad">
-            <h3 style="font-size:0.9375rem;font-weight:700;margin-bottom:1.25rem;">Your exam readiness</h3>
-            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
-              <svg width="100" height="100" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#E2E8F0" stroke-width="10"/>
-                <circle cx="50" cy="50" r="40" fill="none" stroke="#22C55E" stroke-width="10"
-                  stroke-dasharray="175.9" stroke-dashoffset="56.3" transform="rotate(-90 50 50)"/>
-                <text x="50" y="45" text-anchor="middle" font-family="Inter,sans-serif" font-size="18" font-weight="800" fill="#0F172A">68%</text>
-                <text x="50" y="59" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#94A3B8" font-weight="600">OVERALL</text>
-              </svg>
-              <div style="flex:1;">
-                <div style="display:flex;flex-direction:column;gap:0.5rem;">
-                  <div style="font-size:0.8rem;display:flex;align-items:center;gap:0.5rem;">
-                    <div style="width:8px;height:8px;border-radius:50%;background:var(--learn);"></div>
-                    <span style="flex:1;color:var(--text-secondary);">Learn it</span>
-                    <strong style="color:var(--learn-dark);">72%</strong>
-                  </div>
-                  <div style="font-size:0.8rem;display:flex;align-items:center;gap:0.5rem;">
-                    <div style="width:8px;height:8px;border-radius:50%;background:var(--link);"></div>
-                    <span style="flex:1;color:var(--text-secondary);">Link it</span>
-                    <strong style="color:var(--link-dark);">61%</strong>
-                  </div>
-                  <div style="font-size:0.8rem;display:flex;align-items:center;gap:0.5rem;">
-                    <div style="width:8px;height:8px;border-radius:50%;background:var(--land);"></div>
-                    <span style="flex:1;color:var(--text-secondary);">Land it</span>
-                    <strong style="color:var(--land);">70%</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <a href="progress.html" style="font-size:0.8rem;color:var(--land);font-weight:600;">View full analysis →</a>
-          </div>
-
-          <!-- WEAKEST AREAS -->
-          <div class="card card-pad">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
-              <h3 style="font-size:0.9375rem;font-weight:700;">Your weakest areas</h3>
-              <a href="topics.html" style="font-size:0.775rem;color:var(--land);font-weight:600;">View all</a>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:0.625rem;">
-              <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;">
-                <span>🔗</span><span style="flex:1;">Transmission chains (Macro)</span>
-                <div style="width:60px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:48%;height:100%;background:#EF4444;border-radius:3px;"></div></div>
-                <strong style="color:#EF4444;min-width:28px;text-align:right;">48%</strong>
-              </div>
-              <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;">
-                <span>📝</span><span style="flex:1;">Evaluation in essays</span>
-                <div style="width:60px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:42%;height:100%;background:#EF4444;border-radius:3px;"></div></div>
-                <strong style="color:#EF4444;min-width:28px;text-align:right;">42%</strong>
-              </div>
-              <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;">
-                <span>🌐</span><span style="flex:1;">Exchange rates</span>
-                <div style="width:60px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:53%;height:100%;background:var(--link);border-radius:3px;"></div></div>
-                <strong style="color:var(--link-dark);min-width:28px;text-align:right;">53%</strong>
-              </div>
-              <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;">
-                <span>⚠️</span><span style="flex:1;">Market failure</span>
-                <div style="width:60px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:58%;height:100%;background:var(--link);border-radius:3px;"></div></div>
-                <strong style="color:var(--link-dark);min-width:28px;text-align:right;">58%</strong>
-              </div>
-            </div>
-          </div>
-
-          <!-- RECENT -->
-          <div class="card card-pad">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
-              <h3 style="font-size:0.9375rem;font-weight:700;">Recent activity</h3>
-              <a href="past-work.html" style="font-size:0.775rem;color:var(--land);font-weight:600;">View all</a>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:0.5rem;">
-              <div style="display:flex;align-items:center;gap:0.625rem;font-size:0.8rem;padding:0.5rem 0;border-bottom:1px solid var(--border);">
-                <div style="width:24px;height:24px;border-radius:var(--r-sm);background:var(--land-light);display:flex;align-items:center;justify-content:center;font-size:0.75rem;">📝</div>
-                <div style="flex:1;"><div style="font-weight:600;color:var(--navy);">Essay: Monetary policy (25)</div><div style="color:var(--text-muted);font-size:0.7rem;">AI feedback received</div></div>
-                <div style="font-weight:700;color:var(--link-dark);">18/25</div>
-                <div style="font-size:0.7rem;color:var(--text-muted);">Yesterday</div>
-              </div>
-              <div style="display:flex;align-items:center;gap:0.625rem;font-size:0.8rem;padding:0.5rem 0;border-bottom:1px solid var(--border);">
-                <div style="width:24px;height:24px;border-radius:var(--r-sm);background:var(--link-light);display:flex;align-items:center;justify-content:center;font-size:0.75rem;">🔗</div>
-                <div style="flex:1;"><div style="font-weight:600;color:var(--navy);">Link It: Natural monopoly</div><div style="color:var(--text-muted);font-size:0.7rem;">Completed</div></div>
-                <div style="font-weight:700;color:var(--learn-dark);">85%</div>
-                <div style="font-size:0.7rem;color:var(--text-muted);">Yesterday</div>
-              </div>
-              <div style="display:flex;align-items:center;gap:0.625rem;font-size:0.8rem;padding:0.5rem 0;">
-                <div style="width:24px;height:24px;border-radius:var(--r-sm);background:var(--bg-subtle);display:flex;align-items:center;justify-content:center;font-size:0.75rem;">⚡</div>
-                <div style="flex:1;"><div style="font-weight:600;color:var(--navy);">Diagnostic Quiz (Macro)</div><div style="color:var(--text-muted);font-size:0.7rem;">Completed</div></div>
-                <div style="font-weight:700;color:var(--link-dark);">62%</div>
-                <div style="font-size:0.7rem;color:var(--text-muted);">2 days ago</div>
-              </div>
+            <div id="start-focus" style="margin-bottom:1.5rem;font-size:0.8rem;color:var(--text-secondary);font-style:italic;"></div>
+            <div style="display:flex;gap:0.75rem;justify-content:center;">
+              <select id="session-length" class="form-input" style="width:auto;font-size:0.8rem;">
+                <option value="5">5 questions</option>
+                <option value="10" selected>10 questions</option>
+                <option value="20">20 questions</option>
+              </select>
+              <button onclick="startExam()" class="btn btn-primary btn-lg">Begin exam →</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<!-- ACTIVE EXAM (shown when started) -->
-<div class="exam-active" id="examActive">
-  <div class="exam-top-bar">
-    <span class="exam-title">Timed Practice · Macro Economics</span>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:0.75rem;">
-      <div class="question-nav" id="questionNav"></div>
-      <div class="exam-timer" id="examTimer">⏱ 20:00</div>
-      <button class="btn btn-ghost btn-sm" onclick="endExam()">✕ End session</button>
-    </div>
-  </div>
-  <div class="exam-body">
-    <div class="exam-q-card">
-      <div class="exam-q-meta">
-        <span class="exam-q-number">Question 1 of 10</span>
-        <span class="stage-pill pill-link">Link it</span>
-        <span style="font-size:0.75rem;color:var(--text-muted);">2.3 Policies · ⏱ 2 min</span>
+      <!-- EXAM SCREEN -->
+      <div id="exam-screen" style="display:none;">
+        <div class="exam-layout">
+          <div>
+            <div class="exam-card">
+              <div class="exam-header">
+                <h2>Exam Session</h2>
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                  <span id="exam-pill" class="exam-pill">Loading…</span>
+                  <div id="timer" class="timer-display">15:00</div>
+                </div>
+              </div>
+              <div id="questions-container">
+                <div class="skel" style="height:120px;border-radius:var(--r-md);"></div>
+              </div>
+              <div style="display:flex;gap:0.75rem;margin-top:1.5rem;" id="exam-actions">
+                <button onclick="submitExam()" class="btn btn-primary btn-lg">Submit answers →</button>
+                <button onclick="confirmAbort()" class="btn btn-ghost">Abandon session</button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="exam-sidebar-card">
+              <h4>Session progress</h4>
+              <div class="session-stat"><span class="lbl">Answered</span><span class="val" id="ss-answered">0 / 0</span></div>
+              <div class="session-stat"><span class="lbl">Time remaining</span><span class="val" id="ss-time">—</span></div>
+              <div class="session-stat"><span class="lbl">Difficulty</span><span class="val">Mixed</span></div>
+            </div>
+            <div class="exam-sidebar-card">
+              <h4>Question navigator</h4>
+              <div id="q-navigator" style="display:flex;flex-wrap:wrap;gap:0.375rem;"></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="exam-q-text" id="examQuestion">Which of the following best describes the effect of a rise in interest rates on aggregate demand?</div>
-      <div class="exam-options" id="examOptions">
-        <div class="exam-option" onclick="selectOption(this)"><div class="opt-letter">A</div> Aggregate demand increases as consumers save less</div>
-        <div class="exam-option" onclick="selectOption(this)"><div class="opt-letter">B</div> Aggregate demand falls as borrowing costs rise, reducing consumption and investment</div>
-        <div class="exam-option" onclick="selectOption(this)"><div class="opt-letter">C</div> Aggregate demand is unaffected because government spending stays constant</div>
-        <div class="exam-option" onclick="selectOption(this)"><div class="opt-letter">D</div> Aggregate demand increases because the exchange rate rises, boosting exports</div>
+
+      <!-- RESULT SCREEN -->
+      <div id="result-screen" style="display:none;">
+        <div style="max-width:640px;margin:2rem auto;">
+          <div class="exam-card" style="text-align:center;">
+            <div id="result-emoji" style="font-size:3rem;margin-bottom:0.5rem;">🎯</div>
+            <div class="big-score" id="result-pct" style="font-size:4rem;font-weight:900;letter-spacing:-0.04em;"></div>
+            <div style="font-size:0.875rem;color:var(--text-muted);font-weight:600;margin-bottom:1.5rem;" id="result-sub"></div>
+            <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem;">
+              <div style="background:var(--learn-light);border-radius:var(--r-md);padding:0.875rem 1.25rem;text-align:center;">
+                <div style="font-size:1.5rem;font-weight:900;color:var(--learn-dark);" id="res-correct">0</div>
+                <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);">Correct</div>
+              </div>
+              <div style="background:#FEF2F2;border-radius:var(--r-md);padding:0.875rem 1.25rem;text-align:center;">
+                <div style="font-size:1.5rem;font-weight:900;color:#DC2626;" id="res-wrong">0</div>
+                <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);">Wrong</div>
+              </div>
+              <div style="background:var(--bg-subtle);border-radius:var(--r-md);padding:0.875rem 1.25rem;text-align:center;">
+                <div style="font-size:1.5rem;font-weight:900;color:var(--navy);" id="res-time">—</div>
+                <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);">Time used</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:0.75rem;justify-content:center;">
+              <button onclick="restart()" class="btn btn-ghost btn-lg">New session</button>
+              <a href="topics.html" class="btn btn-primary btn-lg">Review topics →</a>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="exam-nav">
-      <button class="btn btn-ghost" onclick="prevQuestion()">← Previous</button>
-      <div style="font-size:0.8rem;color:var(--text-muted);">Question 1 of 10</div>
-      <button class="btn btn-primary" onclick="nextQuestion()">Next question →</button>
     </div>
   </div>
 </div>
 
 <script src="../assets/js/nav.js"></script>
 <script>
-buildSidebar('exam', 'student');
+let userId = null;
+let questions = [], answers = {};
+let timerInterval = null, secondsLeft = 900, secondsUsed = 0;
 
-function selectMode(btn) {
-  document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+async function init() {
+  const auth = await Auth.requireStudent('../login.html');
+  if (!auth) return;
+  const { session, profile } = auth;
+  userId = session.user.id;
+  const initials = (profile.full_name||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  buildSidebar('exam', 'student', { name: profile.full_name, initials, school: profile.school_name||'', yearGroup: profile.year_group||'Year 12' });
+  document.getElementById('header-avatar').textContent = initials;
+
+  try {
+    const [mastery, streakData] = await Promise.all([
+      API.getStudentMastery(userId),
+      API.getStreakData(userId)
+    ]);
+    document.getElementById('header-streak').textContent = streakData.streak + ' day streak';
+    const weakAreas = API.getWeakAreas(mastery, 3);
+    if (weakAreas.length) {
+      document.getElementById('start-focus').textContent = `Focus: ${weakAreas.map(w=>w.name).join(', ')}`;
+    }
+  } catch(e) {}
 }
 
-let timerInterval, seconds = 1200;
+async function startExam() {
+  const qCount = parseInt(document.getElementById('session-length').value);
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('exam-screen').style.display  = 'block';
 
-function startExam() {
-  document.getElementById('appMain').style.display = 'none';
-  document.getElementById('examActive').style.display = 'block';
-  document.getElementById('sidebar').style.display = 'none';
-  buildQuestionNav();
-  startTimer();
-}
-
-function buildQuestionNav() {
-  const nav = document.getElementById('questionNav');
-  nav.innerHTML = '';
-  for (let i = 1; i <= 10; i++) {
-    const btn = document.createElement('button');
-    btn.className = 'q-nav-btn' + (i === 1 ? ' current' : '');
-    btn.textContent = i;
-    btn.onclick = () => goToQuestion(i);
-    nav.appendChild(btn);
+  try {
+    questions = await API.getRandomMCQ(qCount);
+    if (!questions.length) {
+      document.getElementById('questions-container').innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-muted);">No questions available. Please add some via the seed script.</div>';
+      return;
+    }
+    answers = {};
+    renderQuestions();
+    startTimer(qCount);
+  } catch(err) {
+    console.error('[Exam]', err);
+    document.getElementById('questions-container').innerHTML = '<div style="color:#EF4444;">Could not load questions. Please refresh.</div>';
   }
 }
 
-function startTimer() {
+function renderQuestions() {
+  const letters = ['A','B','C','D'];
+  document.getElementById('exam-pill').textContent = `${questions.length} questions`;
+  document.getElementById('ss-answered').textContent = `0 / ${questions.length}`;
+
+  document.getElementById('questions-container').innerHTML = questions.map((q, qi) => {
+    const opts = Array.isArray(q.options) ? q.options : [];
+    return `
+      <div class="question-block" id="qblock-${qi}">
+        <div class="question-num">Question ${qi+1} of ${questions.length}</div>
+        <div class="question-text">${q.question_text}</div>
+        <div class="mcq-options">
+          ${opts.map((opt, oi) => `
+            <div class="mcq-opt" data-q="${qi}" data-o="${oi}" onclick="selectOpt(${qi},${oi},this)">
+              <span class="opt-letter">${letters[oi]}.</span>
+              <div>
+                <div>${opt.text}</div>
+                <div class="opt-expl">${opt.explanation||''}</div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('q-navigator').innerHTML = questions.map((_,i) => `<button id="nav-${i}" onclick="scrollToQ(${i})" style="width:32px;height:32px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg-subtle);font-size:0.75rem;font-weight:700;cursor:pointer;">${i+1}</button>`).join('');
+}
+
+function selectOpt(qi, oi, el) {
+  answers[qi] = oi;
+  document.querySelectorAll(`[data-q="${qi}"]`).forEach(e => { e.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById(`nav-${qi}`).style.background = 'var(--land-light)';
+  document.getElementById(`nav-${qi}`).style.borderColor = 'var(--land)';
+  document.getElementById('ss-answered').textContent = `${Object.keys(answers).length} / ${questions.length}`;
+}
+
+function scrollToQ(qi) {
+  document.getElementById(`qblock-${qi}`)?.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+function startTimer(qCount) {
+  secondsLeft = qCount <= 5 ? 300 : qCount <= 10 ? 900 : 1800;
+  secondsUsed = 0;
   timerInterval = setInterval(() => {
-    seconds--;
-    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-    const s = (seconds % 60).toString().padStart(2, '0');
-    const el = document.getElementById('examTimer');
-    el.textContent = `⏱ ${m}:${s}`;
-    if (seconds <= 300) el.className = 'exam-timer warn';
-    if (seconds <= 60)  el.className = 'exam-timer urgent';
-    if (seconds <= 0) { clearInterval(timerInterval); endExam(); }
+    secondsLeft--; secondsUsed++;
+    const m = Math.floor(secondsLeft/60), s = secondsLeft%60;
+    const str = `${m}:${s.toString().padStart(2,'0')}`;
+    document.getElementById('timer').textContent = str;
+    document.getElementById('ss-time').textContent = str;
+    if (secondsLeft <= 60) document.getElementById('timer').classList.add('warning');
+    if (secondsLeft <= 0) { clearInterval(timerInterval); submitExam(); }
   }, 1000);
 }
 
-function selectOption(el) {
-  document.querySelectorAll('.exam-option').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  const qBtns = document.querySelectorAll('.q-nav-btn');
-  qBtns[0].classList.remove('current');
-  qBtns[0].classList.add('answered');
-}
-
-function goToQuestion(n) {
-  document.querySelectorAll('.q-nav-btn').forEach((b, i) => b.classList.toggle('current', i === n - 1));
-}
-function prevQuestion() {}
-function nextQuestion() {
-  document.querySelectorAll('.q-nav-btn')[0].classList.add('answered');
-}
-
-function endExam() {
+async function submitExam() {
   clearInterval(timerInterval);
-  document.getElementById('examActive').style.display = 'none';
-  document.getElementById('appMain').style.display = 'block';
-  document.getElementById('sidebar').style.display = 'flex';
+  document.getElementById('exam-actions').style.display = 'none';
+
+  let correct = 0;
+  questions.forEach((q, qi) => {
+    const opts = Array.isArray(q.options) ? q.options : [];
+    const chosen = answers[qi];
+    const correctIdx = opts.findIndex(o => o.correct);
+    const isCorrect = chosen === correctIdx;
+    if (isCorrect) correct++;
+
+    document.querySelectorAll(`[data-q="${qi}"]`).forEach(el => {
+      const oi = parseInt(el.dataset.o);
+      el.onclick = null;
+      el.style.cursor = 'default';
+      if (oi === correctIdx) el.classList.add('correct-reveal');
+      else if (oi === chosen && !isCorrect) el.classList.add('wrong-reveal');
+    });
+  });
+
+  const total  = questions.length;
+  const pct    = Math.round((correct/total)*100);
+  const mins   = Math.floor(secondsUsed/60);
+  const secs   = secondsUsed%60;
+  const timeStr = `${mins}:${secs.toString().padStart(2,'0')}`;
+
+  setTimeout(() => {
+    document.getElementById('exam-screen').style.display   = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    document.getElementById('result-emoji').textContent = pct>=80?'🏆':pct>=60?'🎯':'💪';
+    document.getElementById('result-pct').textContent   = pct + '%';
+    document.getElementById('result-pct').style.color   = pct>=70?'var(--learn-dark)':pct>=50?'var(--link-dark)':'#EF4444';
+    document.getElementById('result-sub').textContent   = `${correct} of ${total} correct in ${timeStr}`;
+    document.getElementById('res-correct').textContent  = correct;
+    document.getElementById('res-wrong').textContent    = total - correct;
+    document.getElementById('res-time').textContent     = timeStr;
+  }, 1500);
+
+  if (userId) Auth.recordActivity('mcq', 'Exam Mode', null, correct, total, null);
 }
+
+function confirmAbort() {
+  if (confirm('Are you sure you want to abandon this session? Your progress will not be saved.')) {
+    clearInterval(timerInterval);
+    document.getElementById('exam-screen').style.display = 'none';
+    document.getElementById('start-screen').style.display = 'block';
+  }
+}
+
+function restart() {
+  clearInterval(timerInterval);
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('start-screen').style.display  = 'block';
+}
+
+init();
 </script>
 </body>
 </html>
